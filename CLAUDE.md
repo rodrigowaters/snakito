@@ -11,7 +11,7 @@
 
 ## Trilha de tecnologia (decisão fechada — não reabrir)
 
-Este app é da **Trilha B** da linha: **Godot 4 (atual: 4.8) + GDScript com tipagem estática obrigatória**. Nunca variáveis sem tipo sem justificativa explícita em comentário. React Native/Expo foi descartado para jogos de tempo real após problemas de performance no Blokito.
+Este app é da **Trilha B** da linha: **Godot 4 (estável atual: 4.7.1; a doc citava "4.8", que não existe) + GDScript com tipagem estática obrigatória**. Nunca variáveis sem tipo sem justificativa explícita em comentário. React Native/Expo foi descartado para jogos de tempo real após problemas de performance no Blokito.
 
 ## Stack
 
@@ -48,20 +48,23 @@ Design system importado do Claude Design (projeto `Design System Snakito`, v1.0,
 | `docs/design/wcag-report.md` | Relatório de contraste WCAG 2.1 AA |
 | `src/ui/theme/tokens.gd` | `SnakitoTokens` — constantes tipadas (cores, tipografia, espaçamento, raios, toque, daltonismo) |
 | `src/ui/theme/snakito_theme.tres` | `Theme`: 6 tipos base + 25 variações, fontes ligadas via `FontVariation` |
-| `tools/gerar_tema.gd` | EditorScript que regenera o `.tres` a partir do `tokens.gd` (Arquivo > Executar) |
+| `tools/tema_builder.gd` | Construção do `Theme` (RefCounted estático — roda headless; `EditorScript` não instancia fora do editor) |
+| `tools/gerar_tema.gd` | Casca EditorScript sobre o builder (Arquivo > Executar no editor) |
+| `tools/validar_fundacao.gd` | Smoke test headless: tokens + tema + round-trip de regeneração. `godot --headless --quit-after 30 -s tools/validar_fundacao.gd` |
 | `assets/fonts/` | Fredoka + Nunito variáveis (OFL, licenças incluídas) |
 | `assets/daltonismo/` | 8 símbolos SVG do modo daltonismo (1 por cor de cobra) |
-| `tests/ui/theme/test_tokens_contraste.gd` | Regressão WCAG dos tokens (gdUnit4) |
-| `project.godot` | Projeto mínimo (nome, portrait 412×915, renderer mobile, tema global); presets Android entram no spike |
+| `tests/ui/theme/test_tokens_contraste.gd` | Regressão WCAG dos tokens (gdUnit4 — addon vendorado em `addons/gdUnit4`) |
+| `project.godot` | Projeto mínimo (nome, portrait 412×915, renderer mobile, tema global, plugin gdUnit4); presets Android entram no spike |
 
-**Regra operacional:** valores visuais literais só existem em `tokens.gd` + `snakito_theme.tres`. Cenas consomem `SnakitoTokens.*` ou variações do `Theme` (`BotaoPrimario`, `TituloLg`, `CardPainel`, …). Ao mudar um token, regenere o `.tres` com `tools/gerar_tema.gd` e rode os testes de contraste.
+**Regra operacional:** valores visuais literais só existem em `tokens.gd` + `snakito_theme.tres`. Cenas consomem `SnakitoTokens.*` ou variações do `Theme` (`BotaoPrimario`, `TituloLg`, `CardPainel`, …). Ao mudar um token: regenerar o `.tres` (editor: `gerar_tema.gd`; terminal: `validar_fundacao.gd` já regenera e valida) e rodar os testes.
+
+**Validado na engine (Godot 4.7.1, brew cask):** importação de assets, carga do tema, regeneração round-trip e suite gdUnit4 — 9/9 testes, 0 falhas. Rodar testes no terminal: `GODOT_BIN=/opt/homebrew/bin/godot sh addons/gdUnit4/runtest.sh --headless --ignoreHeadlessMode -a res://tests`.
 
 **Contraste:** 0 reprovações. Única restrição de uso: `COR_TEXTO_MUTED` (#7E88A8) só em texto grande — ≥19px negrito ou ≥24px normal.
 
-**Pendências da fundação:**
-- Nada foi executado na engine ainda (Godot não instalado nesta máquina). Na primeira abertura do editor: deixar importar `assets/`, rodar `tools/gerar_tema.gd` e conferir que o `.tres` regenerado carrega igual ao versionado
-- Instalar o addon gdUnit4 (`addons/gdUnit4`) e rodar `tests/`
-- Gradientes de CTA seguem aproximados pelo tom médio (`StyleBoxFlat` não desenha gradiente; usar `StyleBoxTexture`/shader quando o polimento importar). Estados `hover` = `normal` de propósito: alvo é Android
+**Armadilhas de GDScript já encontradas** (a engine reprova, o olho não): construtores `Packed*Array(...)` e referências diretas a classe (`const T := SnakitoTokens`) não são expressão constante — use `Array[int]` e `preload(...)`; `EditorScript` só instancia no editor — lógica reutilizável vai para RefCounted.
+
+**Pendência estética (não bloqueia):** gradientes de CTA aproximados pelo tom médio (`StyleBoxFlat` não desenha gradiente; `StyleBoxTexture`/shader quando o polimento importar). Estados `hover` = `normal` de propósito: alvo é Android.
 
 ## Conformidade (sempre)
 

@@ -8,8 +8,9 @@ extends GdUnitTestSuite
 ##
 ## Requer o addon gdUnit4 instalado em `addons/gdUnit4`.
 
-## Alias curto para a classe de tokens.
-const T := SnakitoTokens
+## Alias curto para a classe de tokens (preload: referência direta à classe
+## não é expressão constante em GDScript).
+const T := preload("res://src/ui/theme/tokens.gd")
 
 
 ## Fundos opacos onde texto pode aparecer. Superfícies translúcidas já vêm

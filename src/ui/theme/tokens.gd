@@ -352,7 +352,9 @@ const ESP_2XL: int = 48
 const ESP_3XL: int = 64
 
 ## Escala completa, para telas que precisam iterar (ex.: gerador de layout).
-const ESCALA_ESPACAMENTO: PackedInt32Array = PackedInt32Array([4, 8, 12, 16, 24, 32, 48, 64])
+## Array[int] em vez de PackedInt32Array: construtores de Packed* não são
+## expressão constante em GDScript.
+const ESCALA_ESPACAMENTO: Array[int] = [4, 8, 12, 16, 24, 32, 48, 64]
 
 
 # ==============================================================================
