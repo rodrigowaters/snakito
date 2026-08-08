@@ -63,7 +63,7 @@ func _physics_process(delta: float) -> void:
 			_ir_para_resultado()
 		return
 
-	motor.avancar(_direcao_do_input())
+	motor.avancar(_direcao_do_input(), hud.turbo_desejado())
 	_processar_eventos()
 	render.registrar_tick()
 	hud.atualizar(motor)

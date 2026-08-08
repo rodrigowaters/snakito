@@ -21,6 +21,12 @@ const VISAO_POR_TAMANHO: float = 6.0
 ## Teto da visão — mantém a névoa relevante até para cobras gigantes.
 const VISAO_MAX: float = 700.0
 
+# --- Turbo (docs §2.6) --------------------------------------------------------
+## Capacidade máxima de energia de turbo.
+const ENERGIA_MAX: float = 100.0
+## Multiplicador de velocidade do turbo sem buff (bots usam sempre este).
+const TURBO_BASE: float = 1.5
+
 # --- Regra de devorar (docs §2.3: "qualquer cobra 10% maior mata em um toque")
 # Razão 11/10 em inteiros: comparar com float (1.1 * tamanho) erra no limiar
 # exato (1.1 não tem representação binária finita — 11 >= 1.1*10 dá falso!).
@@ -38,6 +44,19 @@ var pontos: int = 0
 var viva: bool = true
 ## 0..1 — escala o alcance de caça/oportunidade (dificuldade da arena, §2.4).
 var agressividade: float = 0.5
+
+# --- Turbo (docs §2.6) ---
+## Energia corrente de turbo.
+var energia: float = ENERGIA_MAX
+## INTENÇÃO de turbo (input do jogador / decisão do bot). Quem resolve se
+## vira turbo de fato — pelas regras de energia — é o GameEngine.
+var quer_turbo: bool = false
+## Turbo efetivamente ativo neste tick (resolvido pelo GameEngine).
+var turbo_ativo: bool = false
+## Multiplicador do turbo. Só o jogador com buff passa de TURBO_BASE (§2.6.2).
+var multiplicador_turbo: float = TURBO_BASE
+## Raio do ímã de comida; 0 = sem ímã (buff exclusivo do jogador).
+var raio_ima: float = 0.0
 
 # --- Estatísticas para resultado e análise pós-partida ---
 var comidas: int = 0
@@ -74,6 +93,11 @@ func raio_visao() -> float:
 ## Esta cobra é pelo menos 10% maior que a outra? (condição de devorar)
 func pode_devorar(outra: SnakeModel) -> bool:
 	return tamanho * DEVORAR_DENOMINADOR >= outra.tamanho * DEVORAR_NUMERADOR
+
+
+## Multiplicador de velocidade neste tick (turbo ativo ou não).
+func multiplicador_velocidade() -> float:
+	return multiplicador_turbo if turbo_ativo else 1.0
 
 
 func crescer(quantidade: int) -> void:

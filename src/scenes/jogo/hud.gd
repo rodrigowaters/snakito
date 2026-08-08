@@ -23,6 +23,8 @@ var _posicao: Label
 var _tamanho: Label
 var _modal_pausa: Control
 var _flash: ColorRect
+var _energia: ProgressBar
+var _turbo_pressionado: bool = false
 
 
 func _ready() -> void:
@@ -33,8 +35,14 @@ func _ready() -> void:
 	add_child(joystick)
 
 	_montar_barra_topo()
+	_montar_turbo()
 	_montar_flash()
 	_montar_modal_pausa()
+
+
+## O jogador está segurando o turbo? (botão na tela ou Shift no desktop)
+func turbo_desejado() -> bool:
+	return _turbo_pressionado or Input.is_key_pressed(KEY_SHIFT)
 
 
 ## Flash vermelho de morte + decaimento (docs §7: "flash vermelho, som suave").
@@ -43,6 +51,37 @@ func flash_morte() -> void:
 	var tween: Tween = create_tween()
 	tween.tween_property(_flash, "color:a", 0.0, FLASH_MORTE_DURACAO) \
 		.set_ease(Tween.EASE_OUT)
+
+
+## Botão de turbo (segurar = acelerar) + barra de energia, canto inferior
+## direito — oposto ao polegar do joystick (docs §2.6/§4.2).
+func _montar_turbo() -> void:
+	var canto: MarginContainer = MarginContainer.new()
+	canto.set_anchors_preset(Control.PRESET_BOTTOM_RIGHT)
+	canto.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+	canto.grow_vertical = Control.GROW_DIRECTION_BEGIN
+	canto.add_theme_constant_override("margin_right", T.ESP_LG)
+	canto.add_theme_constant_override("margin_bottom", T.ESP_XL)
+	add_child(canto)
+
+	var coluna: VBoxContainer = VBoxContainer.new()
+	coluna.add_theme_constant_override("separation", T.ESP_XS)
+	canto.add_child(coluna)
+
+	_energia = ProgressBar.new()
+	_energia.max_value = SnakeModel.ENERGIA_MAX
+	_energia.value = SnakeModel.ENERGIA_MAX
+	_energia.show_percentage = false
+	_energia.custom_minimum_size = Vector2(float(T.TOQUE_HEROI), float(T.ESP_XS))
+	coluna.add_child(_energia)
+
+	var turbo: Button = Button.new()
+	turbo.text = "⚡"
+	turbo.theme_type_variation = &"BotaoPrimario"
+	turbo.custom_minimum_size = Vector2(float(T.TOQUE_HEROI), float(T.TOQUE_HEROI))
+	turbo.button_down.connect(func() -> void: _turbo_pressionado = true)
+	turbo.button_up.connect(func() -> void: _turbo_pressionado = false)
+	coluna.add_child(turbo)
 
 
 func _montar_flash() -> void:
@@ -62,6 +101,7 @@ func atualizar(motor: GameEngine) -> void:
 	_tempo.theme_type_variation = &"TextoAlerta" if restante <= LIMIAR_ALERTA_SEG else &"TextoCorpo"
 	_posicao.text = "%dº/%d" % [motor.posicao_no_ranking(jogador), motor.arena.cobras.size()]
 	_tamanho.text = "×%d" % jogador.tamanho
+	_energia.value = jogador.energia
 
 
 func _montar_barra_topo() -> void:

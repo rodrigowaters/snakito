@@ -16,9 +16,30 @@ const TICKS_POR_SEGUNDO: int = 60
 const DELTA: float = 1.0 / 60.0
 
 # --- Movimento ---------------------------------------------------------------
-## Velocidade de toda cobra, em unidades/segundo (constante: docs não prevê
-## boost no MVP — §4.2 o marca como opcional).
+## Velocidade BASE de toda cobra, em unidades/segundo. O turbo multiplica
+## (docs §2.6); fora dele, todas andam igual.
 const VELOCIDADE: float = 180.0
+
+# --- Turbo (docs §2.6) ---------------------------------------------------------
+## Consumo de energia com turbo ativo, por segundo.
+const CONSUMO_TURBO: float = 40.0
+## Regeneração com turbo solto, por segundo.
+const REGEN_TURBO: float = 16.0
+## Energia mínima para ATIVAR o turbo (histerese: uma vez ativo, só desliga
+## em zero — evita liga-desliga trêmulo no limiar).
+const ENERGIA_MIN_TURBO: float = 10.0
+
+# --- Buffs (docs §2.6.2 — só o jogador, e só quando aplicar_buffs) -----------
+const NIVEL_MAX_BUFF: int = 10
+## +0.05 no multiplicador do turbo por nível (teto: ×2.0 no Nv 10).
+const BUFF_VELOCIDADE_POR_NIVEL: float = 0.05
+## Ímã: raio no Nv 1 e ganho por nível seguinte (teto: 175 no Nv 10).
+const IMA_RAIO_NIVEL_1: float = 40.0
+const IMA_RAIO_POR_NIVEL: float = 15.0
+## Velocidade com que o ímã puxa a comida, em unidades/segundo.
+const IMA_VELOCIDADE: float = 120.0
+## +5 pontos iniciais por nível (teto: +50 no Nv 10).
+const BUFF_PONTOS_POR_NIVEL: int = 5
 
 # --- Pontuação (docs §2.2; onde a spec não fixa número, a constante fixa) ----
 ## Comida: +1 tamanho, +10 pontos (fixado na spec).
@@ -50,6 +71,12 @@ class ConfigPartida:
 	var tamanho_min_bot: int = 1
 	var tamanho_max_bot: int = 8
 	var agressividade: float = 0.5
+	# Buffs do jogador (docs §2.6.2). Desafios criam a config com
+	# aplicar_buffs = false — partida por seed tem que ser comparável.
+	var aplicar_buffs: bool = true
+	var nivel_velocidade: int = 0
+	var nivel_ima: int = 0
+	var nivel_pontos_iniciais: int = 0
 
 	static func padrao(semente_: int) -> ConfigPartida:
 		var config: ConfigPartida = ConfigPartida.new()
@@ -78,9 +105,11 @@ func _init(config_: ConfigPartida) -> void:
 	bots = BotEngine.new()
 
 	# Jogador nasce no centro, tamanho 1 (docs §2.1).
-	arena.adicionar_cobra(SnakeModel.new(
-		ID_JOGADOR, SnakeModel.Personalidade.JOGADOR, config.tamanho_arena * 0.5
-	))
+	var jogador_: SnakeModel = SnakeModel.new(
+		ID_JOGADOR, SnakeModel.Personalidade.JOGADOR, config.tamanho_arena * 0.5)
+	arena.adicionar_cobra(jogador_)
+	if config.aplicar_buffs:
+		_aplicar_buffs(jogador_)
 	# Ordem de spawn fixa (fazendeiros → caçadores → oportunistas): faz parte
 	# do contrato de determinismo da seed.
 	var proximo_id: int = ID_JOGADOR + 1
@@ -91,15 +120,17 @@ func _init(config_: ConfigPartida) -> void:
 
 
 ## Avança um tick de 60Hz. `direcao_jogador` = intenção do input (joystick);
-## Vector2.ZERO mantém o rumo atual.
-func avancar(direcao_jogador: Vector2) -> void:
+## Vector2.ZERO mantém o rumo. `turbo_jogador` = botão de turbo segurado.
+func avancar(direcao_jogador: Vector2, turbo_jogador: bool = false) -> void:
 	if estado != Estado.EM_ANDAMENTO:
 		return
 	var jogador_: SnakeModel = jogador()
 	if direcao_jogador != Vector2.ZERO:
 		jogador_.direcao = direcao_jogador.normalized()
+	jogador_.quer_turbo = turbo_jogador
 
 	bots.atualizar(tick_atual, arena, rng)
+	_resolver_turbo()
 	_mover_cobras()
 	_resolver_comida()
 	_resolver_contatos()
@@ -153,6 +184,39 @@ static func pontos_por_abate(tamanho_vitima: int) -> int:
 # ------------------------------------------------------------------ internos
 
 
+## Aplica os buffs da config ao jogador (docs §2.6.2), com teto por nível.
+func _aplicar_buffs(jogador_: SnakeModel) -> void:
+	var nv_velocidade: int = clampi(config.nivel_velocidade, 0, NIVEL_MAX_BUFF)
+	jogador_.multiplicador_turbo = SnakeModel.TURBO_BASE \
+		+ BUFF_VELOCIDADE_POR_NIVEL * nv_velocidade
+	var nv_ima: int = clampi(config.nivel_ima, 0, NIVEL_MAX_BUFF)
+	if nv_ima > 0:
+		jogador_.raio_ima = IMA_RAIO_NIVEL_1 + IMA_RAIO_POR_NIVEL * (nv_ima - 1)
+	var nv_pontos: int = clampi(config.nivel_pontos_iniciais, 0, NIVEL_MAX_BUFF)
+	jogador_.pontos += BUFF_PONTOS_POR_NIVEL * nv_pontos
+
+
+## Resolve intenção de turbo → turbo de fato, pelas regras de energia (§2.6):
+## ativa com ≥ ENERGIA_MIN_TURBO, permanece até zerar (histerese), regenera
+## quando solto.
+func _resolver_turbo() -> void:
+	for cobra: SnakeModel in arena.cobras:
+		if not cobra.viva:
+			continue
+		var pode_ativar: bool = cobra.turbo_ativo or cobra.energia >= ENERGIA_MIN_TURBO
+		if cobra.quer_turbo and pode_ativar and cobra.energia > 0.0:
+			cobra.turbo_ativo = true
+			cobra.energia = maxf(0.0, cobra.energia - CONSUMO_TURBO * DELTA)
+			# Epsilon: 100 - 150×(40/60) deixa resíduo de ~1e-15 em float;
+			# sem isso o turbo "desligaria" um tick depois do esperado.
+			if cobra.energia <= 0.0001:
+				cobra.energia = 0.0
+				cobra.turbo_ativo = false
+		else:
+			cobra.turbo_ativo = false
+			cobra.energia = minf(SnakeModel.ENERGIA_MAX, cobra.energia + REGEN_TURBO * DELTA)
+
+
 func _spawn_bots(personalidade: SnakeModel.Personalidade, quantidade: int, primeiro_id: int) -> int:
 	var jogador_pos: Vector2 = config.tamanho_arena * 0.5
 	var area: Rect2 = arena.limites().grow(-SnakeModel.RAIO_BASE * 4.0)
@@ -177,7 +241,7 @@ func _mover_cobras() -> void:
 	for cobra: SnakeModel in arena.cobras:
 		if not cobra.viva:
 			continue
-		cobra.posicao += cobra.direcao * VELOCIDADE * DELTA
+		cobra.posicao += cobra.direcao * VELOCIDADE * cobra.multiplicador_velocidade() * DELTA
 		# Borda é parede: desliza, não mata (decisão: morte por parede
 		# invisível frustra o público 7+; se mudar, vire flag de config).
 		var r: float = cobra.raio()
@@ -186,6 +250,17 @@ func _mover_cobras() -> void:
 
 
 func _resolver_comida() -> void:
+	# Ímã (docs §2.6.2): comida dentro do raio deriva na direção da cobra.
+	# A regra é geral, mas hoje só o jogador com buff tem raio_ima > 0.
+	for cobra: SnakeModel in arena.cobras:
+		if not cobra.viva or cobra.raio_ima <= 0.0:
+			continue
+		var raio2: float = cobra.raio_ima * cobra.raio_ima
+		for i: int in arena.comidas.size():
+			if cobra.posicao.distance_squared_to(arena.comidas[i]) <= raio2:
+				arena.comidas[i] = arena.comidas[i].move_toward(
+					cobra.posicao, IMA_VELOCIDADE * DELTA)
+
 	for cobra: SnakeModel in arena.cobras:
 		if not cobra.viva:
 			continue

@@ -76,6 +76,7 @@ Core loop completo em `src/domain/` (5 de 7 arquivos; `strategy_analyzer.gd` e `
 - **Curvas escolhidas:** abate = `100·√tamanho_vítima` clamp 100–500; crescimento por abate = metade do tamanho da vítima; sobrevivência = +1 ponto/s; velocidade constante (boost é opcional na spec, fora do MVP)
 - **Determinismo é contrato:** ordem do array `cobras`, ordem de spawn (fazendeiros→caçadores→oportunistas) e decisões de bot escalonadas por `(tick + id) % 6` fazem parte da seed
 - **Bots honestos:** visão limitada via `raio_visao()` em toda consulta; reação a cada 6 ticks (100ms)
+- **Turbo & buffs (§2.6, aprovado):** turbo ×1.5 com energia (100 · consumo 40/s · regen 16/s · histerese em 10, com epsilon anti-resíduo-float); bots usam turbo nas mesmas regras (fuga/caça), nunca os buffs do jogador; buffs por nível com teto (`_aplicar_buffs`); **desafios criam config com `aplicar_buffs = false`**
 
 ## Cenas (implementado)
 

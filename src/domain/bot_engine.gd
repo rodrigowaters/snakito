@@ -42,14 +42,19 @@ func atualizar(tick: int, arena: ArenaModel, rng: RngService) -> void:
 		cobra.direcao = decidir(cobra, arena, rng)
 
 
-## Decide a direção de um bot AGORA (exposta para testes de personalidade).
+## Decide a direção — e a INTENÇÃO de turbo (docs §2.6) — de um bot AGORA.
+## Turbo: liga ao fugir (todas as personalidades) e ao caçar; farmar/vaguear
+## não gasta energia. Quem resolve a intenção contra as regras de energia é
+## o GameEngine, com as MESMAS regras do jogador (bots honestos).
 func decidir(bot: SnakeModel, arena: ArenaModel, rng: RngService) -> Vector2:
 	# Fugir de quem pode nos devorar tem prioridade máxima em TODAS as
 	# personalidades — bot que não foge não ensina risco/recompensa, só morre.
 	var ameaca: SnakeModel = ameaca_mais_proxima(bot, arena)
 	if ameaca != null:
+		bot.quer_turbo = true
 		var fuga: Vector2 = bot.posicao - ameaca.posicao
 		return fuga.normalized() if fuga != Vector2.ZERO else Vector2.RIGHT
+	bot.quer_turbo = false
 
 	match bot.personalidade:
 		SnakeModel.Personalidade.CACADOR:
@@ -57,12 +62,14 @@ func decidir(bot: SnakeModel, arena: ArenaModel, rng: RngService) -> Vector2:
 				* (CACA_BASE + CACA_POR_AGRESSIVIDADE * bot.agressividade)
 			var presa: SnakeModel = presa_mais_proxima(bot, arena, alcance_caca)
 			if presa != null:
+				bot.quer_turbo = true
 				return (presa.posicao - bot.posicao).normalized()
 		SnakeModel.Personalidade.OPORTUNISTA:
 			var alcance_oportunidade: float = bot.raio_visao() \
 				* (OPORTUNIDADE_BASE + OPORTUNIDADE_POR_AGRESSIVIDADE * bot.agressividade)
 			var presa: SnakeModel = presa_mais_proxima(bot, arena, alcance_oportunidade)
 			if presa != null:
+				bot.quer_turbo = true
 				return (presa.posicao - bot.posicao).normalized()
 
 	# Fazendeiro sempre cai aqui; Caçador/Oportunista caem sem presa à vista.
