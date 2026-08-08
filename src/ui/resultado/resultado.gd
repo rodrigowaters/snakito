@@ -50,7 +50,7 @@ func _montar_conteudo(motor: GameEngine) -> void:
 	margem.add_child(coluna)
 
 	var desfecho: Label = Label.new()
-	desfecho.text = "Fim da partida!" if jogador.viva else "Você foi devorado!"
+	desfecho.text = _texto_desfecho(motor)
 	desfecho.theme_type_variation = &"TituloLg"
 	desfecho.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	coluna.add_child(desfecho)
@@ -76,19 +76,22 @@ func _montar_conteudo(motor: GameEngine) -> void:
 	coluna.add_child(seed_rotulo)
 
 	var jogar: Button = Button.new()
-	jogar.text = "Jogar novamente"
+	jogar.text = "Tentar de novo" if Sessao.regras_desafio != null else "Jogar novamente"
 	jogar.theme_type_variation = &"BotaoPrimario"
 	jogar.pressed.connect(func() -> void:
+		_preparar_relancamento()
 		get_tree().change_scene_to_file(CENA_JOGO))
 	coluna.add_child(jogar)
 
-	var repetir: Button = Button.new()
-	repetir.text = "Repetir esta arena"
-	repetir.theme_type_variation = &"BotaoSecundario"
-	repetir.pressed.connect(func() -> void:
-		Sessao.proxima_semente = motor.rng.semente
-		get_tree().change_scene_to_file(CENA_JOGO))
-	coluna.add_child(repetir)
+	# Desafio já é sempre a mesma arena — "repetir" só faz sentido no Arcade.
+	if Sessao.regras_desafio == null:
+		var repetir: Button = Button.new()
+		repetir.text = "Repetir esta arena"
+		repetir.theme_type_variation = &"BotaoSecundario"
+		repetir.pressed.connect(func() -> void:
+			Sessao.proxima_semente = motor.rng.semente
+			get_tree().change_scene_to_file(CENA_JOGO))
+		coluna.add_child(repetir)
 
 	var menu: Button = Button.new()
 	menu.text = "Menu"
@@ -96,6 +99,29 @@ func _montar_conteudo(motor: GameEngine) -> void:
 	menu.pressed.connect(func() -> void:
 		get_tree().change_scene_to_file(CENA_HOME))
 	coluna.add_child(menu)
+
+
+## Desfecho: Arcade fala de sobrevivência; desafio fala da meta e do motivo.
+## (Strings hardcoded pt-BR até o sistema de i18n do M2.)
+func _texto_desfecho(motor: GameEngine) -> String:
+	var regras: ChallengeRules = Sessao.regras_desafio
+	if regras == null:
+		return "Fim da partida!" if motor.jogador().viva else "Você foi devorado!"
+	if regras.estado == ChallengeRules.Estado.CONCLUIDO:
+		return "Desafio concluído!"
+	match regras.motivo:
+		ChallengeRules.Motivo.MATOU_ALGUEM:
+			return "Desafio falhou: era sem matar!"
+		ChallengeRules.Motivo.TEMPO_ESGOTADO:
+			return "Desafio falhou: o tempo acabou"
+		_:
+			return "Desafio falhou: você foi devorado"
+
+
+## Relançar do desafio corrente (seed é fixa — sempre a mesma arena).
+func _preparar_relancamento() -> void:
+	if Sessao.regras_desafio != null:
+		Sessao.desafio_pendente = int(Sessao.regras_desafio.desafio)
 
 
 ## Breakdown: comida e sobrevivência saem das estatísticas × constantes do

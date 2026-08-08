@@ -6,12 +6,25 @@ extends RefCounted
 
 ## Seed pedida para a próxima partida; -1 = sortear (modo Arcade).
 static var proxima_semente: int = -1
+## Desafio pedido para a próxima partida (valor de `ChallengeRules.Desafio`);
+## -1 = Arcade.
+static var desafio_pendente: int = -1
+## Regras do desafio da partida corrente (null = Arcade). Preenchido ao criar
+## a config; lido pelo jogo (avaliação por tick), HUD (progresso) e resultado.
+static var regras_desafio: ChallengeRules = null
 ## Motor da última partida encerrada — lido pela tela de resultado.
 static var ultimo_motor: GameEngine = null
 
 
-## Config da próxima partida. Consome `proxima_semente` (volta a -1).
+## Config da próxima partida. Consome `desafio_pendente`/`proxima_semente`.
 static func config_para_jogar() -> GameEngine.ConfigPartida:
+	if desafio_pendente >= 0:
+		var desafio: ChallengeRules.Desafio = desafio_pendente as ChallengeRules.Desafio
+		desafio_pendente = -1
+		proxima_semente = -1  # desafio tem seed própria e fixa
+		regras_desafio = ChallengeRules.new(desafio)
+		return ChallengeRules.config_do_desafio(desafio)
+	regras_desafio = null
 	var semente: int = proxima_semente if proxima_semente >= 0 else RngService.semente_aleatoria()
 	proxima_semente = -1
 	return GameEngine.ConfigPartida.padrao(semente)

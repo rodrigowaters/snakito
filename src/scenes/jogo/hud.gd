@@ -25,6 +25,7 @@ var _modal_pausa: Control
 var _flash: ColorRect
 var _energia: ProgressBar
 var _turbo_pressionado: bool = false
+var _meta: Label
 
 
 func _ready() -> void:
@@ -102,6 +103,11 @@ func atualizar(motor: GameEngine) -> void:
 	_posicao.text = "%dº/%d" % [motor.posicao_no_ranking(jogador), motor.arena.cobras.size()]
 	_tamanho.text = "×%d" % jogador.tamanho
 	_energia.value = jogador.energia
+	# Progresso do desafio ativo (Arcade não mostra nada).
+	var regras: ChallengeRules = Sessao.regras_desafio
+	_meta.visible = regras != null
+	if regras != null:
+		_meta.text = "Meta %d/%d" % [regras.progresso_atual(motor), regras.progresso_meta()]
 
 
 func _montar_barra_topo() -> void:
@@ -122,6 +128,8 @@ func _montar_barra_topo() -> void:
 
 	_pontos = _rotulo(linha, &"TituloMd")
 	_tamanho = _rotulo(linha, &"TextoSecundario")
+	_meta = _rotulo(linha, &"TextoAlerta")
+	_meta.visible = false
 	var espaco: Control = Control.new()
 	espaco.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	linha.add_child(espaco)

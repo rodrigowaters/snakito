@@ -57,10 +57,11 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if _transicionando:
+		return
 	if motor.estado == GameEngine.Estado.ENCERRADA:
-		if not _transicionando:
-			_transicionando = true
-			_ir_para_resultado()
+		_transicionando = true
+		_ir_para_resultado()
 		return
 
 	motor.avancar(_direcao_do_input(), hud.turbo_desejado())
@@ -68,6 +69,12 @@ func _physics_process(delta: float) -> void:
 	render.registrar_tick()
 	hud.atualizar(motor)
 	_seguir_jogador(delta)
+
+	# Desafio ativo: resolver (meta atingida ou falha) encerra a partida já.
+	if Sessao.regras_desafio != null \
+			and Sessao.regras_desafio.avaliar(motor) != ChallengeRules.Estado.EM_ANDAMENTO:
+		_transicionando = true
+		_ir_para_resultado()
 
 
 ## Compara o estado com o tick anterior e dispara os feedbacks do docs §7.
