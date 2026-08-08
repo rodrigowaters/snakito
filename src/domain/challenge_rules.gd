@@ -77,7 +77,14 @@ static func config_do_desafio(desafio_: Desafio) -> GameEngine.ConfigPartida:
 			config.tamanho_max_bot = 5
 			config.agressividade = 0.5
 			config.turbo_bots = 1.3
-			config.tamanho_teto_bot = 12  # sem gigantes: risco sim, rolo compressor não
+			# Presas contidas (teto 8) + 2 caçadores-ALFA que já NASCEM
+			# grandes (14, teto 30): ameaça do primeiro ao último segundo,
+			# escalando com o jogador em vez de evaporar no tamanho 11
+			# (iterado em 3 rodadas de playtest — "não tive a sensação da
+			# caça" quando os alfas nasciam pequenos).
+			config.tamanho_teto_bot = 8
+			config.tamanho_teto_cacador = 30
+			config.tamanho_inicial_cacador = 11
 	return config
 
 

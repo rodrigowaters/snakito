@@ -80,6 +80,15 @@ class ConfigPartida:
 	## gigantes (simulador: tamanho 286 em 2 min na arena compacta) — o teto
 	## contém a bola de neve onde ela estraga a partida.
 	var tamanho_teto_bot: int = 0
+	## Teto próprio dos CAÇADORES (0 = herdam o teto geral). Permite
+	## predadores-alfa que continuam ameaçando o jogador crescido — e visão
+	## escala com tamanho, então a perseguição deles é longa por natureza —
+	## enquanto o resto da arena fica contido.
+	var tamanho_teto_cacador: int = 0
+	## Tamanho de NASCIMENTO dos caçadores (0 = sorteio padrão). Ameaça desde
+	## o primeiro segundo — e é o eixo que o Desafio 3 da spec exige
+	## ("2 caçadores de tamanho 100+", docs §2.5).
+	var tamanho_inicial_cacador: int = 0
 	# Buffs do jogador (docs §2.6.2). Desafios criam a config com
 	# aplicar_buffs = false — partida por seed tem que ser comparável.
 	var aplicar_buffs: bool = true
@@ -235,11 +244,17 @@ func _spawn_bots(personalidade: SnakeModel.Personalidade, quantidade: int, prime
 			if posicao.distance_to(jogador_pos) >= DISTANCIA_SPAWN_MIN:
 				break
 			posicao = rng.ponto_no_retangulo(area)
+		var tamanho_inicial: int
+		if personalidade == SnakeModel.Personalidade.CACADOR \
+				and config.tamanho_inicial_cacador > 0:
+			tamanho_inicial = config.tamanho_inicial_cacador
+		else:
+			tamanho_inicial = rng.int_entre(config.tamanho_min_bot, config.tamanho_max_bot)
 		var bot: SnakeModel = SnakeModel.new(
 			primeiro_id + i,
 			personalidade,
 			posicao,
-			rng.int_entre(config.tamanho_min_bot, config.tamanho_max_bot),
+			tamanho_inicial,
 		)
 		bot.agressividade = config.agressividade
 		bot.multiplicador_turbo = minf(config.turbo_bots, SnakeModel.TURBO_BASE)
@@ -322,8 +337,14 @@ func _devorar(predadora: SnakeModel, vitima: SnakeModel) -> void:
 ## tem teto — a progressão dele é o jogo).
 func _crescer_com_teto(cobra: SnakeModel, quantidade: int) -> void:
 	cobra.crescer(quantidade)
-	if not cobra.eh_jogador() and config.tamanho_teto_bot > 0:
-		cobra.tamanho = mini(cobra.tamanho, config.tamanho_teto_bot)
+	if cobra.eh_jogador():
+		return
+	var teto: int = config.tamanho_teto_bot
+	if cobra.personalidade == SnakeModel.Personalidade.CACADOR \
+			and config.tamanho_teto_cacador > 0:
+		teto = config.tamanho_teto_cacador
+	if teto > 0:
+		cobra.tamanho = mini(cobra.tamanho, teto)
 
 
 ## Contato sem devorar (diferença < 10%): as duas se empurram para fora da

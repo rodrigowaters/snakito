@@ -207,14 +207,42 @@ func test_turbo_dos_bots_nunca_passa_do_base_do_jogador() -> void:
 		.is_equal(SnakeModel.TURBO_BASE)
 
 
-func test_desafio_2_recalibrado_contem_gigantes_e_sprint() -> void:
-	# v3 do playtest: presas alcançáveis (turbo 1.3), sem gigantes (teto 12),
-	# e ameaça VIVA (2 caçadores — a v2 com 1 deu fuga 0% no simulador).
+func test_desafio_2_calibrado_no_playtest() -> void:
+	# Calibragem final (3 rodadas de playtest + lote de 12 trajetórias no
+	# simulador: conclui 10/12, morre 2/12, fuga média 13%): presas
+	# alcançáveis (turbo 1.3) e contidas (teto 8); 2 caçadores-ALFA que
+	# nascem grandes (11) e crescem até 30 — a ameaça escala com o jogador.
 	var config: GameEngine.ConfigPartida = ChallengeRules.config_do_desafio(
 		ChallengeRules.Desafio.AGRESSAO_CONTROLADA)
 	assert_float(config.turbo_bots).is_equal_approx(1.3, 0.0001)
-	assert_int(config.tamanho_teto_bot).is_equal(12)
+	assert_int(config.tamanho_teto_bot).is_equal(8)
 	assert_int(config.cacadores).is_equal(2)
+	assert_int(config.tamanho_inicial_cacador).is_equal(11)
+	assert_int(config.tamanho_teto_cacador).is_equal(30)
+
+
+func test_cacador_tem_spawn_e_teto_proprios() -> void:
+	var config: GameEngine.ConfigPartida = _config_vazia()
+	config.fazendeiros = 1  # id 1
+	config.cacadores = 1    # id 2
+	config.tamanho_min_bot = 2
+	config.tamanho_max_bot = 2
+	config.tamanho_teto_bot = 5
+	config.tamanho_inicial_cacador = 9
+	config.tamanho_teto_cacador = 11
+	var motor: GameEngine = GameEngine.new(config)
+	var fazendeiro: SnakeModel = motor.arena.cobra_por_id(1)
+	var cacador: SnakeModel = motor.arena.cobra_por_id(2)
+	assert_int(fazendeiro.tamanho).is_equal(2)  # sorteio no intervalo fixo
+	assert_int(cacador.tamanho).is_equal(9)     # nasce grande
+	# Cada um respeita o próprio teto ao comer.
+	cacador.tamanho = 11
+	fazendeiro.tamanho = 5
+	motor.arena.comidas.append(cacador.posicao)
+	motor.arena.comidas.append(fazendeiro.posicao)
+	motor.avancar(Vector2.ZERO)
+	assert_int(cacador.tamanho).is_equal(11)
+	assert_int(fazendeiro.tamanho).is_equal(5)
 
 
 func test_turbo_da_vantagem_de_caca_sobre_presa_sem_energia() -> void:

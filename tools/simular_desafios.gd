@@ -1,112 +1,56 @@
 extends SceneTree
-## Simulador de viabilidade dos desafios: jogadores sintéticos HONESTOS
-## (só veem dentro da própria visão, mesmas regras de energia) jogam a
-## partida real de cada desafio com estratégias diferentes. Uso:
+## Simulador de viabilidade/tuning dos desafios. Jogadores sintéticos
+## HONESTOS (só veem dentro da própria visão, mesmas regras de energia)
+## jogam a partida real. Para o D2, roda um LOTE de 12 trajetórias (mesma
+## arena — a seed do desafio é fixa —, RNG de decisão do jogador variando)
+## e reporta a distribuição: taxa de conclusão/morte, pressão de fuga, tempo.
 ##   godot --headless -s tools/simular_desafios.gd
-## Serve para calibrar composição/metas ANTES do playtest humano.
 
 const NOMES_ESTADO: Array[String] = ["EM_ANDAMENTO", "CONCLUIDO", "FALHOU"]
 const NOMES_MOTIVO: Array[String] = ["NENHUM", "META", "MATOU", "MORREU", "TEMPO"]
+const LOTE: int = 12
 
 
 func _initialize() -> void:
-	_jogar(ChallengeRules.Desafio.FARMING_PURO, "Desafio 1 (farming)")
-	_jogar(ChallengeRules.Desafio.AGRESSAO_CONTROLADA, "Desafio 2 (caça)")
-	_jogar_parado()
-	_jogar_cacador_esperto()
-	_jogar_pressao_e_bote()
+	print("== Desafio 1 ==")
+	var r1: Dictionary = _jogar(ChallengeRules.Desafio.FARMING_PURO, 999, false)
+	print("  farmando: %s (%s) | %.1fs | pontos %d" % [
+		NOMES_ESTADO[r1.estado], NOMES_MOTIVO[r1.motivo], r1.tempo, r1.pontos])
+	var r2: Dictionary = _jogar_parado()
+	print("  parado:   %s (%s) | %.1fs | pontos %d  (exploit de sobrevivência?)" % [
+		NOMES_ESTADO[r2.estado], NOMES_MOTIVO[r2.motivo], r2.tempo, r2.pontos])
+
+	print("== Desafio 2 · lote de %d trajetórias ==" % LOTE)
+	var conclusoes: int = 0
+	var mortes: int = 0
+	var soma_fuga: float = 0.0
+	var soma_tempo_conclusao: float = 0.0
+	for semente_jogador: int in range(1, LOTE + 1):
+		var r: Dictionary = _jogar(
+			ChallengeRules.Desafio.AGRESSAO_CONTROLADA, semente_jogador, true)
+		soma_fuga += r.fuga
+		if r.estado == ChallengeRules.Estado.CONCLUIDO:
+			conclusoes += 1
+			soma_tempo_conclusao += r.tempo
+		elif r.motivo == ChallengeRules.Motivo.MORREU:
+			mortes += 1
+		print("  #%02d: %s (%s) | %5.1fs | abates %d | fuga %2.0f%%" % [
+			semente_jogador, NOMES_ESTADO[r.estado], NOMES_MOTIVO[r.motivo],
+			r.tempo, r.abates, r.fuga])
+	print("RESUMO D2: conclui %d/%d | morre %d/%d | fuga média %.0f%% | tempo médio de conclusão %.0fs" % [
+		conclusoes, LOTE, mortes, LOTE, soma_fuga / LOTE,
+		(soma_tempo_conclusao / conclusoes) if conclusoes > 0 else 0.0])
 	quit()
 
 
-## O Desafio 1 pode ser vencido SEM FAZER NADA? (sobrevivência = +1/s)
-func _jogar_parado() -> void:
-	var motor: GameEngine = GameEngine.new(
-		ChallengeRules.config_do_desafio(ChallengeRules.Desafio.FARMING_PURO))
-	var regras: ChallengeRules = ChallengeRules.new(ChallengeRules.Desafio.FARMING_PURO)
-	while motor.estado == GameEngine.Estado.EM_ANDAMENTO \
-			and regras.estado == ChallengeRules.Estado.EM_ANDAMENTO:
-		motor.avancar(Vector2.ZERO)
-		regras.avaliar(motor)
-	print("Desafio 1 PARADO → %s (%s) | %.1fs | pontos %d" % [
-		NOMES_ESTADO[regras.estado], NOMES_MOTIVO[regras.motivo],
-		motor.segundos_decorridos(), motor.jogador().pontos])
-
-
-## D2 com caça de janela curta (estilo Oportunista) e turbo dedicado.
-func _jogar_cacador_esperto() -> void:
-	var motor: GameEngine = GameEngine.new(
-		ChallengeRules.config_do_desafio(ChallengeRules.Desafio.AGRESSAO_CONTROLADA))
-	var regras: ChallengeRules = ChallengeRules.new(ChallengeRules.Desafio.AGRESSAO_CONTROLADA)
-	var cerebro: BotEngine = BotEngine.new()
-	var rng_jogador: RngService = RngService.new(999)
-	while motor.estado == GameEngine.Estado.EM_ANDAMENTO \
-			and regras.estado == ChallengeRules.Estado.EM_ANDAMENTO:
-		var jogador: SnakeModel = motor.jogador()
-		var direcao: Vector2 = cerebro.decidir(jogador, motor.arena, rng_jogador)
-		var turbo: bool = jogador.quer_turbo
-		if jogador.tamanho >= 3 and not jogador.quer_turbo:
-			# Só ataca presa PRÓXIMA (janela de 180) — sem perseguições longas.
-			var presa: SnakeModel = cerebro.presa_mais_proxima(jogador, motor.arena, 180.0)
-			if presa != null:
-				direcao = (presa.posicao - jogador.posicao).normalized()
-				turbo = jogador.energia > 15.0
-		motor.avancar(direcao, turbo)
-		regras.avaliar(motor)
-	print("Desafio 2 ESPERTO → %s (%s) | %.1fs | pontos %d | abates %d | tamanho %d" % [
-		NOMES_ESTADO[regras.estado], NOMES_MOTIVO[regras.motivo],
-		motor.segundos_decorridos(), motor.jogador().pontos,
-		motor.jogador().abates, motor.jogador().tamanho])
-
-
-## D2 com a tática que o desafio quer ensinar: PRESSIONAR sem turbo (a presa
-## foge gastando a energia dela) e dar o BOTE de turbo só depois — energia
-## cheia contra presa exaurida.
-func _jogar_pressao_e_bote() -> void:
-	var motor: GameEngine = GameEngine.new(
-		ChallengeRules.config_do_desafio(ChallengeRules.Desafio.AGRESSAO_CONTROLADA))
-	var regras: ChallengeRules = ChallengeRules.new(ChallengeRules.Desafio.AGRESSAO_CONTROLADA)
-	var cerebro: BotEngine = BotEngine.new()
-	var rng_jogador: RngService = RngService.new(999)
-	var alvo_id: int = -1
-	var ticks_pressao: int = 0
-	while motor.estado == GameEngine.Estado.EM_ANDAMENTO \
-			and regras.estado == ChallengeRules.Estado.EM_ANDAMENTO:
-		var jogador: SnakeModel = motor.jogador()
-		var direcao: Vector2 = cerebro.decidir(jogador, motor.arena, rng_jogador)
-		var turbo: bool = jogador.quer_turbo  # fuga tem prioridade
-		if jogador.tamanho >= 3 and not jogador.quer_turbo:
-			var presa: SnakeModel = cerebro.presa_mais_proxima(jogador, motor.arena, 260.0)
-			if presa != null:
-				if presa.id == alvo_id:
-					ticks_pressao += 1
-				else:
-					alvo_id = presa.id
-					ticks_pressao = 0
-				direcao = (presa.posicao - jogador.posicao).normalized()
-				# Fase 1 (0–3s): pressão a velocidade base — a presa foge de
-				# turbo e esgota. Fase 2: bote com turbo e energia cheia.
-				turbo = ticks_pressao > 180 and jogador.energia > 25.0
-			else:
-				alvo_id = -1
-				ticks_pressao = 0
-		motor.avancar(direcao, turbo)
-		regras.avaliar(motor)
-	var maior_bot: int = 0
-	for cobra: SnakeModel in motor.arena.cobras:
-		if not cobra.eh_jogador() and cobra.tamanho > maior_bot:
-			maior_bot = cobra.tamanho
-	print("Desafio 2 PRESSÃO+BOTE → %s (%s) | %.1fs | pontos %d | abates %d | tamanho %d | maior bot %d" % [
-		NOMES_ESTADO[regras.estado], NOMES_MOTIVO[regras.motivo],
-		motor.segundos_decorridos(), motor.jogador().pontos,
-		motor.jogador().abates, motor.jogador().tamanho, maior_bot])
-
-
-func _jogar(desafio: ChallengeRules.Desafio, nome: String) -> void:
+## Joga um desafio com o jogador sintético; `caca` liga a caça ingênua
+## (persegue presa visível com turbo quando não está fugindo).
+func _jogar(desafio: ChallengeRules.Desafio, semente_jogador: int, caca: bool) -> Dictionary:
 	var motor: GameEngine = GameEngine.new(ChallengeRules.config_do_desafio(desafio))
 	var regras: ChallengeRules = ChallengeRules.new(desafio)
 	var cerebro: BotEngine = BotEngine.new()
-	# RNG PRÓPRIO do jogador sintético — não perturba a sequência da partida.
-	var rng_jogador: RngService = RngService.new(999)
+	# RNG PRÓPRIO da trajetória — não perturba a sequência da partida.
+	var rng_jogador: RngService = RngService.new(semente_jogador)
 	var ticks_fugindo: int = 0
 
 	while motor.estado == GameEngine.Estado.EM_ANDAMENTO \
@@ -118,19 +62,43 @@ func _jogar(desafio: ChallengeRules.Desafio, nome: String) -> void:
 		var turbo: bool = jogador.quer_turbo  # fuga decidida pelo cérebro
 		if jogador.quer_turbo:
 			ticks_fugindo += 1
-		if desafio == ChallengeRules.Desafio.AGRESSAO_CONTROLADA and jogador.tamanho >= 3:
+		elif caca and jogador.tamanho >= 3:
 			var presa: SnakeModel = cerebro.presa_mais_proxima(
 				jogador, motor.arena, jogador.raio_visao())
-			if presa != null and not jogador.quer_turbo:
+			if presa != null:
 				direcao = (presa.posicao - jogador.posicao).normalized()
 				turbo = jogador.energia > 30.0
+		# "Imprecisão humana": ruído angular por tick, específico da trajetória.
+		# Sem isso, comida sempre visível => caminho 100% determinístico e o
+		# lote inteiro degenera na mesma partida.
+		direcao = direcao.rotated(rng_jogador.float_entre(-0.25, 0.25))
 		motor.avancar(direcao, turbo)
 		regras.avaliar(motor)
 
-	var jogador_final: SnakeModel = motor.jogador()
-	print("%s → %s (%s) | tick %d (%.1fs) | pontos %d | abates %d | tamanho %d | fuga %.0f%%" % [
-		nome, NOMES_ESTADO[regras.estado], NOMES_MOTIVO[regras.motivo],
-		motor.tick_atual, motor.segundos_decorridos(),
-		jogador_final.pontos, jogador_final.abates, jogador_final.tamanho,
-		100.0 * ticks_fugindo / maxf(1.0, float(motor.tick_atual)),
-	])
+	return {
+		"estado": regras.estado,
+		"motivo": regras.motivo,
+		"tempo": motor.segundos_decorridos(),
+		"pontos": motor.jogador().pontos,
+		"abates": motor.jogador().abates,
+		"fuga": 100.0 * ticks_fugindo / maxf(1.0, float(motor.tick_atual)),
+	}
+
+
+## O Desafio 1 pode ser vencido SEM FAZER NADA? (sobrevivência = +1/s)
+func _jogar_parado() -> Dictionary:
+	var motor: GameEngine = GameEngine.new(
+		ChallengeRules.config_do_desafio(ChallengeRules.Desafio.FARMING_PURO))
+	var regras: ChallengeRules = ChallengeRules.new(ChallengeRules.Desafio.FARMING_PURO)
+	while motor.estado == GameEngine.Estado.EM_ANDAMENTO \
+			and regras.estado == ChallengeRules.Estado.EM_ANDAMENTO:
+		motor.avancar(Vector2.ZERO)
+		regras.avaliar(motor)
+	return {
+		"estado": regras.estado,
+		"motivo": regras.motivo,
+		"tempo": motor.segundos_decorridos(),
+		"pontos": motor.jogador().pontos,
+		"abates": 0,
+		"fuga": 0.0,
+	}
