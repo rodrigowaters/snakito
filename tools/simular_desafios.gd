@@ -107,6 +107,7 @@ func _jogar(desafio: ChallengeRules.Desafio, nome: String) -> void:
 	var cerebro: BotEngine = BotEngine.new()
 	# RNG PRÓPRIO do jogador sintético — não perturba a sequência da partida.
 	var rng_jogador: RngService = RngService.new(999)
+	var ticks_fugindo: int = 0
 
 	while motor.estado == GameEngine.Estado.EM_ANDAMENTO \
 			and regras.estado == ChallengeRules.Estado.EM_ANDAMENTO:
@@ -115,6 +116,8 @@ func _jogar(desafio: ChallengeRules.Desafio, nome: String) -> void:
 		# vira "fazendeiro honesto": foge de ameaça, senão busca comida.
 		var direcao: Vector2 = cerebro.decidir(jogador, motor.arena, rng_jogador)
 		var turbo: bool = jogador.quer_turbo  # fuga decidida pelo cérebro
+		if jogador.quer_turbo:
+			ticks_fugindo += 1
 		if desafio == ChallengeRules.Desafio.AGRESSAO_CONTROLADA and jogador.tamanho >= 3:
 			var presa: SnakeModel = cerebro.presa_mais_proxima(
 				jogador, motor.arena, jogador.raio_visao())
@@ -125,8 +128,9 @@ func _jogar(desafio: ChallengeRules.Desafio, nome: String) -> void:
 		regras.avaliar(motor)
 
 	var jogador_final: SnakeModel = motor.jogador()
-	print("%s → %s (%s) | tick %d (%.1fs) | pontos %d | abates %d | tamanho %d" % [
+	print("%s → %s (%s) | tick %d (%.1fs) | pontos %d | abates %d | tamanho %d | fuga %.0f%%" % [
 		nome, NOMES_ESTADO[regras.estado], NOMES_MOTIVO[regras.motivo],
 		motor.tick_atual, motor.segundos_decorridos(),
 		jogador_final.pontos, jogador_final.abates, jogador_final.tamanho,
+		100.0 * ticks_fugindo / maxf(1.0, float(motor.tick_atual)),
 	])

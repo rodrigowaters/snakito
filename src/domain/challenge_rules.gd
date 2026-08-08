@@ -60,23 +60,24 @@ static func config_do_desafio(desafio_: Desafio) -> GameEngine.ConfigPartida:
 			config.tamanho_max_bot = 4
 			config.agressividade = 0.3
 		Desafio.AGRESSAO_CONTROLADA:
-			# Lição: caçar com critério. Arena COMPACTA (mais encontros,
-			# menos deserto), muitas presas pequenas, 1 caçador para lembrar
-			# o risco sem virar bola de neve, e presas com sprint mais fraco
-			# — alcançáveis com esforço (calibrado no playtest de 08/08:
-			# paridade de turbo tornava abater impossível).
+			# Lição: caçar com critério — SENDO caçado. Arena compacta (mais
+			# encontros), presas com sprint mais fraco (alcançáveis com
+			# esforço), 2 caçadores + oportunistas agressivos mantendo o
+			# risco vivo, e teto de crescimento segurando a bola de neve.
+			# Calibrado em 2 rodadas de playtest (08/08): v1 impossível
+			# (paridade de turbo + gigantes), v2 estéril (fuga 0%).
 			config.semente = SEED_DESAFIO_2
 			config.duracao_seg = DURACAO_DESAFIO_2_SEG
 			config.tamanho_arena = Vector2(1600.0, 1600.0)
 			config.qtd_comida = 70
-			config.fazendeiros = 20
-			config.cacadores = 1
-			config.oportunistas = 3
+			config.fazendeiros = 18
+			config.cacadores = 2
+			config.oportunistas = 4
 			config.tamanho_min_bot = 1
-			config.tamanho_max_bot = 3
-			config.agressividade = 0.35
+			config.tamanho_max_bot = 5
+			config.agressividade = 0.5
 			config.turbo_bots = 1.3
-			config.tamanho_teto_bot = 12  # sem gigantes: o desafio é caçar, não fugir
+			config.tamanho_teto_bot = 12  # sem gigantes: risco sim, rolo compressor não
 	return config
 
 

@@ -208,11 +208,13 @@ func test_turbo_dos_bots_nunca_passa_do_base_do_jogador() -> void:
 
 
 func test_desafio_2_recalibrado_contem_gigantes_e_sprint() -> void:
+	# v3 do playtest: presas alcançáveis (turbo 1.3), sem gigantes (teto 12),
+	# e ameaça VIVA (2 caçadores — a v2 com 1 deu fuga 0% no simulador).
 	var config: GameEngine.ConfigPartida = ChallengeRules.config_do_desafio(
 		ChallengeRules.Desafio.AGRESSAO_CONTROLADA)
 	assert_float(config.turbo_bots).is_equal_approx(1.3, 0.0001)
 	assert_int(config.tamanho_teto_bot).is_equal(12)
-	assert_int(config.cacadores).is_equal(1)
+	assert_int(config.cacadores).is_equal(2)
 
 
 func test_turbo_da_vantagem_de_caca_sobre_presa_sem_energia() -> void:
