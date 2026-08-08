@@ -14,6 +14,19 @@ func _ready() -> void:
 	# o root Control — a janela não redispara o layout).
 	_montar_fundo()
 	_montar_conteudo()
+	_logar_plugins_android()
+
+
+## Diagnóstico de integração (spike + suporte): confirma no logcat quais
+## singletons de plugin nativo chegaram ao runtime.
+func _logar_plugins_android() -> void:
+	if OS.get_name() != "Android":
+		return
+	var relevantes: PackedStringArray = PackedStringArray()
+	for singleton: String in Engine.get_singleton_list():
+		if "Billing" in singleton or "AdMob" in singleton or "Poing" in singleton:
+			relevantes.append(singleton)
+	print("plugins android no runtime: ", relevantes)
 
 
 func _montar_fundo() -> void:

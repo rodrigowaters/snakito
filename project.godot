@@ -1,7 +1,10 @@
 ; Engine configuration file.
-; Projeto mínimo para a fundação de tokens: permite abrir o editor, importar
-; assets/ e rodar tools/gerar_tema.gd. Export presets Android, plugins
-; (Billing/AdMob/Sentry) e cena principal entram no spike de go/no-go.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
 
 config_version=5
 
@@ -11,10 +14,6 @@ config/name="Snakito"
 run/main_scene="res://src/ui/home/home.tscn"
 config/features=PackedStringArray("4.7", "Mobile")
 
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg")
-
 [debug]
 
 settings/stdout/print_fps=true
@@ -23,13 +22,21 @@ settings/stdout/print_fps=true
 
 window/size/viewport_width=412
 window/size/viewport_height=915
-window/handheld/orientation=1
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
+window/handheld/orientation=1
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg", "res://addons/GodotGooglePlayBilling/plugin.cfg", "res://addons/admob/plugin.cfg")
 
 [gui]
 
 theme/custom="res://src/ui/theme/snakito_theme.tres"
+
+[internationalization]
+
+locale/translations=PackedStringArray("res://addons/admob/gdscript/sample/translations/admob_sample.en.translation", "res://addons/admob/gdscript/sample/translations/admob_sample.pt_BR.translation", "res://addons/admob/gdscript/sample/translations/admob_sample.es.translation", "res://addons/admob/gdscript/sample/translations/admob_sample.zh_CN.translation", "res://addons/admob/gdscript/sample/translations/admob_sample.ja.translation")
 
 [rendering]
 

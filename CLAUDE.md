@@ -99,7 +99,13 @@ Política de Famílias do Google Play; coleta mínima (username, e-mail, stats d
 - [x] Documentação aprovada (`docs/snakito-instrucoes.md` v2.0) + emenda de Trilhas nas Instruções Globais
 - [ ] **Spike (go/no-go, 2–3 dias):** export `.aab` assinado com plugins Billing+AdMob compilando; mini-arena com 30 bots + joystick a 60fps em aparelho mediano; Sentry reportando crash de teste
 - [x] MVP jogável (sem 1–2): domínio puro + 45 testes ✅; 3 bots ✅; Home/Jogo/Resultado ✅; skin padrão (verde) ✅; feedback visual §7 ✅ (pulso ao comer, confete no kill, pontos flutuando, flash+háptica na morte) — 100% offline, sem conta. Pendências: **sons** (sem assets de áudio ainda), minimap, modo daltonismo em jogo, balanceamento (jogador parado morre em ~3s — aprovado inicialmente pelo Rodrigo em 08/08), i18n das strings
-- Spike Android — pré-requisitos na máquina: SDK (`~/Library/Android/sdk`) ✅, adb ✅, Java 17 ✅; **faltam** export templates do Godot (~1GB), keystore e aparelho para o teste de 60fps
+- **Spike Android — 2 de 3 critérios APROVADOS (08/08):**
+  - ✅ **60fps em aparelho mediano**: moto g35 5G via adb — arena 30 bots a 115–119fps (pior frame de gameplay: 76); 1 hitch único de load (mascarável)
+  - ✅ **`.aab` assinado com Billing+AdMob compilando juntos**: gradle build ok; dex contém `com/android/billingclient` e `com/poingstudios/godot/admob`; **11 singletons vivos em runtime** no aparelho (incl. `UserMessagingPlatform`/`ConsentInformation` — UMP p/ famílias); AAB assinado com debug keystore (upload key do Play fica p/ publicação)
+  - ⏳ **Sentry**: falta DSN (conta do Rodrigo)
+  - Infra local: templates 4.7.1 instalados, keystore debug gerado, editor_settings apontando SDK/Java; presets `Android AAB` + `Android APK (aparelho)`; plugins vendorados em `addons/` (Billing 3.3.0; AdMob poing v5 nightly + template nativo 4.7.1 — os AARs nativos em `addons/admob/android/bin` são gitignorados pelo próprio addon: re-baixar `android-template-v4.7.1.zip` em clone novo); `android/` (template gradle) é gerado, gitignorado
+  - Export headless: `JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home godot --headless --export-debug "Android AAB" export/snakito.aab` (Godot segfaulta AO SAIR depois de gravar o artefato — quirk macOS, inofensivo)
+  - Pendências menores: ícone do projeto (warning no export; assets do ícone adaptativo existem só como SVG no design), `tagForChildDirectedTreatment` quando anúncios ativarem
 - [ ] M1 (sem 3–4): auth (e-mail + Google), fila offline + `submit_session` + ranking, desafios 1–2 (**domínio ✅** — falta UI + análise pós-partida), onboarding sem texto, +3 skins
 - [ ] M2 (sem 5–6): AdMob, Billing "Remover Anúncios", analyzer completo, desafios 3–4, EN/ES, publicação
 - [x] Design system e telas em alta fidelidade geradas via Claude Design; tokens portados para `src/ui/theme/` (ver *Fundação visual*)
