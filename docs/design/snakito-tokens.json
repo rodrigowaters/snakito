@@ -1,0 +1,69 @@
+{
+  "meta": { "app": "Snakito", "version": "1.0", "wcag": "AA", "date": "2026-08-05", "target": "Godot 4 Theme", "note": "cores em hex RGBA-ready; dp = px em baseline 160dpi" },
+  "color": {
+    "arena": { "bg": "#131624", "grid": "rgba(255,255,255,0.04)", "gridSize": 26, "duelBg": "#0F2233", "duelGrid": "rgba(138,220,255,0.06)" },
+    "app": { "bgGradient": ["#12141F", "#191430"], "bgGradientAngle": 160 },
+    "surface": { "s1": "#1B1F30", "s2": "#232841", "glass": "rgba(255,255,255,0.06)", "glassBorder": "rgba(255,255,255,0.12)", "hud": "rgba(14,16,24,0.78)", "modal": "#1B1F30" },
+    "snake": {
+      "verde":    { "base": "#4ADE80", "dark": "#2CA35B", "symbol": "circulo",  "contrastVsArena": "8.7:1" },
+      "azul":     { "base": "#38BDF8", "dark": "#1E88BF", "symbol": "triangulo","contrastVsArena": "7.2:1" },
+      "rosa":     { "base": "#F472B6", "dark": "#C24A87", "symbol": "quadrado", "contrastVsArena": "5.5:1" },
+      "amarela":  { "base": "#FFD43B", "dark": "#C9A11C", "symbol": "losango",  "contrastVsArena": "11.4:1" },
+      "laranja":  { "base": "#FF9F45", "dark": "#C86F1F", "symbol": "estrela",  "contrastVsArena": "7.6:1" },
+      "roxa":     { "base": "#A78BFA", "dark": "#7757CE", "symbol": "hexagono", "contrastVsArena": "5.7:1" },
+      "turquesa": { "base": "#2DD4BF", "dark": "#1B9A8A", "symbol": "cruz",     "contrastVsArena": "8.5:1" },
+      "lima":     { "base": "#BEF264", "dark": "#8CB93A", "symbol": "meia-lua", "contrastVsArena": "12.5:1" }
+    },
+    "food": { "comum": "#FF6B6B", "comumHighlight": "#FF9B9B", "premium": "#FFD43B" },
+    "semantic": { "success": "#4ADE80", "dangerAction": "#FF6B6B", "dangerText": "#FF9B9B", "warning": "#FFD43B", "info": "#8ADCFF", "adOffer": "#FF9F45" },
+    "text": { "primary": "#F4F6FF", "secondary": "#A6AECB", "muted": "#7E88A8", "mutedRule": "so >=18px ou bold", "onPrimary": "#0B2416", "onWarning": "#3A2E00", "onAdOffer": "#3A1F00" },
+    "cta": { "primaryGradient": ["#4ADE80", "#2FBF8F"], "adGradient": ["#FF9F45", "#F5893B"], "vipGradient": ["#FFD43B", "#FF9F45"], "gradientAngle": 135 },
+    "rarity": { "comum": "#A6AECB", "rara": "#38BDF8", "epica": "#A78BFA", "lendaria": "#FFD43B" }
+  },
+  "typography": {
+    "families": { "display": "Fredoka", "body": "Nunito" },
+    "scale": [
+      { "token": "display/hero",  "family": "Fredoka", "weight": 700, "size": 44, "lineHeight": 48 },
+      { "token": "display/score", "family": "Fredoka", "weight": 700, "size": 34, "lineHeight": 38 },
+      { "token": "title/lg",      "family": "Fredoka", "weight": 600, "size": 26, "lineHeight": 32 },
+      { "token": "title/md",      "family": "Fredoka", "weight": 600, "size": 20, "lineHeight": 26 },
+      { "token": "button",        "family": "Fredoka", "weight": 600, "size": 18, "lineHeight": 24 },
+      { "token": "body",          "family": "Nunito",  "weight": 700, "size": 15, "lineHeight": 22 },
+      { "token": "body/sm",       "family": "Nunito",  "weight": 700, "size": 13, "lineHeight": 18 },
+      { "token": "caption",       "family": "Nunito",  "weight": 800, "size": 12, "lineHeight": 16, "tracking": 0.04, "transform": "uppercase" }
+    ]
+  },
+  "spacing": [4, 8, 12, 16, 24, 32, 48, 64],
+  "radius": { "chip": 12, "button": 16, "card": 20, "modal": 26, "pill": 999 },
+  "touchTarget": { "min": 48, "default": 56, "hero": 64 },
+  "interaction": { "press": "translateY(2px) + escurece 6%", "focusRing": "2px #38BDF8", "disabledOpacity": 0.4 },
+  "economy": {
+    "currency": { "name": "moedas", "icon": "moeda dourada #FFD43B borda #C9A11C" },
+    "adSkipTickets": { "name": "tickets de pulo", "icon": "🎟️", "rule": "entrega a recompensa do anuncio sem video; funciona offline" },
+    "buffs": {
+      "basePrice": 200,
+      "rule": "preco(nivel N->N+1) = 200 * growth^N, arredondado",
+      "growth": { "pontosIniciais": 1.13, "velocidade": 1.22, "ima": 1.42 },
+      "purchaseWithoutBalance": "botao de anuncio recompensado (ou ticket de pulo)"
+    },
+    "timeExtension": {
+      "trigger": "fim do tempo com pontos abaixo do chefe",
+      "meter": { "bands": ["20s", "30s", "50s", "30s", "20s"], "proportions": [3, 2.5, 2, 2.5, 3], "pointerSpeed": "1.1 largura/s ping-pong", "rule": "posicao exata do clique define a faixa, sem sorteio" },
+      "payment": "anuncio recompensado ou ticket de pulo",
+      "hud": "timer laranja #FF9F45 + selo PRORROGACAO"
+    },
+    "dailyReward": { "coins": [50, 75, 100, 150, 200, 300, 600], "day7": "em dobro", "missRule": "perder um dia reseta a sequencia", "trigger": "1a abertura do dia (fuso do aparelho), 1x/dia" },
+    "revive": { "nonVip": "anuncio (primario) ou ticket de pulo", "vip": "1 gratis por semana", "keepsPoints": true },
+    "matchRewards": { "phaseWin": 350, "coinsFromScore": "~5% dos pontos (ex.: 2480 pts -> 124 moedas)" },
+    "iapBRL": {
+      "usdToBRL": 5.1366,
+      "vipMonthly": 51.35, "completeOneTime": 153.99, "starterDaily": 5.13,
+      "adBundles": { "ticketsX10": 26.66, "coins300k": 26.66, "skinsX10": 26.66 },
+      "removeAds": 15.41,
+      "skipTickets": { "x10": 15.41, "x20": 25.70, "x50": 77.10 },
+      "coinPacks": { "1000": 15.41, "2000": 25.70, "5000": 77.10 }
+    },
+    "evolution": { "structure": "5 buffs comuns (+1% moedas | +1% velocidade | +1% xp) -> 1 super buff por patente", "superBuffs": ["+3% moedas", "+3% velocidade", "+3% xp", "+100", "+250", "+500", "+1000", "+2500", "+5000 moedas"], "maxPatente": 100, "direction": "de baixo para cima" }
+  },
+  "a11y": { "contrastMin": "4.5:1 (AA)", "colorblindMode": "simbolo geometrico unico por cor de cobra, na cabeca e a cada 3 segmentos", "touchMin48dp": true, "textGrowth": "reservar +30% (DE/FR): botoes com min-height, nunca height fixa" }
+}

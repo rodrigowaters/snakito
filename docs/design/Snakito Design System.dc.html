@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#0E1018;font-family:'Nunito',system-ui,sans-serif;color:#F4F6FF}a{color:#38BDF8}a:hover{color:#8ADCFF}</style></helmet>
+<div style="max-width:1140px;margin:0 auto;padding:48px 32px 80px;display:flex;flex-direction:column;gap:56px">
+
+<header style="display:flex;flex-direction:column;gap:12px">
+  <div style="display:flex;align-items:center;gap:16px">
+    <div style="width:64px;height:64px;border-radius:16px;background:#12141F;border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;flex:none"><svg width="52" height="52" viewBox="0 0 100 100"><circle cx="34" cy="76" r="7" fill="#4ADE80" opacity=".45"></circle><circle cx="46" cy="80" r="7.5" fill="#4ADE80" opacity=".6"></circle><circle cx="58" cy="78" r="8" fill="#4ADE80" opacity=".72"></circle><circle cx="67" cy="70" r="8.5" fill="#4ADE80" opacity=".82"></circle><circle cx="66" cy="59" r="9" fill="#4ADE80" opacity=".88"></circle><circle cx="56" cy="52" r="9" fill="#4ADE80" opacity=".92"></circle><circle cx="44" cy="47" r="9" fill="#4ADE80" opacity=".95"></circle><circle cx="35" cy="39" r="9.5" fill="#4ADE80"></circle><circle cx="41" cy="29" r="10" fill="#4ADE80"></circle><circle cx="54" cy="24" r="12" fill="#4ADE80"></circle><circle cx="50" cy="20.5" r="3.1" fill="#fff"></circle><circle cx="58.5" cy="20.5" r="3.1" fill="#fff"></circle><circle cx="50.6" cy="21.2" r="1.5" fill="#12141F"></circle><circle cx="59.1" cy="21.2" r="1.5" fill="#12141F"></circle><circle cx="73" cy="34" r="4.5" fill="#FF6B6B"></circle></svg></div>
+    <div><h1 style="margin:0;font-family:'Fredoka',sans-serif;font-weight:700;font-size:36px;color:#F4F6FF">Snakito Design System</h1><p style="margin:4px 0 0;font-size:15px;color:#A6AECB;font-weight:600">v1.0 · mood Cosmic Soft · Android portrait 412×915 · pt-BR (textos +30% p/ DE·FR)</p></div>
+  </div>
+</header>
+
+<section style="display:flex;flex-direction:column;gap:20px" data-screen-label="Paleta">
+  <h2 style="margin:0;font-family:'Fredoka',sans-serif;font-weight:600;font-size:24px">1 · Paleta</h2>
+  <p style="margin:0;font-size:14px;color:#A6AECB;max-width:760px;line-height:1.6">Regra dura: todo par texto/fundo listado passa WCAG AA (≥ 4.5:1; badges mostram a razão real contra o fundo indicado). Cobras foram escolhidas para alto contraste entre si e contra a arena.</p>
+  <h3 style="margin:8px 0 0;font-size:13px;font-weight:800;color:#7E88A8;letter-spacing:.08em">ARENA E SUPERFÍCIES</h3>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:12px">
+    <div style="border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.1)"><div style="height:76px;background:#131624;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:18px 18px"></div><div style="padding:10px 14px;background:#12141F"><div style="font-weight:800;font-size:13px">arena/bg</div><div style="font-size:12px;color:#A6AECB;font-family:ui-monospace,monospace">#131624 · grade rgba(255,255,255,.04)</div></div></div>
+    <div style="border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.1)"><div style="height:76px;background:linear-gradient(160deg,#12141F,#191430)"></div><div style="padding:10px 14px;background:#12141F"><div style="font-weight:800;font-size:13px">app/bg</div><div style="font-size:12px;color:#A6AECB;font-family:ui-monospace,monospace">#12141F → #191430 (160°)</div></div></div>
+    <div style="border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.1)"><div style="height:76px;background:#1B1F30"></div><div style="padding:10px 14px;background:#12141F"><div style="font-weight:800;font-size:13px">surface/1</div><div style="font-size:12px;color:#A6AECB;font-family:ui-monospace,monospace">#1B1F30 · cards, pills</div></div></div>
+    <div style="border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.1)"><div style="height:76px;background:#232841"></div><div style="padding:10px 14px;background:#12141F"><div style="font-weight:800;font-size:13px">surface/2</div><div style="font-size:12px;color:#A6AECB;font-family:ui-monospace,monospace">#232841 · botão secundário</div></div></div>
+    <div style="border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.1)"><div style="height:76px;background:rgba(255,255,255,.06);position:relative"><div style="position:absolute;inset:0;background:linear-gradient(160deg,#12141F,#191430);z-index:-1"></div></div><div style="padding:10px 14px;background:#12141F"><div style="font-weight:800;font-size:13px">surface/glass</div><div style="font-size:12px;color:#A6AECB;font-family:ui-monospace,monospace">rgba(255,255,255,.06) + borda .12</div></div></div>
+    <div style="border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.1)"><div style="height:76px;background:rgba(14,16,24,.78)"></div><div style="padding:10px 14px;background:#12141F"><div style="font-weight:800;font-size:13px">surface/hud</div><div style="font-size:12px;color:#A6AECB;font-family:ui-monospace,monospace">rgba(14,16,24,.78) · sobre arena</div></div></div>
+  </div>
+  <h3 style="margin:8px 0 0;font-size:13px;font-weight:800;color:#7E88A8;letter-spacing:.08em">COBRAS · 8 SKINS-BASE (contraste vs arena/bg)</h3>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:12px">
+    <sc-for list="{{ cobras }}" as="c" hint-placeholder-count="8">
+    <div style="border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.1)">
+      <div style="height:76px;background:#131624;display:flex;align-items:center;justify-content:center;gap:4px"><div style="width:13px;height:13px;border-radius:50%;background:{{ c.hex }};opacity:.6"></div><div style="width:16px;height:16px;border-radius:50%;background:{{ c.hex }};opacity:.8"></div><div style="width:22px;height:22px;border-radius:50%;background:{{ c.hex }};position:relative"><div style="position:absolute;left:4px;top:6px;width:5.5px;height:5.5px;border-radius:50%;background:#fff"></div><div style="position:absolute;left:12px;top:6px;width:5.5px;height:5.5px;border-radius:50%;background:#fff"></div><div style="position:absolute;left:5.7px;top:7.7px;width:2.6px;height:2.6px;border-radius:50%;background:#12141F"></div><div style="position:absolute;left:13.7px;top:7.7px;width:2.6px;height:2.6px;border-radius:50%;background:#12141F"></div></div></div>
+      <div style="padding:10px 14px;background:#12141F;display:flex;justify-content:space-between;align-items:center"><div><div style="font-weight:800;font-size:13px">snake/{{ c.token }}</div><div style="font-size:12px;color:#A6AECB;font-family:ui-monospace,monospace">{{ c.hex }} · escura {{ c.dark }}</div></div><span style="background:rgba(74,222,128,.14);color:#4ADE80;border-radius:999px;padding:3px 9px;font-size:11px;font-weight:800">{{ c.ratio }} ✓</span></div>
+    </div>
+    </sc-for>
+  </div>
+  <h3 style="margin:8px 0 0;font-size:13px;font-weight:800;color:#7E88A8;letter-spacing:.08em">COMIDA · SEMÂNTICAS · TEXTO</h3>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:12px">
+    <sc-for list="{{ extras }}" as="x" hint-placeholder-count="9">
+    <div style="border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.1)">
+      <div style="height:56px;background:{{ x.bgShow }};display:flex;align-items:center;justify-content:center"><span style="font-weight:800;font-size:14px;color:{{ x.fgShow }}">{{ x.sample }}</span></div>
+      <div style="padding:10px 14px;background:#12141F;display:flex;justify-content:space-between;align-items:center"><div><div style="font-weight:800;font-size:13px">{{ x.token }}</div><div style="font-size:12px;color:#A6AECB;font-family:ui-monospace,monospace">{{ x.hex }}</div></div><span style="background:rgba(74,222,128,.14);color:#4ADE80;border-radius:999px;padding:3px 9px;font-size:11px;font-weight:800">{{ x.ratio }}</span></div>
+    </div>
+    </sc-for>
+  </div>
+</section>
+
+<section style="display:flex;flex-direction:column;gap:20px" data-screen-label="Daltonismo">
+  <h2 style="margin:0;font-family:'Fredoka',sans-serif;font-weight:600;font-size:24px">2 · Modo daltonismo</h2>
+  <p style="margin:0;font-size:14px;color:#A6AECB;max-width:760px;line-height:1.6">Cada cor de cobra ganha um símbolo geométrico único, estampado na cabeça e a cada 3 segmentos. Ativável em Configurações; símbolos sempre brancos com traço escuro de apoio.</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px">
+    <sc-for list="{{ cobras }}" as="c" hint-placeholder-count="8">
+    <div style="border-radius:14px;border:1px solid rgba(255,255,255,.1);background:#131624;padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-weight:800;font-size:13px">{{ c.nome }}</span><span style="font-size:11px;color:#7E88A8;font-weight:800">{{ c.simbolo }}</span></div>
+      <div style="display:flex;align-items:center;gap:4px"><span style="font-size:10px;color:#7E88A8;font-weight:800;width:52px">normal</span><div style="width:12px;height:12px;border-radius:50%;background:{{ c.hex }};opacity:.6"></div><div style="width:14px;height:14px;border-radius:50%;background:{{ c.hex }};opacity:.8"></div><div style="width:14px;height:14px;border-radius:50%;background:{{ c.hex }}"></div><div style="width:19px;height:19px;border-radius:50%;background:{{ c.hex }}"></div></div>
+      <div style="display:flex;align-items:center;gap:4px"><span style="font-size:10px;color:#7E88A8;font-weight:800;width:52px">daltônico</span><div style="width:12px;height:12px;border-radius:50%;background:{{ c.hex }};opacity:.6"></div><div style="width:14px;height:14px;border-radius:50%;background:{{ c.hex }};display:flex;align-items:center;justify-content:center">{{ c.svgS }}</div><div style="width:14px;height:14px;border-radius:50%;background:{{ c.hex }}"></div><div style="width:19px;height:19px;border-radius:50%;background:{{ c.hex }};display:flex;align-items:center;justify-content:center">{{ c.svgL }}</div></div>
+    </div>
+    </sc-for>
+  </div>
+</section>
+
+<section style="display:flex;flex-direction:column;gap:20px" data-screen-label="Tipografia">
+  <h2 style="margin:0;font-family:'Fredoka',sans-serif;font-weight:600;font-size:24px">3 · Tipografia</h2>
+  <div style="display:flex;gap:12px;flex-wrap:wrap">
+    <div style="flex:1;min-width:300px;border-radius:14px;border:1px solid rgba(255,255,255,.1);background:#12141F;padding:20px"><div style="font-size:11px;font-weight:800;color:#7E88A8;letter-spacing:.08em">DISPLAY · TÍTULOS E NÚMEROS</div><div style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:34px;margin-top:8px">Fredoka</div><div style="font-size:13px;color:#A6AECB;margin-top:4px">400 · 500 · 600 · 700 — arredondada, amigável sem ser infantil</div></div>
+    <div style="flex:1;min-width:300px;border-radius:14px;border:1px solid rgba(255,255,255,.1);background:#12141F;padding:20px"><div style="font-size:11px;font-weight:800;color:#7E88A8;letter-spacing:.08em">CORPO · UI E PARÁGRAFOS</div><div style="font-weight:800;font-size:34px;margin-top:8px">Nunito</div><div style="font-size:13px;color:#A6AECB;margin-top:4px">400 · 600 · 700 · 800 — x-height alta, legível em 12px</div></div>
+  </div>
+  <div style="border-radius:14px;border:1px solid rgba(255,255,255,.1);background:#12141F;padding:8px 20px">
+    <sc-for list="{{ typescale }}" as="t" hint-placeholder-count="7">
+    <div style="display:flex;align-items:baseline;gap:18px;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.06)">
+      <span style="width:120px;flex:none;font-size:12px;color:#7E88A8;font-weight:800;font-family:ui-monospace,monospace">{{ t.token }}</span>
+      <span style="width:150px;flex:none;font-size:12px;color:#A6AECB;font-family:ui-monospace,monospace">{{ t.spec }}</span>
+      <span style="{{ t.style }}">{{ t.sample }}</span>
+    </div>
+    </sc-for>
+  </div>
+</section>
+
+<section style="display:flex;flex-direction:column;gap:20px" data-screen-label="Espaçamento">
+  <h2 style="margin:0;font-family:'Fredoka',sans-serif;font-weight:600;font-size:24px">4 · Espaçamento, raios e toque</h2>
+  <div style="display:flex;gap:12px;flex-wrap:wrap">
+    <div style="flex:2;min-width:340px;border-radius:14px;border:1px solid rgba(255,255,255,.1);background:#12141F;padding:20px;display:flex;flex-direction:column;gap:10px"><div style="font-size:11px;font-weight:800;color:#7E88A8;letter-spacing:.08em">ESCALA 4/8 (dp)</div>
+      <div style="display:flex;align-items:flex-end;gap:14px"><sc-for list="{{ spacing }}" as="s" hint-placeholder-count="8"><div style="display:flex;flex-direction:column;align-items:center;gap:6px"><div style="width:{{ s }}px;height:{{ s }}px;background:rgba(56,189,248,.25);border:1px solid #38BDF8;border-radius:4px;box-sizing:border-box"></div><span style="font-size:11px;color:#A6AECB;font-family:ui-monospace,monospace">{{ s }}</span></div></sc-for></div></div>
+    <div style="flex:1;min-width:220px;border-radius:14px;border:1px solid rgba(255,255,255,.1);background:#12141F;padding:20px;display:flex;flex-direction:column;gap:10px"><div style="font-size:11px;font-weight:800;color:#7E88A8;letter-spacing:.08em">RAIOS</div><div style="display:flex;gap:10px;align-items:flex-end"><div style="width:44px;height:44px;border-radius:12px;background:#232841;display:flex;align-items:flex-end;justify-content:center;font-size:10px;color:#A6AECB;padding-bottom:4px;box-sizing:border-box">12</div><div style="width:44px;height:44px;border-radius:16px;background:#232841;display:flex;align-items:flex-end;justify-content:center;font-size:10px;color:#A6AECB;padding-bottom:4px;box-sizing:border-box">16</div><div style="width:44px;height:44px;border-radius:20px;background:#232841;display:flex;align-items:flex-end;justify-content:center;font-size:10px;color:#A6AECB;padding-bottom:4px;box-sizing:border-box">20</div><div style="width:44px;height:44px;border-radius:999px;background:#232841;display:flex;align-items:flex-end;justify-content:center;font-size:10px;color:#A6AECB;padding-bottom:4px;box-sizing:border-box">pill</div></div><div style="font-size:12px;color:#A6AECB;line-height:1.5">12 chips · 16 botões/cards · 20 cards grandes · pill contadores</div></div>
+    <div style="flex:1;min-width:220px;border-radius:14px;border:1px solid rgba(255,255,255,.1);background:#12141F;padding:20px;display:flex;flex-direction:column;gap:10px"><div style="font-size:11px;font-weight:800;color:#7E88A8;letter-spacing:.08em">ALVOS DE TOQUE</div><div style="display:flex;gap:10px;align-items:flex-end"><div style="width:48px;height:48px;border-radius:14px;border:2px dashed #4ADE80;display:flex;align-items:center;justify-content:center;font-size:10px;color:#4ADE80;font-weight:800;box-sizing:border-box">48</div><div style="width:56px;height:56px;border-radius:16px;border:2px dashed #38BDF8;display:flex;align-items:center;justify-content:center;font-size:10px;color:#38BDF8;font-weight:800;box-sizing:border-box">56</div><div style="width:64px;height:64px;border-radius:18px;border:2px dashed #A78BFA;display:flex;align-items:center;justify-content:center;font-size:10px;color:#A78BFA;font-weight:800;box-sizing:border-box">64</div></div><div style="font-size:12px;color:#A6AECB;line-height:1.5">48 mínimo (ícones) · 56 padrão · 64 CTA herói</div></div>
+  </div>
+</section>
+
+<section style="display:flex;flex-direction:column;gap:20px" data-screen-label="Componentes">
+  <h2 style="margin:0;font-family:'Fredoka',sans-serif;font-weight:600;font-size:24px">5 · Componentes</h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px">
+    <div style="border-radius:16px;border:1px solid rgba(255,255,255,.1);background:linear-gradient(160deg,#12141F,#191430);padding:22px;display:flex;flex-direction:column;gap:14px"><div style="font-size:11px;font-weight:800;color:#7E88A8;letter-spacing:.08em">BOTÕES</div>
+      <div style="min-height:56px;border-radius:16px;background:linear-gradient(135deg,#4ADE80,#2FBF8F);display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:600;font-size:18px;color:#0B2416" style-active="transform:translateY(2px)">Primário · Jogar</div>
+      <div style="min-height:56px;border-radius:16px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:500;font-size:18px;color:#F4F6FF">Secundário · Ranking</div>
+      <div style="display:flex;gap:10px"><div style="flex:1;min-height:48px;border-radius:16px;background:rgba(255,107,107,.14);border:1px solid rgba(255,107,107,.4);display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:500;font-size:15px;color:#FF9B9B">Destrutivo</div><div style="flex:1;min-height:48px;border-radius:16px;background:rgba(255,255,255,.04);display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:500;font-size:15px;color:#7E88A8">Desabilitado</div></div>
+    </div>
+    <div style="border-radius:16px;border:1px solid rgba(255,255,255,.1);background:linear-gradient(160deg,#12141F,#191430);padding:22px;display:flex;flex-direction:column;gap:14px"><div style="font-size:11px;font-weight:800;color:#7E88A8;letter-spacing:.08em">CHIPS DE FILTRO (loja/ranking)</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <div style="min-height:40px;border-radius:999px;background:linear-gradient(135deg,#4ADE80,#2FBF8F);padding:0 18px;display:flex;align-items:center;font-size:14px;font-weight:800;color:#0B2416">Todas</div>
+        <div style="min-height:40px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);padding:0 18px;display:flex;align-items:center;font-size:14px;font-weight:800;color:#A6AECB">Semana</div>
+        <div style="min-height:40px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);padding:0 18px;display:flex;align-items:center;gap:6px;font-size:14px;font-weight:800;color:#FFD43B">👑 Lendárias</div>
+      </div>
+      <div style="font-size:11px;font-weight:800;color:#7E88A8;letter-spacing:.08em;margin-top:6px">TOGGLE</div>
+      <div style="display:flex;gap:18px;align-items:center">
+        <div style="width:58px;height:34px;border-radius:999px;background:linear-gradient(135deg,#4ADE80,#2FBF8F);position:relative"><div style="position:absolute;right:4px;top:4px;width:26px;height:26px;border-radius:50%;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,.3)"></div></div>
+        <div style="width:58px;height:34px;border-radius:999px;background:rgba(255,255,255,.12);position:relative"><div style="position:absolute;left:4px;top:4px;width:26px;height:26px;border-radius:50%;background:#7E88A8"></div></div>
+        <span style="font-size:13px;color:#A6AECB;font-weight:700">on / off · área de toque 48dp</span>
+      </div>
+    </div>
+    <div style="border-radius:16px;border:1px solid rgba(255,255,255,.1);background:linear-gradient(160deg,#12141F,#191430);padding:22px;display:flex;flex-direction:column;gap:12px"><div style="font-size:11px;font-weight:800;color:#7E88A8;letter-spacing:.08em">ITEM DE RANKING</div>
+      <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:10px 14px;min-height:56px;box-sizing:border-box"><span style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:15px;color:#A6AECB;width:30px">12º</span><div style="width:36px;height:36px;border-radius:50%;background:#38BDF8;position:relative;flex:none"><div style="position:absolute;left:8px;top:11px;width:7px;height:7px;border-radius:50%;background:#fff"></div><div style="position:absolute;left:20px;top:11px;width:7px;height:7px;border-radius:50%;background:#fff"></div></div><div style="flex:1"><div style="font-size:15px;font-weight:800">TurboTato</div><div style="font-size:12px;color:#4ADE80;font-weight:800">✓ venceu a arena</div></div><span style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:16px">7.902</span></div>
+      <div style="display:flex;align-items:center;gap:12px;background:rgba(74,222,128,.1);border:1.5px solid #4ADE80;border-radius:16px;padding:10px 14px;min-height:56px;box-sizing:border-box"><span style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:15px;color:#4ADE80;width:36px">142º</span><div style="width:36px;height:36px;border-radius:50%;background:#4ADE80;flex:none"></div><div style="flex:1"><div style="font-size:15px;font-weight:800">Você</div><div style="font-size:12px;color:#A6AECB;font-weight:700">variante destacada · fixa no rodapé</div></div><span style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:16px">2.480</span></div>
+    </div>
+    <div style="border-radius:16px;border:1px solid rgba(255,255,255,.1);background:linear-gradient(160deg,#12141F,#191430);padding:22px;display:flex;flex-direction:column;gap:12px"><div style="font-size:11px;font-weight:800;color:#7E88A8;letter-spacing:.08em">CAMPO DE TEXTO</div>
+      <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:800;color:#A6AECB">E-mail do responsável</span><div style="min-height:56px;border-radius:16px;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.14);display:flex;align-items:center;padding:0 16px;font-size:15px;color:#F4F6FF;box-sizing:border-box">maria@exemplo.com.br</div></div>
+      <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;font-weight:800;color:#A6AECB">Apelido na arena</span><div style="min-height:56px;border-radius:16px;background:rgba(255,255,255,.06);border:1.5px solid #FF6B6B;display:flex;align-items:center;padding:0 16px;font-size:15px;color:#7E88A8;box-sizing:border-box">ex.: CobraVeloz</div><span style="font-size:12px;color:#FF9B9B;font-weight:700">Erro: escolha um apelido sem seu nome real</span></div>
+    </div>
+    <div style="border-radius:16px;border:1px solid rgba(255,255,255,.1);background:linear-gradient(160deg,#12141F,#191430);padding:22px;display:flex;flex-direction:column;gap:12px"><div style="font-size:11px;font-weight:800;color:#7E88A8;letter-spacing:.08em">CARD DE SKIN (loja)</div>
+      <div style="display:flex;gap:12px">
+        <div style="flex:1;border-radius:16px;background:rgba(255,255,255,.05);border:1.5px solid #FFD43B;padding:12px;display:flex;flex-direction:column;align-items:center;gap:8px;position:relative;box-sizing:border-box"><span style="position:absolute;top:-9px;background:#FFD43B;color:#3A2E00;border-radius:999px;padding:2px 10px;font-size:10px;font-weight:800">LENDÁRIA</span><div style="display:flex;align-items:center;gap:2px;margin-top:8px"><div style="width:11px;height:11px;border-radius:50%;background:linear-gradient(90deg,#FFD43B,#FF9F45);opacity:.7"></div><div style="width:13px;height:13px;border-radius:50%;background:linear-gradient(90deg,#FFD43B,#FF9F45);opacity:.85"></div><div style="width:18px;height:18px;border-radius:50%;background:linear-gradient(90deg,#FFD43B,#FF6B6B);box-shadow:0 0 10px #FF9F45"></div></div><span style="font-size:13px;font-weight:800">Fênix</span><div style="min-height:36px;border-radius:999px;background:linear-gradient(135deg,#4ADE80,#2FBF8F);padding:0 14px;display:flex;align-items:center;gap:5px;font-size:13px;font-weight:800;color:#0B2416"><div style="width:13px;height:13px;border-radius:50%;background:#FFD43B;border:2px solid #C9A11C;box-sizing:border-box"></div>2.500</div></div>
+        <div style="flex:1;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);padding:12px;display:flex;flex-direction:column;align-items:center;gap:8px;box-sizing:border-box"><div style="display:flex;align-items:center;gap:2px;margin-top:8px"><div style="width:11px;height:11px;border-radius:50%;background:#38BDF8;opacity:.7"></div><div style="width:13px;height:13px;border-radius:50%;background:#38BDF8;opacity:.85"></div><div style="width:18px;height:18px;border-radius:50%;background:#38BDF8"></div></div><span style="font-size:13px;font-weight:800">Azul Clássica</span><div style="min-height:36px;border-radius:999px;background:rgba(74,222,128,.14);border:1px solid #4ADE80;padding:0 14px;display:flex;align-items:center;font-size:13px;font-weight:800;color:#4ADE80;box-sizing:border-box">✓ Equipada</div></div>
+      </div>
+    </div>
+    <div style="border-radius:16px;border:1px solid rgba(255,255,255,.1);background:linear-gradient(160deg,#12141F,#191430);padding:22px;display:flex;flex-direction:column;gap:12px"><div style="font-size:11px;font-weight:800;color:#7E88A8;letter-spacing:.08em">MODAL</div>
+      <div style="border-radius:20px;background:#1B1F30;border:1px solid rgba(255,255,255,.14);padding:20px;display:flex;flex-direction:column;gap:12px;align-items:center">
+        <div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:19px">Sair da partida?</div>
+        <div style="font-size:13.5px;color:#A6AECB;text-align:center;line-height:1.5">Seu progresso nesta arena será perdido.</div>
+        <div style="display:flex;gap:10px;width:100%"><div style="flex:1;min-height:48px;border-radius:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-size:15px;color:#F4F6FF">Continuar</div><div style="flex:1;min-height:48px;border-radius:14px;background:rgba(255,107,107,.14);border:1px solid rgba(255,107,107,.4);display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-size:15px;color:#FF9B9B">Sair</div></div>
+      </div>
+    </div>
+  </div>
+  <p style="margin:0;font-size:13px;color:#7E88A8;line-height:1.6">Interação: press = translateY(2px) + escurece 6% · foco = anel 2px #38BDF8 · desabilitado = 40% opacidade. Sombras "de brinquedo" (0 4px 0 tom-escuro) só em CTAs da arena; superfícies de app usam vidro (borda rgba .12–.14).</p>
+</section>
+
+<footer style="border-top:1px solid rgba(255,255,255,.08);padding-top:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px">
+  <span style="font-size:13px;color:#7E88A8;font-weight:700">Snakito DS v1.0 · tokens exportáveis em JSON p/ Godot 4 no handoff final</span>
+  <span style="font-size:13px;color:#7E88A8;font-weight:700">Fredoka + Nunito · escala 4/8 · WCAG AA</span>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const sym = (kind, size) => {
+      const s = size, h = s/2;
+      const st = {width:s+"px",height:s+"px",display:"block"};
+      const P = React.createElement;
+      const shapes = {
+        circulo: P("circle",{cx:h,cy:h,r:h*.62,fill:"#fff"}),
+        triangulo: P("path",{d:`M${h} ${s*.14} L${s*.88} ${s*.82} L${s*.12} ${s*.82} Z`,fill:"#fff"}),
+        quadrado: P("rect",{x:s*.2,y:s*.2,width:s*.6,height:s*.6,fill:"#fff"}),
+        losango: P("path",{d:`M${h} ${s*.08} L${s*.92} ${h} L${h} ${s*.92} L${s*.08} ${h} Z`,fill:"#fff"}),
+        estrela: P("path",{d:`M${h} ${s*.08} L${s*.62} ${s*.38} L${s*.95} ${s*.4} L${s*.7} ${s*.62} L${s*.78} ${s*.94} L${h} ${s*.76} L${s*.22} ${s*.94} L${s*.3} ${s*.62} L${s*.05} ${s*.4} L${s*.38} ${s*.38} Z`,fill:"#fff"}),
+        hexagono: P("path",{d:`M${h} ${s*.06} L${s*.9} ${s*.28} L${s*.9} ${s*.72} L${h} ${s*.94} L${s*.1} ${s*.72} L${s*.1} ${s*.28} Z`,fill:"#fff"}),
+        cruz: P("path",{d:`M${s*.38} ${s*.1} H${s*.62} V${s*.38} H${s*.9} V${s*.62} H${s*.62} V${s*.9} H${s*.38} V${s*.62} H${s*.1} V${s*.38} H${s*.38} Z`,fill:"#fff"}),
+        lua: P("path",{d:`M${s*.68} ${s*.1} A${h*.82} ${h*.82} 0 1 0 ${s*.68} ${s*.9} A${h*.62} ${h*.62} 0 1 1 ${s*.68} ${s*.1} Z`,fill:"#fff"})
+      };
+      return P("svg",{viewBox:`0 0 ${s} ${s}`,style:st},shapes[kind]);
+    };
+    const cobras = [
+      ["verde","Verde","#4ADE80","#2CA35B","8.7:1","circulo","Círculo"],
+      ["azul","Azul","#38BDF8","#1E88BF","7.2:1","triangulo","Triângulo"],
+      ["rosa","Rosa","#F472B6","#C24A87","5.5:1","quadrado","Quadrado"],
+      ["amarela","Amarela","#FFD43B","#C9A11C","11.4:1","losango","Losango"],
+      ["laranja","Laranja","#FF9F45","#C86F1F","7.6:1","estrela","Estrela"],
+      ["roxa","Roxa","#A78BFA","#7757CE","5.7:1","hexagono","Hexágono"],
+      ["turquesa","Turquesa","#2DD4BF","#1B9A8A","8.5:1","cruz","Cruz"],
+      ["lima","Lima","#BEF264","#8CB93A","12.5:1","lua","Meia-lua"]
+    ].map(([token,nome,hex,dark,ratio,kind,simbolo]) => ({
+      token, nome, hex, dark, ratio, simbolo,
+      svgS: sym(kind,9), svgL: sym(kind,12)
+    }));
+    const extras = [
+      {token:"food/comum", hex:"#FF6B6B", sample:"● comida", bgShow:"#131624", fgShow:"#FF6B6B", ratio:"5.2:1 ✓"},
+      {token:"food/premium", hex:"#FFD43B + glow", sample:"● prêmio ×3", bgShow:"#131624", fgShow:"#FFD43B", ratio:"11.4:1 ✓"},
+      {token:"semantic/success", hex:"#4ADE80", sample:"✓ Fase concluída", bgShow:"#12141F", fgShow:"#4ADE80", ratio:"8.5:1 ✓"},
+      {token:"semantic/danger", hex:"#FF9B9B (texto) · #FF6B6B (ação)", sample:"✗ Eliminado", bgShow:"#12141F", fgShow:"#FF9B9B", ratio:"7.5:1 ✓"},
+      {token:"semantic/warning", hex:"#FFD43B", sample:"⏱ Tempo esgotando", bgShow:"#12141F", fgShow:"#FFD43B", ratio:"11.2:1 ✓"},
+      {token:"semantic/info", hex:"#8ADCFF", sample:"💡 Dica estratégica", bgShow:"#12141F", fgShow:"#8ADCFF", ratio:"10.1:1 ✓"},
+      {token:"text/primary", hex:"#F4F6FF", sample:"Texto principal", bgShow:"#12141F", fgShow:"#F4F6FF", ratio:"16.8:1 ✓"},
+      {token:"text/secondary", hex:"#A6AECB", sample:"Texto secundário", bgShow:"#12141F", fgShow:"#A6AECB", ratio:"7.8:1 ✓"},
+      {token:"text/muted", hex:"#7E88A8 · só ≥18px/bold", sample:"Legenda grande", bgShow:"#12141F", fgShow:"#7E88A8", ratio:"4.7:1 ✓"},
+      {token:"text/on-primary", hex:"#0B2416", sample:"Rótulo de botão", bgShow:"linear-gradient(135deg,#4ADE80,#2FBF8F)", fgShow:"#0B2416", ratio:"8.1:1 ✓"},
+      {token:"text/on-warning", hex:"#3A2E00", sample:"Rótulo âmbar", bgShow:"#FFD43B", fgShow:"#3A2E00", ratio:"9.9:1 ✓"}
+    ];
+    const typescale = [
+      {token:"display/hero", spec:"Fredoka 700 · 44/48", sample:"Snakito", style:{fontFamily:"'Fredoka',sans-serif",fontWeight:700,fontSize:"44px",lineHeight:"48px"}},
+      {token:"display/score", spec:"Fredoka 700 · 34/38", sample:"12.340", style:{fontFamily:"'Fredoka',sans-serif",fontWeight:700,fontSize:"34px",lineHeight:"38px"}},
+      {token:"title/lg", spec:"Fredoka 600 · 26/32", sample:"O Chefe apareceu!", style:{fontFamily:"'Fredoka',sans-serif",fontWeight:600,fontSize:"26px",lineHeight:"32px"}},
+      {token:"title/md", spec:"Fredoka 600 · 20/26", sample:"Fase Oceano", style:{fontFamily:"'Fredoka',sans-serif",fontWeight:600,fontSize:"20px",lineHeight:"26px"}},
+      {token:"button", spec:"Fredoka 600 · 18/24", sample:"Jogar Arcade", style:{fontFamily:"'Fredoka',sans-serif",fontWeight:600,fontSize:"18px",lineHeight:"24px"}},
+      {token:"body", spec:"Nunito 700 · 15/22", sample:"Termine com mais pontos que o chefe para passar de fase.", style:{fontWeight:700,fontSize:"15px",lineHeight:"22px"}},
+      {token:"body/sm", spec:"Nunito 700 · 13/18", sample:"Sua melhor: 2.480 pts", style:{fontWeight:700,fontSize:"13px",lineHeight:"18px",color:"#A6AECB"}},
+      {token:"caption", spec:"Nunito 800 · 12/16 · +4% tracking", sample:"FASE 3 DE 30", style:{fontWeight:800,fontSize:"12px",lineHeight:"16px",letterSpacing:".04em",color:"#7E88A8"}}
+    ];
+    return { cobras, extras, typescale, spacing: [4,8,12,16,24,32,48,64] };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><meta name="design_doc_mode" content="canvas">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#0A0C14;font-family:'Nunito',system-ui,sans-serif;color:#F4F6FF}a{color:#38BDF8}a:hover{color:#8ADCFF}@keyframes snkGlowGold{0%,100%{box-shadow:0 0 10px rgba(255,212,59,.3)}50%{box-shadow:0 0 24px rgba(255,212,59,.6)}}@keyframes snkGlowRoxo{0%,100%{box-shadow:0 0 8px rgba(167,139,250,.25)}50%{box-shadow:0 0 20px rgba(167,139,250,.5)}}@keyframes snkSlide{0%,100%{transform:translateX(-30px)}50%{transform:translateX(30px)}}</style></helmet>
+<div style="padding:40px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:4px"><h1 style="margin:0;font-family:'Fredoka',sans-serif;font-weight:700;font-size:28px">Snakito — Telas v1</h1><p style="margin:0;font-size:13px;color:#A6AECB;font-weight:700">412×915 · mood Cosmic Soft · decisões: Home 1d+1e · Arcade→mapa · HUD 1h · pós 8c · moedas · loja tabs · desafios metas</p></div>
+<div style="display:flex;flex-wrap:wrap;gap:32px;align-items:flex-start">
+
+<div style="display:flex;flex-direction:column;gap:10px;flex:none"><span style="font-size:12px;font-weight:800;color:#7E88A8">01 · HOME</span>
+<div data-screen-label="01 Home" style="width:412px;height:915px;border-radius:24px;overflow:hidden;background:linear-gradient(160deg,#12141F,#191430);display:flex;flex-direction:column;padding:52px 24px 32px;box-sizing:border-box;position:relative">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+    <div style="width:48px;height:48px;border-radius:16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;flex:none;box-sizing:border-box"><div style="width:36px;height:36px;border-radius:50%;background:radial-gradient(circle at 32% 28%,#8BF0B4,#4ADE80);position:relative"><div style="position:absolute;left:8px;top:11px;width:7px;height:7px;border-radius:50%;background:#fff"></div><div style="position:absolute;left:20px;top:11px;width:7px;height:7px;border-radius:50%;background:#fff"></div><div style="position:absolute;left:9.5px;top:12.5px;width:3.5px;height:3.5px;border-radius:50%;background:#12141F"></div><div style="position:absolute;left:21.5px;top:12.5px;width:3.5px;height:3.5px;border-radius:50%;background:#12141F"></div></div></div>
+    <div style="display:flex;gap:8px">
+      <div style="display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:8px 13px;min-height:44px;position:relative;box-sizing:border-box"><div style="width:20px;height:20px;border-radius:50%;background:#FFD43B;border:3px solid #C9A11C;box-sizing:border-box"></div><span style="font-weight:800;font-size:15px">1.240</span><div style="position:absolute;top:-4px;right:-2px;width:14px;height:14px;border-radius:50%;background:#FF6B6B;border:2.5px solid #12141F;box-sizing:border-box"></div></div>
+      <div style="display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:8px 13px;min-height:44px;box-sizing:border-box"><span style="font-size:15px">🎟️</span><span style="font-weight:800;font-size:15px">3</span></div>
+    </div>
+    <div style="width:48px;height:48px;border-radius:16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:20px;flex:none;box-sizing:border-box">⚙</div>
+  </div>
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px">
+    <svg width="210" height="152" viewBox="0 0 200 150"><circle cx="52" cy="112" r="16" fill="#4ADE80" opacity=".5"></circle><circle cx="76" cy="98" r="19" fill="#4ADE80" opacity=".7"></circle><circle cx="104" cy="86" r="23" fill="#4ADE80" opacity=".85"></circle><circle cx="138" cy="76" r="28" fill="url(#hg)"></circle><defs><radialGradient id="hg" cx=".32" cy=".28" r="1"><stop offset="0" stop-color="#8BF0B4"></stop><stop offset="1" stop-color="#4ADE80"></stop></radialGradient></defs><circle cx="130" cy="68" r="6.5" fill="#fff"></circle><circle cx="150" cy="68" r="6.5" fill="#fff"></circle><circle cx="131.5" cy="69" r="3.2" fill="#12141F"></circle><circle cx="151.5" cy="69" r="3.2" fill="#12141F"></circle><path d="M132 88 q7 6 14 0" stroke="#12141F" stroke-width="3.4" fill="none" stroke-linecap="round"></path></svg>
+    <div style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:46px;background:linear-gradient(90deg,#4ADE80,#38BDF8);-webkit-background-clip:text;background-clip:text;color:transparent">Snakito</div>
+    <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:6px 14px"><div style="width:16px;height:16px;border-radius:50%;background:radial-gradient(circle at 32% 28%,#8BF0B4,#4ADE80)"></div><span style="font-size:13px;font-weight:800;color:#A6AECB">Verdinha equipada</span></div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <div style="min-height:64px;border-radius:20px;background:linear-gradient(135deg,#4ADE80,#2FBF8F);display:flex;align-items:center;justify-content:center;gap:10px;font-family:'Fredoka',sans-serif;font-weight:600;font-size:22px;color:#0B2416">▶ Jogar Arcade</div>
+    <div style="display:flex;justify-content:center"><span style="font-size:12px;font-weight:800;color:#7E88A8">FASE 3 DE 30 · OCEANO 🌊</span></div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+      <div style="min-height:84px;border-radius:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;box-sizing:border-box"><span style="font-size:22px">🎯</span><span style="font-family:'Fredoka',sans-serif;font-size:13px">Desafios</span></div>
+      <div style="min-height:84px;border-radius:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;box-sizing:border-box"><span style="font-size:22px">🏆</span><span style="font-family:'Fredoka',sans-serif;font-size:13px">Ranking</span></div>
+      <div style="min-height:84px;border-radius:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;box-sizing:border-box"><span style="font-size:22px">🛍</span><span style="font-family:'Fredoka',sans-serif;font-size:13px">Loja</span></div>
+      <div style="min-height:84px;border-radius:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;box-sizing:border-box"><span style="font-size:22px">⬆️</span><span style="font-family:'Fredoka',sans-serif;font-size:13px">Evolução</span></div>
+    </div>
+  </div>
+</div></div>
+
+<div style="display:flex;flex-direction:column;gap:10px;flex:none"><span style="font-size:12px;font-weight:800;color:#7E88A8">01b · RECOMPENSA DIÁRIA (modal na Home)</span>
+<span style="font-size:11px;font-weight:700;color:#7E88A8;max-width:412px;line-height:1.5">Gatilho: 1ª abertura do dia (compara data do último resgate, fuso do aparelho) — 1× ao dia, em cold start ou virada de dia. Não dispara na 1ª sessão de vida (onboarding tem prioridade) nem ao voltar do background no mesmo dia. Perdeu um dia → sequência reseta pro DIA 1. Acesso manual: toque no contador de moedas (badge 🔴 quando há prêmio não coletado).</span>
+<div data-screen-label="01b Recompensa diária" style="width:412px;height:915px;border-radius:24px;overflow:hidden;background:linear-gradient(160deg,#12141F,#191430);position:relative;box-sizing:border-box">
+  <div style="position:absolute;inset:0;background:rgba(8,10,18,.78)"></div>
+  <div style="position:absolute;left:24px;right:24px;top:50%;transform:translateY(-50%);background:#1B1F30;border:1px solid rgba(255,255,255,.14);border-radius:26px;padding:24px 20px;display:flex;flex-direction:column;gap:16px;box-sizing:border-box">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:4px"><span style="font-size:30px">🎁</span><span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:24px">Recompensa diária</span><span style="font-size:12.5px;font-weight:800;color:#A6AECB">DIA 3 DA SUA SEQUÊNCIA</span></div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
+      <div style="border-radius:14px;background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.35);padding:10px 4px;display:flex;flex-direction:column;align-items:center;gap:3px;opacity:.65;box-sizing:border-box"><span style="font-size:9px;font-weight:800;color:#7E88A8">DIA 1</span><span style="font-size:14px;font-weight:800;color:#4ADE80">✓</span><span style="font-size:11px;font-weight:800;color:#A6AECB">50</span></div>
+      <div style="border-radius:14px;background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.35);padding:10px 4px;display:flex;flex-direction:column;align-items:center;gap:3px;opacity:.65;box-sizing:border-box"><span style="font-size:9px;font-weight:800;color:#7E88A8">DIA 2</span><span style="font-size:14px;font-weight:800;color:#4ADE80">✓</span><span style="font-size:11px;font-weight:800;color:#A6AECB">75</span></div>
+      <div style="border-radius:14px;background:rgba(56,189,248,.1);border:2px solid #38BDF8;padding:10px 4px;display:flex;flex-direction:column;align-items:center;gap:3px;box-shadow:0 0 14px rgba(56,189,248,.4);box-sizing:border-box"><span style="font-size:9px;font-weight:800;color:#8ADCFF">HOJE</span><div style="width:16px;height:16px;border-radius:50%;background:#FFD43B;border:2.5px solid #C9A11C;box-sizing:border-box"></div><span style="font-size:11px;font-weight:800">100</span></div>
+      <div style="border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);padding:10px 4px;display:flex;flex-direction:column;align-items:center;gap:3px;box-sizing:border-box"><span style="font-size:9px;font-weight:800;color:#7E88A8">DIA 4</span><div style="width:14px;height:14px;border-radius:50%;background:#FFD43B;border:2px solid #C9A11C;opacity:.5;box-sizing:border-box"></div><span style="font-size:11px;font-weight:800;color:#7E88A8">150</span></div>
+      <div style="border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);padding:10px 4px;display:flex;flex-direction:column;align-items:center;gap:3px;box-sizing:border-box"><span style="font-size:9px;font-weight:800;color:#7E88A8">DIA 5</span><div style="width:14px;height:14px;border-radius:50%;background:#FFD43B;border:2px solid #C9A11C;opacity:.5;box-sizing:border-box"></div><span style="font-size:11px;font-weight:800;color:#7E88A8">200</span></div>
+      <div style="border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);padding:10px 4px;display:flex;flex-direction:column;align-items:center;gap:3px;box-sizing:border-box"><span style="font-size:9px;font-weight:800;color:#7E88A8">DIA 6</span><div style="width:14px;height:14px;border-radius:50%;background:#FFD43B;border:2px solid #C9A11C;opacity:.5;box-sizing:border-box"></div><span style="font-size:11px;font-weight:800;color:#7E88A8">300</span></div>
+      <div style="grid-column:span 2;border-radius:14px;background:rgba(255,212,59,.08);border:1.5px solid #FFD43B;padding:10px 4px;display:flex;flex-direction:column;align-items:center;gap:3px;box-sizing:border-box"><span style="font-size:9px;font-weight:800;color:#FFD43B">DIA 7 · EM DOBRO</span><span style="font-size:15px">👑</span><span style="font-size:12px;font-weight:800;color:#FFD43B">600</span></div>
+    </div>
+    <div style="min-height:56px;border-radius:18px;background:linear-gradient(135deg,#4ADE80,#2FBF8F);display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Fredoka',sans-serif;font-weight:600;font-size:18px;color:#0B2416">Coletar +100 <div style="width:15px;height:15px;border-radius:50%;background:#FFD43B;border:2.5px solid #C9A11C;box-sizing:border-box"></div></div>
+    <span style="font-size:11.5px;font-weight:700;color:#7E88A8;text-align:center">Volte amanhã para o dia 4 · perder um dia reinicia a sequência</span>
+  </div>
+</div></div>
+
+<div style="display:flex;flex-direction:column;gap:10px;flex:none"><span style="font-size:12px;font-weight:800;color:#7E88A8">02 · ARCADE — MAPA DA JORNADA (toque em Jogar Arcade)</span>
+<div data-screen-label="02 Mapa" style="width:412px;height:915px;border-radius:24px;overflow:hidden;background:linear-gradient(160deg,#12141F,#191430);position:relative;box-sizing:border-box">
+  <svg width="412" height="915" viewBox="0 0 412 915" style="position:absolute;inset:0"><path d="M90 810 C 220 800, 330 760, 330 690 C 330 620, 80 640, 80 550 C 80 470, 320 490, 330 400 C 338 330, 100 340, 95 250 C 92 190, 280 200, 300 130" stroke="rgba(255,255,255,.1)" stroke-width="9" fill="none" stroke-linecap="round" stroke-dasharray="1 16"></path></svg>
+  <div style="position:absolute;top:0;left:0;right:0;padding:52px 20px 14px;background:linear-gradient(rgba(18,20,31,.95),rgba(18,20,31,.6) 70%,transparent);display:flex;justify-content:space-between;align-items:center">
+    <div style="display:flex;align-items:center;gap:10px"><div style="width:44px;height:44px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:16px;box-sizing:border-box">←</div><div><div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:19px">Jornada Arcade</div><div style="font-size:11.5px;color:#A6AECB;font-weight:800">FASE 3 DE 30</div></div></div>
+    <div style="display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:7px 13px;box-sizing:border-box"><div style="width:18px;height:18px;border-radius:50%;background:#FFD43B;border:2.5px solid #C9A11C;box-sizing:border-box"></div><span style="font-weight:800;font-size:14px">1.240</span></div>
+  </div>
+  <div style="position:absolute;left:56px;bottom:78px;display:flex;flex-direction:column;align-items:center;gap:4px"><div style="width:64px;height:64px;border-radius:50%;background:radial-gradient(circle at 32% 28%,#8BF0B4,#4ADE80);display:flex;align-items:center;justify-content:center;font-size:24px">✓</div><span style="font-size:11px;font-weight:800;color:#A6AECB">Clássica</span></div>
+  <div style="position:absolute;right:52px;bottom:180px;display:flex;flex-direction:column;align-items:center;gap:4px"><div style="width:64px;height:64px;border-radius:50%;background:radial-gradient(circle at 32% 28%,#DDF9A6,#BEF264);display:flex;align-items:center;justify-content:center;font-size:24px">✓</div><span style="font-size:11px;font-weight:800;color:#A6AECB">Floresta</span></div>
+  <div style="position:absolute;left:44px;bottom:330px;display:flex;flex-direction:column;align-items:center;gap:6px">
+    <div style="position:relative"><div style="width:84px;height:84px;border-radius:50%;background:radial-gradient(circle at 32% 28%,#8ADCFF,#38BDF8);border:3px solid rgba(255,255,255,.55);display:flex;align-items:center;justify-content:center;font-size:32px;box-shadow:0 0 26px rgba(56,189,248,.5);box-sizing:border-box">🌊</div><div style="position:absolute;top:-10px;right:-14px;background:#FFD43B;color:#3A2E00;border-radius:999px;padding:3px 9px;font-size:10px;font-weight:800">CHEFE 3.100</div></div>
+    <span style="font-size:12px;font-weight:800">Oceano</span>
+    <div style="min-height:44px;border-radius:999px;background:linear-gradient(135deg,#4ADE80,#2FBF8F);padding:0 22px;display:flex;align-items:center;font-family:'Fredoka',sans-serif;font-weight:600;font-size:16px;color:#0B2416">▶ Jogar</div>
+  </div>
+  <div style="position:absolute;right:60px;bottom:480px;display:flex;flex-direction:column;align-items:center;gap:4px"><div style="width:58px;height:58px;border-radius:50%;background:rgba(255,255,255,.06);border:2px dashed rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:19px;box-sizing:border-box">🏜️</div><span style="font-size:11px;font-weight:800;color:#7E88A8">🔒 Deserto</span></div>
+  <div style="position:absolute;left:60px;bottom:610px;display:flex;flex-direction:column;align-items:center;gap:4px"><div style="width:58px;height:58px;border-radius:50%;background:rgba(255,255,255,.06);border:2px dashed rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:19px;box-sizing:border-box">❄️</div><span style="font-size:11px;font-weight:800;color:#7E88A8">🔒 Neve</span></div>
+  <div style="position:absolute;right:78px;bottom:740px;width:58px;height:58px;border-radius:50%;background:rgba(255,255,255,.06);border:2px dashed rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:19px;box-sizing:border-box">🌋</div>
+  <div style="position:absolute;left:0;right:0;bottom:0;padding:14px 20px 26px;background:linear-gradient(transparent,rgba(10,12,20,.92) 40%);display:flex;justify-content:center"><div style="min-height:48px;border-radius:16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);padding:0 20px;display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:800;color:#A6AECB;box-sizing:border-box">♾ Treino livre — arena sem chefe</div></div>
+</div></div>
+
+<div style="display:flex;flex-direction:column;gap:10px;flex:none"><span style="font-size:12px;font-weight:800;color:#7E88A8">02b · INFORMAÇÕES DO JOGADOR (toque no avatar da Home)</span>
+<div data-screen-label="02b Informações do jogador" style="width:412px;height:915px;border-radius:24px;overflow:hidden;background:linear-gradient(160deg,#12141F,#191430);display:flex;flex-direction:column;padding:52px 20px 28px;box-sizing:border-box;gap:16px">
+  <div style="display:flex;align-items:center;gap:12px"><div style="width:44px;height:44px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:16px;box-sizing:border-box">←</div><div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:22px;flex:1">Informações do jogador</div></div>
+  <div style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:8px 0 4px">
+    <div style="width:96px;height:96px;border-radius:28px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;box-sizing:border-box"><div style="width:72px;height:72px;border-radius:50%;background:radial-gradient(circle at 32% 28%,#8BF0B4,#4ADE80);position:relative"><div style="position:absolute;left:16px;top:22px;width:14px;height:14px;border-radius:50%;background:#fff"></div><div style="position:absolute;left:40px;top:22px;width:14px;height:14px;border-radius:50%;background:#fff"></div><div style="position:absolute;left:19px;top:25px;width:7px;height:7px;border-radius:50%;background:#12141F"></div><div style="position:absolute;left:43px;top:25px;width:7px;height:7px;border-radius:50%;background:#12141F"></div><div style="position:absolute;left:24px;top:46px;width:24px;height:10px;border-radius:0 0 12px 12px;border:3px solid #12141F;border-top:none;box-sizing:border-box"></div></div></div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:2px"><span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:24px">CobraVeloz</span><span style="font-size:12.5px;font-weight:800;color:#A6AECB">jogando desde março · skin Verdinha</span></div>
+    <div style="min-height:40px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);padding:0 18px;display:flex;align-items:center;gap:7px;font-size:13px;font-weight:800;box-sizing:border-box">✏️ Editar apelido</div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+    <div style="border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);padding:14px 8px;display:flex;flex-direction:column;align-items:center;gap:4px;box-sizing:border-box"><span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:22px;color:#4ADE80">27</span><span style="font-size:10.5px;font-weight:800;color:#7E88A8;text-align:center">FASES VENCIDAS</span></div>
+    <div style="border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);padding:14px 8px;display:flex;flex-direction:column;align-items:center;gap:4px;box-sizing:border-box"><span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:22px;color:#FFD43B">12.340</span><span style="font-size:10.5px;font-weight:800;color:#7E88A8;text-align:center">RECORDE DE PONTOS</span></div>
+    <div style="border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);padding:14px 8px;display:flex;flex-direction:column;align-items:center;gap:4px;box-sizing:border-box"><span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:22px;color:#38BDF8">184</span><span style="font-size:10.5px;font-weight:800;color:#7E88A8;text-align:center">COBRAS DEVORADAS</span></div>
+  </div>
+  <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:6px 16px;box-sizing:border-box">
+    <div style="display:flex;align-items:center;gap:14px;min-height:56px;border-bottom:1px solid rgba(255,255,255,.07)"><span style="font-size:18px;width:26px">🪙</span><span style="flex:1;font-size:14.5px;font-weight:800">Moedas</span><span style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:16px;color:#FFD43B">1.240</span></div>
+    <div style="display:flex;align-items:center;gap:14px;min-height:56px;border-bottom:1px solid rgba(255,255,255,.07)"><span style="font-size:18px;width:26px">🎟️</span><span style="flex:1;font-size:14.5px;font-weight:800">Tickets de pulo</span><span style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:16px">3</span></div>
+    <div style="display:flex;align-items:center;gap:14px;min-height:56px;border-bottom:1px solid rgba(255,255,255,.07)"><span style="font-size:18px;width:26px">🐍</span><span style="flex:1;font-size:14.5px;font-weight:800">Skins na coleção</span><span style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:16px">14 <span style="font-size:12px;color:#7E88A8">/ 120</span></span></div>
+    <div style="display:flex;align-items:center;gap:14px;min-height:56px"><span style="font-size:18px;width:26px">⬆️</span><span style="flex:1;font-size:14.5px;font-weight:800">Evolução</span><span style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:16px">Patente 2 <span style="font-size:12px;color:#7E88A8">· 8/10 buffs</span></span></div>
+  </div>
+  <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;box-sizing:border-box">
+    <span style="font-size:11.5px;font-weight:800;color:#7E88A8;letter-spacing:.06em">JORNADA</span>
+    <div style="display:flex;align-items:center;gap:10px"><span style="font-size:13px;font-weight:800;color:#A6AECB;flex:none">Fase 3 de 30</span><div style="flex:1;height:10px;border-radius:999px;background:rgba(255,255,255,.08)"><div style="width:10%;height:10px;border-radius:999px;background:linear-gradient(90deg,#2FBF8F,#4ADE80)"></div></div><span style="font-size:13px;font-weight:800;color:#4ADE80;flex:none">🌊 Oceano</span></div>
+  </div>
+  <div style="flex:1"></div>
+</div></div>
+
+<div style="display:flex;flex-direction:column;gap:10px;flex:none"><span style="font-size:12px;font-weight:800;color:#7E88A8">03 · EVOLUÇÃO — BUFFS PERMANENTES (novo menu da Home · rola verticalmente)</span>
+<div data-screen-label="03 Evolução" style="width:412px;height:915px;border-radius:24px;background:linear-gradient(160deg,#12141F,#191430);display:flex;flex-direction:column;padding:52px 0 0;box-sizing:border-box;gap:12px;overflow:hidden">
+  <div style="display:flex;align-items:center;gap:12px;padding:0 20px"><div style="width:44px;height:44px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:16px;box-sizing:border-box">←</div><div style="flex:1"><div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:22px">Evolução</div><div style="font-size:12px;color:#A6AECB;font-weight:800">BUFFS PERMANENTES · PATENTE 2</div></div><div style="display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:7px 12px;box-sizing:border-box"><div style="width:16px;height:16px;border-radius:50%;background:#FFD43B;border:2px solid #C9A11C;box-sizing:border-box"></div><span style="font-weight:800;font-size:13px">480</span></div></div>
+  <div style="flex:1;overflow-y:auto;scrollbar-width:none;display:flex;flex-direction:column;gap:20px;padding:8px 16px 28px">
+    <div style="text-align:center;font-size:12px;font-weight:800;color:#7E88A8">··· continua até a patente 100 ···</div>
+    <sc-for list="{{ evoNiveis }}" as="nv" hint-placeholder-count="3">
+    <div style="display:grid;grid-template-columns:1fr 152px;gap:12px">
+      <div style="position:relative;display:flex;flex-direction:column;gap:10px;padding:2px 0">
+        <div style="position:absolute;left:13px;top:10px;bottom:10px;width:2.5px;border-radius:2px;background:{{ nv.linha }}"></div>
+        <div style="display:flex;align-items:center;gap:8px;padding-left:28px"><div style="flex:1;border-top:2px dashed rgba(255,255,255,.18)"></div><span style="font-size:10.5px;font-weight:800;color:#7E88A8;letter-spacing:.06em">PATENTE {{ nv.n }}</span></div>
+        <sc-for list="{{ nv.buffs }}" as="bf" hint-placeholder-count="5">
+        <div style="display:flex;align-items:center;gap:10px;position:relative;opacity:{{ bf.op }}">
+          <div style="width:28px;display:flex;justify-content:center;flex:none"><div style="width:15px;height:15px;border-radius:50%;background:{{ bf.dotBg }};border:2.5px solid {{ bf.dotBorda }};box-shadow:{{ bf.dotGlow }};box-sizing:border-box"></div></div>
+          <div style="flex:1;display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.05);border:1px solid {{ bf.cardBorda }};border-radius:13px;padding:8px 12px;min-height:44px;box-sizing:border-box">
+            <span style="font-size:16px">{{ bf.icone }}</span>
+            <span style="flex:1;font-size:13px;font-weight:800">{{ bf.nome }}</span>
+            <span style="font-size:12px;font-weight:800;color:{{ bf.stCor }}">{{ bf.st }}</span>
+          </div>
+        </div>
+        </sc-for>
+      </div>
+      <div style="display:flex;align-items:center">
+        <div style="width:100%;border-radius:18px;background:{{ nv.superBg }};border:2px solid {{ nv.superBorda }};padding:16px 12px;display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center;opacity:{{ nv.superOp }};animation:{{ nv.superAnim }};box-sizing:border-box">
+          <span style="font-size:9.5px;font-weight:800;letter-spacing:.08em;color:{{ nv.superTagCor }}">SUPER BUFF</span>
+          <span style="font-size:30px">{{ nv.superIcone }}</span>
+          <span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:17px;color:{{ nv.superTagCor }}">{{ nv.superNome }}</span>
+          <span style="font-size:11px;font-weight:700;color:#A6AECB;line-height:1.4">{{ nv.superDesc }}</span>
+          <span style="font-size:11px;font-weight:800;color:{{ nv.superStCor }}">{{ nv.superSt }}</span>
+        </div>
+      </div>
+    </div>
+    </sc-for>
+  </div>
+</div></div>
+
+<div style="display:flex;flex-direction:column;gap:10px;flex:none"><span style="font-size:12px;font-weight:800;color:#7E88A8">04 · JOGO — HUD (barra 1h + joystick flutuante)</span>
+<div data-screen-label="04 Jogo" style="width:412px;height:915px;border-radius:24px;overflow:hidden;background:#0F2233;background-image:linear-gradient(rgba(138,220,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(138,220,255,.06) 1px,transparent 1px);background-size:26px 26px;position:relative;box-sizing:border-box">
+  <svg width="412" height="915" viewBox="0 0 412 915" style="position:absolute;inset:0">
+    <circle cx="118" cy="520" r="9" fill="#4ADE80" opacity=".5"></circle><circle cx="140" cy="508" r="10" fill="#4ADE80" opacity=".65"></circle><circle cx="164" cy="498" r="11" fill="#4ADE80" opacity=".8"></circle><circle cx="190" cy="490" r="12" fill="#4ADE80" opacity=".9"></circle><circle cx="218" cy="484" r="14" fill="#4ADE80"></circle><circle cx="214" cy="479" r="3.6" fill="#fff"></circle><circle cx="224" cy="479" r="3.6" fill="#fff"></circle><circle cx="215" cy="480" r="1.8" fill="#12141F"></circle><circle cx="225" cy="480" r="1.8" fill="#12141F"></circle>
+    <circle cx="310" cy="300" r="10" fill="#F472B6" opacity=".6"></circle><circle cx="330" cy="288" r="11" fill="#F472B6" opacity=".8"></circle><circle cx="352" cy="278" r="13" fill="#F472B6"></circle>
+    <circle cx="80" cy="700" r="8" fill="#FFD43B" opacity=".6"></circle><circle cx="98" cy="710" r="9" fill="#FFD43B" opacity=".8"></circle><circle cx="118" cy="716" r="11" fill="#FFD43B"></circle>
+    <circle cx="260" cy="620" r="6" fill="#FF6B6B"></circle><circle cx="90" cy="380" r="6" fill="#FF6B6B"></circle><circle cx="330" cy="740" r="6" fill="#FF6B6B"></circle><circle cx="180" cy="240" r="7" fill="#FFD43B"></circle>
+  </svg>
+  <div style="position:absolute;left:190px;top:454px;min-width:28px;height:20px;border-radius:999px;background:rgba(14,16,24,.85);border:1.5px solid rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:700;font-size:11px;padding:0 7px;box-sizing:border-box">2.480</div>
+  <div style="position:absolute;left:324px;top:248px;min-width:28px;height:20px;border-radius:999px;background:rgba(14,16,24,.85);border:1.5px solid #FF6B6B;display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:700;font-size:11px;color:#FF9B9B;padding:0 7px;box-sizing:border-box">3.940</div>
+  <div style="position:absolute;left:92px;top:686px;min-width:28px;height:20px;border-radius:999px;background:rgba(14,16,24,.85);border:1.5px solid #4ADE80;display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:700;font-size:11px;color:#4ADE80;padding:0 7px;box-sizing:border-box">820</div>
+  <div style="position:absolute;top:48px;left:12px;right:12px;background:rgba(14,16,24,.78);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:10px 16px;display:flex;align-items:center;justify-content:space-between">
+    <div style="display:flex;flex-direction:column"><span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:20px">2.480</span><span style="font-size:11px;color:#A6AECB;font-weight:800">4º DE 28</span></div>
+    <div style="display:flex;flex-direction:column;align-items:center"><span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:20px;color:#FFD43B">1:42</span><span style="font-size:11px;color:#A6AECB;font-weight:800">TAM. 14</span></div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="width:48px;height:48px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);position:relative;box-sizing:border-box"><div style="position:absolute;left:21px;top:19px;width:6px;height:6px;border-radius:50%;background:#4ADE80"></div><div style="position:absolute;left:32px;top:30px;width:4px;height:4px;border-radius:50%;background:#F472B6"></div><div style="position:absolute;left:12px;top:32px;width:4px;height:4px;border-radius:50%;background:#FFD43B"></div></div>
+      <div style="width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:16px">❚❚</div>
+    </div>
+  </div>
+  <div style="position:absolute;bottom:120px;left:88px;width:116px;height:116px;border-radius:50%;border:2px solid rgba(255,255,255,.2);background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center"><div style="width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.25);margin-left:26px;margin-top:14px"></div></div>
+  <div style="position:absolute;bottom:84px;left:96px;font-size:11px;color:#7E88A8;font-weight:800">JOYSTICK FLUTUANTE — SURGE ONDE TOCAR</div>
+</div></div>
+
+<div style="display:flex;flex-direction:column;gap:10px;flex:none"><span style="font-size:12px;font-weight:800;color:#7E88A8">04c · PAUSA (modal sobre a arena · timer congelado)</span>
+<div data-screen-label="04c Pausa" style="width:412px;height:915px;border-radius:24px;overflow:hidden;background:#0F2233;background-image:linear-gradient(rgba(138,220,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(138,220,255,.06) 1px,transparent 1px);background-size:26px 26px;position:relative;box-sizing:border-box">
+  <div style="position:absolute;inset:0;background:rgba(8,10,18,.82)"></div>
+  <div style="position:absolute;left:24px;right:24px;top:50%;transform:translateY(-50%);background:#1B1F30;border:1px solid rgba(255,255,255,.14);border-radius:26px;padding:26px 22px;display:flex;flex-direction:column;align-items:center;gap:18px;box-sizing:border-box">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+      <span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:28px">Pausa</span>
+      <div style="display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:6px 14px;box-sizing:border-box"><span style="font-size:13px">⏸</span><span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:15px;color:#FFD43B">1:42</span><span style="font-size:11px;font-weight:800;color:#A6AECB">· 2.480 pts · 4º de 28</span></div>
+    </div>
+    <div style="display:flex;gap:12px">
+      <div style="width:76px;display:flex;flex-direction:column;align-items:center;gap:6px"><div style="width:56px;height:56px;border-radius:18px;background:rgba(74,222,128,.14);border:1.5px solid #4ADE80;display:flex;align-items:center;justify-content:center;font-size:22px;box-sizing:border-box">🔊</div><span style="font-size:11px;font-weight:800;color:#4ADE80">Sons on</span></div>
+      <div style="width:76px;display:flex;flex-direction:column;align-items:center;gap:6px"><div style="width:56px;height:56px;border-radius:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;font-size:22px;opacity:.6;box-sizing:border-box">🎵</div><span style="font-size:11px;font-weight:800;color:#7E88A8">Música off</span></div>
+      <div style="width:76px;display:flex;flex-direction:column;align-items:center;gap:6px"><div style="width:56px;height:56px;border-radius:18px;background:rgba(74,222,128,.14);border:1.5px solid #4ADE80;display:flex;align-items:center;justify-content:center;font-size:22px;box-sizing:border-box">📳</div><span style="font-size:11px;font-weight:800;color:#4ADE80">Vibração</span></div>
+    </div>
+    <div style="width:100%;display:flex;flex-direction:column;gap:10px">
+      <div style="min-height:60px;border-radius:18px;background:linear-gradient(135deg,#4ADE80,#2FBF8F);display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:600;font-size:19px;color:#0B2416">▶ Continuar</div>
+      <div style="min-height:52px;border-radius:18px;background:rgba(255,107,107,.12);border:1.5px solid rgba(255,107,107,.4);display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Fredoka',sans-serif;font-weight:500;font-size:16px;color:#FF9B9B;box-sizing:border-box">🏳 Desistir da fase</div>
+    </div>
+    <span style="font-size:11.5px;font-weight:700;color:#7E88A8;text-align:center">A arena fica congelada — os bots também param</span>
+  </div>
+</div></div>
+
+<div style="display:flex;flex-direction:column;gap:10px;flex:none"><span style="font-size:12px;font-weight:800;color:#7E88A8">04b · RENASCIMENTO (morte suave · não-VIP: anúncio/ticket primário, VIP vira upsell; assinante vê "💫 Renascer grátis" verde no topo)</span>
+<div data-screen-label="04b Renascimento" style="width:412px;height:915px;border-radius:24px;overflow:hidden;background:#0F2233;background-image:linear-gradient(rgba(138,220,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(138,220,255,.06) 1px,transparent 1px);background-size:26px 26px;position:relative;box-sizing:border-box">
+  <div style="position:absolute;inset:0;background:rgba(8,10,18,.8)"></div>
+  <div style="position:absolute;left:24px;right:24px;top:50%;transform:translateY(-50%);background:#1B1F30;border:1px solid rgba(255,255,255,.14);border-radius:26px;padding:26px 22px;display:flex;flex-direction:column;align-items:center;gap:16px;box-sizing:border-box">
+    <div style="display:flex;align-items:flex-end;gap:10px">
+      <svg width="170" height="104" viewBox="0 0 180 110"><ellipse cx="134" cy="14" rx="17" ry="5.5" stroke="#FFD43B" stroke-width="4" fill="none"></ellipse><circle cx="40" cy="84" r="12" fill="#F4F6FF" opacity=".35"></circle><circle cx="66" cy="74" r="15" fill="#F4F6FF" opacity=".55"></circle><circle cx="98" cy="64" r="19" fill="#F4F6FF" opacity=".8"></circle><circle cx="134" cy="56" r="24" fill="#F4F6FF"></circle><path d="M124 50 q3 4 6 0 M138 50 q3 4 6 0" stroke="#12141F" stroke-width="3" fill="none" stroke-linecap="round"></path><path d="M128 66 q6 5 12 0" stroke="#12141F" stroke-width="3.2" fill="none" stroke-linecap="round"></path><path d="M60 30 q4 -8 12 -6 M164 84 q8 -2 10 6" stroke="#8ADCFF" stroke-width="3" fill="none" stroke-linecap="round" opacity=".7"></path></svg>
+      <div style="width:64px;height:64px;border-radius:50%;background:conic-gradient(#38BDF8 0 60%,rgba(255,255,255,.12) 60% 100%);display:flex;align-items:center;justify-content:center;flex:none;margin-bottom:8px"><div style="width:50px;height:50px;border-radius:50%;background:#12141F;display:flex;flex-direction:column;align-items:center;justify-content:center"><span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:20px;color:#8ADCFF">3</span><span style="font-size:8px;font-weight:800;color:#A6AECB">SEG</span></div></div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:5px">
+      <span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:26px">Ops! Você foi devorada</span>
+      <span style="font-size:14px;color:#A6AECB;font-weight:700;text-align:center;line-height:1.5">Renasça e continue de onde parou<br>com seus <b style="color:#4ADE80">2.480 pts</b></span>
+    </div>
+    <div style="width:100%;display:flex;flex-direction:column;gap:10px">
+      <div style="min-height:58px;border-radius:18px;background:linear-gradient(135deg,#FF9F45,#F5893B);display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Fredoka',sans-serif;font-weight:600;font-size:17.5px;color:#3A1F00;position:relative">▶ Renascer com anúncio<span style="position:absolute;top:-9px;right:14px;background:#FFD43B;color:#3A2E00;border-radius:999px;padding:2px 10px;font-size:10px;font-weight:800;font-family:'Nunito',sans-serif">ANÚNCIO</span></div>
+      <div style="min-height:52px;border-radius:18px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Fredoka',sans-serif;font-weight:500;font-size:16px;box-sizing:border-box">🎟️ Pular anúncio <span style="font-size:12px;font-weight:800;color:#A6AECB">· usar 1 de 3</span></div>
+      <div style="min-height:48px;display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:500;font-size:15px;color:#A6AECB">Não, ver resultado</div>
+      <div style="display:flex;justify-content:center"><div style="display:flex;align-items:center;gap:6px;background:rgba(255,212,59,.08);border:1px solid rgba(255,212,59,.3);border-radius:999px;padding:7px 14px;font-size:11.5px;font-weight:800;color:#FFD43B;box-sizing:border-box">👑 VIP renasce grátis · 1/semana</div></div>
+    </div>
+  </div>
+</div></div>
+
+<div style="display:flex;flex-direction:column;gap:10px;flex:none"><span style="font-size:12px;font-weight:800;color:#7E88A8">12c · FASE CONCLUÍDA! (venceu o choque contra o chefe)</span>
+<div data-screen-label="12c Fase concluída" style="width:412px;height:915px;border-radius:24px;overflow:hidden;background:linear-gradient(160deg,#12141F,#191430);display:flex;flex-direction:column;align-items:center;padding:52px 24px 32px;box-sizing:border-box;position:relative">
+  <svg width="412" height="220" viewBox="0 0 412 220" style="position:absolute;top:0;left:0"><rect x="46" y="38" width="11" height="11" rx="2.5" fill="#FFD43B" transform="rotate(18 51 43)"></rect><rect x="110" y="126" width="9" height="9" rx="2.5" fill="#F472B6" transform="rotate(-14 114 130)"></rect><rect x="170" y="30" width="12" height="12" rx="3" fill="#38BDF8" transform="rotate(30 176 36)"></rect><rect x="240" y="140" width="9" height="9" rx="2.5" fill="#4ADE80" transform="rotate(-22 244 144)"></rect><rect x="300" y="34" width="10" height="10" rx="2.5" fill="#A78BFA" transform="rotate(12 305 39)"></rect><rect x="352" y="72" width="9" height="9" rx="2.5" fill="#FF9F45" transform="rotate(40 356 76)"></rect><rect x="80" y="130" width="8" height="8" rx="2" fill="#2DD4BF" transform="rotate(-30 84 134)"></rect><rect x="330" y="140" width="8" height="8" rx="2" fill="#FF6B6B" transform="rotate(24 334 144)"></rect><rect x="200" y="118" width="9" height="9" rx="2.5" fill="#BEF264" transform="rotate(-18 204 122)"></rect></svg>
+  <div style="background:rgba(74,222,128,.14);color:#4ADE80;border-radius:999px;padding:8px 18px;font-size:13px;font-weight:800;letter-spacing:.06em;position:relative">🌊 FASE 3 · OCEANO</div>
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;position:relative">
+    <div style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:38px;text-align:center;line-height:1.1">Fase concluída!</div>
+    <svg width="200" height="130" viewBox="0 0 200 150"><path d="M118 34 l8 12 l10 -9 l7 12 l12 -7" stroke="#FFD43B" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="52" cy="112" r="16" fill="#4ADE80" opacity=".5"></circle><circle cx="76" cy="98" r="19" fill="#4ADE80" opacity=".7"></circle><circle cx="104" cy="86" r="23" fill="#4ADE80" opacity=".85"></circle><circle cx="138" cy="76" r="28" fill="url(#vg)"></circle><defs><radialGradient id="vg" cx=".32" cy=".28" r="1"><stop offset="0" stop-color="#8BF0B4"></stop><stop offset="1" stop-color="#4ADE80"></stop></radialGradient></defs><path d="M126 66 q4 5 8 0 M146 66 q4 5 8 0" stroke="#12141F" stroke-width="3.4" fill="none" stroke-linecap="round"></path><path d="M130 88 q9 8 18 0" stroke="#12141F" stroke-width="3.6" fill="none" stroke-linecap="round"></path><path d="M172 96 q6 -8 13 -5 M60 70 q-8 -4 -6 -12" stroke="#8ADCFF" stroke-width="3" fill="none" stroke-linecap="round" opacity=".8"></path></svg>
+    <div style="display:flex;align-items:center;gap:16px;background:rgba(14,16,24,.6);border:1px solid rgba(74,222,128,.35);border-radius:22px;padding:16px 26px">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:2px"><span style="font-size:11px;font-weight:800;color:#A6AECB;letter-spacing:.05em">VOCÊ</span><span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:26px;color:#4ADE80">3.240</span></div>
+      <span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:16px;color:#7E88A8">vs</span>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:2px;opacity:.7"><span style="font-size:11px;font-weight:800;color:#A6AECB;letter-spacing:.05em">CHEFE 👑</span><span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:26px;color:#FFD43B">3.100</span></div>
+    </div>
+    <div style="display:flex;gap:10px">
+      <div style="display:flex;align-items:center;gap:7px;background:rgba(255,212,59,.1);border:1px solid rgba(255,212,59,.35);border-radius:999px;padding:9px 16px;box-sizing:border-box"><div style="width:15px;height:15px;border-radius:50%;background:#FFD43B;border:2.5px solid #C9A11C;box-sizing:border-box"></div><span style="font-size:13.5px;font-weight:800;color:#FFD43B">+350 moedas</span></div>
+      <div style="display:flex;align-items:center;gap:7px;background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.35);border-radius:999px;padding:9px 16px;box-sizing:border-box"><span style="font-size:14px">🏜️</span><span style="font-size:13.5px;font-weight:800;color:#8ADCFF">Deserto desbloqueada</span></div>
+    </div>
+  </div>
+  <div style="width:100%;display:flex;flex-direction:column;gap:10px;position:relative">
+    <div style="min-height:62px;border-radius:20px;background:linear-gradient(135deg,#4ADE80,#2FBF8F);display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:600;font-size:19px;color:#0B2416">▶ Jogar fase 4 — Deserto</div>
+    <div style="display:flex;gap:10px"><div style="flex:1;min-height:50px;border-radius:16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:500;font-size:15px;box-sizing:border-box">Menu</div><div style="flex:1;min-height:50px;border-radius:16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;gap:6px;font-family:'Fredoka',sans-serif;font-weight:500;font-size:15px;box-sizing:border-box">⇪ Compartilhar</div></div>
+  </div>
+</div></div>
+
+<div style="display:flex;flex-direction:column;gap:10px;flex:none"><span style="font-size:12px;font-weight:800;color:#7E88A8">05 · PÓS-PARTIDA — RESULTADO (aba 1)</span>
+<div data-screen-label="05 Pós-partida" style="width:412px;height:915px;border-radius:24px;overflow:hidden;background:linear-gradient(160deg,#12141F,#191430);display:flex;flex-direction:column;padding:52px 20px 28px;box-sizing:border-box;gap:14px">
+  <div style="display:flex;gap:8px"><div style="flex:1;min-height:44px;border-radius:999px;background:linear-gradient(135deg,#4ADE80,#2FBF8F);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#0B2416">Resultado</div><div style="flex:1;min-height:44px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#A6AECB;box-sizing:border-box">Ranking da fase</div></div>
+  <div style="display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 0 2px">
+    <span style="font-size:12px;font-weight:800;color:#7E88A8">FASE OCEANO 🌊 · 28 COBRAS</span>
+    <span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:64px;line-height:1;color:#FFD43B">4º</span>
+    <span style="font-size:14px;font-weight:800;color:#A6AECB">sua melhor posição até hoje!</span>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:12px 16px;min-height:52px;box-sizing:border-box"><span style="font-size:18px">🍎</span><span style="flex:1;font-size:14.5px;font-weight:800;color:#A6AECB">Comida · 62 itens</span><span style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:17px">+1.240</span></div>
+    <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:12px 16px;min-height:52px;box-sizing:border-box"><span style="font-size:18px">⚔</span><span style="flex:1;font-size:14.5px;font-weight:800;color:#A6AECB">Caçadas · 3 cobras devoradas</span><span style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:17px">+900</span></div>
+    <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:12px 16px;min-height:52px;box-sizing:border-box"><span style="font-size:18px">⏱</span><span style="flex:1;font-size:14.5px;font-weight:800;color:#A6AECB">Sobrevivência · 1:42</span><span style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:17px">+340</span></div>
+    <div style="display:flex;align-items:center;gap:12px;border-radius:16px;padding:10px 16px;min-height:48px;box-sizing:border-box"><span style="flex:1;font-size:14px;font-weight:800;color:#7E88A8">TOTAL</span><span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:24px;color:#4ADE80">2.480</span></div>
+    <div style="display:flex;align-items:center;gap:12px;background:rgba(255,212,59,.08);border:1px solid rgba(255,212,59,.3);border-radius:16px;padding:10px 16px;min-height:48px;box-sizing:border-box"><div style="width:17px;height:17px;border-radius:50%;background:#FFD43B;border:2.5px solid #C9A11C;box-sizing:border-box"></div><span style="flex:1;font-size:14.5px;font-weight:800;color:#A6AECB">Moedas ganhas</span><span style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:17px;color:#FFD43B">+124</span></div>
+  </div>
+  <div style="background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.3);border-radius:18px;padding:14px 16px;display:flex;gap:12px">
+    <span style="font-size:20px;flex:none">💡</span>
+    <div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:12px;font-weight:800;color:#8ADCFF;letter-spacing:.05em">ANÁLISE ESTRATÉGICA</span><span style="font-size:13.5px;font-weight:700;color:#F4F6FF;line-height:1.5">Você cercou 2 cobras no canto — ótimo! Perdeu pontos ao perseguir a líder no meio: cobras grandes rendem mais quando encurraladas perto da borda.</span></div>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:10px 16px;min-height:52px;box-sizing:border-box"><span style="font-size:12px;font-weight:800;color:#7E88A8;font-family:ui-monospace,monospace">SEED OCE-7Q2F</span><div style="flex:1"></div><div style="min-height:40px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);padding:0 16px;display:flex;align-items:center;font-size:13px;font-weight:800;box-sizing:border-box">↻ Repetir esta arena</div></div>
+  <div style="flex:1"></div>
+  <div style="display:flex;flex-direction:column;gap:10px">
+    <div style="min-height:58px;border-radius:18px;background:linear-gradient(135deg,#4ADE80,#2FBF8F);display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:600;font-size:19px;color:#0B2416">Jogar de novo</div>
+    <div style="display:flex;gap:10px"><div style="flex:1;min-height:50px;border-radius:16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:500;font-size:15px;box-sizing:border-box">Menu</div><div style="flex:1;min-height:50px;border-radius:16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;gap:6px;font-family:'Fredoka',sans-serif;font-weight:500;font-size:15px;box-sizing:border-box">⇪ Compartilhar</div></div>
+  </div>
+</div></div>
+
+<div style="display:flex;flex-direction:column;gap:10px;flex:none"><span style="font-size:12px;font-weight:800;color:#7E88A8">06 · PÓS-PARTIDA — RANKING DA FASE (aba 2)</span>
+<div data-screen-label="06 Ranking da fase" style="width:412px;height:915px;border-radius:24px;overflow:hidden;background:linear-gradient(160deg,#12141F,#191430);display:flex;flex-direction:column;padding:52px 20px 28px;box-sizing:border-box;gap:14px">
+  <div style="display:flex;gap:8px"><div style="flex:1;min-height:44px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#A6AECB;box-sizing:border-box">Resultado</div><div style="flex:1;min-height:44px;border-radius:999px;background:linear-gradient(135deg,#4ADE80,#2FBF8F);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#0B2416">Ranking da fase</div></div>
+  <div style="display:flex;justify-content:space-between;align-items:center;padding:0 4px"><span style="font-size:12px;font-weight:800;color:#7E88A8">🌊 OCEANO · GLOBAL · HOJE</span><span style="font-size:12px;font-weight:800;color:#7E88A8">18.402 JOGADORES</span></div>
+  <div style="display:flex;align-items:flex-end;justify-content:center;gap:14px;padding:6px 0">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:5px"><div style="width:56px;height:56px;border-radius:50%;background:radial-gradient(circle at 32% 28%,#8ADCFF,#38BDF8);border:3px solid #94A3B8;box-sizing:border-box"></div><span style="font-size:12px;font-weight:800">Nadia</span><div style="width:66px;height:46px;border-radius:12px 12px 0 0;background:rgba(255,255,255,.07);display:flex;flex-direction:column;align-items:center;justify-content:center"><span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:15px;color:#E2E8F0">2º</span><span style="font-size:10px;font-weight:800;color:#A6AECB">9.870</span></div></div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:5px"><span style="font-size:18px">👑</span><div style="width:66px;height:66px;border-radius:50%;background:radial-gradient(circle at 32% 28%,#FFE68A,#FFD43B);border:3px solid #FFD43B;box-shadow:0 0 18px rgba(255,212,59,.4);box-sizing:border-box"></div><span style="font-size:12px;font-weight:800">Rex_BR</span><div style="width:66px;height:60px;border-radius:12px 12px 0 0;background:rgba(255,212,59,.1);border:1px solid rgba(255,212,59,.3);border-bottom:none;display:flex;flex-direction:column;align-items:center;justify-content:center;box-sizing:border-box"><span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:17px;color:#FFD43B">1º</span><span style="font-size:10px;font-weight:800;color:#A6AECB">12.340</span></div></div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:5px"><div style="width:56px;height:56px;border-radius:50%;background:radial-gradient(circle at 32% 28%,#FFA8D6,#F472B6);border:3px solid #C86F1F;box-sizing:border-box"></div><span style="font-size:12px;font-weight:800">Lu_Cobra</span><div style="width:66px;height:38px;border-radius:12px 12px 0 0;background:rgba(255,255,255,.07);display:flex;flex-direction:column;align-items:center;justify-content:center"><span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:14px;color:#FFC58C">3º</span><span style="font-size:10px;font-weight:800;color:#A6AECB">8.115</span></div></div>
+  </div>
+  <div style="flex:1;display:flex;flex-direction:column;gap:8px;overflow:hidden">
+    <sc-for list="{{ faseRows }}" as="r" hint-placeholder-count="4">
+    <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:10px 14px;min-height:56px;box-sizing:border-box"><span style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:14px;color:#A6AECB;width:28px">{{ r.pos }}</span><div style="width:34px;height:34px;border-radius:50%;background:{{ r.cor }};flex:none"></div><div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:800">{{ r.nome }}</div><div style="font-size:11.5px;font-weight:800;color:{{ r.stCor }}">{{ r.st }}</div></div><span style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:15px">{{ r.pts }}</span></div>
+    </sc-for>
+    <div style="text-align:center;color:#7E88A8;font-size:13px;font-weight:800">···</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;background:rgba(74,222,128,.1);border:1.5px solid #4ADE80;border-radius:16px;padding:10px 14px;min-height:56px;box-sizing:border-box"><span style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:14px;color:#4ADE80;width:38px">142º</span><div style="width:34px;height:34px;border-radius:50%;background:radial-gradient(circle at 32% 28%,#8BF0B4,#4ADE80);flex:none"></div><div style="flex:1"><div style="font-size:14px;font-weight:800">Você</div><div style="font-size:11.5px;font-weight:800;color:#FF9B9B">✗ eliminado aos 1:42</div></div><span style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:15px">2.480</span></div>
+</div></div>
+
+<div style="display:flex;flex-direction:column;gap:10px;flex:none"><span style="font-size:12px;font-weight:800;color:#7E88A8">07 · DESAFIOS (metas semanais)</span>
+<div data-screen-label="07 Desafios" style="width:412px;height:915px;border-radius:24px;overflow:hidden;background:linear-gradient(160deg,#12141F,#191430);display:flex;flex-direction:column;padding:52px 20px 28px;box-sizing:border-box;gap:16px">
+  <div style="display:flex;align-items:center;gap:12px"><div style="width:44px;height:44px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:16px;box-sizing:border-box">←</div><div style="flex:1"><div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:22px">Desafios</div><div style="font-size:12px;color:#A6AECB;font-weight:800">RENOVAM EM 2 DIAS</div></div><div style="display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:7px 12px;box-sizing:border-box"><div style="width:16px;height:16px;border-radius:50%;background:#FFD43B;border:2px solid #C9A11C;box-sizing:border-box"></div><span style="font-weight:800;font-size:13px">1.240</span></div></div>
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <sc-for list="{{ desafios }}" as="d" hint-placeholder-count="4">
+    <div style="background:rgba(255,255,255,.05);border:1px solid {{ d.borda }};border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:10px;opacity:{{ d.op }};box-sizing:border-box">
+      <div style="display:flex;align-items:center;gap:12px"><div style="width:48px;height:48px;border-radius:16px;background:{{ d.iconBg }};display:flex;align-items:center;justify-content:center;font-size:22px;flex:none">{{ d.icone }}</div><div style="flex:1;min-width:0"><div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:16.5px;color:{{ d.tituloCor }}">{{ d.titulo }}</div><div style="font-size:12.5px;color:#A6AECB;font-weight:700">{{ d.meta }}</div></div><div style="display:flex;align-items:center;gap:5px;background:rgba(255,212,59,.12);border-radius:999px;padding:5px 11px;flex:none"><div style="width:13px;height:13px;border-radius:50%;background:#FFD43B;border:2px solid #C9A11C;box-sizing:border-box"></div><span style="font-size:12px;font-weight:800;color:#FFD43B">{{ d.premio }}</span></div></div>
+      <sc-if value="{{ d.temBarra }}" hint-placeholder-val="{{ false }}"><div style="display:flex;align-items:center;gap:10px"><div style="flex:1;height:10px;border-radius:999px;background:rgba(255,255,255,.08)"><div style="width:{{ d.pct }};height:10px;border-radius:999px;background:linear-gradient(90deg,#2FBF8F,#4ADE80)"></div></div><span style="font-size:12px;font-weight:800;color:#A6AECB;flex:none">{{ d.prog }}</span></div></sc-if>
+      <sc-if value="{{ d.rodape }}" hint-placeholder-val="{{ false }}"><div style="font-size:12.5px;font-weight:800;color:{{ d.rodapeCor }}">{{ d.rodape }}</div></sc-if>
+    </div>
+    </sc-for>
+  </div>
+  <div style="flex:1"></div>
+  <div style="font-size:12.5px;color:#7E88A8;font-weight:700;text-align:center">Complete os 4 e ganhe 1 buff de Evolução grátis 🎁</div>
+</div></div>
+
+<div style="display:flex;flex-direction:column;gap:10px;flex:none"><span style="font-size:12px;font-weight:800;color:#7E88A8">08 · RANKING GLOBAL</span>
+<div data-screen-label="08 Ranking" style="width:412px;height:915px;border-radius:24px;overflow:hidden;background:linear-gradient(160deg,#12141F,#191430);display:flex;flex-direction:column;padding:52px 20px 28px;box-sizing:border-box;gap:14px">
+  <div style="display:flex;align-items:center;gap:12px"><div style="width:44px;height:44px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:16px;box-sizing:border-box">←</div><div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:22px;flex:1">Ranking</div></div>
+  <div style="display:flex;gap:8px"><div style="min-height:40px;border-radius:999px;background:linear-gradient(135deg,#4ADE80,#2FBF8F);padding:0 18px;display:flex;align-items:center;font-size:13.5px;font-weight:800;color:#0B2416">Semana</div><div style="min-height:40px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);padding:0 18px;display:flex;align-items:center;font-size:13.5px;font-weight:800;color:#A6AECB;box-sizing:border-box">Mês</div><div style="min-height:40px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);padding:0 18px;display:flex;align-items:center;font-size:13.5px;font-weight:800;color:#A6AECB;box-sizing:border-box">Geral</div></div>
+  <div style="display:flex;align-items:flex-end;justify-content:center;gap:14px;padding:8px 0 2px">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:5px"><div style="width:58px;height:58px;border-radius:50%;background:radial-gradient(circle at 32% 28%,#CDBBFF,#A78BFA);border:3px solid #94A3B8;box-sizing:border-box"></div><span style="font-size:12px;font-weight:800">Pixel_Ana</span><div style="width:70px;height:48px;border-radius:12px 12px 0 0;background:rgba(255,255,255,.07);display:flex;flex-direction:column;align-items:center;justify-content:center"><span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:15px;color:#E2E8F0">2º</span><span style="font-size:10px;font-weight:800;color:#A6AECB">48.2k</span></div></div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:5px"><span style="font-size:20px">👑</span><div style="width:70px;height:70px;border-radius:50%;background:radial-gradient(circle at 32% 28%,#FFC58C,#FF9F45);border:3px solid #FFD43B;box-shadow:0 0 20px rgba(255,212,59,.4);box-sizing:border-box"></div><span style="font-size:12px;font-weight:800">Rex_BR</span><div style="width:70px;height:64px;border-radius:12px 12px 0 0;background:rgba(255,212,59,.1);border:1px solid rgba(255,212,59,.3);border-bottom:none;display:flex;flex-direction:column;align-items:center;justify-content:center;box-sizing:border-box"><span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:18px;color:#FFD43B">1º</span><span style="font-size:10px;font-weight:800;color:#A6AECB">61.7k</span></div></div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:5px"><div style="width:58px;height:58px;border-radius:50%;background:radial-gradient(circle at 32% 28%,#7FE8DB,#2DD4BF);border:3px solid #C86F1F;box-sizing:border-box"></div><span style="font-size:12px;font-weight:800">Tsu_Nami</span><div style="width:70px;height:40px;border-radius:12px 12px 0 0;background:rgba(255,255,255,.07);display:flex;flex-direction:column;align-items:center;justify-content:center"><span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:14px;color:#FFC58C">3º</span><span style="font-size:10px;font-weight:800;color:#A6AECB">44.9k</span></div></div>
+  </div>
+  <div style="flex:1;display:flex;flex-direction:column;gap:8px;overflow:hidden">
+    <sc-for list="{{ globalRows }}" as="r" hint-placeholder-count="5">
+    <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:10px 14px;min-height:56px;box-sizing:border-box"><span style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:14px;color:#A6AECB;width:28px">{{ r.pos }}</span><div style="width:34px;height:34px;border-radius:50%;background:{{ r.cor }};flex:none"></div><div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:800">{{ r.nome }}</div><div style="font-size:11.5px;font-weight:800;color:#7E88A8">{{ r.sub }}</div></div><span style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:15px">{{ r.pts }}</span></div>
+    </sc-for>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;background:rgba(74,222,128,.1);border:1.5px solid #4ADE80;border-radius:16px;padding:10px 14px;min-height:56px;box-sizing:border-box"><span style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:14px;color:#4ADE80;width:44px">1.204º</span><div style="width:34px;height:34px;border-radius:50%;background:radial-gradient(circle at 32% 28%,#8BF0B4,#4ADE80);flex:none"></div><div style="flex:1"><div style="font-size:14px;font-weight:800">Você</div><div style="font-size:11.5px;font-weight:800;color:#A6AECB">sobe 96 posições c/ +2.000 pts</div></div><span style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:15px">8.4k</span></div>
+</div></div>
+
+<div style="display:flex;flex-direction:column;gap:10px;flex:none"><span style="font-size:12px;font-weight:800;color:#7E88A8">09 · LOJA (tabs por raridade)</span>
+<div data-screen-label="09 Loja" style="width:412px;height:915px;border-radius:24px;overflow:hidden;background:linear-gradient(160deg,#12141F,#191430);display:flex;flex-direction:column;padding:52px 20px 28px;box-sizing:border-box;gap:14px">
+  <div style="display:flex;align-items:center;gap:12px"><div style="width:44px;height:44px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:16px;box-sizing:border-box">←</div><div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:22px;flex:1">Loja</div><div style="display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:7px 11px;box-sizing:border-box"><span style="font-size:13px">🎟️</span><span style="font-weight:800;font-size:13px">3</span></div><div style="display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:7px 12px;box-sizing:border-box"><div style="width:16px;height:16px;border-radius:50%;background:#FFD43B;border:2px solid #C9A11C;box-sizing:border-box"></div><span style="font-weight:800;font-size:13px">480</span></div></div>
+  <div style="display:flex;gap:8px"><div style="flex:1;min-height:44px;border-radius:999px;background:linear-gradient(135deg,#4ADE80,#2FBF8F);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#0B2416">Skins</div><div style="flex:1;min-height:44px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#A6AECB;box-sizing:border-box">Buffs</div><div style="flex:1;min-height:44px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#A6AECB;box-sizing:border-box">Pacotes</div></div>
+  <div style="display:flex;border-bottom:2px solid rgba(255,255,255,.08)">
+    <div style="padding:10px 12px;font-size:13.5px;font-weight:800;color:#A6AECB;min-height:44px;display:flex;align-items:center;box-sizing:border-box">Comuns</div>
+    <div style="padding:10px 12px;font-size:13.5px;font-weight:800;color:#A6AECB;min-height:44px;display:flex;align-items:center;box-sizing:border-box">Raras</div>
+    <div style="padding:10px 12px;font-size:13.5px;font-weight:800;color:#A78BFA;border-bottom:2.5px solid #A78BFA;margin-bottom:-2px;min-height:44px;display:flex;align-items:center;box-sizing:border-box">Épicas</div>
+    <div style="padding:10px 12px;font-size:13.5px;font-weight:800;color:#A6AECB;min-height:44px;display:flex;align-items:center;gap:4px;box-sizing:border-box">👑 Lendárias</div>
+  </div>
+  <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:12px;align-content:start;overflow:hidden;padding-top:10px">
+    <sc-for list="{{ lojaSkins }}" as="s" hint-placeholder-count="6">
+    <div style="border-radius:18px;background:rgba(255,255,255,.05);border:1.5px solid {{ s.borda }};padding:14px 12px;display:flex;flex-direction:column;align-items:center;gap:9px;position:relative;box-sizing:border-box">
+      <sc-if value="{{ s.badge }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:-9px;background:#A78BFA;color:#1A1033;border-radius:999px;padding:2px 10px;font-size:9.5px;font-weight:800">{{ s.badge }}</span></sc-if>
+      <div style="display:flex;align-items:center;gap:2px;margin-top:4px"><div style="width:12px;height:12px;border-radius:50%;background:{{ s.bg }};opacity:.65"></div><div style="width:14px;height:14px;border-radius:50%;background:{{ s.bg }};opacity:.8"></div><div style="width:16px;height:16px;border-radius:50%;background:{{ s.bg }};opacity:.9"></div><div style="width:21px;height:21px;border-radius:50%;background:{{ s.bg }};position:relative"><div style="position:absolute;left:4px;top:5.5px;width:5px;height:5px;border-radius:50%;background:#fff"></div><div style="position:absolute;left:11.5px;top:5.5px;width:5px;height:5px;border-radius:50%;background:#fff"></div></div></div>
+      <span style="font-size:13.5px;font-weight:800">{{ s.nome }}</span>
+      <div style="min-height:38px;border-radius:999px;background:{{ s.cta }};border:{{ s.ctaBorda }};padding:0 15px;display:flex;align-items:center;gap:6px;font-size:13px;font-weight:800;color:{{ s.ctaCor }};box-sizing:border-box"><sc-if value="{{ s.moeda }}" hint-placeholder-val="{{ true }}"><div style="width:13px;height:13px;border-radius:50%;background:#FFD43B;border:2px solid #C9A11C;box-sizing:border-box"></div></sc-if>{{ s.preco }}</div>
+    </div>
+    </sc-for>
+  </div>
+</div></div>
+
+<div style="display:flex;flex-direction:column;gap:10px;flex:none"><span style="font-size:12px;font-weight:800;color:#7E88A8">09a · PREVIEW DE SKIN (toque num card da loja)</span>
+<div data-screen-label="09a Preview de skin" style="width:412px;height:915px;border-radius:24px;overflow:hidden;background:linear-gradient(160deg,#12141F,#191430);position:relative;box-sizing:border-box">
+  <div style="position:absolute;inset:0;background:rgba(8,10,18,.78)"></div>
+  <div style="position:absolute;left:24px;right:24px;top:50%;transform:translateY(-50%);background:#1B1F30;border:1.5px solid #FFD43B;border-radius:26px;padding:22px 20px;display:flex;flex-direction:column;gap:16px;box-sizing:border-box">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="flex:1;display:flex;flex-direction:column;gap:3px"><span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:24px">Fênix</span><span style="font-size:11px;font-weight:800;color:#FFD43B;letter-spacing:.06em">👑 LENDÁRIA</span></div>
+      <div style="width:40px;height:40px;border-radius:14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);display:flex;align-items:center;justify-content:center;font-size:15px;color:#A6AECB;box-sizing:border-box">✕</div>
+    </div>
+    <div style="height:230px;border-radius:20px;background:#131624;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:22px 22px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center">
+      <div style="animation:snkSlide 3s ease-in-out infinite;display:flex;align-items:center;gap:3px">
+        <div style="width:15px;height:15px;border-radius:50%;background:linear-gradient(135deg,#FFD43B,#FF9F45);opacity:.55"></div>
+        <div style="width:17px;height:17px;border-radius:50%;background:linear-gradient(135deg,#FFD43B,#FF9F45);opacity:.7"></div>
+        <div style="width:19px;height:19px;border-radius:50%;background:linear-gradient(135deg,#FFD43B,#FF9F45);opacity:.85"></div>
+        <div style="width:21px;height:21px;border-radius:50%;background:linear-gradient(135deg,#FFD43B,#FF6B6B)"></div>
+        <div style="width:27px;height:27px;border-radius:50%;background:linear-gradient(135deg,#FFE68A,#FF6B6B);box-shadow:0 0 16px rgba(255,159,69,.7);position:relative"><div style="position:absolute;left:5px;top:8px;width:6.5px;height:6.5px;border-radius:50%;background:#fff"></div><div style="position:absolute;left:15px;top:8px;width:6.5px;height:6.5px;border-radius:50%;background:#fff"></div><div style="position:absolute;left:6.8px;top:9.8px;width:3px;height:3px;border-radius:50%;background:#12141F"></div><div style="position:absolute;left:16.8px;top:9.8px;width:3px;height:3px;border-radius:50%;background:#12141F"></div></div>
+      </div>
+      <div style="position:absolute;right:44px;top:70px;width:11px;height:11px;border-radius:50%;background:#FF6B6B"></div>
+      <div style="position:absolute;left:52px;bottom:56px;width:9px;height:9px;border-radius:50%;background:#FF6B6B"></div>
+      <div style="position:absolute;bottom:10px;left:0;right:0;text-align:center;font-size:10.5px;font-weight:800;color:#7E88A8">PREVIEW NA ARENA</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:10px 14px;box-sizing:border-box"><span style="font-size:15px">✨</span><span style="font-size:12.5px;font-weight:700;color:#A6AECB;line-height:1.4">Rastro flamejante exclusivo e brilho dourado na cabeça</span></div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="min-height:56px;border-radius:18px;background:linear-gradient(135deg,#4ADE80,#2FBF8F);display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Fredoka',sans-serif;font-weight:600;font-size:17px;color:#0B2416">Comprar · <div style="width:15px;height:15px;border-radius:50%;background:#FFD43B;border:2.5px solid #C9A11C;box-sizing:border-box"></div> 2.500</div>
+      <div style="min-height:48px;display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:500;font-size:15px;color:#A6AECB">Voltar para a loja</div>
+    </div>
+  </div>
+</div></div>
+
+<div style="display:flex;flex-direction:column;gap:10px;flex:none"><span style="font-size:12px;font-weight:800;color:#7E88A8">09b · LOJA — BUFFS</span>
+<div data-screen-label="09b Loja Buffs" style="width:412px;height:915px;border-radius:24px;overflow:hidden;background:linear-gradient(160deg,#12141F,#191430);display:flex;flex-direction:column;padding:52px 20px 28px;box-sizing:border-box;gap:14px">
+  <div style="display:flex;align-items:center;gap:12px"><div style="width:44px;height:44px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:16px;box-sizing:border-box">←</div><div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:22px;flex:1">Loja</div><div style="display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:7px 11px;box-sizing:border-box"><span style="font-size:13px">🎟️</span><span style="font-weight:800;font-size:13px">3</span></div><div style="display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:7px 12px;box-sizing:border-box"><div style="width:16px;height:16px;border-radius:50%;background:#FFD43B;border:2px solid #C9A11C;box-sizing:border-box"></div><span style="font-weight:800;font-size:13px">480</span></div></div>
+  <div style="display:flex;gap:8px"><div style="flex:1;min-height:44px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#A6AECB;box-sizing:border-box">Skins</div><div style="flex:1;min-height:44px;border-radius:999px;background:linear-gradient(135deg,#4ADE80,#2FBF8F);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#0B2416">Buffs</div><div style="flex:1;min-height:44px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#A6AECB;box-sizing:border-box">Pacotes</div></div>
+  <div style="font-size:12px;font-weight:800;color:#7E88A8;padding:0 4px">Permanentes — cada compra sobe 1 nível. Sem saldo? Assista um anúncio.</div>
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <sc-for list="{{ buffs }}" as="b" hint-placeholder-count="3">
+    <div style="border-radius:20px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);padding:16px;display:flex;align-items:center;gap:14px;box-sizing:border-box">
+      <div style="width:56px;height:56px;border-radius:18px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;font-size:26px;flex:none">{{ b.icone }}</div>
+      <div style="flex:1;min-width:0"><div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:17px">{{ b.nome }}</div><div style="font-size:12.5px;font-weight:700;color:#A6AECB">{{ b.efeito }}</div><div style="display:flex;gap:4px;margin-top:6px"><sc-for list="{{ b.pips }}" as="p" hint-placeholder-count="5"><div style="width:16px;height:7px;border-radius:99px;background:{{ p }}"></div></sc-for></div></div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex:none">
+        <span style="font-size:11px;font-weight:800;color:#7E88A8">{{ b.desc }}</span>
+        <sc-if value="{{ b.anuncio }}" hint-placeholder-val="{{ false }}"><div style="min-height:44px;border-radius:999px;background:linear-gradient(135deg,#FF9F45,#F5893B);padding:0 16px;display:flex;align-items:center;font-size:13px;font-weight:800;color:#3A1F00;box-sizing:border-box;white-space:nowrap">▶ ANÚNCIO</div><div style="min-height:30px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);padding:0 12px;display:flex;align-items:center;gap:4px;font-size:11px;font-weight:800;color:#A6AECB;box-sizing:border-box;white-space:nowrap">🎟️ Pular (3)</div></sc-if>
+        <sc-if value="{{ b.compravel }}" hint-placeholder-val="{{ true }}"><div style="min-height:44px;border-radius:999px;background:linear-gradient(135deg,#4ADE80,#2FBF8F);padding:0 16px;display:flex;align-items:center;gap:6px;font-size:13.5px;font-weight:800;color:#0B2416;box-sizing:border-box"><div style="width:13px;height:13px;border-radius:50%;background:#FFD43B;border:2px solid #C9A11C;box-sizing:border-box"></div>{{ b.preco }}</div></sc-if>
+      </div>
+    </div>
+    </sc-for>
+  </div>
+  <div style="flex:1"></div>
+</div></div>
+
+<div style="display:flex;flex-direction:column;gap:10px;flex:none"><span style="font-size:12px;font-weight:800;color:#7E88A8">09c · LOJA — PACOTES (rola verticalmente · grupos 1 e 2 em carrossel)</span>
+<div data-screen-label="09c Loja Pacotes" style="width:412px;height:915px;border-radius:24px;background:linear-gradient(160deg,#12141F,#191430);display:flex;flex-direction:column;padding:52px 0 0;box-sizing:border-box;gap:14px;overflow:hidden">
+  <div style="display:flex;align-items:center;gap:12px;padding:0 20px"><div style="width:44px;height:44px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:16px;box-sizing:border-box">←</div><div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:22px;flex:1">Loja</div><div style="display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:7px 11px;box-sizing:border-box"><span style="font-size:13px">🎟️</span><span style="font-weight:800;font-size:13px">3</span></div><div style="display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:7px 12px;box-sizing:border-box"><div style="width:16px;height:16px;border-radius:50%;background:#FFD43B;border:2px solid #C9A11C;box-sizing:border-box"></div><span style="font-weight:800;font-size:13px">480</span></div></div>
+  <div style="display:flex;gap:8px;padding:0 20px"><div style="flex:1;min-height:44px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#A6AECB;box-sizing:border-box">Skins</div><div style="flex:1;min-height:44px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#A6AECB;box-sizing:border-box">Buffs</div><div style="flex:1;min-height:44px;border-radius:999px;background:linear-gradient(135deg,#4ADE80,#2FBF8F);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#0B2416">Pacotes</div></div>
+  <div style="flex:1;overflow-y:auto;scrollbar-width:none;display:flex;flex-direction:column;gap:18px;padding:2px 0 28px">
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <span style="font-size:11.5px;font-weight:800;color:#7E88A8;letter-spacing:.06em;padding:0 20px">PACOTES DE SKINS</span>
+      <div style="display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;padding:10px 20px 4px;scroll-snap-type:x mandatory">
+        <sc-for list="{{ pacotesSkins }}" as="pk" hint-placeholder-count="3">
+        <div style="flex:none;width:252px;scroll-snap-align:start;border-radius:20px;background:rgba(255,255,255,.05);border:1.5px solid {{ pk.borda }};padding:16px;display:flex;flex-direction:column;gap:10px;position:relative;box-sizing:border-box">
+          <span style="position:absolute;top:-9px;left:14px;background:{{ pk.tagBg }};color:{{ pk.tagCor }};border-radius:999px;padding:2px 10px;font-size:9.5px;font-weight:800;white-space:nowrap">{{ pk.tag }}</span>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:6px"><span style="font-size:26px">{{ pk.icone }}</span><div style="flex:1"><div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:17px">{{ pk.nome }}</div><div style="font-size:11px;font-weight:800;color:#7E88A8">{{ pk.tipo }}</div></div></div>
+          <div style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:26px;color:{{ pk.precoCor }}">R$ {{ pk.preco }}<span style="font-size:12px;font-weight:600;color:#7E88A8"> {{ pk.precoSuf }}</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <sc-for list="{{ pk.itens }}" as="bi" hint-placeholder-count="3"><div style="display:flex;gap:7px;align-items:baseline"><span style="font-size:11px;color:#4ADE80;font-weight:800">✓</span><span style="font-size:12.5px;font-weight:700;color:#A6AECB;line-height:1.35">{{ bi }}</span></div></sc-for>
+          </div>
+          <div style="min-height:46px;border-radius:999px;background:{{ pk.ctaBg }};display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:600;font-size:15px;color:{{ pk.ctaCor }};margin-top:auto">{{ pk.cta }}</div>
+        </div>
+        </sc-for>
+      </div>
+      <div style="display:flex;justify-content:center;gap:5px"><div style="width:18px;height:6px;border-radius:99px;background:#4ADE80"></div><div style="width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.2)"></div><div style="width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.2)"></div></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <span style="font-size:11.5px;font-weight:800;color:#7E88A8;letter-spacing:.06em;padding:0 20px">PACOTES DE ANÚNCIOS</span>
+      <div style="display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;padding:10px 20px 4px;scroll-snap-type:x mandatory">
+        <sc-for list="{{ pacotesAds }}" as="pa" hint-placeholder-count="3">
+        <div style="flex:none;width:210px;scroll-snap-align:start;border-radius:20px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);padding:16px;display:flex;flex-direction:column;gap:8px;box-sizing:border-box">
+          <div style="display:flex;align-items:center;gap:9px"><span style="font-size:22px">{{ pa.icone }}</span><div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:15.5px;line-height:1.2">{{ pa.nome }}</div></div>
+          <div style="font-size:12.5px;font-weight:700;color:#A6AECB;line-height:1.4">🚫 Sem anúncios + {{ pa.bonus }}</div>
+          <div style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:22px">R$ {{ pa.preco }}</div>
+          <div style="min-height:44px;border-radius:999px;background:linear-gradient(135deg,#4ADE80,#2FBF8F);display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:600;font-size:14.5px;color:#0B2416;margin-top:auto">Comprar</div>
+        </div>
+        </sc-for>
+      </div>
+    </div>
+    <div style="padding:0 20px">
+      <div style="background:rgba(255,212,59,.08);border:1px solid rgba(255,212,59,.3);border-radius:18px;padding:14px 16px;display:flex;align-items:center;gap:12px;box-sizing:border-box">
+        <span style="font-size:22px;flex:none">🚫</span>
+        <div style="flex:1"><div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:15.5px">Remover anúncios</div><div style="font-size:12px;color:#A6AECB;font-weight:700">para sempre, em todos os aparelhos</div></div>
+        <div style="min-height:44px;border-radius:999px;background:#FFD43B;padding:0 18px;display:flex;align-items:center;font-family:'Fredoka',sans-serif;font-weight:600;font-size:15px;color:#3A2E00">R$ 15,41</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;padding:0 20px">
+      <span style="font-size:11.5px;font-weight:800;color:#7E88A8;letter-spacing:.06em">TICKETS DE PULO DE ANÚNCIO</span>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+        <sc-for list="{{ pulos }}" as="pu" hint-placeholder-count="3">
+        <div style="border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);padding:14px 8px;display:flex;flex-direction:column;align-items:center;gap:7px;box-sizing:border-box">
+          <span style="font-size:22px">🎟️</span>
+          <span style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:15px">{{ pu.qtd }} pulos</span>
+          <div style="min-height:38px;border-radius:999px;background:linear-gradient(135deg,#4ADE80,#2FBF8F);padding:0 12px;display:flex;align-items:center;font-size:12.5px;font-weight:800;color:#0B2416;white-space:nowrap">R$ {{ pu.preco }}</div>
+        </div>
+        </sc-for>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;padding:0 20px">
+      <span style="font-size:11.5px;font-weight:800;color:#7E88A8;letter-spacing:.06em">MOEDAS</span>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+        <sc-for list="{{ moedasPack }}" as="mo" hint-placeholder-count="3">
+        <div style="border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);padding:14px 8px;display:flex;flex-direction:column;align-items:center;gap:7px;box-sizing:border-box">
+          <div style="width:24px;height:24px;border-radius:50%;background:#FFD43B;border:3px solid #C9A11C;box-sizing:border-box"></div>
+          <span style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:15px">{{ mo.qtd }}</span>
+          <div style="min-height:38px;border-radius:999px;background:linear-gradient(135deg,#4ADE80,#2FBF8F);padding:0 12px;display:flex;align-items:center;font-size:12.5px;font-weight:800;color:#0B2416;white-space:nowrap">R$ {{ mo.preco }}</div>
+        </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<div style="display:flex;flex-direction:column;gap:10px;flex:none"><span style="font-size:12px;font-weight:800;color:#7E88A8">QA · ANÚNCIO INDISPONÍVEL · RANKING SEM CONTA · IDIOMA +30%</span>
+<div style="width:412px;display:flex;flex-direction:column;gap:14px">
+  <div style="border-radius:20px;background:#1B1F30;border:1px solid rgba(255,255,255,.12);padding:18px 16px;display:flex;flex-direction:column;gap:10px;box-sizing:border-box">
+    <span style="font-size:11px;font-weight:800;color:#7E88A8;letter-spacing:.06em">ESTADOS DO BOTÃO DE ANÚNCIO</span>
+    <span style="font-size:10px;font-weight:800;color:#7E88A8">NORMAL</span>
+    <div style="min-height:52px;border-radius:16px;background:linear-gradient(135deg,#FF9F45,#F5893B);display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Fredoka',sans-serif;font-weight:600;font-size:16px;color:#3A1F00;position:relative">▶ Renascer com anúncio<span style="position:absolute;top:-9px;right:14px;background:#FFD43B;color:#3A2E00;border-radius:999px;padding:2px 10px;font-size:10px;font-weight:800;font-family:'Nunito',sans-serif">ANÚNCIO</span></div>
+    <span style="font-size:10px;font-weight:800;color:#7E88A8">CARREGANDO</span>
+    <div style="min-height:52px;border-radius:16px;background:linear-gradient(135deg,#FF9F45,#F5893B);opacity:.55;display:flex;align-items:center;justify-content:center;gap:10px;font-family:'Fredoka',sans-serif;font-weight:600;font-size:16px;color:#3A1F00">◌ Carregando anúncio…</div>
+    <span style="font-size:10px;font-weight:800;color:#7E88A8">SEM CONEXÃO</span>
+    <div style="min-height:52px;border-radius:16px;background:rgba(255,255,255,.04);border:1.5px dashed rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Fredoka',sans-serif;font-weight:500;font-size:15px;color:#7E88A8;box-sizing:border-box">📡 Sem conexão — tente de novo</div>
+    <span style="font-size:11px;font-weight:700;color:#A6AECB">Offline, o botão 🎟️ de ticket continua funcionando — pulos não dependem de rede.</span>
+  </div>
+  <div style="border-radius:20px;background:#1B1F30;border:1px solid rgba(255,255,255,.12);padding:18px 16px;display:flex;flex-direction:column;gap:10px;box-sizing:border-box">
+    <span style="font-size:11px;font-weight:800;color:#7E88A8;letter-spacing:.06em">RANKING SEM CONTA — SUBSTITUI A LINHA "VOCÊ" (TELA 08)</span>
+    <div style="display:flex;align-items:center;gap:12px;background:rgba(56,189,248,.08);border:1.5px solid rgba(56,189,248,.45);border-radius:16px;padding:10px 14px;min-height:56px;box-sizing:border-box">
+      <svg width="22" height="22" viewBox="0 0 48 48"><path fill="#4285F4" d="M45.1 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h11.8c-.5 2.8-2.1 5.1-4.4 6.7v5.5h7.1c4.2-3.8 6.6-9.5 6.6-16.2z"></path><path fill="#34A853" d="M24 46c6 0 11-2 14.6-5.3l-7.1-5.5c-2 1.3-4.5 2.1-7.5 2.1-5.8 0-10.7-3.9-12.4-9.1H4.2v5.7C7.8 41 15.3 46 24 46z"></path><path fill="#FBBC05" d="M11.6 28.2c-.4-1.3-.7-2.7-.7-4.2s.3-2.9.7-4.2v-5.7H4.2C2.8 17 2 20.4 2 24s.8 7 2.2 9.9l7.4-5.7z"></path><path fill="#EA4335" d="M24 10.8c3.3 0 6.2 1.1 8.5 3.3l6.3-6.3C35 4.3 30 2 24 2 15.3 2 7.8 7 4.2 14.1l7.4 5.7c1.7-5.2 6.6-9 12.4-9z"></path></svg>
+      <span style="flex:1;font-size:13.5px;font-weight:800;line-height:1.35">Entre para aparecer no ranking</span>
+      <div style="min-height:40px;border-radius:999px;background:#F4F6FF;padding:0 18px;display:flex;align-items:center;font-family:'Fredoka',sans-serif;font-weight:600;font-size:14px;color:#1A1A2E">Entrar</div>
+    </div>
+  </div>
+  <div style="border-radius:20px;background:#1B1F30;border:1px solid rgba(255,255,255,.12);padding:18px 16px;display:flex;flex-direction:column;gap:10px;box-sizing:border-box">
+    <span style="font-size:11px;font-weight:800;color:#7E88A8;letter-spacing:.06em">STRESS DE IDIOMA — ALEMÃO (+30%)</span>
+    <div style="min-height:56px;border-radius:16px;background:linear-gradient(135deg,#FF9F45,#F5893B);display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Fredoka',sans-serif;font-weight:600;font-size:16px;color:#3A1F00;position:relative;padding:8px 18px;text-align:center;box-sizing:border-box">▶ Mit Werbung wiederbeleben<span style="position:absolute;top:-9px;right:14px;background:#FFD43B;color:#3A2E00;border-radius:999px;padding:2px 10px;font-size:10px;font-weight:800;font-family:'Nunito',sans-serif">WERBUNG</span></div>
+    <div style="min-height:52px;border-radius:16px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Fredoka',sans-serif;font-weight:500;font-size:15px;padding:8px 18px;text-align:center;box-sizing:border-box">🎟️ Werbung überspringen · 1 von 3 einlösen</div>
+    <div style="min-height:56px;border-radius:16px;background:linear-gradient(135deg,#4ADE80,#2FBF8F);display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:600;font-size:16px;color:#0B2416;padding:8px 18px;text-align:center;box-sizing:border-box">▶ Nächstes Level spielen — Wüste</div>
+    <div style="min-height:52px;border-radius:16px;background:rgba(255,107,107,.12);border:1.5px solid rgba(255,107,107,.4);display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Fredoka',sans-serif;font-weight:500;font-size:15px;color:#FF9B9B;box-sizing:border-box">🏳 Level aufgeben</div>
+    <span style="font-size:11px;font-weight:700;color:#A6AECB">Regra validada: botões usam min-height + padding (nunca height fixa) — textos +30% quebram em 2 linhas sem corte.</span>
+  </div>
+</div></div>
+
+<div style="display:flex;flex-direction:column;gap:10px;flex:none"><span style="font-size:12px;font-weight:800;color:#7E88A8">10 · CONFIGURAÇÕES</span>
+<div data-screen-label="10 Configurações" style="width:412px;height:915px;border-radius:24px;overflow:hidden;background:linear-gradient(160deg,#12141F,#191430);display:flex;flex-direction:column;padding:52px 20px 28px;box-sizing:border-box;gap:14px">
+  <div style="display:flex;align-items:center;gap:12px"><div style="width:44px;height:44px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:16px;box-sizing:border-box">←</div><div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:22px">Configurações</div></div>
+  <div style="font-size:11.5px;font-weight:800;color:#7E88A8;letter-spacing:.06em;padding:4px 4px 0">ÁUDIO</div>
+  <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:6px 16px;box-sizing:border-box">
+    <div style="display:flex;align-items:center;gap:14px;min-height:48px;border-bottom:1px solid rgba(255,255,255,.07)"><span style="font-size:19px;width:26px">🔊</span><span style="flex:1;font-size:15px;font-weight:800">Sons do jogo</span><div style="width:110px;height:10px;border-radius:999px;background:rgba(255,255,255,.1)"><div style="width:75%;height:10px;border-radius:999px;background:linear-gradient(90deg,#2FBF8F,#4ADE80);position:relative"><div style="position:absolute;right:-11px;top:-7px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 2px 5px rgba(0,0,0,.4)"></div></div></div></div>
+    <div style="display:flex;align-items:center;gap:14px;min-height:48px"><span style="font-size:19px;width:26px">🎵</span><span style="flex:1;font-size:15px;font-weight:800">Música</span><div style="width:110px;height:10px;border-radius:999px;background:rgba(255,255,255,.1)"><div style="width:40%;height:10px;border-radius:999px;background:linear-gradient(90deg,#2FBF8F,#4ADE80);position:relative"><div style="position:absolute;right:-11px;top:-7px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 2px 5px rgba(0,0,0,.4)"></div></div></div></div>
+  </div>
+  <div style="font-size:11.5px;font-weight:800;color:#7E88A8;letter-spacing:.06em;padding:4px 4px 0">JOGO</div>
+  <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:6px 16px;box-sizing:border-box">
+    <div style="display:flex;align-items:center;gap:14px;min-height:48px;border-bottom:1px solid rgba(255,255,255,.07)"><span style="font-size:19px;width:26px">📳</span><span style="flex:1;font-size:15px;font-weight:800">Vibração (háptica)</span><div style="width:58px;height:34px;border-radius:999px;background:linear-gradient(135deg,#4ADE80,#2FBF8F);position:relative;flex:none"><div style="position:absolute;right:4px;top:4px;width:26px;height:26px;border-radius:50%;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,.3)"></div></div></div>
+    <div style="display:flex;align-items:center;gap:14px;min-height:48px;border-bottom:1px solid rgba(255,255,255,.07)"><span style="font-size:19px;width:26px">🌐</span><span style="flex:1;font-size:15px;font-weight:800">Idioma</span><span style="font-size:14px;font-weight:800;color:#A6AECB">Português (BR) ›</span></div>
+    <div style="display:flex;align-items:center;gap:14px;min-height:48px"><span style="font-size:19px;width:26px">◐</span><div style="flex:1"><div style="font-size:15px;font-weight:800">Modo daltonismo</div><div style="font-size:12px;color:#A6AECB;font-weight:700;display:flex;align-items:center;gap:5px">símbolos nas cobras<svg width="11" height="11" viewBox="0 0 12 12"><circle cx="6" cy="6" r="4.5" fill="#4ADE80"></circle></svg><svg width="11" height="11" viewBox="0 0 12 12"><path d="M6 1.5 L10.5 10 L1.5 10 Z" fill="#38BDF8"></path></svg><svg width="11" height="11" viewBox="0 0 12 12"><rect x="2" y="2" width="8" height="8" fill="#F472B6"></rect></svg></div></div><div style="width:58px;height:34px;border-radius:999px;background:rgba(255,255,255,.12);position:relative;flex:none"><div style="position:absolute;left:4px;top:4px;width:26px;height:26px;border-radius:50%;background:#7E88A8"></div></div></div>
+  </div>
+  <div style="font-size:11.5px;font-weight:800;color:#7E88A8;letter-spacing:.06em;padding:4px 4px 0">CONTA</div>
+  <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:6px 16px;box-sizing:border-box">
+    <div style="display:flex;align-items:center;gap:14px;min-height:48px;border-bottom:1px solid rgba(255,255,255,.07)"><span style="width:26px;display:flex;align-items:center"><svg width="18" height="18" viewBox="0 0 48 48"><path fill="#4285F4" d="M45.1 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h11.8c-.5 2.8-2.1 5.1-4.4 6.7v5.5h7.1c4.2-3.8 6.6-9.5 6.6-16.2z"></path><path fill="#34A853" d="M24 46c6 0 11-2 14.6-5.3l-7.1-5.5c-2 1.3-4.5 2.1-7.5 2.1-5.8 0-10.7-3.9-12.4-9.1H4.2v5.7C7.8 41 15.3 46 24 46z"></path><path fill="#FBBC05" d="M11.6 28.2c-.4-1.3-.7-2.7-.7-4.2s.3-2.9.7-4.2v-5.7H4.2C2.8 17 2 20.4 2 24s.8 7 2.2 9.9l7.4-5.7z"></path><path fill="#EA4335" d="M24 10.8c3.3 0 6.2 1.1 8.5 3.3l6.3-6.3C35 4.3 30 2 24 2 15.3 2 7.8 7 4.2 14.1l7.4 5.7c1.7-5.2 6.6-9 12.4-9z"></path></svg></span><span style="flex:1;font-size:15px;font-weight:800">Entrar com Google</span><span style="font-size:14px;color:#A6AECB;font-weight:800">›</span></div>
+    <div style="display:flex;align-items:center;gap:14px;min-height:48px;border-bottom:1px solid rgba(255,255,255,.07)"><span style="font-size:19px;width:26px">🛡</span><span style="flex:1;font-size:15px;font-weight:800">Privacidade e responsáveis</span><span style="font-size:14px;color:#A6AECB;font-weight:800">›</span></div>
+    <div style="display:flex;align-items:center;gap:14px;min-height:48px;border-bottom:1px solid rgba(255,255,255,.07)"><span style="font-size:19px;width:26px">🚫</span><span style="flex:1;font-size:15px;font-weight:800">Remover anúncios</span><span style="font-size:14px;font-weight:800;color:#A6AECB">R$ 15,41 ›</span></div>
+    <div style="display:flex;align-items:center;gap:14px;min-height:48px;border-bottom:1px solid rgba(255,255,255,.07)"><span style="font-size:19px;width:26px">↻</span><span style="flex:1;font-size:15px;font-weight:800">Restaurar compras</span><span style="font-size:14px;color:#A6AECB;font-weight:800">›</span></div>
+    <div style="display:flex;align-items:center;gap:14px;min-height:48px;border-bottom:1px solid rgba(255,255,255,.07)"><span style="font-size:19px;width:26px">🚪</span><span style="flex:1;font-size:15px;font-weight:800">Sair da conta</span><span style="font-size:14px;color:#A6AECB;font-weight:800">›</span></div>
+    <div style="display:flex;align-items:center;gap:14px;min-height:48px"><span style="font-size:19px;width:26px">🗑</span><span style="flex:1;font-size:15px;font-weight:800;color:#FF9B9B">Excluir conta e dados</span><span style="font-size:14px;color:#FF9B9B;font-weight:800">›</span></div>
+  </div>
+  <div style="flex:1"></div>
+  <div style="text-align:center;font-size:12px;color:#7E88A8;font-weight:700">Snakito v1.0.0 · feito com 💚</div>
+</div></div>
+
+<div style="display:flex;flex-direction:column;gap:10px;flex:none"><span style="font-size:12px;font-weight:800;color:#7E88A8">11 · ONBOARDING — 4 QUADROS, ZERO TEXTO</span>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;width:412px">
+  <div data-screen-label="11a Onboarding comer" style="height:440px;border-radius:20px;overflow:hidden;background:#131624;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:20px 20px;position:relative">
+    <svg width="198" height="440" viewBox="0 0 198 440" style="position:absolute;inset:0">
+      <circle cx="60" cy="130" r="9" fill="#4ADE80" opacity=".7"></circle><circle cx="82" cy="122" r="11" fill="#4ADE80"></circle><circle cx="79" cy="118" r="3" fill="#fff"></circle><circle cx="86" cy="118" r="3" fill="#fff"></circle><circle cx="112" cy="114" r="6" fill="#FF6B6B"></circle>
+      <path d="M99 180 l0 26 m-8 -10 l8 12 l8 -12" stroke="#7E88A8" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      <circle cx="48" cy="290" r="9" fill="#4ADE80" opacity=".55"></circle><circle cx="68" cy="282" r="10" fill="#4ADE80" opacity=".75"></circle><circle cx="90" cy="274" r="11" fill="#4ADE80" opacity=".9"></circle><circle cx="115" cy="268" r="13" fill="#4ADE80"></circle><circle cx="111" cy="263" r="3.4" fill="#fff"></circle><circle cx="120" cy="263" r="3.4" fill="#fff"></circle><path d="M112 272 q4.5 4 9 0" stroke="#12141F" stroke-width="2.4" fill="none" stroke-linecap="round"></path>
+      <path d="M138 250 q6 -8 14 -4 M146 262 q8 -2 12 4" stroke="#FFD43B" stroke-width="3" fill="none" stroke-linecap="round"></path>
+    </svg>
+    <div style="position:absolute;bottom:14px;left:0;right:0;display:flex;justify-content:center;gap:6px"><div style="width:20px;height:7px;border-radius:99px;background:#4ADE80"></div><div style="width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.2)"></div><div style="width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.2)"></div><div style="width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.2)"></div></div>
+  </div>
+  <div data-screen-label="11b Onboarding devorar" style="height:440px;border-radius:20px;overflow:hidden;background:#131624;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:20px 20px;position:relative">
+    <svg width="198" height="440" viewBox="0 0 198 440" style="position:absolute;inset:0">
+      <circle cx="42" cy="180" r="12" fill="#4ADE80" opacity=".6"></circle><circle cx="68" cy="170" r="14" fill="#4ADE80" opacity=".8"></circle><circle cx="98" cy="162" r="17" fill="#4ADE80"></circle><circle cx="93" cy="156" r="4.4" fill="#fff"></circle><circle cx="104" cy="156" r="4.4" fill="#fff"></circle><circle cx="94.5" cy="157.5" r="2.2" fill="#12141F"></circle><circle cx="105.5" cy="157.5" r="2.2" fill="#12141F"></circle><path d="M96 168 q5 4.5 10 0" stroke="#12141F" stroke-width="2.6" fill="none" stroke-linecap="round"></path>
+      <circle cx="138" cy="150" r="7" fill="#F472B6" opacity=".8"></circle><circle cx="152" cy="144" r="8" fill="#F472B6"></circle><circle cx="150" cy="141" r="2.2" fill="#fff"></circle><circle cx="155" cy="141" r="2.2" fill="#fff"></circle>
+      <path d="M52 250 q10 26 46 30 q40 4 54 -18" stroke="#7E88A8" stroke-width="4" fill="none" stroke-linecap="round" stroke-dasharray="2 10"></path>
+      <rect x="36" y="316" width="10" height="10" rx="2.5" fill="#FFD43B" transform="rotate(18 41 321)"></rect><rect x="70" y="300" width="9" height="9" rx="2.5" fill="#F472B6" transform="rotate(-14 74 304)"></rect><rect x="104" y="322" width="11" height="11" rx="2.5" fill="#38BDF8" transform="rotate(30 109 327)"></rect><rect x="140" y="304" width="9" height="9" rx="2.5" fill="#4ADE80" transform="rotate(-22 144 308)"></rect><rect x="162" y="330" width="10" height="10" rx="2.5" fill="#A78BFA" transform="rotate(12 167 335)"></rect><rect x="58" y="345" width="8" height="8" rx="2" fill="#FF9F45" transform="rotate(40 62 349)"></rect><rect x="126" y="352" width="8" height="8" rx="2" fill="#FF6B6B" transform="rotate(-30 130 356)"></rect>
+    </svg>
+    <div style="position:absolute;bottom:14px;left:0;right:0;display:flex;justify-content:center;gap:6px"><div style="width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.2)"></div><div style="width:20px;height:7px;border-radius:99px;background:#4ADE80"></div><div style="width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.2)"></div><div style="width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.2)"></div></div>
+  </div>
+  <div data-screen-label="11c Onboarding game over" style="height:440px;border-radius:20px;overflow:hidden;background:#131624;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:20px 20px;position:relative">
+    <svg width="198" height="440" viewBox="0 0 198 440" style="position:absolute;inset:0">
+      <circle cx="140" cy="130" r="15" fill="#A78BFA" opacity=".6"></circle><circle cx="112" cy="140" r="18" fill="#A78BFA" opacity=".8"></circle><circle cx="80" cy="152" r="22" fill="#A78BFA"></circle><circle cx="74" cy="145" r="5.5" fill="#fff"></circle><circle cx="88" cy="145" r="5.5" fill="#fff"></circle><circle cx="75.5" cy="147" r="2.8" fill="#12141F"></circle><circle cx="89.5" cy="147" r="2.8" fill="#12141F"></circle>
+      <circle cx="58" cy="196" r="8" fill="#4ADE80" opacity=".9"></circle><circle cx="45" cy="188" r="7" fill="#4ADE80" opacity=".6"></circle>
+      <path d="M70 300 a28 28 0 1 1 56 0 l0 34 l-9 -8 l-10 8 l-9 -8 l-10 8 l-9 -8 Z" fill="rgba(244,246,255,.92)"></path><circle cx="88" cy="296" r="4.5" fill="#12141F"></circle><circle cx="108" cy="296" r="4.5" fill="#12141F"></circle><path d="M90 312 q8 6 16 0" stroke="#12141F" stroke-width="3" fill="none" stroke-linecap="round"></path>
+      <path d="M140 260 q4 -10 12 -6 M148 276 q8 0 10 8" stroke="#8ADCFF" stroke-width="3" fill="none" stroke-linecap="round" opacity=".8"></path>
+      <path d="M52 252 l8 8 m0 -8 l-8 8 M150 330 l7 7 m0 -7 l-7 7" stroke="#7E88A8" stroke-width="3" stroke-linecap="round" opacity=".6"></path>
+    </svg>
+    <div style="position:absolute;bottom:14px;left:0;right:0;display:flex;justify-content:center;gap:6px"><div style="width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.2)"></div><div style="width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.2)"></div><div style="width:20px;height:7px;border-radius:99px;background:#4ADE80"></div><div style="width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.2)"></div></div>
+  </div>
+  <div data-screen-label="11d Onboarding dificuldade" style="height:440px;border-radius:20px;overflow:hidden;background:#131624;position:relative;display:flex;flex-direction:column;gap:10px;padding:16px;box-sizing:border-box">
+    <div style="flex:1;border-radius:16px;background:#0F2233;background-image:linear-gradient(rgba(138,220,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(138,220,255,.05) 1px,transparent 1px);background-size:16px 16px;position:relative;border:2.5px solid #4ADE80;box-sizing:border-box">
+      <svg width="164" height="100%" viewBox="0 0 164 170" style="position:absolute;inset:0"><circle cx="50" cy="90" r="7" fill="#4ADE80" opacity=".7"></circle><circle cx="66" cy="84" r="9" fill="#4ADE80"></circle><circle cx="63" cy="81" r="2.4" fill="#fff"></circle><circle cx="69" cy="81" r="2.4" fill="#fff"></circle><circle cx="110" cy="60" r="4" fill="#FF6B6B"></circle><circle cx="120" cy="120" r="7" fill="#38BDF8" opacity=".8"></circle><circle cx="134" cy="114" r="8" fill="#38BDF8"></circle></svg>
+      <div style="position:absolute;top:10px;right:10px;width:30px;height:30px;border-radius:50%;background:#4ADE80;display:flex;align-items:center;justify-content:center;font-size:15px;color:#0B2416;font-weight:800">✓</div>
+      <div style="position:absolute;bottom:8px;left:12px;display:flex;gap:4px"><div style="width:9px;height:9px;border-radius:50%;background:#4ADE80"></div><div style="width:9px;height:9px;border-radius:50%;background:#38BDF8"></div><div style="width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.15)"></div><div style="width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.15)"></div></div>
+    </div>
+    <div style="flex:1;border-radius:16px;background:#200D0D;background-image:linear-gradient(rgba(255,107,107,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,107,107,.06) 1px,transparent 1px);background-size:16px 16px;position:relative;border:1px solid rgba(255,255,255,.12);box-sizing:border-box">
+      <svg width="164" height="100%" viewBox="0 0 164 170" style="position:absolute;inset:0"><circle cx="30" cy="50" r="7" fill="#F472B6"></circle><circle cx="52" cy="90" r="8" fill="#FFD43B"></circle><circle cx="80" cy="40" r="9" fill="#38BDF8"></circle><circle cx="110" cy="80" r="8" fill="#A78BFA"></circle><circle cx="135" cy="46" r="7" fill="#2DD4BF"></circle><circle cx="90" cy="130" r="10" fill="#FF9F45"></circle><circle cx="40" cy="140" r="8" fill="#BEF264"></circle><circle cx="140" cy="130" r="9" fill="#4ADE80"></circle><circle cx="64" cy="64" r="3.5" fill="#FF6B6B"></circle><circle cx="118" cy="110" r="3.5" fill="#FF6B6B"></circle></svg>
+      <div style="position:absolute;bottom:8px;left:12px;display:flex;gap:4px"><div style="width:9px;height:9px;border-radius:50%;background:#4ADE80"></div><div style="width:9px;height:9px;border-radius:50%;background:#38BDF8"></div><div style="width:9px;height:9px;border-radius:50%;background:#F472B6"></div><div style="width:9px;height:9px;border-radius:50%;background:#FFD43B"></div></div>
+    </div>
+    <div style="display:flex;justify-content:center;gap:6px;padding-top:2px"><div style="width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.2)"></div><div style="width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.2)"></div><div style="width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.2)"></div><div style="width:20px;height:7px;border-radius:99px;background:#4ADE80"></div></div>
+  </div>
+</div></div>
+
+<div style="display:flex;flex-direction:column;gap:10px;flex:none"><span style="font-size:12px;font-weight:800;color:#7E88A8">12 · CHEFE — INTRO (pontos ACIMA do chefe → direto pro duelo 12b)</span>
+<div data-screen-label="12 Chefe" style="width:412px;height:915px;border-radius:24px;overflow:hidden;background:#0F2233;background-image:linear-gradient(rgba(138,220,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(138,220,255,.06) 1px,transparent 1px);background-size:24px 24px;display:flex;flex-direction:column;align-items:center;padding:60px 24px 32px;box-sizing:border-box">
+  <div style="background:rgba(255,212,59,.14);color:#FFD43B;border-radius:999px;padding:8px 18px;font-size:13px;font-weight:800;letter-spacing:.06em">⏱ TEMPO ESGOTADO</div>
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px">
+    <div style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:34px;text-align:center;line-height:1.15">O Chefe da fase<br>apareceu!</div>
+    <svg width="250" height="135" viewBox="0 0 240 130"><circle cx="30" cy="95" r="16" fill="#38BDF8" opacity=".45"></circle><circle cx="58" cy="88" r="19" fill="#38BDF8" opacity=".6"></circle><circle cx="90" cy="80" r="23" fill="#38BDF8" opacity=".75"></circle><circle cx="126" cy="72" r="27" fill="#38BDF8" opacity=".9"></circle><circle cx="170" cy="62" r="34" fill="url(#bg2)"></circle><defs><radialGradient id="bg2" cx=".32" cy=".28" r="1"><stop offset="0" stop-color="#8ADCFF"></stop><stop offset="1" stop-color="#38BDF8"></stop></radialGradient></defs><path d="M150 32 l10 14 l12 -10 l8 14 l14 -8" stroke="#FFD43B" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="160" cy="54" r="8" fill="#fff"></circle><circle cx="184" cy="54" r="8" fill="#fff"></circle><circle cx="162" cy="56" r="4" fill="#12141F"></circle><circle cx="186" cy="56" r="4" fill="#12141F"></circle><path d="M162 78 q10 7 20 0" stroke="#12141F" stroke-width="4" fill="none" stroke-linecap="round"></path></svg>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:4px"><div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:21px">Maré, a Soberana</div><div style="font-size:13px;color:#A6AECB;font-weight:800">CHEFE DA FASE OCEANO</div></div>
+    <div style="display:flex;align-items:center;gap:16px;background:rgba(14,16,24,.6);border:1px solid rgba(255,255,255,.12);border-radius:22px;padding:18px 26px">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:2px"><span style="font-size:11px;font-weight:800;color:#A6AECB;letter-spacing:.05em">VOCÊ</span><span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:28px;color:#4ADE80">3.240</span></div>
+      <span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:18px;color:#7E88A8">vs</span>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:2px"><span style="font-size:11px;font-weight:800;color:#A6AECB;letter-spacing:.05em">CHEFE</span><span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:28px;color:#FFD43B">3.100</span></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:7px;background:rgba(74,222,128,.14);border-radius:999px;padding:7px 16px"><span style="font-size:13px;font-weight:800;color:#4ADE80">✓ Você está na frente — mantenha a vantagem no choque</span></div>
+    <div style="font-size:14.5px;color:#A6AECB;font-weight:700;text-align:center;line-height:1.55;max-width:300px">Quem tiver mais pontos no encontro frente a frente vence a fase</div>
+  </div>
+  <div style="width:100%;min-height:62px;border-radius:20px;background:linear-gradient(135deg,#FFD43B,#FF9F45);display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:600;font-size:20px;color:#3A2E00;box-sizing:border-box">⚔ Enfrentar o chefe</div>
+</div></div>
+
+<div style="display:flex;flex-direction:column;gap:10px;flex:none"><span style="font-size:12px;font-weight:800;color:#7E88A8">12a · CHEFE — INTRO (pontos ABAIXO → medidor de tempo extra)</span>
+<span style="font-size:11px;font-weight:700;color:#7E88A8;max-width:412px;line-height:1.5">Fluxo: anúncio → volta à ARENA (tela 04) com os mesmos pontos (2.480) e o cronômetro somando os segundos da faixa parada (+20/30/50s, timer em laranja durante a prorrogação). Novo fim de tempo → reavalia: acima do chefe vai pra 12, abaixo volta aqui.</span>
+<div data-screen-label="12a Chefe atrás" style="width:412px;height:915px;border-radius:24px;overflow:hidden;background:#0F2233;background-image:linear-gradient(rgba(138,220,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(138,220,255,.06) 1px,transparent 1px);background-size:24px 24px;display:flex;flex-direction:column;align-items:center;padding:60px 24px 32px;box-sizing:border-box">
+  <div style="background:rgba(255,212,59,.14);color:#FFD43B;border-radius:999px;padding:8px 18px;font-size:13px;font-weight:800;letter-spacing:.06em">⏱ TEMPO ESGOTADO</div>
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px">
+    <div style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:34px;text-align:center;line-height:1.15">O Chefe da fase<br>apareceu!</div>
+    <svg width="250" height="135" viewBox="0 0 240 130"><circle cx="30" cy="95" r="16" fill="#38BDF8" opacity=".45"></circle><circle cx="58" cy="88" r="19" fill="#38BDF8" opacity=".6"></circle><circle cx="90" cy="80" r="23" fill="#38BDF8" opacity=".75"></circle><circle cx="126" cy="72" r="27" fill="#38BDF8" opacity=".9"></circle><circle cx="170" cy="62" r="34" fill="url(#bg3)"></circle><defs><radialGradient id="bg3" cx=".32" cy=".28" r="1"><stop offset="0" stop-color="#8ADCFF"></stop><stop offset="1" stop-color="#38BDF8"></stop></radialGradient></defs><path d="M150 32 l10 14 l12 -10 l8 14 l14 -8" stroke="#FFD43B" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="160" cy="54" r="8" fill="#fff"></circle><circle cx="184" cy="54" r="8" fill="#fff"></circle><circle cx="162" cy="56" r="4" fill="#12141F"></circle><circle cx="186" cy="56" r="4" fill="#12141F"></circle><path d="M162 78 q10 7 20 0" stroke="#12141F" stroke-width="4" fill="none" stroke-linecap="round"></path></svg>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:4px"><div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:21px">Maré, a Soberana</div><div style="font-size:13px;color:#A6AECB;font-weight:800">CHEFE DA FASE OCEANO</div></div>
+    <div style="display:flex;align-items:center;gap:16px;background:rgba(14,16,24,.6);border:1px solid rgba(255,255,255,.12);border-radius:22px;padding:16px 24px">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:2px"><span style="font-size:11px;font-weight:800;color:#A6AECB;letter-spacing:.05em">VOCÊ</span><span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:28px;color:#FF9B9B">2.480</span></div>
+      <span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:18px;color:#7E88A8">vs</span>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:2px"><span style="font-size:11px;font-weight:800;color:#A6AECB;letter-spacing:.05em">CHEFE</span><span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:28px;color:#FFD43B">3.100</span></div>
+    </div>
+  </div>
+  <div style="width:100%;display:flex;flex-direction:column;gap:10px">
+    <div style="background:rgba(14,16,24,.65);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:20px 16px 16px;display:flex;flex-direction:column;gap:14px;box-sizing:border-box">
+      <div style="position:relative;margin-top:10px">
+        <div ref="{{ medidorPtrRef }}" style="position:absolute;top:-14px;bottom:-4px;left:38%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center">
+          <div style="width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:9px solid #F4F6FF;filter:drop-shadow(0 0 4px rgba(255,255,255,.7))"></div>
+          <div style="flex:1;width:3.5px;border-radius:2px;background:#F4F6FF;box-shadow:0 0 8px rgba(255,255,255,.8)"></div>
+        </div>
+        <div style="height:36px;border-radius:11px;display:flex;overflow:hidden;gap:2px">
+          <sc-for list="{{ medidorBands }}" as="mb" hint-placeholder-count="5">
+            <div style="flex:{{ mb.flex }};background:{{ mb.bg }};opacity:{{ mb.op }};box-shadow:{{ mb.shadow }};display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:700;font-size:13px;color:#12141F;transition:opacity .25s">{{ mb.val }}</div>
+          </sc-for>
+        </div>
+      </div>
+      <div onClick="{{ medidorParar }}" style="min-height:60px;border-radius:18px;background:{{ medidorBtnBg }};display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:600;font-size:20px;color:#0B2416;cursor:pointer;user-select:none;position:relative" style-active="transform:translateY(2px)">{{ medidorBtnLabel }}<span style="position:absolute;top:-9px;right:14px;background:#FFD43B;color:#3A2E00;border-radius:999px;padding:2px 10px;font-size:10px;font-weight:800;font-family:'Nunito',sans-serif">ANÚNCIO</span></div>
+      <div style="min-height:44px;border-radius:14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Fredoka',sans-serif;font-weight:500;font-size:14.5px;box-sizing:border-box">🎟️ Pular anúncio <span style="font-size:11.5px;font-weight:800;color:#A6AECB;font-family:'Nunito',sans-serif">· usar 1 de 3</span></div>
+    </div>
+    <div style="min-height:52px;border-radius:18px;background:rgba(255,107,107,.12);border:1.5px solid rgba(255,107,107,.4);display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Fredoka',sans-serif;font-weight:500;font-size:16px;color:#FF9B9B;box-sizing:border-box;cursor:pointer" style-active="transform:translateY(2px)">🏳 Desistir da fase</div>
+  </div>
+</div></div>
+
+<div style="display:flex;flex-direction:column;gap:10px;flex:none"><span style="font-size:12px;font-weight:800;color:#7E88A8">12a-2 · ARENA EM PRORROGAÇÃO (+30s ganhos no medidor)</span>
+<div data-screen-label="12a-2 Prorrogação" style="width:412px;height:915px;border-radius:24px;overflow:hidden;background:#0F2233;background-image:linear-gradient(rgba(138,220,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(138,220,255,.06) 1px,transparent 1px);background-size:26px 26px;position:relative;box-sizing:border-box">
+  <svg width="412" height="915" viewBox="0 0 412 915" style="position:absolute;inset:0">
+    <circle cx="118" cy="520" r="9" fill="#4ADE80" opacity=".5"></circle><circle cx="140" cy="508" r="10" fill="#4ADE80" opacity=".65"></circle><circle cx="164" cy="498" r="11" fill="#4ADE80" opacity=".8"></circle><circle cx="190" cy="490" r="12" fill="#4ADE80" opacity=".9"></circle><circle cx="218" cy="484" r="14" fill="#4ADE80"></circle><circle cx="214" cy="479" r="3.6" fill="#fff"></circle><circle cx="224" cy="479" r="3.6" fill="#fff"></circle><circle cx="215" cy="480" r="1.8" fill="#12141F"></circle><circle cx="225" cy="480" r="1.8" fill="#12141F"></circle>
+    <circle cx="310" cy="300" r="10" fill="#F472B6" opacity=".6"></circle><circle cx="330" cy="288" r="11" fill="#F472B6" opacity=".8"></circle><circle cx="352" cy="278" r="13" fill="#F472B6"></circle>
+    <circle cx="260" cy="620" r="6" fill="#FF6B6B"></circle><circle cx="90" cy="380" r="6" fill="#FF6B6B"></circle><circle cx="330" cy="740" r="6" fill="#FF6B6B"></circle><circle cx="180" cy="240" r="7" fill="#FFD43B"></circle>
+    <circle cx="120" cy="700" r="7" fill="#F8FAFC"></circle><circle cx="120" cy="700" r="3" fill="#8ADCFF"></circle>
+  </svg>
+  <div style="position:absolute;left:190px;top:454px;min-width:28px;height:20px;border-radius:999px;background:rgba(14,16,24,.85);border:1.5px solid rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:700;font-size:11px;padding:0 7px;box-sizing:border-box">2.480</div>
+  <div style="position:absolute;left:324px;top:248px;min-width:28px;height:20px;border-radius:999px;background:rgba(14,16,24,.85);border:1.5px solid #FF6B6B;display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:700;font-size:11px;color:#FF9B9B;padding:0 7px;box-sizing:border-box">3.940</div>
+  <div style="position:absolute;top:48px;left:12px;right:12px;background:rgba(14,16,24,.82);border:1px solid rgba(255,159,69,.45);border-radius:18px;padding:10px 16px;display:flex;align-items:center;justify-content:space-between">
+    <div style="display:flex;flex-direction:column"><span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:20px">2.480</span><span style="font-size:11px;color:#A6AECB;font-weight:800">META: 3.100</span></div>
+    <div style="display:flex;flex-direction:column;align-items:center"><span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:20px;color:#FF9F45">0:30</span><span style="font-size:10px;color:#FF9F45;font-weight:800;letter-spacing:.06em">PRORROGAÇÃO</span></div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="width:48px;height:48px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);position:relative;box-sizing:border-box"><div style="position:absolute;left:21px;top:19px;width:6px;height:6px;border-radius:50%;background:#4ADE80"></div><div style="position:absolute;left:32px;top:30px;width:4px;height:4px;border-radius:50%;background:#F472B6"></div></div>
+      <div style="width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:16px">❚❚</div>
+    </div>
+  </div>
+  <div style="position:absolute;top:126px;left:0;right:0;display:flex;justify-content:center"><div style="background:rgba(255,159,69,.16);border:1px solid rgba(255,159,69,.4);border-radius:999px;padding:6px 16px;display:flex;align-items:center;gap:7px"><span style="font-size:12px;font-weight:800;color:#FF9F45">⏱ +30s ganhos — faltam 621 pts para alcançar o chefe</span></div></div>
+  <div style="position:absolute;bottom:120px;left:88px;width:116px;height:116px;border-radius:50%;border:2px solid rgba(255,255,255,.2);background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center"><div style="width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.25);margin-left:26px;margin-top:14px"></div></div>
+</div></div>
+
+<div style="display:flex;flex-direction:column;gap:10px;flex:none"><span style="font-size:12px;font-weight:800;color:#7E88A8">12b · FASE CONTRA O CHEFE (duelo)</span>
+<div data-screen-label="12b Duelo chefe" style="width:412px;height:915px;border-radius:24px;overflow:hidden;background:#0F2233;background-image:linear-gradient(rgba(138,220,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(138,220,255,.06) 1px,transparent 1px);background-size:26px 26px;position:relative;box-sizing:border-box">
+  <svg width="412" height="915" viewBox="0 0 412 915" style="position:absolute;inset:0">
+    <circle cx="86" cy="610" r="9" fill="#4ADE80" opacity=".5"></circle><circle cx="108" cy="590" r="10" fill="#4ADE80" opacity=".65"></circle><circle cx="130" cy="568" r="11" fill="#4ADE80" opacity=".8"></circle><circle cx="152" cy="544" r="12" fill="#4ADE80" opacity=".9"></circle><circle cx="176" cy="516" r="14" fill="#4ADE80"></circle><circle cx="177" cy="507" r="3.6" fill="#fff"></circle><circle cx="185" cy="514" r="3.6" fill="#fff"></circle><circle cx="178" cy="506" r="1.8" fill="#12141F"></circle><circle cx="186" cy="513" r="1.8" fill="#12141F"></circle>
+    <circle cx="356" cy="304" r="18" fill="#38BDF8" opacity=".45"></circle><circle cx="326" cy="338" r="21" fill="#38BDF8" opacity=".6"></circle><circle cx="296" cy="372" r="24" fill="#38BDF8" opacity=".75"></circle><circle cx="264" cy="410" r="28" fill="#38BDF8" opacity=".9"></circle><circle cx="230" cy="452" r="34" fill="#38BDF8"></circle>
+    <path d="M206 424 L212 398 L224 412 L232 394 L242 412 L252 400 L254 424 Z" fill="#FFD43B"></path>
+    <circle cx="216" cy="458" r="8" fill="#fff"></circle><circle cx="230" cy="470" r="8" fill="#fff"></circle><circle cx="213" cy="461" r="4" fill="#12141F"></circle><circle cx="227" cy="473" r="4" fill="#12141F"></circle>
+    <path d="M190 502 L200 488 L195 487 L204 474" stroke="#FFD43B" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+    <path d="M170 488 l-6 -6 M212 508 l7 5" stroke="#FFD43B" stroke-width="3" stroke-linecap="round" opacity=".7"></path>
+    <circle cx="80" cy="330" r="6" fill="#FF6B6B"></circle><circle cx="320" cy="640" r="6" fill="#FF6B6B"></circle>
+    <circle cx="120" cy="760" r="7" fill="#F8FAFC"></circle><circle cx="120" cy="760" r="3" fill="#8ADCFF"></circle><circle cx="330" cy="470" r="7" fill="#F8FAFC"></circle><circle cx="330" cy="470" r="3" fill="#8ADCFF"></circle>
+  </svg>
+  <div style="position:absolute;left:150px;top:588px;min-width:28px;height:20px;border-radius:999px;background:rgba(14,16,24,.85);border:1.5px solid rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:700;font-size:11px;padding:0 7px;box-sizing:border-box">2.480</div>
+  <div style="position:absolute;left:276px;top:452px;min-width:34px;height:20px;border-radius:999px;background:rgba(14,16,24,.85);border:1.5px solid #FF6B6B;display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:700;font-size:11px;color:#FF9B9B;padding:0 7px;box-sizing:border-box">👑 3.100</div>
+  <div style="position:absolute;top:48px;left:12px;right:12px;background:rgba(14,16,24,.82);border:1px solid rgba(255,212,59,.3);border-radius:18px;padding:12px 16px;display:flex;flex-direction:column;gap:9px">
+    <div style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px">
+      <div style="display:flex;align-items:center;gap:9px"><div style="width:34px;height:34px;border-radius:50%;background:radial-gradient(circle at 32% 28%,#8BF0B4,#4ADE80);position:relative;flex:none"><div style="position:absolute;left:7px;top:10px;width:7px;height:7px;border-radius:50%;background:#fff"></div><div style="position:absolute;left:19px;top:10px;width:7px;height:7px;border-radius:50%;background:#fff"></div></div><div style="display:flex;flex-direction:column"><span style="font-size:10px;font-weight:800;color:#A6AECB;letter-spacing:.05em">VOCÊ</span><span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:19px;line-height:1.1;color:#4ADE80">2.480</span></div></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:2px"><span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:15px;color:#7E88A8">vs</span><div style="background:rgba(255,212,59,.14);border-radius:999px;padding:3px 12px;display:flex;align-items:center;gap:5px"><span style="font-size:9.5px;font-weight:800;color:#FFD43B;letter-spacing:.06em">DUELO</span><span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:14px;color:#FFD43B">0:58</span></div></div>
+      <div style="display:flex;align-items:center;gap:9px;justify-content:flex-end"><div style="display:flex;flex-direction:column;align-items:flex-end"><span style="font-size:10px;font-weight:800;color:#A6AECB;letter-spacing:.05em">MARÉ, A SOBERANA</span><span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:19px;line-height:1.1;color:#FFD43B">3.100</span></div><div style="width:34px;height:34px;border-radius:50%;background:radial-gradient(circle at 32% 28%,#8ADCFF,#38BDF8);position:relative;flex:none"><div style="position:absolute;left:6px;top:-7px;width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:9px solid #FFD43B"></div><div style="position:absolute;left:17px;top:-7px;width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:9px solid #FFD43B"></div><div style="position:absolute;left:7px;top:12px;width:7px;height:7px;border-radius:50%;background:#fff"></div><div style="position:absolute;left:19px;top:12px;width:7px;height:7px;border-radius:50%;background:#fff"></div></div></div>
+    </div>
+    <div style="height:12px;border-radius:999px;background:rgba(255,255,255,.1);position:relative;overflow:visible"><div style="width:44%;height:12px;border-radius:999px;background:linear-gradient(90deg,#2FBF8F,#4ADE80)"></div><div style="position:absolute;left:56%;top:-3px;width:2.5px;height:18px;border-radius:2px;background:#FFD43B"></div><div style="position:absolute;left:56%;top:-11px;transform:translateX(-42%);font-size:8px">👑</div></div>
+    <div style="display:flex;justify-content:space-between"><span style="font-size:11px;font-weight:800;color:#A6AECB">faltam <b style="color:#F4F6FF">621 pts</b> para ultrapassar</span><span style="font-size:11px;font-weight:800;color:#A6AECB">passe do 👑 e vença o choque</span></div>
+  </div>
+  <div style="position:absolute;bottom:120px;left:88px;width:116px;height:116px;border-radius:50%;border:2px solid rgba(255,255,255,.2);background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center"><div style="width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.25);margin-left:26px;margin-top:14px"></div></div>
+  <div style="position:absolute;bottom:52px;left:12px;right:12px;display:flex;justify-content:center"><span style="font-size:11px;font-weight:800;color:#8ADCFF">⚡ CHOQUE FRENTE A FRENTE — QUEM TIVER MAIS PONTOS VENCE</span></div>
+</div></div>
+
+
+
+</div></div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { medidorResult: null, medidorBand: null };
+  // Medidor de Precisão: animação fora do React (rAF muta só o ponteiro) p/ 60fps
+  componentDidMount() {
+    this._pos = 0.38; this._dir = 1; this._running = true; this._last = null;
+    const SPEED = 1.1; // fração da barra por segundo (constante)
+    const loop = (t) => {
+      if (this._last != null && this._running) {
+        const dt = Math.min((t - this._last) / 1000, 0.05);
+        let p = this._pos + this._dir * SPEED * dt;
+        if (p > 1) { p = 2 - p; this._dir = -1; } else if (p < 0) { p = -p; this._dir = 1; } // ping-pong
+        this._pos = p;
+        if (this._ptr) this._ptr.style.left = (p * 100) + "%";
+      }
+      this._last = t;
+      this._raf = requestAnimationFrame(loop);
+    };
+    this._raf = requestAnimationFrame(loop);
+  }
+  componentWillUnmount() { cancelAnimationFrame(this._raf); }
+  renderVals() {
+    // ---- Medidor de Precisão (faixas 1:2:3:2:1 → valores 1,2,3,2,1) ----
+    const FLEX = [3,2.5,2,2.5,3], VALS = [1,2,3,2,1], EDGES = [3/13,5.5/13,7.5/13,10/13,1];
+    const CORES = ["#FF6B6B","#FFD43B","#4ADE80","#FFD43B","#FF6B6B"];
+    const res = this.state.medidorResult, bandWin = this.state.medidorBand;
+    const ROTULOS = ["20s","30s","50s","30s","20s"];
+    const medidorBands = FLEX.map((f,i) => ({
+      flex: f, val: ROTULOS[i], bg: CORES[i],
+      op: res == null ? 1 : (i === bandWin ? 1 : .3),
+      shadow: res != null && i === bandWin ? `0 0 16px ${CORES[i]}, inset 0 0 0 2.5px #F4F6FF` : "none"
+    }));
+    const medidorPtrRef = (el) => { this._ptr = el; };
+    const medidorParar = () => {
+      if (this.state.medidorResult != null) { this._running = true; this.setState({medidorResult:null, medidorBand:null}); return; }
+      this._running = false; // para instantaneamente
+      const p = this._pos;
+      let band = 4; for (let i = 0; i < 5; i++) { if (p <= EDGES[i]) { band = i; break; } }
+      this.setState({ medidorResult: VALS[band], medidorBand: band });
+    };
+    const BONUS = {1:"+20s",2:"+30s",3:"+50s"};
+    const medidor = {
+      medidorBands, medidorPtrRef, medidorParar,
+      medidorTemResultado: res != null,
+      medidorResultTitulo: res != null ? `Resultado: ${res}` : "",
+      medidorBonus: res != null ? `${BONUS[res]} de prorrogação` : "",
+      medidorBonusCor: res != null ? (res === 3 ? "#4ADE80" : res === 2 ? "#FFD43B" : "#FF9B9B") : "#A6AECB",
+      medidorBtnLabel: res != null ? "REPETIR" : "PARAR",
+      medidorBtnBg: res != null ? "linear-gradient(135deg,#FFD43B,#FF9F45)" : "linear-gradient(135deg,#4ADE80,#2FBF8F)"
+    };
+    const faseRows = [
+      {pos:"4º", cor:"#2DD4BF", nome:"TurboTato", st:"✓ venceu a arena", stCor:"#4ADE80", pts:"7.902"},
+      {pos:"5º", cor:"#A78BFA", nome:"Mila_09", st:"✗ eliminada aos 1:12", stCor:"#FF9B9B", pts:"6.480"},
+      {pos:"6º", cor:"#FF9F45", nome:"Zigzag", st:"✓ venceu a arena", stCor:"#4ADE80", pts:"5.917"},
+      {pos:"7º", cor:"#BEF264", nome:"K4rol", st:"✗ eliminada aos 0:47", stCor:"#FF9B9B", pts:"3.203"}
+    ];
+    const globalRows = [
+      {pos:"4º", cor:"#38BDF8", nome:"TurboTato", sub:"38 fases vencidas", pts:"41.0k"},
+      {pos:"5º", cor:"#F472B6", nome:"Lu_Cobra", sub:"31 fases vencidas", pts:"38.6k"},
+      {pos:"6º", cor:"#BEF264", nome:"K4rol", sub:"29 fases vencidas", pts:"35.2k"},
+      {pos:"7º", cor:"#FF6B6B", nome:"Zigzag", sub:"27 fases vencidas", pts:"31.8k"},
+      {pos:"8º", cor:"#FFD43B", nome:"Dudu_Max", sub:"24 fases vencidas", pts:"29.4k"}
+    ];
+    const desafios = [
+      {icone:"🍎", titulo:"Coma 50 em 1 partida", meta:"qualquer fase", premio:"+150", temBarra:true, pct:"70%", prog:"35/50", borda:"rgba(255,255,255,.1)", iconBg:"rgba(74,222,128,.12)", tituloCor:"#F4F6FF", op:1, rodape:"", rodapeCor:""},
+      {icone:"⚔", titulo:"Devore 3 cobras", meta:"em uma única partida", premio:"+200", temBarra:true, pct:"33%", prog:"1/3", borda:"rgba(255,255,255,.1)", iconBg:"rgba(56,189,248,.12)", tituloCor:"#F4F6FF", op:1, rodape:"", rodapeCor:""},
+      {icone:"✓", titulo:"Fique no top 5", meta:"em qualquer fase", premio:"+250", temBarra:false, pct:"", prog:"", borda:"rgba(74,222,128,.45)", iconBg:"rgba(74,222,128,.16)", tituloCor:"#4ADE80", op:1, rodape:"✓ Completo — recompensa recebida", rodapeCor:"#4ADE80"},
+      {icone:"🔒", titulo:"Vença Maré, a Soberana", meta:"desbloqueia ao chegar na fase Oceano", premio:"+400", temBarra:false, pct:"", prog:"", borda:"rgba(255,255,255,.08)", iconBg:"rgba(255,255,255,.06)", tituloCor:"#7E88A8", op:.65, rodape:"", rodapeCor:""}
+    ];
+    const lojaSkins = [
+      {nome:"Minhoca", bg:"linear-gradient(180deg,#F5A9C0 50%,#D97B98 50%)", borda:"#A78BFA", badge:"NOVA", preco:"800", cta:"linear-gradient(135deg,#4ADE80,#2FBF8F)", ctaBorda:"none", ctaCor:"#0B2416", moeda:true},
+      {nome:"Abelha", bg:"repeating-linear-gradient(90deg,#FFD43B 0 7px,#1A1A1A 7px 13px)", borda:"#A78BFA", badge:"", preco:"800", cta:"linear-gradient(135deg,#4ADE80,#2FBF8F)", ctaBorda:"none", ctaCor:"#0B2416", moeda:true},
+      {nome:"Melancia", bg:"linear-gradient(180deg,#4ADE80 30%,#FF6B6B 30%)", borda:"#4ADE80", badge:"", preco:"✓ Equipada", cta:"rgba(74,222,128,.14)", ctaBorda:"1px solid #4ADE80", ctaCor:"#4ADE80", moeda:false},
+      {nome:"Trem", bg:"repeating-linear-gradient(90deg,#FF6B6B 0 6px,#FFD43B 6px 12px,#38BDF8 12px 18px)", borda:"#A78BFA", badge:"", preco:"1.000", cta:"linear-gradient(135deg,#4ADE80,#2FBF8F)", ctaBorda:"none", ctaCor:"#0B2416", moeda:true},
+      {nome:"Tigre", bg:"repeating-linear-gradient(-55deg,#FF9F45 0 6px,#1A1A1A 6px 9px)", borda:"#A78BFA", badge:"", preco:"1.000", cta:"linear-gradient(135deg,#4ADE80,#2FBF8F)", ctaBorda:"none", ctaCor:"#0B2416", moeda:true},
+      {nome:"Foguete", bg:"linear-gradient(180deg,#E2E8F0 55%,#FF6B6B 55%)", borda:"#A78BFA", badge:"", preco:"Equipar", cta:"rgba(255,255,255,.08)", ctaBorda:"1px solid rgba(255,255,255,.2)", ctaCor:"#F4F6FF", moeda:false}
+    ];
+    const ON = "linear-gradient(90deg,#2FBF8F,#4ADE80)", OFF = "rgba(255,255,255,.12)";
+    const buffs = [
+      {icone:"🌱", nome:"Pontos iniciais", efeito:"comece com mais pontos", desc:"Nv 1", preco:"226", anuncio:false, compravel:true, pips:[ON,OFF,OFF,OFF,OFF]},
+      {icone:"⚡", nome:"Velocidade", efeito:"turbo mais forte", desc:"Nv 2", preco:"298", anuncio:false, compravel:true, pips:[ON,ON,OFF,OFF,OFF]},
+      {icone:"🧲", nome:"Ímã de itens", efeito:"atrai comida próxima", desc:"Nv 3", preco:"573", anuncio:true, compravel:false, pips:[ON,ON,ON,OFF,OFF]}
+    ];
+    // ---- Evolução: buffs permanentes (5 comuns → 1 super por nível) ----
+    const EVO_TIPOS = {moedas:{icone:"🪙", nome:"+1% Moedas"}, vel:{icone:"⚡", nome:"+1% Velocidade"}, xp:{icone:"⭐", nome:"+1% XP"}};
+    const evoBuff = (tipo, estado) => ({
+      ...EVO_TIPOS[tipo],
+      op: estado === "bloq" ? .45 : 1,
+      dotBg: estado === "ok" ? "#4ADE80" : estado === "disp" ? "#12141F" : "#1B1F30",
+      dotBorda: estado === "ok" ? "#8BF0B4" : estado === "disp" ? "#38BDF8" : "#3A4160",
+      dotGlow: estado === "ok" ? "0 0 10px rgba(74,222,128,.7)" : estado === "disp" ? "0 0 10px rgba(56,189,248,.7)" : "none",
+      cardBorda: estado === "disp" ? "rgba(56,189,248,.5)" : "rgba(255,255,255,.1)",
+      st: estado === "ok" ? "✓" : estado === "disp" ? "Ativar" : "🔒",
+      stCor: estado === "ok" ? "#4ADE80" : estado === "disp" ? "#38BDF8" : "#7E88A8"
+    });
+    const evoNivel = (n, estados, superIcone, superNome, superDesc, superEstado) => ({
+      n, buffs: estados.map((e,i) => evoBuff(["moedas","vel","xp","moedas","vel"][i], e)).reverse(),
+      linha: superEstado === "ok" ? "linear-gradient(180deg,#4ADE80,#2FBF8F)" : estados.includes("disp") ? "linear-gradient(180deg,#4ADE80,#38BDF8,rgba(255,255,255,.12))" : "rgba(255,255,255,.12)",
+      superIcone, superNome, superDesc,
+      superBg: superEstado === "ok" ? "rgba(255,212,59,.09)" : "rgba(167,139,250,.07)",
+      superBorda: superEstado === "ok" ? "#FFD43B" : superEstado === "next" ? "#A78BFA" : "rgba(167,139,250,.3)",
+      superTagCor: superEstado === "ok" ? "#FFD43B" : "#CDBBFF",
+      superOp: superEstado === "bloq" ? .5 : 1,
+      superAnim: superEstado === "ok" ? "snkGlowGold 2.4s ease-in-out infinite" : superEstado === "next" ? "snkGlowRoxo 2.4s ease-in-out infinite" : "none",
+      superSt: superEstado === "ok" ? "✓ Conquistado" : superEstado === "next" ? "Complete a patente " + n : "🔒 Bloqueado",
+      superStCor: superEstado === "ok" ? "#4ADE80" : superEstado === "next" ? "#CDBBFF" : "#7E88A8"
+    });
+    const evoNiveis = [
+      evoNivel(3, ["bloq","bloq","bloq","bloq","bloq"], "⚡", "+3% Velocidade", "Turbo permanente em todas as partidas", "bloq"),
+      evoNivel(2, ["ok","ok","ok","disp","bloq"], "💰", "+500 Moedas", "Depósito único na sua carteira", "next"),
+      evoNivel(1, ["ok","ok","ok","ok","ok"], "🪙", "+3% Moedas", "Bônus permanente em todas as partidas", "ok")
+    ];
+    const pacotesSkins = [
+      {icone:"👑", nome:"Pacote VIP", tipo:"Assinatura mensal · recorrente", tag:"MAIS POPULAR", tagBg:"#FFD43B", tagCor:"#3A2E00", borda:"#FFD43B", preco:"51,35", precoSuf:"/mês", precoCor:"#FFD43B",
+       itens:["5 skins novas por semana","1 renascimento por semana","+20% de moedas ao fim de cada partida"], cta:"Assinar", ctaBg:"linear-gradient(135deg,#FFD43B,#FF9F45)", ctaCor:"#3A2E00"},
+      {icone:"🎁", nome:"Pacote Completo", tipo:"Pagamento único", tag:"TUDO DESBLOQUEADO", tagBg:"#A78BFA", tagCor:"#1A1033", borda:"#A78BFA", preco:"153,99", precoSuf:"única vez", precoCor:"#F4F6FF",
+       itens:["Todas as skins do jogo","+10% de moedas ao fim de cada partida","+20 níveis nos buffs"], cta:"Comprar", ctaBg:"linear-gradient(135deg,#4ADE80,#2FBF8F)", ctaCor:"#0B2416"},
+      {icone:"🌱", nome:"Pacote Inicial", tipo:"Pagamento diário · sem recorrência", tag:"PRIMEIRA COMPRA", tagBg:"#38BDF8", tagCor:"#062A3F", borda:"rgba(255,255,255,.14)", preco:"5,13", precoSuf:"/dia", precoCor:"#F4F6FF",
+       itens:["1.000 moedas","1 skin"], cta:"Comprar", ctaBg:"linear-gradient(135deg,#4ADE80,#2FBF8F)", ctaCor:"#0B2416"}
+    ];
+    const pacotesAds = [
+      {icone:"🎟️", nome:"Pacote de Tickets", bonus:"10 pulos de anúncio", preco:"26,66"},
+      {icone:"🪙", nome:"Pacote de Moedas", bonus:"300 mil moedas", preco:"26,66"},
+      {icone:"🐍", nome:"Pacote de Skins", bonus:"10 skins", preco:"26,66"}
+    ];
+    const pulos = [{qtd:10, preco:"15,41"},{qtd:20, preco:"25,70"},{qtd:50, preco:"77,10"}];
+    const moedasPack = [{qtd:"1.000", preco:"15,41"},{qtd:"2.000", preco:"25,70"},{qtd:"5.000", preco:"77,10"}];
+    return { faseRows, globalRows, desafios, lojaSkins, buffs, pacotesSkins, pacotesAds, pulos, moedasPack, evoNiveis, ...medidor };
+  }
+}
+</script>
+</body>
+</html>

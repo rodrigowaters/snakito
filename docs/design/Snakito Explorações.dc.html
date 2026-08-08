@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><meta name="design_doc_mode" content="canvas">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#f0eee9;font-family:'Nunito',system-ui,sans-serif}a{color:#2a78d6}a:hover{color:#1b5cad}.dv-turn{padding:40px 44px 32px;border-bottom:1px solid rgba(0,0,0,.08);scroll-margin-top:16px}.dv-thd{display:flex;align-items:baseline;gap:10px;margin:0 0 20px}.dv-tid{font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#1a1a1a;color:#fff;border-radius:4px;text-decoration:none}.dv-tname{font:600 13px/1.2 system-ui,sans-serif;color:#1a1a1a}.dv-opts{display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start}.dv-opt{flex:none;display:flex;flex-direction:column;gap:9px;scroll-margin-top:16px}.dv-oid{font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(0,0,0,.08);color:#1a1a1a;border-radius:5px;text-decoration:none}.dv-olabel{display:flex;align-items:baseline;gap:8px;font:400 11px/1.3 system-ui,sans-serif;color:rgba(0,0,0,.55)}.dv-card{max-width:100%;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.06);overflow:hidden}.dv-opt:target .dv-oid{background:#2a78d6;color:#fff}.dv-next{margin:22px 0 0;font:12px/1.5 system-ui,sans-serif;color:rgba(0,0,0,.5)}.dv-group{width:100%;font:700 11px system-ui,sans-serif;color:rgba(0,0,0,.4);letter-spacing:.08em;text-transform:uppercase;margin:10px 0 -14px}
+html,body{overflow-x:auto;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y pinch-zoom}
+@media(max-width:640px){.dv-turn{padding:24px 14px 24px}.dv-opts{gap:20px}.dv-card{zoom:.78}}
+@media(max-width:420px){.dv-card{zoom:.68}}</style></helmet>
+<section class="dv-turn" id="t9">
+<div class="dv-thd"><a class="dv-tid" href="#t9">9</a><span class="dv-tname">Estrutura do jogo — mais 3 caminhos (mood 1c aplicado) + ícone A/B fechado</span></div>
+<div class="dv-opts">
+<div class="dv-opt" id="9a"><div class="dv-olabel"><a class="dv-oid" href="#9a">9a</a>Fase em destaque + Arcade discreto embaixo</div>
+<div class="dv-card" style="width:206px;height:300px;background:linear-gradient(160deg,#12141F,#191430);display:flex;flex-direction:column;padding:14px;box-sizing:border-box;gap:8px">
+  <div style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:16px;background:linear-gradient(90deg,#4ADE80,#38BDF8);-webkit-background-clip:text;background-clip:text;color:transparent">Snakito</div>
+  <div style="flex:1;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px"><span style="font-size:18px">🌊</span><span style="font-size:8.5px;font-weight:800;color:#A6AECB">SUA JORNADA · FASE 3/30</span><div style="margin-top:3px;background:linear-gradient(135deg,#4ADE80,#2FBF8F);border-radius:99px;padding:7px 16px;font-family:'Fredoka',sans-serif;font-weight:600;font-size:11px;color:#0B2416">▶ Continuar</div><div style="display:flex;gap:3px;margin-top:4px"><div style="width:5px;height:5px;border-radius:50%;background:#4ADE80"></div><div style="width:5px;height:5px;border-radius:50%;background:#4ADE80"></div><div style="width:5px;height:5px;border-radius:50%;background:#38BDF8;box-shadow:0 0 5px #38BDF8"></div><div style="width:5px;height:5px;border-radius:50%;background:#232841"></div><div style="width:5px;height:5px;border-radius:50%;background:#232841"></div></div></div>
+  <div style="height:34px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;gap:5px;font-size:9px;color:#A6AECB;font-weight:800;box-sizing:border-box">♾ Arcade rápido — treino livre</div>
+  <div style="display:flex;gap:6px"><div style="flex:1;height:28px;border-radius:8px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;font-size:8px;color:#F4F6FF;font-weight:800">Ranking</div><div style="flex:1;height:28px;border-radius:8px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;font-size:8px;color:#F4F6FF;font-weight:800">Loja</div><div style="flex:1;height:28px;border-radius:8px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;font-size:8px;color:#F4F6FF;font-weight:800">⚙</div></div>
+</div></div>
+<div class="dv-opt" id="9b"><div class="dv-olabel"><a class="dv-oid" href="#9b">9b</a>Mapa É a home — jornada em tela cheia</div>
+<div class="dv-card" style="width:206px;height:300px;background:linear-gradient(160deg,#12141F,#191430);position:relative;box-sizing:border-box;overflow:hidden">
+  <svg width="206" height="300" viewBox="0 0 206 300" style="position:absolute;inset:0"><path d="M40 270 C 120 260, 170 235, 170 200 C 170 165, 45 175, 45 135 C 45 100, 160 110, 165 68" stroke="rgba(255,255,255,.1)" stroke-width="7" fill="none" stroke-linecap="round" stroke-dasharray="1 12"></path></svg>
+  <div style="position:absolute;left:12px;top:12px;right:12px;display:flex;justify-content:space-between;align-items:center"><span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:14px;color:#fff">Snakito</span><div style="display:flex;gap:4px"><div style="width:26px;height:26px;border-radius:8px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:10px">🛍</div><div style="width:26px;height:26px;border-radius:8px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:10px">⚙</div></div></div>
+  <div style="position:absolute;left:24px;bottom:24px;width:36px;height:36px;border-radius:50%;background:#4ADE80;display:flex;align-items:center;justify-content:center;font-size:13px">✓</div>
+  <div style="position:absolute;right:28px;bottom:86px;width:36px;height:36px;border-radius:50%;background:#4ADE80;display:flex;align-items:center;justify-content:center;font-size:13px">✓</div>
+  <div style="position:absolute;left:26px;top:114px;display:flex;flex-direction:column;align-items:center;gap:3px"><div style="width:52px;height:52px;border-radius:50%;background:radial-gradient(circle at 32% 28%,#8ADCFF,#38BDF8);border:2.5px solid rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;font-size:19px;box-shadow:0 0 16px rgba(56,189,248,.55);box-sizing:border-box">🌊</div><div style="background:linear-gradient(135deg,#4ADE80,#2FBF8F);border-radius:99px;padding:4px 12px;font-family:'Fredoka',sans-serif;font-weight:600;font-size:9px;color:#0B2416">▶ Jogar</div></div>
+  <div style="position:absolute;right:30px;top:44px;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.06);border:1.5px dashed rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:11px;box-sizing:border-box">🔒</div>
+  <div style="position:absolute;left:0;right:0;bottom:0;height:44px;background:linear-gradient(transparent,rgba(10,10,24,.9));display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px"><span style="font-size:8px;color:#A6AECB;font-weight:800">♾ Arcade no menu · deslize p/ ver o mapa</span></div>
+</div></div>
+<div class="dv-opt" id="9c"><div class="dv-olabel"><a class="dv-oid" href="#9c">9c</a>Dois cards-modo lado a lado, iguais em peso</div>
+<div class="dv-card" style="width:206px;height:300px;background:linear-gradient(160deg,#12141F,#191430);display:flex;flex-direction:column;padding:14px;box-sizing:border-box;gap:8px">
+  <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:16px;color:#fff">Snakito</span><div style="display:flex;align-items:center;gap:4px;background:rgba(255,255,255,.06);border-radius:99px;padding:3px 8px"><div style="width:10px;height:10px;border-radius:50%;background:#FFD43B;border:1.5px solid #C9A11C;box-sizing:border-box"></div><span style="font-size:8.5px;font-weight:800;color:#F4F6FF">1.240</span></div></div>
+  <div style="flex:1;display:flex;gap:8px">
+    <div style="flex:1;border-radius:14px;background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.35);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px"><span style="font-size:17px">🗺</span><span style="font-family:'Fredoka',sans-serif;font-size:10.5px;color:#F4F6FF">Jornada</span><span style="font-size:7.5px;color:#8ADCFF;font-weight:800">FASE 3/30</span><div style="background:radial-gradient(circle at 32% 28%,#8ADCFF,#38BDF8);border-radius:99px;padding:4px 10px;font-size:8px;font-weight:800;color:#062A3F">Continuar</div></div>
+    <div style="flex:1;border-radius:14px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.35);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px"><span style="font-size:17px">♾</span><span style="font-family:'Fredoka',sans-serif;font-size:10.5px;color:#F4F6FF">Arcade</span><span style="font-size:7.5px;color:#8BF0B4;font-weight:800">ARENA LIVRE</span><div style="background:linear-gradient(135deg,#4ADE80,#2FBF8F);border-radius:99px;padding:4px 10px;font-size:8px;font-weight:800;color:#0B2416">Jogar</div></div>
+  </div>
+  <div style="height:52px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;gap:6px;box-sizing:border-box"><div style="width:22px;height:22px;border-radius:50%;background:#4ADE80"></div><div style="display:flex;flex-direction:column"><span style="font-size:8.5px;font-weight:800;color:#F4F6FF">Verdinha equipada</span><span style="font-size:7.5px;color:#A6AECB;font-weight:700">trocar na loja</span></div></div>
+  <div style="display:flex;gap:6px"><div style="flex:1;height:28px;border-radius:8px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;font-size:8px;color:#F4F6FF;font-weight:800">Ranking</div><div style="flex:1;height:28px;border-radius:8px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;font-size:8px;color:#F4F6FF;font-weight:800">⚙</div></div>
+</div></div>
+<div class="dv-opt" id="9d"><div class="dv-olabel"><a class="dv-oid" href="#9d">9d</a>Ícone fechado — A/B = 3b em 2 fundos</div>
+<div class="dv-card" style="width:206px;padding:18px;background:#f7f6f2;display:flex;gap:16px;justify-content:center;align-items:flex-end">
+  <div style="display:flex;flex-direction:column;gap:6px;align-items:center"><div style="width:72px;height:72px;border-radius:18px;background:#12141F;display:flex;align-items:center;justify-content:center"><svg width="72" height="72" viewBox="0 0 100 100"><circle cx="34" cy="76" r="7" fill="#4ADE80" opacity=".45"></circle><circle cx="46" cy="80" r="7.5" fill="#4ADE80" opacity=".6"></circle><circle cx="58" cy="78" r="8" fill="#4ADE80" opacity=".72"></circle><circle cx="67" cy="70" r="8.5" fill="#4ADE80" opacity=".82"></circle><circle cx="66" cy="59" r="9" fill="#4ADE80" opacity=".88"></circle><circle cx="56" cy="52" r="9" fill="#4ADE80" opacity=".92"></circle><circle cx="44" cy="47" r="9" fill="#4ADE80" opacity=".95"></circle><circle cx="35" cy="39" r="9.5" fill="#4ADE80"></circle><circle cx="41" cy="29" r="10" fill="#4ADE80"></circle><circle cx="54" cy="24" r="12" fill="#4ADE80"></circle><circle cx="50" cy="20.5" r="3.1" fill="#fff"></circle><circle cx="58.5" cy="20.5" r="3.1" fill="#fff"></circle><circle cx="50.6" cy="21.2" r="1.5" fill="#12141F"></circle><circle cx="59.1" cy="21.2" r="1.5" fill="#12141F"></circle><circle cx="73" cy="34" r="4.5" fill="#FF6B6B"></circle></svg></div><span style="font-size:10px;color:rgba(0,0,0,.55);font-weight:700">A · fundo escuro</span></div>
+  <div style="display:flex;flex-direction:column;gap:6px;align-items:center"><div style="width:72px;height:72px;border-radius:18px;background:#4ADE80;display:flex;align-items:center;justify-content:center"><svg width="72" height="72" viewBox="0 0 100 100"><circle cx="34" cy="76" r="7" fill="#12141F" opacity=".5"></circle><circle cx="46" cy="80" r="7.5" fill="#12141F" opacity=".62"></circle><circle cx="58" cy="78" r="8" fill="#12141F" opacity=".74"></circle><circle cx="67" cy="70" r="8.5" fill="#12141F" opacity=".82"></circle><circle cx="66" cy="59" r="9" fill="#12141F" opacity=".88"></circle><circle cx="56" cy="52" r="9" fill="#12141F" opacity=".92"></circle><circle cx="44" cy="47" r="9" fill="#12141F" opacity=".95"></circle><circle cx="35" cy="39" r="9.5" fill="#12141F"></circle><circle cx="41" cy="29" r="10" fill="#12141F"></circle><circle cx="54" cy="24" r="12" fill="#12141F"></circle><circle cx="50" cy="20.5" r="3.1" fill="#4ADE80"></circle><circle cx="58.5" cy="20.5" r="3.1" fill="#4ADE80"></circle><circle cx="50.6" cy="21.2" r="1.5" fill="#12141F"></circle><circle cx="59.1" cy="21.2" r="1.5" fill="#12141F"></circle><circle cx="73" cy="34" r="4.5" fill="#FF6B6B"></circle></svg></div><span style="font-size:10px;color:rgba(0,0,0,.55);font-weight:700">B · fundo verde</span></div>
+</div></div>
+</div>
+<p class="dv-next">Ícone: 3b nas duas variantes do A/B (mesma marca, fundo escuro vs verde — teste limpo de 1 variável). Estrutura: <a class="dv-oid" href="#9a">9a</a> jornada manda, arcade é treino · <a class="dv-oid" href="#9b">9b</a> o mapa é a própria home · <a class="dv-oid" href="#9c">9c</a> dois modos com peso igual. Falta também: desafios <a class="dv-oid" href="#8k">8k</a> ou <a class="dv-oid" href="#8l">8l</a>.</p>
+</section>
+<section class="dv-turn" id="t8">
+<div class="dv-thd"><a class="dv-tid" href="#t8">8</a><span class="dv-tname">Visuais das perguntas pendentes — mood/Home/HUD/ícone já estão nos turnos 1 e 3; abaixo, o que faltava ver</span></div>
+<div class="dv-opts">
+<div class="dv-group">Estrutura do jogo (afeta a Home)</div>
+<div class="dv-opt" id="8a"><div class="dv-olabel"><a class="dv-oid" href="#8a">8a</a>Só campanha — Jogar = próxima fase</div>
+<div class="dv-card" style="width:206px;height:300px;background:#12141F;display:flex;flex-direction:column;padding:14px;box-sizing:border-box;gap:8px">
+  <div style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:16px;color:#fff">Snakito</div>
+  <div style="flex:1;border-radius:12px;background:#081A2B;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px"><span style="font-size:16px">🌊</span><span style="font-size:9px;font-weight:800;color:#A6AECB">FASE 3 · OCEANO</span><div style="margin-top:4px;background:#4ADE80;border-radius:8px;padding:6px 14px;font-family:'Fredoka',sans-serif;font-weight:600;font-size:11px;color:#0B2416;box-shadow:0 3px 0 #2CA35B">▶ Jogar fase</div></div>
+  <div style="display:flex;gap:6px"><div style="flex:1;height:30px;border-radius:8px;background:#232841;display:flex;align-items:center;justify-content:center;font-size:8.5px;color:#F4F6FF;font-weight:800">Mapa</div><div style="flex:1;height:30px;border-radius:8px;background:#232841;display:flex;align-items:center;justify-content:center;font-size:8.5px;color:#F4F6FF;font-weight:800">Ranking</div><div style="flex:1;height:30px;border-radius:8px;background:#232841;display:flex;align-items:center;justify-content:center;font-size:8.5px;color:#F4F6FF;font-weight:800">Loja</div></div>
+</div></div>
+<div class="dv-opt" id="8b"><div class="dv-olabel"><a class="dv-oid" href="#8b">8b</a>2 modos — Arcade livre + Campanha</div>
+<div class="dv-card" style="width:206px;height:300px;background:#12141F;display:flex;flex-direction:column;padding:14px;box-sizing:border-box;gap:8px">
+  <div style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:16px;color:#fff">Snakito</div>
+  <div style="flex:1;display:flex;flex-direction:column;gap:8px;justify-content:center">
+    <div style="height:64px;border-radius:12px;background:#4ADE80;box-shadow:0 4px 0 #2CA35B;display:flex;flex-direction:column;align-items:center;justify-content:center"><span style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:13px;color:#0B2416">♾ Arcade</span><span style="font-size:8px;font-weight:800;color:#0B2416;opacity:.7">arena livre, sem chefe</span></div>
+    <div style="height:64px;border-radius:12px;background:#38BDF8;box-shadow:0 4px 0 #1E88BF;display:flex;flex-direction:column;align-items:center;justify-content:center"><span style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:13px;color:#062A3F">🗺 Fases</span><span style="font-size:8px;font-weight:800;color:#062A3F;opacity:.7">30 temas + chefes</span></div>
+  </div>
+  <div style="display:flex;gap:6px"><div style="flex:1;height:30px;border-radius:8px;background:#232841;display:flex;align-items:center;justify-content:center;font-size:8.5px;color:#F4F6FF;font-weight:800">Ranking</div><div style="flex:1;height:30px;border-radius:8px;background:#232841;display:flex;align-items:center;justify-content:center;font-size:8.5px;color:#F4F6FF;font-weight:800">Loja</div></div>
+</div></div>
+
+<div class="dv-group">Pós-partida: o que vem primeiro</div>
+<div class="dv-opt" id="8c"><div class="dv-olabel"><a class="dv-oid" href="#8c">8c</a>Breakdown primeiro, ranking em aba</div>
+<div class="dv-card" style="width:206px;height:300px;background:#12141F;display:flex;flex-direction:column;padding:14px;box-sizing:border-box;gap:8px">
+  <div style="display:flex;gap:4px"><div style="flex:1;height:22px;border-radius:99px;background:#4ADE80;display:flex;align-items:center;justify-content:center;font-size:8.5px;font-weight:800;color:#0B2416">Resultado</div><div style="flex:1;height:22px;border-radius:99px;background:#1B1F30;display:flex;align-items:center;justify-content:center;font-size:8.5px;font-weight:800;color:#A6AECB">Ranking</div></div>
+  <div style="text-align:center;padding:6px 0"><div style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:22px;color:#FFD43B">4º</div><div style="font-size:8px;color:#A6AECB;font-weight:800">DE 28 · FASE OCEANO</div></div>
+  <div style="display:flex;flex-direction:column;gap:5px">
+    <div style="display:flex;justify-content:space-between;background:#1B1F30;border-radius:8px;padding:6px 10px"><span style="font-size:9px;color:#A6AECB;font-weight:800">🍎 Comida</span><span style="font-size:9px;color:#F4F6FF;font-weight:800">+1.240</span></div>
+    <div style="display:flex;justify-content:space-between;background:#1B1F30;border-radius:8px;padding:6px 10px"><span style="font-size:9px;color:#A6AECB;font-weight:800">⚔ Caçadas</span><span style="font-size:9px;color:#F4F6FF;font-weight:800">+900</span></div>
+    <div style="display:flex;justify-content:space-between;background:#1B1F30;border-radius:8px;padding:6px 10px"><span style="font-size:9px;color:#A6AECB;font-weight:800">⏱ Sobrevivência</span><span style="font-size:9px;color:#F4F6FF;font-weight:800">+340</span></div>
+  </div>
+  <div style="flex:1"></div>
+  <div style="height:34px;border-radius:10px;background:#4ADE80;box-shadow:0 3px 0 #2CA35B;display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:600;font-size:11px;color:#0B2416">Jogar de novo</div>
+</div></div>
+<div class="dv-opt" id="8d"><div class="dv-olabel"><a class="dv-oid" href="#8d">8d</a>Ranking primeiro (5a), breakdown em aba</div>
+<div class="dv-card" style="width:206px;height:300px;background:#12141F;display:flex;flex-direction:column;padding:14px;box-sizing:border-box;gap:8px">
+  <div style="display:flex;gap:4px"><div style="flex:1;height:22px;border-radius:99px;background:#1B1F30;display:flex;align-items:center;justify-content:center;font-size:8.5px;font-weight:800;color:#A6AECB">Resultado</div><div style="flex:1;height:22px;border-radius:99px;background:#4ADE80;display:flex;align-items:center;justify-content:center;font-size:8.5px;font-weight:800;color:#0B2416">Ranking</div></div>
+  <div style="display:flex;align-items:flex-end;justify-content:center;gap:5px;padding:4px 0">
+    <div style="width:34px;height:30px;border-radius:5px 5px 0 0;background:#232841;display:flex;align-items:center;justify-content:center;font-size:8px;color:#E2E8F0;font-weight:800">2º</div>
+    <div style="width:34px;height:40px;border-radius:5px 5px 0 0;background:#2A2416;border:1px solid rgba(255,212,59,.3);display:flex;align-items:center;justify-content:center;font-size:8px;color:#FFD43B;font-weight:800;box-sizing:border-box">1º</div>
+    <div style="width:34px;height:24px;border-radius:5px 5px 0 0;background:#232841;display:flex;align-items:center;justify-content:center;font-size:8px;color:#FFC58C;font-weight:800">3º</div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:4px;flex:1">
+    <div style="height:20px;border-radius:6px;background:#1B1F30"></div><div style="height:20px;border-radius:6px;background:#1B1F30"></div><div style="height:20px;border-radius:6px;background:#1B1F30"></div>
+  </div>
+  <div style="height:24px;border-radius:7px;background:rgba(74,222,128,.12);border:1px solid #4ADE80;display:flex;align-items:center;justify-content:center;font-size:8.5px;color:#4ADE80;font-weight:800;box-sizing:border-box">142º Você · 2.480</div>
+</div></div>
+<div class="dv-opt" id="8e"><div class="dv-olabel"><a class="dv-oid" href="#8e">8e</a>Tela única longa — rola</div>
+<div class="dv-card" style="width:206px;height:300px;background:#12141F;display:flex;flex-direction:column;padding:14px;box-sizing:border-box;gap:6px;overflow:hidden">
+  <div style="text-align:center"><div style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:20px;color:#FFD43B">4º</div></div>
+  <div style="display:flex;flex-direction:column;gap:4px"><div style="height:18px;border-radius:6px;background:#1B1F30"></div><div style="height:18px;border-radius:6px;background:#1B1F30"></div></div>
+  <div style="height:30px;border-radius:8px;background:#1E2338;border:1px dashed #38BDF8;display:flex;align-items:center;justify-content:center;font-size:8px;color:#8ADCFF;font-weight:800;box-sizing:border-box">💡 Análise Estratégica</div>
+  <div style="font-size:8px;color:#6B7390;font-weight:800;text-align:center;margin:2px 0">— ranking da fase —</div>
+  <div style="display:flex;flex-direction:column;gap:4px;flex:1"><div style="height:18px;border-radius:6px;background:#1B1F30"></div><div style="height:18px;border-radius:6px;background:#1B1F30"></div><div style="height:18px;border-radius:6px;background:#1B1F30;opacity:.6"></div></div>
+  <div style="height:8px;border-radius:99px;background:#232841;width:40%;align-self:center"></div>
+</div></div>
+
+<div class="dv-group">Moeda virtual</div>
+<div class="dv-opt" id="8f"><div class="dv-olabel"><a class="dv-oid" href="#8f">8f</a>Maçãs — comida é a moeda</div>
+<div class="dv-card" style="width:206px;padding:16px;background:#12141F;display:flex;flex-direction:column;gap:10px;align-items:center">
+  <svg width="56" height="56" viewBox="0 0 40 40"><circle cx="20" cy="23" r="13" fill="#FF6B6B"></circle><circle cx="15.5" cy="19" r="4" fill="#FF9B9B"></circle><path d="M20 10 q1 -5 6 -6" stroke="#2CA35B" stroke-width="2.6" fill="none" stroke-linecap="round"></path><ellipse cx="26" cy="7" rx="4" ry="2.6" fill="#4ADE80" transform="rotate(-20 26 7)"></ellipse></svg>
+  <div style="display:flex;align-items:center;gap:6px;background:#1B1F30;border-radius:99px;padding:6px 14px"><svg width="16" height="16" viewBox="0 0 40 40"><circle cx="20" cy="23" r="13" fill="#FF6B6B"></circle><circle cx="15.5" cy="19" r="4" fill="#FF9B9B"></circle></svg><span style="font-weight:800;font-size:13px;color:#F4F6FF">1.240</span></div>
+  <div style="font-size:10px;color:#A6AECB;font-weight:700;text-align:center;line-height:1.4">Mesma maçã da arena — coma na partida, gaste na loja. Temático e claro p/ criança.</div>
+</div></div>
+<div class="dv-opt" id="8g"><div class="dv-olabel"><a class="dv-oid" href="#8g">8g</a>Moedas clássicas</div>
+<div class="dv-card" style="width:206px;padding:16px;background:#12141F;display:flex;flex-direction:column;gap:10px;align-items:center">
+  <svg width="56" height="56" viewBox="0 0 40 40"><circle cx="20" cy="20" r="15" fill="#FFD43B"></circle><circle cx="20" cy="20" r="11" fill="none" stroke="#C9A11C" stroke-width="2"></circle><text x="20" y="26" text-anchor="middle" font-family="Fredoka" font-weight="700" font-size="15" fill="#C9A11C">S</text></svg>
+  <div style="display:flex;align-items:center;gap:6px;background:#1B1F30;border-radius:99px;padding:6px 14px"><svg width="16" height="16" viewBox="0 0 40 40"><circle cx="20" cy="20" r="15" fill="#FFD43B"></circle><circle cx="20" cy="20" r="11" fill="none" stroke="#C9A11C" stroke-width="2"></circle></svg><span style="font-weight:800;font-size:13px;color:#F4F6FF">1.240</span></div>
+  <div style="font-size:10px;color:#A6AECB;font-weight:700;text-align:center;line-height:1.4">Convenção universal de lojinha — separa "comida da arena" de "dinheiro do jogo".</div>
+</div></div>
+
+<div class="dv-group">Organização da Loja (120 skins)</div>
+<div class="dv-opt" id="8h"><div class="dv-olabel"><a class="dv-oid" href="#8h">8h</a>Grade única + chips de filtro</div>
+<div class="dv-card" style="width:206px;height:280px;background:#12141F;display:flex;flex-direction:column;padding:12px;box-sizing:border-box;gap:8px">
+  <div style="display:flex;gap:4px"><div style="height:20px;border-radius:99px;background:#4ADE80;padding:0 10px;display:flex;align-items:center;font-size:8px;font-weight:800;color:#0B2416">Todas</div><div style="height:20px;border-radius:99px;background:#1B1F30;padding:0 10px;display:flex;align-items:center;font-size:8px;font-weight:800;color:#38BDF8">Raras</div><div style="height:20px;border-radius:99px;background:#1B1F30;padding:0 10px;display:flex;align-items:center;font-size:8px;font-weight:800;color:#A78BFA">Épicas</div><div style="height:20px;border-radius:99px;background:#1B1F30;padding:0 10px;display:flex;align-items:center;font-size:8px;font-weight:800;color:#FFD43B">Lend.</div></div>
+  <div style="flex:1;display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px">
+    <div style="border-radius:8px;background:#1B1F30;border:1px solid #A6AECB;opacity:.9"></div><div style="border-radius:8px;background:#1B1F30;border:1px solid #38BDF8"></div><div style="border-radius:8px;background:#1B1F30;border:1px solid #FFD43B"></div>
+    <div style="border-radius:8px;background:#1B1F30;border:1px solid #A78BFA"></div><div style="border-radius:8px;background:#1B1F30;border:1px solid #A6AECB"></div><div style="border-radius:8px;background:#1B1F30;border:1px solid #38BDF8"></div>
+    <div style="border-radius:8px;background:#1B1F30;border:1px solid #FFD43B"></div><div style="border-radius:8px;background:#1B1F30;border:1px solid #A78BFA"></div><div style="border-radius:8px;background:#1B1F30;border:1px solid #A6AECB"></div>
+  </div>
+</div></div>
+<div class="dv-opt" id="8i"><div class="dv-olabel"><a class="dv-oid" href="#8i">8i</a>Seções empilhadas por raridade</div>
+<div class="dv-card" style="width:206px;height:280px;background:#12141F;display:flex;flex-direction:column;padding:12px;box-sizing:border-box;gap:7px;overflow:hidden">
+  <div style="font-size:9px;font-weight:800;color:#FFD43B">👑 LENDÁRIAS <span style="color:#6B7390">· ver todas</span></div>
+  <div style="display:flex;gap:5px"><div style="flex:1;height:44px;border-radius:8px;background:#1B1F30;border:1px solid #FFD43B;box-shadow:0 0 6px rgba(255,212,59,.3)"></div><div style="flex:1;height:44px;border-radius:8px;background:#1B1F30;border:1px solid #FFD43B"></div><div style="flex:1;height:44px;border-radius:8px;background:#1B1F30;border:1px solid #FFD43B"></div></div>
+  <div style="font-size:9px;font-weight:800;color:#A78BFA">ÉPICAS <span style="color:#6B7390">· ver todas</span></div>
+  <div style="display:flex;gap:5px"><div style="flex:1;height:44px;border-radius:8px;background:#1B1F30;border:1px solid #A78BFA"></div><div style="flex:1;height:44px;border-radius:8px;background:#1B1F30;border:1px solid #A78BFA"></div><div style="flex:1;height:44px;border-radius:8px;background:#1B1F30;border:1px solid #A78BFA"></div></div>
+  <div style="font-size:9px;font-weight:800;color:#38BDF8">RARAS <span style="color:#6B7390">· ver todas</span></div>
+  <div style="display:flex;gap:5px"><div style="flex:1;height:44px;border-radius:8px;background:#1B1F30;border:1px solid #38BDF8"></div><div style="flex:1;height:44px;border-radius:8px;background:#1B1F30;border:1px solid #38BDF8"></div><div style="flex:1;height:44px;border-radius:8px;background:#1B1F30;border:1px solid #38BDF8"></div></div>
+</div></div>
+<div class="dv-opt" id="8j"><div class="dv-olabel"><a class="dv-oid" href="#8j">8j</a>Tabs por raridade</div>
+<div class="dv-card" style="width:206px;height:280px;background:#12141F;display:flex;flex-direction:column;padding:12px;box-sizing:border-box;gap:8px">
+  <div style="display:flex;border-bottom:2px solid #232841"><div style="padding:6px 8px;font-size:8.5px;font-weight:800;color:#A6AECB">Comuns</div><div style="padding:6px 8px;font-size:8.5px;font-weight:800;color:#A6AECB">Raras</div><div style="padding:6px 8px;font-size:8.5px;font-weight:800;color:#A78BFA;border-bottom:2px solid #A78BFA;margin-bottom:-2px">Épicas</div><div style="padding:6px 8px;font-size:8.5px;font-weight:800;color:#A6AECB">Lend.</div></div>
+  <div style="flex:1;display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px">
+    <div style="border-radius:8px;background:#1B1F30;border:1px solid #A78BFA"></div><div style="border-radius:8px;background:#1B1F30;border:1px solid #A78BFA"></div><div style="border-radius:8px;background:#1B1F30;border:1px solid #A78BFA"></div>
+    <div style="border-radius:8px;background:#1B1F30;border:1px solid #A78BFA"></div><div style="border-radius:8px;background:#1B1F30;border:1px solid #A78BFA"></div><div style="border-radius:8px;background:#1B1F30;border:1px solid #A78BFA"></div>
+  </div>
+</div></div>
+
+<div class="dv-group">Tela Desafios</div>
+<div class="dv-opt" id="8k"><div class="dv-olabel"><a class="dv-oid" href="#8k">8k</a>Desafios = mapa das 30 fases</div>
+<div class="dv-card" style="width:206px;height:280px;background:#12141F;position:relative;box-sizing:border-box;overflow:hidden;padding:12px">
+  <svg width="182" height="256" viewBox="0 0 182 256" style="position:absolute;inset:12px"><path d="M30 230 C 100 220, 150 200, 150 170 C 150 140, 40 150, 40 115 C 40 85, 140 95, 145 60" stroke="#232841" stroke-width="7" fill="none" stroke-linecap="round" stroke-dasharray="1 12"></path></svg>
+  <div style="position:absolute;left:16px;bottom:16px;width:40px;height:40px;border-radius:50%;background:#4ADE80;display:flex;align-items:center;justify-content:center;font-size:15px;box-shadow:0 3px 0 #2CA35B">✓</div>
+  <div style="position:absolute;right:24px;bottom:70px;width:40px;height:40px;border-radius:50%;background:#4ADE80;display:flex;align-items:center;justify-content:center;font-size:15px;box-shadow:0 3px 0 #2CA35B">✓</div>
+  <div style="position:absolute;left:24px;top:104px;width:46px;height:46px;border-radius:50%;background:#38BDF8;border:2.5px solid #8ADCFF;display:flex;align-items:center;justify-content:center;font-size:17px;box-shadow:0 0 12px rgba(56,189,248,.5);box-sizing:border-box">🌊</div>
+  <div style="position:absolute;right:26px;top:36px;width:40px;height:40px;border-radius:50%;background:#1B1F30;border:1.5px dashed #6B7390;display:flex;align-items:center;justify-content:center;font-size:13px;box-sizing:border-box">🔒</div>
+  <div style="position:absolute;left:12px;top:12px;font-size:9px;font-weight:800;color:#A6AECB">MAPA · FASE 3 DE 30</div>
+</div></div>
+<div class="dv-opt" id="8l"><div class="dv-olabel"><a class="dv-oid" href="#8l">8l</a>Desafios separados — metas por partida</div>
+<div class="dv-card" style="width:206px;height:280px;background:#12141F;display:flex;flex-direction:column;padding:12px;box-sizing:border-box;gap:6px">
+  <div style="font-size:9px;font-weight:800;color:#A6AECB">DESAFIOS DA SEMANA</div>
+  <div style="border-radius:10px;background:#1B1F30;padding:8px 10px;display:flex;align-items:center;gap:8px"><span style="font-size:13px">🍎</span><div style="flex:1"><div style="font-size:9px;font-weight:800;color:#F4F6FF">Coma 50 em 1 partida</div><div style="height:5px;border-radius:99px;background:#232841;margin-top:3px"><div style="width:70%;height:5px;border-radius:99px;background:#4ADE80"></div></div></div><span style="font-size:8px;color:#A6AECB;font-weight:800">35/50</span></div>
+  <div style="border-radius:10px;background:#1B1F30;padding:8px 10px;display:flex;align-items:center;gap:8px"><span style="font-size:13px">⚔</span><div style="flex:1"><div style="font-size:9px;font-weight:800;color:#F4F6FF">Devore 3 cobras</div><div style="height:5px;border-radius:99px;background:#232841;margin-top:3px"><div style="width:33%;height:5px;border-radius:99px;background:#4ADE80"></div></div></div><span style="font-size:8px;color:#A6AECB;font-weight:800">1/3</span></div>
+  <div style="border-radius:10px;background:#1B1F30;padding:8px 10px;display:flex;align-items:center;gap:8px;opacity:.55"><span style="font-size:13px">🔒</span><div style="flex:1"><div style="font-size:9px;font-weight:800;color:#F4F6FF">Sobreviva 3 min</div></div></div>
+  <div style="border-radius:10px;background:#1B1F30;padding:8px 10px;display:flex;align-items:center;gap:8px"><span style="font-size:13px">✅</span><div style="flex:1"><div style="font-size:9px;font-weight:800;color:#4ADE80">Top 5 em qualquer fase</div></div><span style="font-size:8px;color:#FFD43B;font-weight:800">+200 🍎</span></div>
+  <div style="margin-top:auto;font-size:8px;color:#6B7390;font-weight:700;text-align:center">Fases ficam em "Mapa", na Home</div>
+</div></div>
+</div>
+<p class="dv-next">Mood: <a class="dv-oid" href="#1a">1a</a>·<a class="dv-oid" href="#1b">1b</a>·<a class="dv-oid" href="#1c">1c</a> — Home: <a class="dv-oid" href="#1d">1d</a>·<a class="dv-oid" href="#1e">1e</a>·<a class="dv-oid" href="#1f">1f</a> — HUD: <a class="dv-oid" href="#1g">1g</a>·<a class="dv-oid" href="#1h">1h</a>·<a class="dv-oid" href="#1i">1i</a> — Ícone: <a class="dv-oid" href="#3a">3a</a>·<a class="dv-oid" href="#3b">3b</a>·<a class="dv-oid" href="#3c">3c</a>·<a class="dv-oid" href="#1j">1j</a>·<a class="dv-oid" href="#1k">1k</a>. Responda com os códigos (ex.: "1b, 1d, 1h, 3b+3c, 8b, 8d, 8f, 8h, 8k").</p>
+</section>
+<section class="dv-turn" id="t7">
+<div class="dv-thd"><a class="dv-tid" href="#t7">7</a><span class="dv-tname">Oferta de tempo extra — perdeu do chefe → temporizador laranja + anúncio recompensado</span></div>
+<div class="dv-opts">
+<div class="dv-opt" id="7a"><div class="dv-olabel"><a class="dv-oid" href="#7a">7a</a>Modal de oferta — decide em 5s (412×915)</div>
+<div class="dv-card" style="width:412px;height:915px;background:#081A2B;position:relative;box-sizing:border-box;overflow:hidden">
+  <div style="position:absolute;inset:0;background:rgba(8,10,18,.78);backdrop-filter:blur(3px)"></div>
+  <div style="position:absolute;left:24px;right:24px;top:50%;transform:translateY(-50%);background:#1B1F30;border:1px solid rgba(255,159,69,.35);border-radius:24px;padding:26px 22px;display:flex;flex-direction:column;align-items:center;gap:18px;box-sizing:border-box">
+    <div style="width:88px;height:88px;border-radius:50%;background:conic-gradient(#FF9F45 0 68%,rgba(255,255,255,.12) 68% 100%);display:flex;align-items:center;justify-content:center"><div style="width:72px;height:72px;border-radius:50%;background:#12141F;display:flex;flex-direction:column;align-items:center;justify-content:center"><span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:28px;color:#FF9F45">4</span><span style="font-size:9.5px;font-weight:800;color:#A6AECB;letter-spacing:.05em">SEGUNDOS</span></div></div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+      <div style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:26px;color:#F4F6FF;text-align:center;line-height:1.2">Quase lá!</div>
+      <div style="font-size:14px;color:#A6AECB;font-weight:700;text-align:center;line-height:1.5">Faltaram <b style="color:#FF9F45">621 pontos</b> para vencer<br>Maré, a Soberana</div>
+    </div>
+    <div style="width:100%;display:flex;flex-direction:column;gap:10px">
+      <div style="min-height:60px;border-radius:16px;background:#FF9F45;box-shadow:0 5px 0 #C86F1F;display:flex;align-items:center;justify-content:center;gap:10px;font-family:'Fredoka',sans-serif;font-weight:600;font-size:18px;color:#3A1F00;position:relative">▶ Ver anúncio e ganhar +20s<span style="position:absolute;top:-9px;right:12px;background:#FFD43B;color:#3A2E00;border-radius:999px;padding:2px 9px;font-size:10px;font-weight:800;font-family:'Nunito',sans-serif">ANÚNCIO</span></div>
+      <div style="min-height:52px;border-radius:16px;background:#232841;box-shadow:0 4px 0 #14172A;display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:500;font-size:16px;color:#F4F6FF">Não, ver meu ranking</div>
+    </div>
+    <div style="font-size:11px;color:#6B7390;font-weight:700;text-align:center;line-height:1.5">O duelo continua de onde parou, com o chefe congelado nos 3.100 pts</div>
+  </div>
+  <div style="position:absolute;left:0;right:0;bottom:24px;display:flex;justify-content:center"><span style="font-size:11px;color:#6B7390;font-weight:700">2ª tentativa nesta fase: a próxima oferta será +30s</span></div>
+</div></div>
+<div class="dv-opt" id="7b"><div class="dv-olabel"><a class="dv-oid" href="#7b">7b</a>Escada de ofertas — 20s → 30s → 40s → 50s</div>
+<div class="dv-card" style="width:340px;background:#12141F;padding:22px;display:flex;flex-direction:column;gap:14px">
+  <div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:16px;color:#F4F6FF">Escada por fase (reseta ao passar)</div>
+  <div style="display:flex;flex-direction:column;gap:10px">
+    <div style="display:flex;align-items:center;gap:12px;background:#1B1F30;border-radius:14px;padding:10px 14px"><div style="width:44px;height:44px;border-radius:50%;background:conic-gradient(#FF9F45 0 100%);display:flex;align-items:center;justify-content:center"><div style="width:34px;height:34px;border-radius:50%;background:#12141F;display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:700;font-size:13px;color:#FF9F45">20s</div></div><div style="flex:1"><div style="font-size:13px;font-weight:800;color:#F4F6FF">1ª derrota</div><div style="font-size:11px;color:#A6AECB;font-weight:700">1 anúncio · chefe congelado</div></div></div>
+    <div style="display:flex;align-items:center;gap:12px;background:#1B1F30;border-radius:14px;padding:10px 14px"><div style="width:44px;height:44px;border-radius:50%;background:conic-gradient(#FF9F45 0 100%);display:flex;align-items:center;justify-content:center"><div style="width:34px;height:34px;border-radius:50%;background:#12141F;display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:700;font-size:13px;color:#FF9F45">30s</div></div><div style="flex:1"><div style="font-size:13px;font-weight:800;color:#F4F6FF">2ª derrota</div><div style="font-size:11px;color:#A6AECB;font-weight:700">1 anúncio · mais tempo p/ compensar</div></div></div>
+    <div style="display:flex;align-items:center;gap:12px;background:#1B1F30;border-radius:14px;padding:10px 14px"><div style="width:44px;height:44px;border-radius:50%;background:conic-gradient(#FF9F45 0 100%);display:flex;align-items:center;justify-content:center"><div style="width:34px;height:34px;border-radius:50%;background:#12141F;display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:700;font-size:13px;color:#FF9F45">40s</div></div><div style="flex:1"><div style="font-size:13px;font-weight:800;color:#F4F6FF">3ª derrota</div><div style="font-size:11px;color:#A6AECB;font-weight:700">1 anúncio</div></div></div>
+    <div style="display:flex;align-items:center;gap:12px;background:#1B1F30;border-radius:14px;padding:10px 14px"><div style="width:44px;height:44px;border-radius:50%;background:conic-gradient(#FF9F45 0 100%);display:flex;align-items:center;justify-content:center"><div style="width:34px;height:34px;border-radius:50%;background:#12141F;display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:700;font-size:13px;color:#FF9F45">50s</div></div><div style="flex:1"><div style="font-size:13px;font-weight:800;color:#F4F6FF">4ª derrota (máx.)</div><div style="font-size:11px;color:#A6AECB;font-weight:700">1 anúncio · depois, só recomeçar a fase</div></div></div>
+  </div>
+</div></div>
+</div>
+<p class="dv-next">Política de Famílias (Play): recompensado só com opt-in claro — botão rotulado "ANÚNCIO", alternativa gratuita sempre visível ("Não, ver meu ranking"), timer laranja de 5s decide sozinho pelo "não" se a criança não tocar. Quem comprou "Remover Anúncios" ganha a escada de tempo direto, sem vídeo.</p>
+</section>
+<section class="dv-turn" id="t6">
+<div class="dv-thd"><a class="dv-tid" href="#t6">6</a><span class="dv-tname">Chefe de fase — tempo esgota → duelo contra o chefe; passa quem terminar com mais pontos que ele</span></div>
+<div class="dv-opts">
+<div class="dv-opt" id="6a"><div class="dv-olabel"><a class="dv-oid" href="#6a">6a</a>Intro do chefe — transição ao fim do tempo (412×915)</div>
+<div class="dv-card" style="width:412px;height:915px;background:#081A2B;background-image:linear-gradient(rgba(138,220,255,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(138,220,255,.07) 1px,transparent 1px);background-size:22px 22px;display:flex;flex-direction:column;align-items:center;box-sizing:border-box;padding:32px 24px;overflow:hidden">
+  <div style="background:rgba(255,212,59,.14);color:#FFD43B;border-radius:999px;padding:7px 18px;font-size:13px;font-weight:800;letter-spacing:.06em">⏱ TEMPO ESGOTADO</div>
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px">
+    <div style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:34px;color:#F4F6FF;text-align:center;line-height:1.15">O Chefe da fase<br>apareceu!</div>
+    <svg width="240" height="130" viewBox="0 0 240 130"><circle cx="30" cy="95" r="16" fill="#38BDF8" opacity=".45"></circle><circle cx="58" cy="88" r="19" fill="#38BDF8" opacity=".6"></circle><circle cx="90" cy="80" r="23" fill="#38BDF8" opacity=".75"></circle><circle cx="126" cy="72" r="27" fill="#38BDF8" opacity=".9"></circle><circle cx="170" cy="62" r="34" fill="#38BDF8"></circle><path d="M150 32 l10 14 l12 -10 l8 14 l14 -8" stroke="#FFD43B" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="160" cy="54" r="8" fill="#fff"></circle><circle cx="184" cy="54" r="8" fill="#fff"></circle><circle cx="162" cy="56" r="4" fill="#12141F"></circle><circle cx="186" cy="56" r="4" fill="#12141F"></circle><path d="M162 78 q10 7 20 0" stroke="#12141F" stroke-width="4" fill="none" stroke-linecap="round"></path></svg>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:4px"><div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:20px;color:#F4F6FF">Maré, a Soberana</div><div style="font-size:13px;color:#A6AECB;font-weight:700">Chefe da Fase Oceano</div></div>
+    <div style="display:flex;align-items:center;gap:14px;background:rgba(14,16,24,.6);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:16px 22px">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:2px"><span style="font-size:11px;font-weight:800;color:#A6AECB;letter-spacing:.05em">VOCÊ</span><span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:26px;color:#4ADE80">2.480</span></div>
+      <span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:18px;color:#6B7390">vs</span>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:2px"><span style="font-size:11px;font-weight:800;color:#A6AECB;letter-spacing:.05em">CHEFE</span><span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:26px;color:#FFD43B">3.100</span></div>
+    </div>
+    <div style="font-size:14px;color:#A6AECB;font-weight:700;text-align:center;line-height:1.5;max-width:300px">Termine o duelo com mais pontos que o chefe para passar de fase</div>
+  </div>
+  <div style="width:100%;min-height:60px;border-radius:18px;background:#FFD43B;box-shadow:0 5px 0 #C9A11C;display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:600;font-size:20px;color:#3A2E00;box-sizing:border-box">⚔ Enfrentar o chefe</div>
+</div></div>
+<div class="dv-opt" id="6b"><div class="dv-olabel"><a class="dv-oid" href="#6b">6b</a>HUD do duelo — barra você × chefe (recorte 412×560)</div>
+<div class="dv-card" style="width:412px;height:560px;background:#081A2B;background-image:linear-gradient(rgba(138,220,255,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(138,220,255,.07) 1px,transparent 1px);background-size:26px 26px;position:relative;box-sizing:border-box;overflow:hidden">
+  <svg width="412" height="560" viewBox="0 0 412 560" style="position:absolute;inset:0"><circle cx="120" cy="330" r="8" fill="#4ADE80" opacity=".5"></circle><circle cx="138" cy="320" r="9" fill="#4ADE80" opacity=".7"></circle><circle cx="158" cy="312" r="10" fill="#4ADE80" opacity=".85"></circle><circle cx="180" cy="306" r="12" fill="#4ADE80"></circle><circle cx="177" cy="302" r="3" fill="#fff"></circle><circle cx="185" cy="302" r="3" fill="#fff"></circle><circle cx="250" cy="390" r="14" fill="#38BDF8" opacity=".55"></circle><circle cx="278" cy="378" r="16" fill="#38BDF8" opacity=".75"></circle><circle cx="310" cy="366" r="19" fill="#38BDF8"></circle><path d="M298 350 l6 8 l7 -6 l5 8 l8 -5" stroke="#FFD43B" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="304" cy="362" r="4.5" fill="#fff"></circle><circle cx="317" cy="362" r="4.5" fill="#fff"></circle><circle cx="305" cy="363" r="2.2" fill="#12141F"></circle><circle cx="318" cy="363" r="2.2" fill="#12141F"></circle><circle cx="220" cy="250" r="5" fill="#FF6B6B"></circle><circle cx="100" cy="450" r="5" fill="#FF6B6B"></circle></svg>
+  <div style="position:absolute;top:12px;left:12px;right:12px;background:rgba(14,16,24,.78);border:1px solid rgba(255,212,59,.25);border-radius:16px;padding:10px 14px;display:flex;flex-direction:column;gap:8px">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div style="display:flex;align-items:center;gap:8px"><div style="width:26px;height:26px;border-radius:50%;background:#4ADE80"></div><span style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:16px;color:#4ADE80">2.480</span></div>
+      <div style="display:flex;flex-direction:column;align-items:center"><span style="font-size:10px;font-weight:800;color:#FFD43B;letter-spacing:.08em">DUELO DO CHEFE</span><span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:15px;color:#F4F6FF">0:58</span></div>
+      <div style="display:flex;align-items:center;gap:8px"><span style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:16px;color:#FFD43B">3.100</span><div style="width:26px;height:26px;border-radius:50%;background:#38BDF8;position:relative"><div style="position:absolute;left:5px;top:-5px;width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-bottom:7px solid #FFD43B"></div><div style="position:absolute;left:13px;top:-5px;width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-bottom:7px solid #FFD43B"></div></div></div>
+    </div>
+    <div style="height:10px;border-radius:999px;background:rgba(255,255,255,.1);overflow:hidden;display:flex"><div style="width:44%;background:linear-gradient(90deg,#2CA35B,#4ADE80);border-radius:999px 0 0 999px"></div><div style="flex:1"></div><div style="width:2px;background:#fff;opacity:.6"></div></div>
+    <div style="display:flex;justify-content:space-between"><span style="font-size:10.5px;font-weight:800;color:#A6AECB">faltam 621 pts para passar</span><span style="font-size:10.5px;font-weight:800;color:#A6AECB">meta: chefe + 1</span></div>
+  </div>
+  <div style="position:absolute;bottom:56px;left:96px;width:108px;height:108px;border-radius:50%;border:2px solid rgba(255,255,255,.18);background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center"><div style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.22)"></div></div>
+</div></div>
+</div>
+<p class="dv-next">Regra: tempo da fase esgota → duelo. O chefe (cobra grande com coroa, nome próprio por tema — aqui "Maré, a Soberana" do Oceano) tem pontuação-alvo; comer/caçar no duelo soma pontos. Barra de progresso você × chefe sempre visível; passa de fase quem termina acima. Derrota = tela de ranking da fase (<a class="dv-oid" href="#5a">5a</a>) com "quase lá". Cada um dos 30 temas ganha um chefe nomeado.</p>
+</section>
+<section class="dv-turn" id="t5">
+<div class="dv-thd"><a class="dv-tid" href="#t5">5</a><span class="dv-tname">Ranking global da fase — tela pós-partida (412×915)</span></div>
+<div class="dv-opts">
+<div class="dv-opt" id="5a"><div class="dv-olabel"><a class="dv-oid" href="#5a">5a</a>Ranking da fase — vencedores e eliminados, por pontos</div>
+<div class="dv-card" style="width:412px;height:915px;background:#12141F;display:flex;flex-direction:column;box-sizing:border-box;overflow:hidden">
+  <div style="background:#081A2B;background-image:linear-gradient(rgba(138,220,255,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(138,220,255,.07) 1px,transparent 1px);background-size:20px 20px;padding:20px 24px 18px;display:flex;flex-direction:column;gap:10px">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div style="display:flex;align-items:center;gap:10px"><span style="font-size:22px">🌊</span><div><div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:19px;color:#F4F6FF">Fase Oceano</div><div style="font-size:12px;color:#A6AECB;font-weight:700">Ranking global · hoje</div></div></div>
+      <div style="width:44px;height:44px;border-radius:14px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:#F4F6FF;font-size:16px">✕</div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <div style="background:rgba(74,222,128,.14);color:#4ADE80;border-radius:999px;padding:6px 14px;font-size:12.5px;font-weight:800;min-height:32px;display:flex;align-items:center">Sua melhor: 2.480 pts</div>
+      <div style="background:rgba(255,255,255,.07);color:#A6AECB;border-radius:999px;padding:6px 14px;font-size:12.5px;font-weight:800;min-height:32px;display:flex;align-items:center">18.402 jogadores</div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:flex-end;justify-content:center;gap:14px;padding:22px 24px 18px">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px"><div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(160deg,#8ADCFF,#38BDF8);border:3px solid #94A3B8;position:relative"><div style="position:absolute;left:13px;top:17px;width:10px;height:10px;border-radius:50%;background:#fff"></div><div style="position:absolute;left:30px;top:17px;width:10px;height:10px;border-radius:50%;background:#fff"></div><div style="position:absolute;left:16px;top:20px;width:5px;height:5px;border-radius:50%;background:#12141F"></div><div style="position:absolute;left:33px;top:20px;width:5px;height:5px;border-radius:50%;background:#12141F"></div></div><span style="font-size:12px;font-weight:800;color:#F4F6FF">Nadia</span><div style="width:64px;height:44px;border-radius:10px 10px 0 0;background:#232841;display:flex;flex-direction:column;align-items:center;justify-content:center"><span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:15px;color:#E2E8F0">2º</span><span style="font-size:10px;font-weight:800;color:#A6AECB">9.870</span></div></div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px"><span style="font-size:18px">👑</span><div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(160deg,#FFE68A,#FFD43B);border:3px solid #FFD43B;box-shadow:0 0 16px rgba(255,212,59,.4);position:relative"><div style="position:absolute;left:15px;top:20px;width:11px;height:11px;border-radius:50%;background:#fff"></div><div style="position:absolute;left:35px;top:20px;width:11px;height:11px;border-radius:50%;background:#fff"></div><div style="position:absolute;left:18px;top:23px;width:5.5px;height:5.5px;border-radius:50%;background:#12141F"></div><div style="position:absolute;left:38px;top:23px;width:5.5px;height:5.5px;border-radius:50%;background:#12141F"></div></div><span style="font-size:12px;font-weight:800;color:#F4F6FF">Rex_BR</span><div style="width:64px;height:58px;border-radius:10px 10px 0 0;background:#2A2416;border:1px solid rgba(255,212,59,.3);display:flex;flex-direction:column;align-items:center;justify-content:center;box-sizing:border-box"><span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:17px;color:#FFD43B">1º</span><span style="font-size:10px;font-weight:800;color:#A6AECB">12.340</span></div></div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px"><div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(160deg,#FFA8D6,#F472B6);border:3px solid #C86F1F;position:relative"><div style="position:absolute;left:13px;top:17px;width:10px;height:10px;border-radius:50%;background:#fff"></div><div style="position:absolute;left:30px;top:17px;width:10px;height:10px;border-radius:50%;background:#fff"></div><div style="position:absolute;left:16px;top:20px;width:5px;height:5px;border-radius:50%;background:#12141F"></div><div style="position:absolute;left:33px;top:20px;width:5px;height:5px;border-radius:50%;background:#12141F"></div></div><span style="font-size:12px;font-weight:800;color:#F4F6FF">Lu_Cobra</span><div style="width:64px;height:36px;border-radius:10px 10px 0 0;background:#232841;display:flex;flex-direction:column;align-items:center;justify-content:center"><span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:14px;color:#FFC58C">3º</span><span style="font-size:10px;font-weight:800;color:#A6AECB">8.115</span></div></div>
+  </div>
+  <div style="flex:1;display:flex;flex-direction:column;gap:8px;padding:0 16px;overflow:hidden">
+    <div style="display:flex;align-items:center;gap:12px;background:#1B1F30;border-radius:14px;padding:10px 14px;min-height:56px;box-sizing:border-box"><span style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:14px;color:#A6AECB;width:26px">4º</span><div style="width:34px;height:34px;border-radius:50%;background:#2DD4BF"></div><div style="flex:1"><div style="font-size:14px;font-weight:800;color:#F4F6FF">TurboTato</div><div style="font-size:11px;color:#4ADE80;font-weight:800">✓ Venceu a arena</div></div><span style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:15px;color:#F4F6FF">7.902</span></div>
+    <div style="display:flex;align-items:center;gap:12px;background:#1B1F30;border-radius:14px;padding:10px 14px;min-height:56px;box-sizing:border-box"><span style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:14px;color:#A6AECB;width:26px">5º</span><div style="width:34px;height:34px;border-radius:50%;background:#A78BFA"></div><div style="flex:1"><div style="font-size:14px;font-weight:800;color:#F4F6FF">Mila_09</div><div style="font-size:11px;color:#FF9B9B;font-weight:800">✗ Eliminada aos 1:12</div></div><span style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:15px;color:#F4F6FF">6.480</span></div>
+    <div style="display:flex;align-items:center;gap:12px;background:#1B1F30;border-radius:14px;padding:10px 14px;min-height:56px;box-sizing:border-box"><span style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:14px;color:#A6AECB;width:26px">6º</span><div style="width:34px;height:34px;border-radius:50%;background:#FF9F45"></div><div style="flex:1"><div style="font-size:14px;font-weight:800;color:#F4F6FF">Zigzag</div><div style="font-size:11px;color:#4ADE80;font-weight:800">✓ Venceu a arena</div></div><span style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:15px;color:#F4F6FF">5.917</span></div>
+    <div style="display:flex;align-items:center;gap:12px;background:#1B1F30;border-radius:14px;padding:10px 14px;min-height:56px;box-sizing:border-box;opacity:.85"><span style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:14px;color:#A6AECB;width:26px">7º</span><div style="width:34px;height:34px;border-radius:50%;background:#BEF264"></div><div style="flex:1"><div style="font-size:14px;font-weight:800;color:#F4F6FF">K4rol</div><div style="font-size:11px;color:#FF9B9B;font-weight:800">✗ Eliminada aos 0:47</div></div><span style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:15px;color:#F4F6FF">3.203</span></div>
+    <div style="text-align:center;color:#6B7390;font-size:12px;font-weight:700;padding:2px 0">···</div>
+  </div>
+  <div style="padding:12px 16px 20px;display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:center;gap:12px;background:rgba(74,222,128,.12);border:1.5px solid #4ADE80;border-radius:14px;padding:10px 14px;min-height:56px;box-sizing:border-box"><span style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:14px;color:#4ADE80;width:32px">142º</span><div style="width:34px;height:34px;border-radius:50%;background:#4ADE80;position:relative"><div style="position:absolute;left:7px;top:10px;width:7px;height:7px;border-radius:50%;background:#fff"></div><div style="position:absolute;left:19px;top:10px;width:7px;height:7px;border-radius:50%;background:#fff"></div></div><div style="flex:1"><div style="font-size:14px;font-weight:800;color:#F4F6FF">Você</div><div style="font-size:11px;color:#FF9B9B;font-weight:800">✗ Eliminado aos 1:42 · melhor: 2.480</div></div><span style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:15px;color:#F4F6FF">2.480</span></div>
+    <div style="display:flex;gap:12px">
+      <div style="flex:1;min-height:52px;border-radius:14px;background:#4ADE80;box-shadow:0 4px 0 #2CA35B;display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:600;font-size:16px;color:#0B2416">Jogar de novo</div>
+      <div style="flex:1;min-height:52px;border-radius:14px;background:#232841;box-shadow:0 4px 0 #14172A;display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:500;font-size:16px;color:#F4F6FF">Menu</div>
+    </div>
+  </div>
+</div></div>
+</div>
+<p class="dv-next">Ranking por fase, global e por pontos: pódio top 3, lista com estado de cada jogador (✓ venceu / ✗ eliminada + tempo) e a sua linha fixa no rodapé com destaque verde. O cabeçalho herda o fundo do tema da fase (aqui, Oceano). Entra como aba na tela de pós-partida das 9 finais.</p>
+</section>
+<section class="dv-turn" id="t4">
+<div class="dv-thd"><a class="dv-tid" href="#t4">4</a><span class="dv-tname">Temas de arena — 30 fases com fundo, decoração, obstáculo e prêmio</span></div>
+<div class="dv-opts">
+<sc-for list="{{ temas }}" as="a" hint-placeholder-count="6">
+  <div class="dv-card" style="width:252px;background:#fff;display:flex;flex-direction:column">
+    <div style="height:110px;background:{{ a.bg }};background-image:linear-gradient({{ a.grid }} 1px,transparent 1px),linear-gradient(90deg,{{ a.grid }} 1px,transparent 1px);background-size:18px 18px;position:relative;display:flex;align-items:center;justify-content:center">
+      <span style="position:absolute;top:8px;left:10px;font-size:16px">{{ a.e }}</span>
+      <div style="display:flex;align-items:center;gap:3px">
+        <div style="width:9px;height:9px;border-radius:50%;background:{{ a.accent }};opacity:.5"></div>
+        <div style="width:11px;height:11px;border-radius:50%;background:{{ a.accent }};opacity:.75"></div>
+        <div style="width:14px;height:14px;border-radius:50%;background:{{ a.accent }};position:relative"><div style="position:absolute;left:2.5px;top:3.5px;width:3.5px;height:3.5px;border-radius:50%;background:#fff"></div><div style="position:absolute;left:8px;top:3.5px;width:3.5px;height:3.5px;border-radius:50%;background:#fff"></div></div>
+        <div style="width:6px;height:6px;border-radius:50%;background:#FF6B6B;margin-left:10px"></div>
+      </div>
+      <div style="position:absolute;bottom:8px;right:10px;width:22px;height:22px;border-radius:6px;border:1.5px dashed {{ a.accent }};opacity:.55;box-sizing:border-box"></div>
+    </div>
+    <div style="padding:12px 14px;display:flex;flex-direction:column;gap:5px">
+      <div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:15px;color:#1a1a1a">{{ a.nome }}</div>
+      <div style="font-size:11px;color:rgba(0,0,0,.6);line-height:1.4"><b style="color:rgba(0,0,0,.8)">Decoração:</b> {{ a.deco }}</div>
+      <div style="font-size:11px;color:rgba(0,0,0,.6);line-height:1.4"><b style="color:rgba(0,0,0,.8)">Obstáculo:</b> {{ a.obst }}</div>
+      <div style="font-size:11px;color:rgba(0,0,0,.6);line-height:1.4"><b style="color:rgba(0,0,0,.8)">Prêmio:</b> {{ a.premio }}</div>
+    </div>
+  </div>
+</sc-for>
+</div>
+<p class="dv-next">Cada tema = fundo escuro próprio (grade sempre sutil, cobras sempre legíveis) + decoração nas bordas, 1 mecânica de obstáculo e 1 comida-prêmio com multiplicador. Progressão: temas calmos primeiro (Clássica→Floresta→Oceano), mecânicas punitivas só do meio em diante, "Arena Final" fecha. A miniatura mostra fundo/acento; a arte de decoração vem da engine.</p>
+</section>
+<section class="dv-turn" id="t3">
+<div class="dv-thd"><a class="dv-tid" href="#t3">3</a><span class="dv-tname">Ícone em formato de S — 3 variantes (192px + teste de legibilidade em 48px)</span></div>
+<div class="dv-opts">
+<div class="dv-opt" id="3a"><div class="dv-olabel"><a class="dv-oid" href="#3a">3a</a>S sólido — cobra em S com cabeça no topo</div>
+<div class="dv-card" style="width:300px;padding:24px;display:flex;align-items:flex-end;gap:20px;background:#f7f6f2">
+  <div style="display:flex;flex-direction:column;gap:8px;align-items:center">
+    <div style="width:192px;height:192px;border-radius:48px;background:#12141F;display:flex;align-items:center;justify-content:center">
+      <svg width="192" height="192" viewBox="0 0 100 100"><path d="M68 26 C 50 18, 30 24, 30 38 C 30 52, 70 48, 70 62 C 70 76, 48 82, 32 74" stroke="#4ADE80" stroke-width="14" fill="none" stroke-linecap="round"></path><circle cx="68" cy="26" r="11" fill="#4ADE80"></circle><circle cx="64.5" cy="23" r="2.9" fill="#fff"></circle><circle cx="72" cy="23" r="2.9" fill="#fff"></circle><circle cx="65" cy="23.6" r="1.4" fill="#12141F"></circle><circle cx="72.5" cy="23.6" r="1.4" fill="#12141F"></circle><path d="M65 30 q3.5 3 7 0" stroke="#12141F" stroke-width="1.8" fill="none" stroke-linecap="round"></path><path d="M32 74 l-7 4 M32 74 l-4 -7" stroke="#4ADE80" stroke-width="4" stroke-linecap="round"></path><circle cx="79" cy="52" r="4.5" fill="#FF6B6B"></circle></svg>
+    </div>
+    <span style="font-size:11px;color:rgba(0,0,0,.5)">192px</span>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:8px;align-items:center">
+    <div style="width:48px;height:48px;border-radius:12px;background:#12141F;display:flex;align-items:center;justify-content:center">
+      <svg width="48" height="48" viewBox="0 0 100 100"><path d="M68 26 C 50 18, 30 24, 30 38 C 30 52, 70 48, 70 62 C 70 76, 48 82, 32 74" stroke="#4ADE80" stroke-width="14" fill="none" stroke-linecap="round"></path><circle cx="68" cy="26" r="11" fill="#4ADE80"></circle><circle cx="64.5" cy="23" r="2.9" fill="#fff"></circle><circle cx="72" cy="23" r="2.9" fill="#fff"></circle><circle cx="79" cy="52" r="4.5" fill="#FF6B6B"></circle></svg>
+    </div>
+    <span style="font-size:11px;color:rgba(0,0,0,.5)">48px</span>
+  </div>
+</div></div>
+<div class="dv-opt" id="3b"><div class="dv-olabel"><a class="dv-oid" href="#3b">3b</a>S segmentado — bolinhas do corpo formam o S</div>
+<div class="dv-card" style="width:300px;padding:24px;display:flex;align-items:flex-end;gap:20px;background:#f7f6f2">
+  <div style="display:flex;flex-direction:column;gap:8px;align-items:center">
+    <div style="width:192px;height:192px;border-radius:48px;background:#12141F;display:flex;align-items:center;justify-content:center">
+      <svg width="192" height="192" viewBox="0 0 100 100"><circle cx="34" cy="76" r="7" fill="#4ADE80" opacity=".45"></circle><circle cx="46" cy="80" r="7.5" fill="#4ADE80" opacity=".6"></circle><circle cx="58" cy="78" r="8" fill="#4ADE80" opacity=".72"></circle><circle cx="67" cy="70" r="8.5" fill="#4ADE80" opacity=".82"></circle><circle cx="66" cy="59" r="9" fill="#4ADE80" opacity=".88"></circle><circle cx="56" cy="52" r="9" fill="#4ADE80" opacity=".92"></circle><circle cx="44" cy="47" r="9" fill="#4ADE80" opacity=".95"></circle><circle cx="35" cy="39" r="9.5" fill="#4ADE80"></circle><circle cx="41" cy="29" r="10" fill="#4ADE80"></circle><circle cx="54" cy="24" r="12" fill="#4ADE80"></circle><circle cx="50" cy="20.5" r="3.1" fill="#fff"></circle><circle cx="58.5" cy="20.5" r="3.1" fill="#fff"></circle><circle cx="50.6" cy="21.2" r="1.5" fill="#12141F"></circle><circle cx="59.1" cy="21.2" r="1.5" fill="#12141F"></circle><path d="M51 28 q4 3.5 8 0" stroke="#12141F" stroke-width="2" fill="none" stroke-linecap="round"></path><circle cx="73" cy="34" r="4.5" fill="#FF6B6B"></circle></svg>
+    </div>
+    <span style="font-size:11px;color:rgba(0,0,0,.5)">192px</span>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:8px;align-items:center">
+    <div style="width:48px;height:48px;border-radius:12px;background:#12141F;display:flex;align-items:center;justify-content:center">
+      <svg width="48" height="48" viewBox="0 0 100 100"><circle cx="34" cy="76" r="7" fill="#4ADE80" opacity=".45"></circle><circle cx="46" cy="80" r="7.5" fill="#4ADE80" opacity=".6"></circle><circle cx="58" cy="78" r="8" fill="#4ADE80" opacity=".72"></circle><circle cx="67" cy="70" r="8.5" fill="#4ADE80" opacity=".82"></circle><circle cx="66" cy="59" r="9" fill="#4ADE80" opacity=".88"></circle><circle cx="56" cy="52" r="9" fill="#4ADE80" opacity=".92"></circle><circle cx="44" cy="47" r="9" fill="#4ADE80" opacity=".95"></circle><circle cx="35" cy="39" r="9.5" fill="#4ADE80"></circle><circle cx="41" cy="29" r="10" fill="#4ADE80"></circle><circle cx="54" cy="24" r="12" fill="#4ADE80"></circle><circle cx="50" cy="20.5" r="3.1" fill="#fff"></circle><circle cx="58.5" cy="20.5" r="3.1" fill="#fff"></circle><circle cx="73" cy="34" r="4.5" fill="#FF6B6B"></circle></svg>
+    </div>
+    <span style="font-size:11px;color:rgba(0,0,0,.5)">48px</span>
+  </div>
+</div></div>
+<div class="dv-opt" id="3c"><div class="dv-olabel"><a class="dv-oid" href="#3c">3c</a>S recortado — fundo verde, S vazado escuro</div>
+<div class="dv-card" style="width:300px;padding:24px;display:flex;align-items:flex-end;gap:20px;background:#f7f6f2">
+  <div style="display:flex;flex-direction:column;gap:8px;align-items:center">
+    <div style="width:192px;height:192px;border-radius:48px;background:#4ADE80;display:flex;align-items:center;justify-content:center">
+      <svg width="192" height="192" viewBox="0 0 100 100"><path d="M68 28 C 50 20, 30 26, 30 39 C 30 52, 70 49, 70 62 C 70 75, 48 81, 32 73" stroke="#12141F" stroke-width="15" fill="none" stroke-linecap="round"></path><circle cx="68" cy="28" r="11.5" fill="#12141F"></circle><circle cx="64.5" cy="25" r="3" fill="#4ADE80"></circle><circle cx="72" cy="25" r="3" fill="#4ADE80"></circle><circle cx="65" cy="25.6" r="1.5" fill="#12141F"></circle><circle cx="72.5" cy="25.6" r="1.5" fill="#12141F"></circle><path d="M65 32 q3.5 3 7 0" stroke="#4ADE80" stroke-width="1.9" fill="none" stroke-linecap="round"></path><circle cx="80" cy="54" r="4.5" fill="#12141F"></circle></svg>
+    </div>
+    <span style="font-size:11px;color:rgba(0,0,0,.5)">192px</span>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:8px;align-items:center">
+    <div style="width:48px;height:48px;border-radius:12px;background:#4ADE80;display:flex;align-items:center;justify-content:center">
+      <svg width="48" height="48" viewBox="0 0 100 100"><path d="M68 28 C 50 20, 30 26, 30 39 C 30 52, 70 49, 70 62 C 70 75, 48 81, 32 73" stroke="#12141F" stroke-width="15" fill="none" stroke-linecap="round"></path><circle cx="68" cy="28" r="11.5" fill="#12141F"></circle><circle cx="64.5" cy="25" r="3" fill="#4ADE80"></circle><circle cx="72" cy="25" r="3" fill="#4ADE80"></circle><circle cx="80" cy="54" r="4.5" fill="#12141F"></circle></svg>
+    </div>
+    <span style="font-size:11px;color:rgba(0,0,0,.5)">48px</span>
+  </div>
+</div></div>
+</div>
+<p class="dv-next">O S é o corpo da cobra: <a class="dv-oid" href="#3a">3a</a> traço contínuo com cabeça e cauda · <a class="dv-oid" href="#3b">3b</a> segmentado (mesma linguagem das skins) · <a class="dv-oid" href="#3c">3c</a> invertido p/ variante A/B de cor. Todos com a comida vermelha como acento.</p>
+</section>
+<section class="dv-turn" id="t2">
+<div class="dv-thd"><a class="dv-tid" href="#t2">2</a><span class="dv-tname">Sistema de skins — 4 raridades × 30 skins (padrões procedurais: 10 cores × 3 tratamentos por raridade)</span></div>
+<div class="dv-opts">
+<sc-for list="{{ tiers }}" as="t" hint-placeholder-count="4">
+<div class="dv-opt" id="2{{ $index }}"><div class="dv-olabel"><span class="dv-oid" style="background:{{ t.badge }};color:{{ t.cor }}">{{ t.tier }}</span>{{ t.count }} skins</div>
+<div class="dv-card" style="width:568px;background:#12141F;padding:20px;display:grid;grid-template-columns:repeat(5,1fr);gap:14px 10px">
+<sc-for list="{{ t.skins }}" as="s" hint-placeholder-count="6">
+  <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+    <div style="width:96px;height:44px;border-radius:12px;background:#181C2C;border:1.5px solid {{ t.cor }};display:flex;align-items:center;justify-content:center;gap:2px;box-sizing:border-box">
+      <sc-for list="{{ s.segList }}" as="g" hint-placeholder-count="4">
+        <div style="width:{{ g.w }}px;height:{{ g.h }}px;border-radius:{{ g.r }}px;background:{{ g.bg }};opacity:{{ g.o }};box-shadow:{{ g.glow }};position:relative;flex:none">
+          <sc-if value="{{ g.wheels }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;left:1.5px;bottom:-2.5px;width:4.5px;height:4.5px;border-radius:50%;background:#0E1018;border:1px solid #64748B;box-sizing:border-box"></div><div style="position:absolute;right:1.5px;bottom:-2.5px;width:4.5px;height:4.5px;border-radius:50%;background:#0E1018;border:1px solid #64748B;box-sizing:border-box"></div></sc-if>
+          <sc-if value="{{ g.eyes }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;left:{{ g.ex1 }}px;top:{{ g.ey }}px;width:5px;height:5px;border-radius:50%;background:#fff"></div><div style="position:absolute;left:{{ g.ex2 }}px;top:{{ g.ey }}px;width:5px;height:5px;border-radius:50%;background:#fff"></div><div style="position:absolute;left:{{ g.px1 }}px;top:{{ g.py }}px;width:2.4px;height:2.4px;border-radius:50%;background:#12141F"></div><div style="position:absolute;left:{{ g.px2 }}px;top:{{ g.py }}px;width:2.4px;height:2.4px;border-radius:50%;background:#12141F"></div></sc-if>
+        </div>
+      </sc-for>
+    </div>
+    <span style="font-size:9.5px;font-weight:700;color:#A6AECB;text-align:center;line-height:1.2">{{ s.e }} {{ s.nome }}</span>
+  </div>
+</sc-for>
+</div></div>
+</sc-for>
+</div>
+<p class="dv-next">Comum e Rara: procedurais (10 cores × 3 tratamentos). Épica: 30 skins temáticas (minhoca, carrinho, trem, abelha…). Lendária: 30 temas premium com glow (dragão, fênix, folclore BR…). O glifo ao lado do nome indica o tema — a arte final do corpo/cabeça vem da engine; aqui o padrão CSS é a referência de cor/listra para o material no Godot.</p>
+</section>
+<section class="dv-turn" id="t1">
+<div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">Snakito — explorações: mood de paleta, Home, HUD, ícone</span></div>
+<div class="dv-opts">
+<div class="dv-group">Mood de paleta (mesma base navy escolhida, três acabamentos)</div>
+<div class="dv-opt" id="1a"><div class="dv-olabel"><a class="dv-oid" href="#1a">1a</a>Neon Arcade — brilho e energia .io</div>
+<div class="dv-card" style="width:360px;background:#0E1018;padding:24px;display:flex;flex-direction:column;gap:18px">
+  <div style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:30px;color:#FFFFFF;text-shadow:0 0 24px rgba(74,222,128,.45)">Snakito</div>
+  <div style="display:flex;gap:10px">
+    <div style="width:40px;height:40px;border-radius:50%;background:#4ADE80;box-shadow:0 0 16px rgba(74,222,128,.6)"></div>
+    <div style="width:40px;height:40px;border-radius:50%;background:#38BDF8;box-shadow:0 0 16px rgba(56,189,248,.6)"></div>
+    <div style="width:40px;height:40px;border-radius:50%;background:#F472B6;box-shadow:0 0 16px rgba(244,114,182,.6)"></div>
+    <div style="width:40px;height:40px;border-radius:50%;background:#FFD43B;box-shadow:0 0 16px rgba(255,212,59,.6)"></div>
+    <div style="width:40px;height:40px;border-radius:50%;background:#FF9F45;box-shadow:0 0 16px rgba(255,159,69,.6)"></div>
+    <div style="width:40px;height:40px;border-radius:50%;background:#A78BFA;box-shadow:0 0 16px rgba(167,139,250,.6)"></div>
+  </div>
+  <div style="background:#131624;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:22px 22px;border-radius:16px;height:110px;display:flex;align-items:center;justify-content:center;gap:6px">
+    <div style="width:16px;height:16px;border-radius:50%;background:#4ADE80;box-shadow:0 0 12px rgba(74,222,128,.8)"></div>
+    <div style="width:14px;height:14px;border-radius:50%;background:#4ADE80;opacity:.85"></div>
+    <div style="width:12px;height:12px;border-radius:50%;background:#4ADE80;opacity:.7"></div>
+    <div style="width:10px;height:10px;border-radius:50%;background:#4ADE80;opacity:.55"></div>
+    <div style="width:8px;height:8px;border-radius:50%;background:#FF6B6B;box-shadow:0 0 10px rgba(255,107,107,.9);margin-left:14px"></div>
+  </div>
+  <div style="display:flex;gap:12px">
+    <div style="flex:1;min-height:48px;border-radius:14px;background:#4ADE80;color:#0E1018;font-family:'Fredoka',sans-serif;font-weight:600;font-size:17px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 20px rgba(74,222,128,.35),0 4px 0 #2CA35B">Jogar</div>
+    <div style="flex:1;min-height:48px;border-radius:14px;border:2px solid rgba(255,255,255,.22);color:#F4F6FF;font-family:'Fredoka',sans-serif;font-weight:500;font-size:17px;display:flex;align-items:center;justify-content:center">Ranking</div>
+  </div>
+  <div style="font-size:13px;color:#A6AECB;line-height:1.5">Contornos brilham, botões com glow. Energia máxima — risco: cansar o olho do adulto.</div>
+</div></div>
+<div class="dv-opt" id="1b"><div class="dv-olabel"><a class="dv-oid" href="#1b">1b</a>Candy Premium — flat, sombras "de brinquedo"</div>
+<div class="dv-card" style="width:360px;background:#12141F;padding:24px;display:flex;flex-direction:column;gap:18px">
+  <div style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:30px;color:#FFFFFF">Snakito<span style="color:#4ADE80">.</span></div>
+  <div style="display:flex;gap:10px">
+    <div style="width:40px;height:40px;border-radius:14px;background:#4ADE80;box-shadow:0 3px 0 #2CA35B"></div>
+    <div style="width:40px;height:40px;border-radius:14px;background:#38BDF8;box-shadow:0 3px 0 #1E88BF"></div>
+    <div style="width:40px;height:40px;border-radius:14px;background:#F472B6;box-shadow:0 3px 0 #C24A87"></div>
+    <div style="width:40px;height:40px;border-radius:14px;background:#FFD43B;box-shadow:0 3px 0 #C9A11C"></div>
+    <div style="width:40px;height:40px;border-radius:14px;background:#FF9F45;box-shadow:0 3px 0 #C86F1F"></div>
+    <div style="width:40px;height:40px;border-radius:14px;background:#A78BFA;box-shadow:0 3px 0 #7757CE"></div>
+  </div>
+  <div style="background:#181C2C;background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:22px 22px;border-radius:20px;height:110px;display:flex;align-items:center;justify-content:center;gap:6px;border:1px solid rgba(255,255,255,.07)">
+    <div style="width:18px;height:18px;border-radius:50%;background:#38BDF8;border:2.5px solid #7DD8FF"></div>
+    <div style="width:15px;height:15px;border-radius:50%;background:#38BDF8"></div>
+    <div style="width:13px;height:13px;border-radius:50%;background:#38BDF8;opacity:.8"></div>
+    <div style="width:11px;height:11px;border-radius:50%;background:#38BDF8;opacity:.6"></div>
+    <div style="width:9px;height:9px;border-radius:50%;background:#FF6B6B;margin-left:14px"></div>
+  </div>
+  <div style="display:flex;gap:12px">
+    <div style="flex:1;min-height:48px;border-radius:16px;background:#4ADE80;color:#0B2416;font-family:'Fredoka',sans-serif;font-weight:600;font-size:17px;display:flex;align-items:center;justify-content:center;box-shadow:0 5px 0 #2CA35B">Jogar</div>
+    <div style="flex:1;min-height:48px;border-radius:16px;background:#232841;color:#F4F6FF;font-family:'Fredoka',sans-serif;font-weight:500;font-size:17px;display:flex;align-items:center;justify-content:center;box-shadow:0 5px 0 #14172A">Ranking</div>
+  </div>
+  <div style="font-size:13px;color:#A6AECB;line-height:1.5">Cores chapadas + sombra dura embaixo (efeito botão de brinquedo). Premium, tátil, envelhece bem dos 7 aos 40.</div>
+</div></div>
+<div class="dv-opt" id="1c"><div class="dv-olabel"><a class="dv-oid" href="#1c">1c</a>Cosmic Soft — gradientes suaves, vidro</div>
+<div class="dv-card" style="width:360px;background:linear-gradient(160deg,#12141F,#191430);padding:24px;display:flex;flex-direction:column;gap:18px">
+  <div style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:30px;background:linear-gradient(90deg,#4ADE80,#38BDF8);-webkit-background-clip:text;background-clip:text;color:transparent">Snakito</div>
+  <div style="display:flex;gap:10px">
+    <div style="width:40px;height:40px;border-radius:50%;background:radial-gradient(circle at 32% 28%,#8BF0B4,#4ADE80)"></div>
+    <div style="width:40px;height:40px;border-radius:50%;background:radial-gradient(circle at 32% 28%,#8ADCFF,#38BDF8)"></div>
+    <div style="width:40px;height:40px;border-radius:50%;background:radial-gradient(circle at 32% 28%,#FFA8D6,#F472B6)"></div>
+    <div style="width:40px;height:40px;border-radius:50%;background:radial-gradient(circle at 32% 28%,#FFE68A,#FFD43B)"></div>
+    <div style="width:40px;height:40px;border-radius:50%;background:radial-gradient(circle at 32% 28%,#FFC58C,#FF9F45)"></div>
+    <div style="width:40px;height:40px;border-radius:50%;background:radial-gradient(circle at 32% 28%,#CDBBFF,#A78BFA)"></div>
+  </div>
+  <div style="background:rgba(255,255,255,.05);backdrop-filter:blur(6px);background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:22px 22px;border-radius:20px;height:110px;display:flex;align-items:center;justify-content:center;gap:6px;border:1px solid rgba(255,255,255,.12)">
+    <div style="width:18px;height:18px;border-radius:50%;background:radial-gradient(circle at 32% 28%,#FFA8D6,#F472B6)"></div>
+    <div style="width:15px;height:15px;border-radius:50%;background:#F472B6;opacity:.9"></div>
+    <div style="width:13px;height:13px;border-radius:50%;background:#F472B6;opacity:.7"></div>
+    <div style="width:11px;height:11px;border-radius:50%;background:#F472B6;opacity:.5"></div>
+    <div style="width:9px;height:9px;border-radius:50%;background:#FF6B6B;margin-left:14px"></div>
+  </div>
+  <div style="display:flex;gap:12px">
+    <div style="flex:1;min-height:48px;border-radius:24px;background:linear-gradient(135deg,#4ADE80,#2FBF8F);color:#0B2416;font-family:'Fredoka',sans-serif;font-weight:600;font-size:17px;display:flex;align-items:center;justify-content:center">Jogar</div>
+    <div style="flex:1;min-height:48px;border-radius:24px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:#F4F6FF;font-family:'Fredoka',sans-serif;font-weight:500;font-size:17px;display:flex;align-items:center;justify-content:center">Ranking</div>
+  </div>
+  <div style="font-size:13px;color:#A6AECB;line-height:1.5">Superfícies de vidro e gradientes discretos. Mais "app premium", menos arcade.</div>
+</div></div>
+
+<div class="dv-group">Home — 412×915 (usando o mood 1b como base neutra)</div>
+<div class="dv-opt" id="1d"><div class="dv-olabel"><a class="dv-oid" href="#1d">1d</a>Clássica empilhada — mascote herói</div>
+<div class="dv-card" style="width:412px;height:915px;background:#12141F;display:flex;flex-direction:column;padding:24px 24px 32px;box-sizing:border-box">
+  <div style="display:flex;justify-content:space-between;align-items:center">
+    <div style="display:flex;align-items:center;gap:8px;background:#1B1F30;border-radius:999px;padding:8px 14px"><div style="width:20px;height:20px;border-radius:50%;background:#FF6B6B;border:2px solid #FF9B9B"></div><span style="font-weight:800;font-size:15px;color:#F4F6FF">1.240</span></div>
+    <div style="width:48px;height:48px;border-radius:16px;background:#1B1F30;display:flex;align-items:center;justify-content:center;color:#A6AECB;font-size:20px">⚙</div>
+  </div>
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px">
+    <svg width="200" height="150" viewBox="0 0 200 150"><circle cx="52" cy="112" r="16" fill="#4ADE80" opacity=".5"></circle><circle cx="76" cy="98" r="19" fill="#4ADE80" opacity=".7"></circle><circle cx="104" cy="86" r="23" fill="#4ADE80" opacity=".85"></circle><circle cx="138" cy="76" r="28" fill="#4ADE80"></circle><circle cx="130" cy="68" r="6.5" fill="#fff"></circle><circle cx="150" cy="68" r="6.5" fill="#fff"></circle><circle cx="131.5" cy="69" r="3.2" fill="#12141F"></circle><circle cx="151.5" cy="69" r="3.2" fill="#12141F"></circle><path d="M132 88 q7 6 14 0" stroke="#12141F" stroke-width="3.4" fill="none" stroke-linecap="round"></path></svg>
+    <div style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:44px;color:#FFFFFF;letter-spacing:.01em">Snakito</div>
+    <div style="display:flex;align-items:center;gap:8px;color:#A6AECB;font-size:14px;font-weight:600"><div style="width:14px;height:14px;border-radius:50%;background:#4ADE80"></div>Skin equipada: Verdinha</div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <div style="min-height:64px;border-radius:18px;background:#4ADE80;box-shadow:0 6px 0 #2CA35B;display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:600;font-size:22px;color:#0B2416">▶ Jogar Arcade</div>
+    <div style="display:flex;gap:12px">
+      <div style="flex:1;min-height:56px;border-radius:16px;background:#232841;box-shadow:0 4px 0 #14172A;display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:500;font-size:17px;color:#F4F6FF">🎯 Desafios</div>
+      <div style="flex:1;min-height:56px;border-radius:16px;background:#232841;box-shadow:0 4px 0 #14172A;display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:500;font-size:17px;color:#F4F6FF">🏆 Ranking</div>
+    </div>
+    <div style="min-height:56px;border-radius:16px;background:#232841;box-shadow:0 4px 0 #14172A;display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:500;font-size:17px;color:#F4F6FF">🛍 Loja de skins</div>
+  </div>
+</div></div>
+<div class="dv-opt" id="1e"><div class="dv-olabel"><a class="dv-oid" href="#1e">1e</a>Play gigante + grade de cards</div>
+<div class="dv-card" style="width:412px;height:915px;background:#12141F;display:flex;flex-direction:column;padding:24px 24px 32px;box-sizing:border-box;gap:20px">
+  <div style="display:flex;justify-content:space-between;align-items:center">
+    <div style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:26px;color:#fff">Snakito</div>
+    <div style="display:flex;align-items:center;gap:8px;background:#1B1F30;border-radius:999px;padding:8px 14px"><div style="width:20px;height:20px;border-radius:50%;background:#FF6B6B;border:2px solid #FF9B9B"></div><span style="font-weight:800;font-size:15px;color:#F4F6FF">1.240</span></div>
+  </div>
+  <div style="flex:1;border-radius:24px;background:#181C2C;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:24px 24px;border:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px">
+    <svg width="170" height="120" viewBox="0 0 200 150"><circle cx="52" cy="112" r="16" fill="#38BDF8" opacity=".5"></circle><circle cx="76" cy="98" r="19" fill="#38BDF8" opacity=".7"></circle><circle cx="104" cy="86" r="23" fill="#38BDF8" opacity=".85"></circle><circle cx="138" cy="76" r="28" fill="#38BDF8"></circle><circle cx="130" cy="68" r="6.5" fill="#fff"></circle><circle cx="150" cy="68" r="6.5" fill="#fff"></circle><circle cx="131.5" cy="69" r="3.2" fill="#12141F"></circle><circle cx="151.5" cy="69" r="3.2" fill="#12141F"></circle><path d="M132 88 q7 6 14 0" stroke="#12141F" stroke-width="3.4" fill="none" stroke-linecap="round"></path></svg>
+    <div style="min-width:220px;min-height:64px;border-radius:999px;background:#4ADE80;box-shadow:0 6px 0 #2CA35B;display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:600;font-size:24px;color:#0B2416;padding:0 32px">▶ Jogar</div>
+    <div style="color:#A6AECB;font-size:13px;font-weight:600">Arena Arcade · 28 cobras</div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <div style="min-height:88px;border-radius:18px;background:#1B1F30;border:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px"><span style="font-size:24px">🎯</span><span style="font-family:'Fredoka',sans-serif;font-size:15px;color:#F4F6FF">Desafios</span></div>
+    <div style="min-height:88px;border-radius:18px;background:#1B1F30;border:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px"><span style="font-size:24px">🏆</span><span style="font-family:'Fredoka',sans-serif;font-size:15px;color:#F4F6FF">Ranking</span></div>
+    <div style="min-height:88px;border-radius:18px;background:#1B1F30;border:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px"><span style="font-size:24px">🛍</span><span style="font-family:'Fredoka',sans-serif;font-size:15px;color:#F4F6FF">Loja</span></div>
+    <div style="min-height:88px;border-radius:18px;background:#1B1F30;border:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px"><span style="font-size:24px">⚙</span><span style="font-family:'Fredoka',sans-serif;font-size:15px;color:#F4F6FF">Ajustes</span></div>
+  </div>
+</div></div>
+<div class="dv-opt" id="1f"><div class="dv-olabel"><a class="dv-oid" href="#1f">1f</a>Cobra serpenteando entre os botões</div>
+<div class="dv-card" style="width:412px;height:915px;background:#12141F;position:relative;overflow:hidden;box-sizing:border-box">
+  <svg width="412" height="915" viewBox="0 0 412 915" style="position:absolute;inset:0"><path d="M-30 250 C 120 200, 320 300, 360 420 C 400 540, 120 560, 90 680 C 65 780, 260 830, 460 800" stroke="#1E2338" stroke-width="52" fill="none" stroke-linecap="round"></path><circle cx="360" cy="180" r="120" fill="#4ADE80" opacity=".06"></circle></svg>
+  <div style="position:relative;display:flex;flex-direction:column;height:100%;padding:24px 24px 32px;box-sizing:border-box">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div style="display:flex;align-items:center;gap:8px;background:#1B1F30;border-radius:999px;padding:8px 14px"><div style="width:20px;height:20px;border-radius:50%;background:#FF6B6B;border:2px solid #FF9B9B"></div><span style="font-weight:800;font-size:15px;color:#F4F6FF">1.240</span></div>
+      <div style="width:48px;height:48px;border-radius:50%;background:#1B1F30;display:flex;align-items:center;justify-content:center;color:#A6AECB;font-size:20px">⚙</div>
+    </div>
+    <div style="margin-top:40px;display:flex;align-items:flex-end;gap:4px">
+      <div style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:52px;color:#fff;line-height:1">Snakito</div>
+      <svg width="86" height="66" viewBox="0 0 200 150" style="margin-bottom:2px"><circle cx="104" cy="86" r="23" fill="#4ADE80" opacity=".8"></circle><circle cx="138" cy="76" r="28" fill="#4ADE80"></circle><circle cx="130" cy="68" r="6.5" fill="#fff"></circle><circle cx="150" cy="68" r="6.5" fill="#fff"></circle><circle cx="131.5" cy="69" r="3.2" fill="#12141F"></circle><circle cx="151.5" cy="69" r="3.2" fill="#12141F"></circle><path d="M132 88 q7 6 14 0" stroke="#12141F" stroke-width="3.4" fill="none" stroke-linecap="round"></path></svg>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:16px">
+      <div style="align-self:flex-start;min-width:250px;min-height:68px;border-radius:20px;background:#4ADE80;box-shadow:0 6px 0 #2CA35B;display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:600;font-size:22px;color:#0B2416;padding:0 28px">▶ Jogar Arcade</div>
+      <div style="align-self:flex-end;min-width:210px;min-height:56px;border-radius:18px;background:#232841;box-shadow:0 4px 0 #14172A;display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:500;font-size:18px;color:#F4F6FF;padding:0 24px">🎯 Desafios</div>
+      <div style="align-self:flex-start;min-width:210px;min-height:56px;border-radius:18px;background:#232841;box-shadow:0 4px 0 #14172A;display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:500;font-size:18px;color:#F4F6FF;padding:0 24px">🏆 Ranking</div>
+      <div style="align-self:flex-end;min-width:210px;min-height:56px;border-radius:18px;background:#232841;box-shadow:0 4px 0 #14172A;display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:500;font-size:18px;color:#F4F6FF;padding:0 24px">🛍 Loja</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;background:#1B1F30;border-radius:18px;padding:12px 16px"><div style="width:36px;height:36px;border-radius:50%;background:#4ADE80"></div><div><div style="font-family:'Fredoka',sans-serif;font-size:14px;color:#F4F6FF">Verdinha</div><div style="font-size:12px;color:#A6AECB">Skin equipada</div></div></div>
+  </div>
+</div></div>
+
+<div class="dv-group">HUD do jogo — recorte 412×560 da arena</div>
+<div class="dv-opt" id="1g"><div class="dv-olabel"><a class="dv-oid" href="#1g">1g</a>Cantos mínimos — pills soltas</div>
+<div class="dv-card" style="width:412px;height:560px;background:#131624;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:26px 26px;position:relative;box-sizing:border-box">
+  <svg width="412" height="560" viewBox="0 0 412 560" style="position:absolute;inset:0"><circle cx="150" cy="300" r="8" fill="#4ADE80" opacity=".5"></circle><circle cx="168" cy="290" r="9" fill="#4ADE80" opacity=".7"></circle><circle cx="188" cy="282" r="10" fill="#4ADE80" opacity=".85"></circle><circle cx="210" cy="276" r="12" fill="#4ADE80"></circle><circle cx="207" cy="272" r="3" fill="#fff"></circle><circle cx="215" cy="272" r="3" fill="#fff"></circle><circle cx="300" cy="200" r="5" fill="#FF6B6B"></circle><circle cx="90" cy="420" r="5" fill="#FF6B6B"></circle><circle cx="330" cy="380" r="7" fill="#F472B6" opacity=".9"></circle><circle cx="345" cy="370" r="8" fill="#F472B6"></circle></svg>
+  <div style="position:absolute;top:16px;left:16px;display:flex;flex-direction:column;gap:8px">
+    <div style="background:rgba(14,16,24,.72);border-radius:999px;padding:7px 14px;color:#F4F6FF;font-weight:800;font-size:16px;font-family:'Fredoka',sans-serif">2.480</div>
+    <div style="background:rgba(14,16,24,.72);border-radius:999px;padding:5px 12px;color:#A6AECB;font-weight:700;font-size:12.5px">4º de 28</div>
+  </div>
+  <div style="position:absolute;top:16px;left:50%;transform:translateX(-50%);background:rgba(14,16,24,.72);border-radius:999px;padding:7px 16px;color:#FFD43B;font-weight:800;font-size:15px;font-family:'Fredoka',sans-serif">1:42</div>
+  <div style="position:absolute;top:16px;right:16px;display:flex;flex-direction:column;align-items:flex-end;gap:8px">
+    <div style="width:48px;height:48px;border-radius:14px;background:rgba(14,16,24,.72);display:flex;align-items:center;justify-content:center;color:#F4F6FF;font-size:18px">❚❚</div>
+    <div style="width:76px;height:76px;border-radius:14px;background:rgba(14,16,24,.72);border:1px solid rgba(255,255,255,.12);position:relative"><div style="position:absolute;left:34px;top:30px;width:7px;height:7px;border-radius:50%;background:#4ADE80"></div><div style="position:absolute;left:52px;top:48px;width:5px;height:5px;border-radius:50%;background:#F472B6"></div><div style="position:absolute;left:18px;top:52px;width:5px;height:5px;border-radius:50%;background:#38BDF8"></div></div>
+  </div>
+  <div style="position:absolute;bottom:16px;left:16px;background:rgba(14,16,24,.72);border-radius:999px;padding:6px 13px;color:#A6AECB;font-weight:700;font-size:12.5px">Tam. 14 · Nv 3</div>
+  <div style="position:absolute;bottom:64px;left:96px;width:108px;height:108px;border-radius:50%;border:2px solid rgba(255,255,255,.18);background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center"><div style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.22)"></div></div>
+  <div style="position:absolute;bottom:24px;left:120px;color:#6B7390;font-size:11px">joystick flutuante — surge no toque</div>
+</div></div>
+<div class="dv-opt" id="1h"><div class="dv-olabel"><a class="dv-oid" href="#1h">1h</a>Barra única no topo — arena 100% limpa</div>
+<div class="dv-card" style="width:412px;height:560px;background:#131624;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:26px 26px;position:relative;box-sizing:border-box">
+  <svg width="412" height="560" viewBox="0 0 412 560" style="position:absolute;inset:0"><circle cx="150" cy="320" r="8" fill="#FFD43B" opacity=".5"></circle><circle cx="168" cy="310" r="9" fill="#FFD43B" opacity=".7"></circle><circle cx="188" cy="302" r="10" fill="#FFD43B" opacity=".85"></circle><circle cx="210" cy="296" r="12" fill="#FFD43B"></circle><circle cx="207" cy="292" r="3" fill="#12141F"></circle><circle cx="215" cy="292" r="3" fill="#12141F"></circle><circle cx="300" cy="220" r="5" fill="#FF6B6B"></circle><circle cx="90" cy="440" r="5" fill="#FF6B6B"></circle></svg>
+  <div style="position:absolute;top:12px;left:12px;right:12px;background:rgba(14,16,24,.78);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:10px 16px;display:flex;align-items:center;justify-content:space-between">
+    <div style="display:flex;flex-direction:column"><span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:18px;color:#F4F6FF">2.480</span><span style="font-size:11px;color:#A6AECB;font-weight:700">4º de 28</span></div>
+    <div style="display:flex;flex-direction:column;align-items:center"><span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:18px;color:#FFD43B">1:42</span><span style="font-size:11px;color:#A6AECB;font-weight:700">Tam. 14 · Nv 3</span></div>
+    <div style="display:flex;align-items:center;gap:10px"><div style="width:44px;height:44px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);position:relative"><div style="position:absolute;left:19px;top:17px;width:6px;height:6px;border-radius:50%;background:#FFD43B"></div></div><div style="width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:#F4F6FF;font-size:15px">❚❚</div></div>
+  </div>
+  <div style="position:absolute;bottom:64px;right:88px;width:108px;height:108px;border-radius:50%;border:2px solid rgba(255,255,255,.18);background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center"><div style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.22)"></div></div>
+</div></div>
+<div class="dv-opt" id="1i"><div class="dv-olabel"><a class="dv-oid" href="#1i">1i</a>Chips flutuantes + anel de progresso no placar</div>
+<div class="dv-card" style="width:412px;height:560px;background:#131624;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:26px 26px;position:relative;box-sizing:border-box">
+  <svg width="412" height="560" viewBox="0 0 412 560" style="position:absolute;inset:0"><circle cx="150" cy="320" r="8" fill="#A78BFA" opacity=".5"></circle><circle cx="168" cy="310" r="9" fill="#A78BFA" opacity=".7"></circle><circle cx="188" cy="302" r="10" fill="#A78BFA" opacity=".85"></circle><circle cx="210" cy="296" r="12" fill="#A78BFA"></circle><circle cx="207" cy="292" r="3" fill="#fff"></circle><circle cx="215" cy="292" r="3" fill="#fff"></circle><circle cx="300" cy="220" r="5" fill="#FF6B6B"></circle></svg>
+  <div style="position:absolute;top:16px;left:16px;display:flex;align-items:center;gap:10px">
+    <div style="width:64px;height:64px;border-radius:50%;background:conic-gradient(#4ADE80 0 62%,rgba(255,255,255,.12) 62% 100%);display:flex;align-items:center;justify-content:center"><div style="width:52px;height:52px;border-radius:50%;background:#12141F;display:flex;flex-direction:column;align-items:center;justify-content:center"><span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:13px;color:#F4F6FF">Nv 3</span><span style="font-size:9px;color:#A6AECB;font-weight:700">62%</span></div></div>
+    <div style="display:flex;flex-direction:column;gap:2px"><span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:22px;color:#F4F6FF">2.480</span><span style="background:rgba(74,222,128,.16);color:#4ADE80;border-radius:999px;padding:2px 9px;font-size:11px;font-weight:800;align-self:flex-start">4º de 28</span></div>
+  </div>
+  <div style="position:absolute;top:16px;right:16px;display:flex;flex-direction:column;align-items:flex-end;gap:8px">
+    <div style="display:flex;gap:8px"><div style="background:rgba(14,16,24,.72);border-radius:999px;padding:7px 13px;color:#FFD43B;font-weight:800;font-size:14px;font-family:'Fredoka',sans-serif">1:42</div><div style="width:40px;height:40px;border-radius:50%;background:rgba(14,16,24,.72);display:flex;align-items:center;justify-content:center;color:#F4F6FF;font-size:14px">❚❚</div></div>
+    <div style="width:72px;height:72px;border-radius:50%;background:rgba(14,16,24,.72);border:1px solid rgba(255,255,255,.12);position:relative;overflow:hidden"><div style="position:absolute;left:33px;top:29px;width:7px;height:7px;border-radius:50%;background:#A78BFA"></div><div style="position:absolute;left:48px;top:44px;width:5px;height:5px;border-radius:50%;background:#F472B6"></div></div>
+  </div>
+  <div style="position:absolute;bottom:64px;left:96px;width:108px;height:108px;border-radius:50%;border:2px solid rgba(255,255,255,.18);background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center"><div style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.22)"></div></div>
+</div></div>
+
+<div class="dv-group">Ícone do app — 2 variantes (192px e teste de 48px)</div>
+<div class="dv-opt" id="1j"><div class="dv-olabel"><a class="dv-oid" href="#1j">1j</a>Espiral — cobra enrolada</div>
+<div class="dv-card" style="width:300px;padding:24px;display:flex;align-items:flex-end;gap:20px;background:#f7f6f2">
+  <div style="display:flex;flex-direction:column;gap:8px;align-items:center">
+    <div style="width:192px;height:192px;border-radius:48px;background:#12141F;display:flex;align-items:center;justify-content:center;overflow:hidden">
+      <svg width="192" height="192" viewBox="0 0 100 100"><path d="M50 78 C 28 78, 20 62, 20 50 C 20 33, 33 24, 50 24 C 64 24, 72 33, 72 45 C 72 55, 64 61, 54 61 C 46 61, 42 56, 42 50" stroke="#4ADE80" stroke-width="13" fill="none" stroke-linecap="round"></path><circle cx="50" cy="79" r="10" fill="#4ADE80"></circle><circle cx="46.5" cy="76.5" r="2.6" fill="#fff"></circle><circle cx="53.5" cy="76.5" r="2.6" fill="#fff"></circle><circle cx="46.9" cy="77" r="1.3" fill="#12141F"></circle><circle cx="53.9" cy="77" r="1.3" fill="#12141F"></circle><circle cx="42" cy="44" r="4" fill="#FF6B6B"></circle></svg>
+    </div>
+    <span style="font-size:11px;color:rgba(0,0,0,.5)">192px</span>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:8px;align-items:center">
+    <div style="width:48px;height:48px;border-radius:12px;background:#12141F;display:flex;align-items:center;justify-content:center;overflow:hidden">
+      <svg width="48" height="48" viewBox="0 0 100 100"><path d="M50 78 C 28 78, 20 62, 20 50 C 20 33, 33 24, 50 24 C 64 24, 72 33, 72 45 C 72 55, 64 61, 54 61 C 46 61, 42 56, 42 50" stroke="#4ADE80" stroke-width="13" fill="none" stroke-linecap="round"></path><circle cx="50" cy="79" r="10" fill="#4ADE80"></circle><circle cx="46.5" cy="76.5" r="2.6" fill="#fff"></circle><circle cx="53.5" cy="76.5" r="2.6" fill="#fff"></circle><circle cx="42" cy="44" r="4" fill="#FF6B6B"></circle></svg>
+    </div>
+    <span style="font-size:11px;color:rgba(0,0,0,.5)">48px</span>
+  </div>
+</div></div>
+<div class="dv-opt" id="1k"><div class="dv-olabel"><a class="dv-oid" href="#1k">1k</a>Carinha — cabeça frontal</div>
+<div class="dv-card" style="width:300px;padding:24px;display:flex;align-items:flex-end;gap:20px;background:#f7f6f2">
+  <div style="display:flex;flex-direction:column;gap:8px;align-items:center">
+    <div style="width:192px;height:192px;border-radius:48px;background:#4ADE80;display:flex;align-items:center;justify-content:center;overflow:hidden">
+      <svg width="192" height="192" viewBox="0 0 100 100"><circle cx="50" cy="54" r="34" fill="#2CA35B"></circle><circle cx="50" cy="50" r="34" fill="#3ECF74"></circle><circle cx="38" cy="44" r="10" fill="#fff"></circle><circle cx="62" cy="44" r="10" fill="#fff"></circle><circle cx="39.5" cy="45.5" r="5" fill="#12141F"></circle><circle cx="63.5" cy="45.5" r="5" fill="#12141F"></circle><path d="M40 64 q10 9 20 0" stroke="#12141F" stroke-width="5" fill="none" stroke-linecap="round"></path><path d="M50 70 l0 8 l5 3" stroke="#FF6B6B" stroke-width="4.5" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    </div>
+    <span style="font-size:11px;color:rgba(0,0,0,.5)">192px</span>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:8px;align-items:center">
+    <div style="width:48px;height:48px;border-radius:12px;background:#4ADE80;display:flex;align-items:center;justify-content:center;overflow:hidden">
+      <svg width="48" height="48" viewBox="0 0 100 100"><circle cx="50" cy="54" r="34" fill="#2CA35B"></circle><circle cx="50" cy="50" r="34" fill="#3ECF74"></circle><circle cx="38" cy="44" r="10" fill="#fff"></circle><circle cx="62" cy="44" r="10" fill="#fff"></circle><circle cx="39.5" cy="45.5" r="5" fill="#12141F"></circle><circle cx="63.5" cy="45.5" r="5" fill="#12141F"></circle><path d="M40 64 q10 9 20 0" stroke="#12141F" stroke-width="5" fill="none" stroke-linecap="round"></path></svg>
+    </div>
+    <span style="font-size:11px;color:rgba(0,0,0,.5)">48px</span>
+  </div>
+</div></div>
+</div>
+<p class="dv-next">Próximo: "fecha em <a class="dv-oid" href="#1b">1b</a> + <a class="dv-oid" href="#1d">1d</a> + <a class="dv-oid" href="#1g">1g</a> + <a class="dv-oid" href="#1j">1j</a>" · "mistura o glow de <a class="dv-oid" href="#1a">1a</a> só no botão Jogar" · "mais uma rodada de Home"</p>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const cores = [
+      ["Verde","#4ADE80","#2CA35B","#8BF0B4"],["Azul","#38BDF8","#1E88BF","#8ADCFF"],
+      ["Rosa","#F472B6","#C24A87","#FFA8D6"],["Amarela","#FFD43B","#C9A11C","#FFE68A"],
+      ["Laranja","#FF9F45","#C86F1F","#FFC58C"],["Roxa","#A78BFA","#7757CE","#CDBBFF"],
+      ["Vermelha","#FF6B6B","#C43F3F","#FF9B9B"],["Turquesa","#2DD4BF","#1B9A8A","#7FE8DB"],
+      ["Lima","#BEF264","#8CB93A","#DDF9A6"],["Gelo","#E2E8F0","#94A3B8","#F8FAFC"]
+    ];
+    const mk = (nome, bg, glow) => ({nome, bg, glow: glow || "none"});
+    const tiers = [
+      {tier:"Comum", cor:"#A6AECB", badge:"rgba(166,174,203,.16)", skins: cores.flatMap(([n,m,d,l]) => [
+        mk(n+" Clássica", m), mk(n+" Clara", l), mk(n+" Escura", d)
+      ])},
+      {tier:"Rara", cor:"#38BDF8", badge:"rgba(56,189,248,.16)", skins: cores.flatMap(([n,m,d,l]) => [
+        mk("Listrada "+n, `repeating-linear-gradient(45deg,${m} 0 5px,${d} 5px 9px)`),
+        mk("Pintada "+n, `radial-gradient(circle at 30% 30%,${l} 3px,transparent 3.5px),radial-gradient(circle at 70% 65%,${l} 2.5px,transparent 3px),${m}`),
+        mk("Anelada "+n, `repeating-linear-gradient(90deg,${m} 0 7px,${l} 7px 11px)`)
+      ])},
+      {tier:"Épica", cor:"#A78BFA", badge:"rgba(167,139,250,.16)", skins: [
+        ["Minhoca","🪱","linear-gradient(180deg,#F5A9C0 50%,#D97B98 50%)"],
+        ["Abelha","🐝","repeating-linear-gradient(90deg,#FFD43B 0 7px,#1A1A1A 7px 13px)"],
+        ["Melancia","🍉","linear-gradient(180deg,#4ADE80 30%,#FF6B6B 30%)"],
+        ["Carrinho","🏎️","#FF6B6B",{shape:"vagao",wheels:true,cols:["#FF6B6B","#FF6B6B","#FF9B9B"],headBg:"linear-gradient(180deg,#FF9B9B 40%,#FF6B6B 40%)"}],
+        ["Trem","🚂","#2B2F45",{shape:"vagao",wheels:true,cols:["#FF6B6B","#FFD43B","#38BDF8"],headBg:"#2B2F45"}],
+        ["Lápis","✏️","#FFD43B",{shape:"vagao",cols:["#F472B6","#FFD43B","#FFD43B"],headBg:"linear-gradient(135deg,#FFE1B3 45%,#2B2F45 78%)"}],
+        ["Milho","🌽","radial-gradient(circle at 30% 30%,#FFE68A 3px,transparent 3.5px),radial-gradient(circle at 70% 65%,#FFE68A 2.5px,transparent 3px),#FFD43B"],
+        ["Tigre","🐯","repeating-linear-gradient(-55deg,#FF9F45 0 6px,#1A1A1A 6px 9px)"],
+        ["Abacaxi","🍍","radial-gradient(circle at 50% 50%,#C9A11C 2px,transparent 2.5px),#FFD43B"],
+        ["Foguete","🚀","#E2E8F0",{shape:"vagao",cols:["#FF9F45","#E2E8F0","#E2E8F0"],headBg:"linear-gradient(90deg,#E2E8F0 55%,#FF6B6B 55%)"}],
+        ["Panda","🐼","repeating-linear-gradient(90deg,#F8FAFC 0 9px,#1A1A1A 9px 15px)"],
+        ["Dino","🦕","radial-gradient(circle at 35% 30%,#2CA35B 3px,transparent 3.5px),#4ADE80"],
+        ["Polvo","🐙","radial-gradient(circle at 32% 28%,#CDBBFF,#A78BFA 60%,#7757CE)"],
+        ["Cenoura","🥕","linear-gradient(180deg,#FF9F45 75%,#4ADE80 75%)"],
+        ["Ônibus","🚌","#FFD43B",{shape:"vagao",wheels:true,cols:["#FFD43B","#FFD43B","#FFD43B"],headBg:"linear-gradient(180deg,#8ADCFF 42%,#FFD43B 42%)"}],
+        ["Sapo","🐸","radial-gradient(circle at 65% 60%,#2CA35B 3px,transparent 3.5px),#BEF264"],
+        ["Pinguim","🐧","linear-gradient(180deg,#1A1A1A 45%,#F8FAFC 45%)"],
+        ["Joaninha","🐞","radial-gradient(circle at 30% 30%,#1A1A1A 2.5px,transparent 3px),radial-gradient(circle at 70% 60%,#1A1A1A 2.5px,transparent 3px),#FF6B6B"],
+        ["Sushi","🍣","#F8FAFC",{shape:"vagao",cols:["linear-gradient(180deg,#F8FAFC 35%,#FF9F45 35% 70%,#F8FAFC 70%)","linear-gradient(180deg,#F8FAFC 35%,#FF9F45 35% 70%,#F8FAFC 70%)","linear-gradient(180deg,#F8FAFC 35%,#4ADE80 35% 70%,#F8FAFC 70%)"],headBg:"linear-gradient(180deg,#1A1A1A 30%,#F8FAFC 30%)"}],
+        ["Submarino","🛥️","#FFD43B",{shape:"vagao",cols:["#FFD43B","#FFD43B","#FFD43B"],headBg:"radial-gradient(circle at 60% 40%,#8ADCFF 3px,transparent 3.5px),#FFD43B"}],
+        ["Peixe","🐠","repeating-linear-gradient(90deg,#38BDF8 0 6px,#FF9F45 6px 10px)"],
+        ["Cacto","🌵","repeating-linear-gradient(90deg,#4ADE80 0 8px,#2CA35B 8px 10px)"],
+        ["Camaleão","🦎","linear-gradient(90deg,#4ADE80,#FFD43B,#F472B6)"],
+        ["Pipa","🪁","linear-gradient(135deg,#38BDF8 33%,#FFD43B 33% 66%,#F472B6 66%)"],
+        ["Trator","🚜","#4ADE80",{shape:"vagao",wheels:true,cols:["#2B2F45","#4ADE80","#4ADE80"],headBg:"linear-gradient(180deg,#4ADE80 55%,#2B2F45 55%)"}],
+        ["Sorvete","🍦","linear-gradient(90deg,#FFA8D6,#FFE68A,#8ADCFF)"],
+        ["Coruja","🦉","radial-gradient(circle at 40% 40%,#C86F1F 3px,transparent 3.5px),#FF9F45"],
+        ["Zebra","🦓","repeating-linear-gradient(-55deg,#F8FAFC 0 6px,#1A1A1A 6px 11px)"],
+        ["Tucano","🦜","linear-gradient(180deg,#1A1A1A 50%,#FFD43B 50%)"],
+        ["Caracol","🐌","radial-gradient(circle at 32% 28%,#FFC58C,#FF9F45 60%,#C86F1F)"]
+      ].map(([nome,e,bg,opts]) => ({nome, e, bg, glow:"none", ...(opts||{})}))},
+      {tier:"Lendária", cor:"#FFD43B", badge:"rgba(255,212,59,.16)", skins: [
+        ["Dragão","🐲","linear-gradient(160deg,#8BF0B4 10%,#4ADE80 45%,#1B9A8A 80%)","0 0 10px #4ADE80"],
+        ["Fênix","🔥","linear-gradient(90deg,#FFD43B,#FF9F45,#FF6B6B)","0 0 12px #FF9F45"],
+        ["Galáxia","🌌","radial-gradient(circle at 25% 30%,#CDBBFF 1.5px,transparent 2px),radial-gradient(circle at 65% 60%,#fff 1px,transparent 1.5px),radial-gradient(circle at 80% 25%,#8ADCFF 1px,transparent 1.5px),linear-gradient(135deg,#1B1F30,#7757CE)","0 0 8px #A78BFA"],
+        ["Robô","🤖","#94A3B8","0 0 8px #38BDF8",{shape:"vagao",wheels:true,cols:["#94A3B8","#E2E8F0","#94A3B8"],headBg:"linear-gradient(180deg,#8ADCFF 40%,#E2E8F0 40%)"}],
+        ["Unicórnio","🦄","linear-gradient(90deg,#FFA8D6,#CDBBFF,#8ADCFF,#8BF0B4)","0 0 10px #F472B6"],
+        ["Lava","🌋","radial-gradient(circle at 40% 40%,#FFD43B 2px,transparent 2.5px),linear-gradient(90deg,#FF6B6B,#C43F3F)","0 0 12px #FF6B6B"],
+        ["Gelo Eterno","🧊","linear-gradient(160deg,#F8FAFC 10%,#8ADCFF 50%,#38BDF8)","0 0 10px #8ADCFF"],
+        ["Rei Dourado","👑","linear-gradient(160deg,#FFE68A 10%,#FFD43B 45%,#C9A11C 80%,#FFE68A)","0 0 12px #FFD43B"],
+        ["Fantasma","👻","radial-gradient(circle at 32% 28%,#F8FAFC,#E2E8F0 70%,#94A3B8)","0 0 14px rgba(255,255,255,.6)"],
+        ["Ninja","🥷","linear-gradient(180deg,#1A1A1A 70%,#FF6B6B 70%)","0 0 8px #FF6B6B"],
+        ["Astronauta","👨‍🚀","linear-gradient(180deg,#F8FAFC 60%,#38BDF8 60%)","0 0 8px #8ADCFF"],
+        ["Pirata","🏴‍☠️","repeating-linear-gradient(90deg,#1A1A1A 0 8px,#FF6B6B 8px 12px)","0 0 8px #FF6B6B"],
+        ["Arco-íris","🌈","linear-gradient(90deg,#FF6B6B,#FF9F45,#FFD43B,#4ADE80,#38BDF8,#A78BFA)","0 0 10px #fff"],
+        ["Elétrico","⚡","repeating-linear-gradient(-45deg,#FFD43B 0 4px,#12141F 4px 6px,#FFE68A 6px 8px)","0 0 12px #FFD43B"],
+        ["Samurai","⚔️","linear-gradient(180deg,#C43F3F 55%,#FFD43B 55%)","0 0 8px #FF6B6B"],
+        ["Sereia","🧜","linear-gradient(90deg,#2DD4BF,#38BDF8,#A78BFA)","0 0 10px #2DD4BF"],
+        ["Vampiro","🧛","linear-gradient(180deg,#1A1A1A 50%,#C43F3F 50%)","0 0 8px #A78BFA"],
+        ["Mago","🧙","radial-gradient(circle at 30% 30%,#FFD43B 1.5px,transparent 2px),linear-gradient(135deg,#7757CE,#A78BFA)","0 0 10px #A78BFA"],
+        ["Dourado Neon","✨","#FFD43B","0 0 12px #FFD43B, 0 0 4px #fff inset"],
+        ["Cavaleiro","🛡️","linear-gradient(160deg,#E2E8F0 10%,#94A3B8 45%,#64748B 80%,#E2E8F0)","0 0 8px #E2E8F0"],
+        ["Alienígena","👽","radial-gradient(circle at 40% 40%,#BEF264 3px,transparent 3.5px),#4ADE80","0 0 12px #BEF264"],
+        ["Dino Rex","🦖","repeating-linear-gradient(-55deg,#4ADE80 0 7px,#2CA35B 7px 10px)","0 0 8px #4ADE80"],
+        ["Faraó","𓂀","repeating-linear-gradient(90deg,#FFD43B 0 8px,#38BDF8 8px 12px)","0 0 10px #FFD43B"],
+        ["Cometa","☄️","linear-gradient(90deg,#F8FAFC,#8ADCFF,#1B1F30)","0 0 12px #8ADCFF"],
+        ["Tempestade","🌩️","radial-gradient(circle at 60% 40%,#FFD43B 2px,transparent 2.5px),linear-gradient(135deg,#64748B,#1B1F30)","0 0 10px #FFD43B"],
+        ["Carnaval","🎉","radial-gradient(circle at 30% 30%,#F472B6 2px,transparent 2.5px),radial-gradient(circle at 70% 60%,#38BDF8 2px,transparent 2.5px),#FFD43B","0 0 10px #F472B6"],
+        ["Boto Cor-de-rosa","🐬","radial-gradient(circle at 32% 28%,#FFC9E0,#F472B6 60%,#C24A87)","0 0 10px #F472B6"],
+        ["Curupira","🌳","linear-gradient(180deg,#FF6B6B 40%,#2CA35B 40%)","0 0 10px #4ADE80"],
+        ["Saci","🌪️","linear-gradient(180deg,#C43F3F 45%,#1A1A1A 45%)","0 0 10px #FF6B6B"],
+        ["Onça","🐆","radial-gradient(circle at 30% 30%,#1A1A1A 2.5px,transparent 3px),radial-gradient(circle at 70% 60%,#1A1A1A 2.5px,transparent 3px),#FFD43B","0 0 10px #FFD43B"]
+      ].map(([nome,e,bg,glow,opts]) => ({nome, e, bg, glow, ...(opts||{})}))}
+    ];
+    tiers.forEach(t => { t.count = t.skins.length; t.skins.forEach(s => {
+      if (s.shape === "vagao") {
+        const c = s.cols || [s.bg, s.bg, s.bg];
+        s.segList = [
+          {w:12, h:12, r:3.5, bg:c[0], o:.85, wheels:s.wheels, glow:"none"},
+          {w:13, h:12, r:3.5, bg:c[1], o:1, wheels:s.wheels, glow:"none"},
+          {w:13, h:12, r:3.5, bg:c[2], o:1, wheels:s.wheels, glow:"none"},
+          {w:17, h:15, r:5, bg:s.headBg || s.bg, o:1, wheels:s.wheels, eyes:true, glow:s.glow, ex1:3, ex2:9.5, ey:4, px1:4.5, px2:11, py:5.5}
+        ];
+      } else {
+        s.segList = [
+          {w:11, h:11, r:99, bg:s.bg, o:.55, glow:"none"},
+          {w:13, h:13, r:99, bg:s.bg, o:.75, glow:"none"},
+          {w:15, h:15, r:99, bg:s.bg, o:.9, glow:"none"},
+          {w:20, h:20, r:99, bg:s.bg, o:1, eyes:true, glow:s.glow, ex1:4, ex2:11, ey:5, px1:5.5, px2:12.5, py:6.5}
+        ];
+      }
+    }); });
+    const temas = [
+      ["Clássica","🟩","#131624","rgba(255,255,255,.04)","#4ADE80","Grade limpa, vinhetas suaves","Nenhum — arena livre","Comida comum"],
+      ["Floresta","🌲","#0D1F14","rgba(190,242,100,.06)","#4ADE80","Copas de árvore nas bordas, vagalumes","Troncos caídos","Frutas silvestres (2×)"],
+      ["Oceano","🌊","#081A2B","rgba(138,220,255,.07)","#38BDF8","Bolhas subindo, algas nas bordas","Correnteza que empurra","Pérolas (3×)"],
+      ["Deserto","🏜️","#241A0E","rgba(255,212,59,.06)","#FFD43B","Dunas, cactos nas bordas","Redemoinhos de areia","Gemas de âmbar"],
+      ["Neve","❄️","#101826","rgba(248,250,252,.08)","#8ADCFF","Flocos caindo, gelo nas bordas","Placas de gelo escorregadias","Cristais de gelo (2×)"],
+      ["Vulcão","🌋","#200D0D","rgba(255,107,107,.08)","#FF6B6B","Brasas subindo, rachaduras de lava","Poças de lava (evitar!)","Rubis (4×)"],
+      ["Espaço","🌌","#0A0A18","rgba(167,139,250,.07)","#A78BFA","Estrelas, planetas ao fundo","Meteoros cruzando","Estrelinhas (3×)"],
+      ["Praia","🏖️","#1A2130","rgba(255,197,140,.06)","#FF9F45","Conchas, guarda-sóis nas bordas","Caranguejos andando","Cocos (2×)"],
+      ["Selva","🐒","#0E2013","rgba(74,222,128,.07)","#BEF264","Cipós, folhagem densa nas bordas","Areia movediça","Bananas douradas"],
+      ["Caverna","🕯️","#14121C","rgba(255,212,59,.05)","#FFD43B","Estalactites, cristais brilhando","Zonas escuras (visão curta)","Diamantes (5×)"],
+      ["Cidade","🏙️","#12141F","rgba(56,189,248,.06)","#38BDF8","Prédios neon ao fundo","Cones de trânsito","Moedas de ouro"],
+      ["Fazenda","🚜","#1A1B10","rgba(190,242,100,.06)","#BEF264","Cercas, plantações em fileiras","Fardos de feno","Milhos dourados (2×)"],
+      ["Doceria","🍭","#1F1220","rgba(244,114,182,.07)","#F472B6","Pirulitos gigantes, confeitos","Poças de mel (lentidão)","Balas (2×)"],
+      ["Circo","🎪","#1E0F14","rgba(255,159,69,.07)","#FF9F45","Listras de lona, luzes","Argolas de fogo","Pipocas douradas"],
+      ["Pântano","🐸","#131A0F","rgba(45,212,191,.06)","#2DD4BF","Névoa baixa, vitórias-régias","Lama pegajosa (lentidão)","Ovos de sapo (3×)"],
+      ["Ártico","🐧","#0C1622","rgba(226,232,240,.08)","#E2E8F0","Aurora boreal, icebergs","Buracos no gelo","Peixes congelados (2×)"],
+      ["Templo","🏛️","#1C160D","rgba(255,212,59,.06)","#FFD43B","Colunas antigas, tochas","Dardos das paredes","Relíquias douradas (4×)"],
+      ["Jardim","🌸","#101D16","rgba(255,168,214,.07)","#FFA8D6","Pétalas caindo, canteiros","Espinheiros","Néctar (2×)"],
+      ["Laboratório","🧪","#0E1620","rgba(139,240,180,.06)","#8BF0B4","Tubos, telas piscando","Poças químicas","Cápsulas de energia (3×)"],
+      ["Pirata","🏴‍☠️","#101420","rgba(255,212,59,.05)","#FFD43B","Navios afundados, cordas","Canhonaços do fundo","Baús de tesouro (5×)"],
+      ["Egito","𓂀","#1E170B","rgba(255,230,138,.06)","#FFE68A","Pirâmides, hieróglifos","Múmias lentas patrulhando","Escaravelhos de ouro (4×)"],
+      ["Halloween","🎃","#160E1C","rgba(255,159,69,.06)","#FF9F45","Abóboras, névoa roxa","Fantasminhas (te atravessam e confundem)","Doces (2×)"],
+      ["Festa Junina","🎉","#1B1210","rgba(255,212,59,.07)","#FFD43B","Bandeirinhas, fogueira","Fogos espoucando","Paçocas douradas (2×)"],
+      ["Aquário","🐠","#071E24","rgba(45,212,191,.08)","#2DD4BF","Corais coloridos, cardumes","Águas-vivas (choque leve)","Estrelas-do-mar (3×)"],
+      ["Montanha","⛰️","#141821","rgba(148,163,184,.07)","#94A3B8","Picos nevados, nuvens baixas","Pedras rolando","Águias de ouro (3×)"],
+      ["Metrô","🚇","#15151A","rgba(255,212,59,.06)","#FFD43B","Trilhos, sinais luminosos","Trens cruzando a arena","Fichas de metrô (2×)"],
+      ["Robô","🤖","#111722","rgba(56,189,248,.07)","#38BDF8","Engrenagens, painéis","Lasers intermitentes","Parafusos dourados (3×)"],
+      ["Amazônia","🦜","#0B1F17","rgba(74,222,128,.08)","#4ADE80","Rio serpenteando, araras","Vitórias-régias (ilhas)","Açaís (2×)"],
+      ["Nuvens","☁️","#151A2E","rgba(248,250,252,.09)","#F8FAFC","Nuvens fofas flutuando","Rajadas de vento","Gotas de arco-íris (3×)"],
+      ["Arena Final","👑","#18102A","rgba(255,212,59,.08)","#FFD43B","Arquibancada, holofotes","Tudo junto: lava + gelo + lasers","Coroa (10×) — só p/ o 1º"]
+    ].map(([nome,e,bg,grid,accent,deco,obst,premio]) => ({nome,e,bg,grid,accent,deco,obst,premio}));
+    return { tiers, temas };
+  }
+}
+</script>
+</body>
+</html>
