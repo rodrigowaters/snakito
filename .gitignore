@@ -1,0 +1,17 @@
+# Godot 4
+.godot/
+*.translation
+
+# Builds e artefatos de export
+export/*.aab
+export/*.apk
+*.keystore
+
+# Credenciais — NUNCA commitar
+export_credentials.cfg
+google-services.json
+*.env
+
+# Sistema
+.DS_Store
+Thumbs.db
