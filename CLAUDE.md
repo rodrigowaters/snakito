@@ -77,6 +77,16 @@ Core loop completo em `src/domain/` (5 de 7 arquivos; `strategy_analyzer.gd` e `
 - **Determinismo é contrato:** ordem do array `cobras`, ordem de spawn (fazendeiros→caçadores→oportunistas) e decisões de bot escalonadas por `(tick + id) % 6` fazem parte da seed
 - **Bots honestos:** visão limitada via `raio_visao()` em toda consulta; reação a cada 6 ticks (100ms)
 
+## Cenas (implementado)
+
+Fluxo Home → Jogo → Resultado completo e verificado por screenshot (`tools/capturar_tela.gd`). Padrões estabelecidos:
+
+- **Árvores construídas em código** consumindo só `SnakitoTokens` + variações do Theme; `.tscn` mínimos (root + script + anchors). Anchors do root Control **precisam** estar no `.tscn` — definir só em `_ready` não dimensiona o root
+- `src/scenes/jogo/`: `jogo.gd` (dono do `GameEngine`, tick em `_physics_process`), `arena_render.gd` (um `_draw()` com culling; corpo da cobra é trilha **visual** — a colisão do domínio é por cabeça), `hud.gd` (barra + pausa), `joystick_virtual.gd` (flutuante, com fallback de teclado)
+- `src/scenes/sessao.gd`: navegação via `static var` (sem autoload) — seed pedida + motor da última partida
+- "Maior visão" do jogador = zoom da câmera (leitura de render do docs §2.2)
+- Performance do domínio: **0.66ms/tick** com 30 bots neste Mac (`tools/bench_dominio.gd`); orçamento de frame é 16.6ms — o teste de 60fps no aparelho é sobre o render
+
 ## Conformidade (sempre)
 
 Política de Famílias do Google Play; coleta mínima (username, e-mail, stats de partida); consentimento parental <13; exclusão de conta no app; build `.aab` com Play App Signing; `tagForChildDirectedTreatment` quando anúncios entrarem.
@@ -85,7 +95,7 @@ Política de Famílias do Google Play; coleta mínima (username, e-mail, stats d
 
 - [x] Documentação aprovada (`docs/snakito-instrucoes.md` v2.0) + emenda de Trilhas nas Instruções Globais
 - [ ] **Spike (go/no-go, 2–3 dias):** export `.aab` assinado com plugins Billing+AdMob compilando; mini-arena com 30 bots + joystick a 60fps em aparelho mediano; Sentry reportando crash de teste
-- [~] MVP (sem 1–2): **domínio puro + testes ✅ (45 testes, 54 no total com o tema)**; 3 bots ✅; falta Home/Jogo/Resultado + 1 skin — 100% offline, sem conta
+- [x] MVP jogável (sem 1–2): domínio puro + 45 testes ✅; 3 bots ✅; Home/Jogo/Resultado ✅; skin padrão (verde) ✅ — 100% offline, sem conta. Pendências de polimento: animações/feedback (docs §7), sons, minimap, modo daltonismo em jogo, balanceamento inicial (jogador parado morre em ~3s), i18n das strings
 - [ ] M1 (sem 3–4): auth (e-mail + Google), fila offline + `submit_session` + ranking, desafios 1–2, onboarding sem texto, +3 skins
 - [ ] M2 (sem 5–6): AdMob, Billing "Remover Anúncios", analyzer completo, desafios 3–4, EN/ES, publicação
 - [x] Design system e telas em alta fidelidade geradas via Claude Design; tokens portados para `src/ui/theme/` (ver *Fundação visual*)

@@ -8,6 +8,7 @@ config_version=5
 [application]
 
 config/name="Snakito"
+run/main_scene="res://src/ui/home/home.tscn"
 config/features=PackedStringArray("4.7", "Mobile")
 
 [editor_plugins]
