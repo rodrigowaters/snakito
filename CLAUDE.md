@@ -95,7 +95,8 @@ Política de Famílias do Google Play; coleta mínima (username, e-mail, stats d
 
 - [x] Documentação aprovada (`docs/snakito-instrucoes.md` v2.0) + emenda de Trilhas nas Instruções Globais
 - [ ] **Spike (go/no-go, 2–3 dias):** export `.aab` assinado com plugins Billing+AdMob compilando; mini-arena com 30 bots + joystick a 60fps em aparelho mediano; Sentry reportando crash de teste
-- [x] MVP jogável (sem 1–2): domínio puro + 45 testes ✅; 3 bots ✅; Home/Jogo/Resultado ✅; skin padrão (verde) ✅ — 100% offline, sem conta. Pendências de polimento: animações/feedback (docs §7), sons, minimap, modo daltonismo em jogo, balanceamento inicial (jogador parado morre em ~3s), i18n das strings
+- [x] MVP jogável (sem 1–2): domínio puro + 45 testes ✅; 3 bots ✅; Home/Jogo/Resultado ✅; skin padrão (verde) ✅; feedback visual §7 ✅ (pulso ao comer, confete no kill, pontos flutuando, flash+háptica na morte) — 100% offline, sem conta. Pendências: **sons** (sem assets de áudio ainda), minimap, modo daltonismo em jogo, balanceamento (jogador parado morre em ~3s — aprovado inicialmente pelo Rodrigo em 08/08), i18n das strings
+- Spike Android — pré-requisitos na máquina: SDK (`~/Library/Android/sdk`) ✅, adb ✅, Java 17 ✅; **faltam** export templates do Godot (~1GB), keystore e aparelho para o teste de 60fps
 - [ ] M1 (sem 3–4): auth (e-mail + Google), fila offline + `submit_session` + ranking, desafios 1–2, onboarding sem texto, +3 skins
 - [ ] M2 (sem 5–6): AdMob, Billing "Remover Anúncios", analyzer completo, desafios 3–4, EN/ES, publicação
 - [x] Design system e telas em alta fidelidade geradas via Claude Design; tokens portados para `src/ui/theme/` (ver *Fundação visual*)

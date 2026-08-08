@@ -16,11 +16,27 @@ const MAX_SEGMENTOS: int = 24
 ## Pontos de trilha guardados por cobra (a 3 unidades/tick cobre o corpo máximo).
 const MAX_TRILHA: int = 400
 
+## Pulso de escala ao comer (docs §7: crescimento suave, 0.3s ease out).
+const PULSO_CRESCIMENTO: float = 1.25
+const PULSO_DURACAO: float = 0.3
+
 var motor: GameEngine
 
 ## Trilha de posições recentes da cabeça, por id (estado de RENDER, não de jogo:
 ## a colisão do domínio é pela cabeça; o corpo é visual).
 var _trilhas: Dictionary[int, PackedVector2Array] = {}
+## Fator de escala visual corrente por id (1.0 = sem pulso).
+var _pulsos: Dictionary[int, float] = {}
+
+
+## Dispara o pulso de crescimento de uma cobra (Tween 0.3s ease out — §7).
+func pulsar_crescimento(id: int) -> void:
+	_pulsos[id] = PULSO_CRESCIMENTO
+	var tween: Tween = create_tween()
+	tween.tween_method(
+		func(valor: float) -> void: _pulsos[id] = valor,
+		PULSO_CRESCIMENTO, 1.0, PULSO_DURACAO,
+	).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
 
 
 ## Chamar 1x por tick de física, depois de motor.avancar().
@@ -96,7 +112,7 @@ func _desenhar_comidas(visivel: Rect2) -> void:
 
 
 func _desenhar_cobra(cobra: SnakeModel, visivel: Rect2) -> void:
-	var raio: float = cobra.raio()
+	var raio: float = cobra.raio() * _pulsos.get(cobra.id, 1.0)
 	if not visivel.grow(raio).has_point(cobra.posicao):
 		return
 	var base: Color = cor_de(cobra)

@@ -9,6 +9,10 @@ const T := preload("res://src/ui/theme/tokens.gd")
 ## Últimos segundos em que o timer troca para a cor de alerta.
 const LIMIAR_ALERTA_SEG: int = 30
 
+## Duração e alpha de pico do flash vermelho de morte (docs §7).
+const FLASH_MORTE_DURACAO: float = 0.6
+const FLASH_MORTE_ALFA: float = 0.45
+
 signal sair_pedido
 
 var joystick: JoystickVirtual
@@ -18,6 +22,7 @@ var _tempo: Label
 var _posicao: Label
 var _tamanho: Label
 var _modal_pausa: Control
+var _flash: ColorRect
 
 
 func _ready() -> void:
@@ -28,7 +33,24 @@ func _ready() -> void:
 	add_child(joystick)
 
 	_montar_barra_topo()
+	_montar_flash()
 	_montar_modal_pausa()
+
+
+## Flash vermelho de morte + decaimento (docs §7: "flash vermelho, som suave").
+func flash_morte() -> void:
+	_flash.color = Color(T.COR_PERIGO_ACAO, FLASH_MORTE_ALFA)
+	var tween: Tween = create_tween()
+	tween.tween_property(_flash, "color:a", 0.0, FLASH_MORTE_DURACAO) \
+		.set_ease(Tween.EASE_OUT)
+
+
+func _montar_flash() -> void:
+	_flash = ColorRect.new()
+	_flash.color = Color(T.COR_PERIGO_ACAO, 0.0)
+	_flash.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_flash.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(_flash)
 
 
 func atualizar(motor: GameEngine) -> void:
