@@ -71,6 +71,15 @@ class ConfigPartida:
 	var tamanho_min_bot: int = 1
 	var tamanho_max_bot: int = 8
 	var agressividade: float = 0.5
+	## Multiplicador de turbo dos BOTS — eixo de composição/dificuldade
+	## (§2.6): capacidade transparente sob as mesmas regras de energia,
+	## nunca acima do base do jogador. Playtest de 08/08 mostrou que a
+	## paridade total (1.5 vs 1.5) torna a caça impossível em campo aberto.
+	var turbo_bots: float = 1.4
+	## Teto de crescimento dos bots (0 = sem teto). Bots se devoram e viram
+	## gigantes (simulador: tamanho 286 em 2 min na arena compacta) — o teto
+	## contém a bola de neve onde ela estraga a partida.
+	var tamanho_teto_bot: int = 0
 	# Buffs do jogador (docs §2.6.2). Desafios criam a config com
 	# aplicar_buffs = false — partida por seed tem que ser comparável.
 	var aplicar_buffs: bool = true
@@ -233,6 +242,7 @@ func _spawn_bots(personalidade: SnakeModel.Personalidade, quantidade: int, prime
 			rng.int_entre(config.tamanho_min_bot, config.tamanho_max_bot),
 		)
 		bot.agressividade = config.agressividade
+		bot.multiplicador_turbo = minf(config.turbo_bots, SnakeModel.TURBO_BASE)
 		arena.adicionar_cobra(bot)
 	return primeiro_id + quantidade
 
@@ -270,7 +280,7 @@ func _resolver_comida() -> void:
 		while i < arena.comidas.size():
 			if cobra.posicao.distance_squared_to(arena.comidas[i]) <= alcance2:
 				arena.comer_comida(i)
-				cobra.crescer(CRESCIMENTO_COMIDA)
+				_crescer_com_teto(cobra, CRESCIMENTO_COMIDA)
 				cobra.pontos += PONTOS_COMIDA
 				cobra.comidas += 1
 			else:
@@ -305,7 +315,15 @@ func _devorar(predadora: SnakeModel, vitima: SnakeModel) -> void:
 	vitima.viva = false
 	predadora.pontos += pontos_por_abate(vitima.tamanho)
 	predadora.abates += 1
-	predadora.crescer(maxi(1, roundi(vitima.tamanho * FRACAO_CRESCIMENTO_ABATE)))
+	_crescer_com_teto(predadora, maxi(1, roundi(vitima.tamanho * FRACAO_CRESCIMENTO_ABATE)))
+
+
+## Crescimento com o teto de composição aplicado aos BOTS (jogador nunca
+## tem teto — a progressão dele é o jogo).
+func _crescer_com_teto(cobra: SnakeModel, quantidade: int) -> void:
+	cobra.crescer(quantidade)
+	if not cobra.eh_jogador() and config.tamanho_teto_bot > 0:
+		cobra.tamanho = mini(cobra.tamanho, config.tamanho_teto_bot)
 
 
 ## Contato sem devorar (diferença < 10%): as duas se empurram para fora da

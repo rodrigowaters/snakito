@@ -172,6 +172,49 @@ func test_bots_ligam_turbo_para_fugir_e_cacar_mas_nao_para_farmar() -> void:
 	assert_bool(pacato.quer_turbo).is_false()
 
 
+func test_composicao_limita_turbo_e_crescimento_dos_bots() -> void:
+	# Eixos de composição do playtest de 08/08: turbo dos bots (nunca acima
+	# do base do jogador) e teto de crescimento (contém a bola de neve).
+	var config: GameEngine.ConfigPartida = _config_vazia()
+	config.fazendeiros = 1
+	config.tamanho_min_bot = 4
+	config.tamanho_max_bot = 4
+	config.turbo_bots = 1.2
+	config.tamanho_teto_bot = 5
+	var motor: GameEngine = GameEngine.new(config)
+	var bot: SnakeModel = motor.arena.cobra_por_id(1)
+	assert_float(bot.multiplicador_turbo).is_equal_approx(1.2, 0.0001)
+	# Bot no teto não cresce mais comendo (mas ainda pontua)...
+	bot.tamanho = 5
+	motor.arena.comidas.append(bot.posicao)
+	motor.avancar(Vector2.ZERO)
+	assert_int(bot.tamanho).is_equal(5)
+	assert_int(bot.pontos).is_greater_equal(GameEngine.PONTOS_COMIDA)
+	# ...e o JOGADOR nunca tem teto — a progressão dele é o jogo.
+	var jogador: SnakeModel = motor.jogador()
+	jogador.tamanho = 5
+	motor.arena.comidas.append(jogador.posicao)
+	motor.avancar(Vector2.ZERO)
+	assert_int(jogador.tamanho).is_equal(6)
+
+
+func test_turbo_dos_bots_nunca_passa_do_base_do_jogador() -> void:
+	var config: GameEngine.ConfigPartida = _config_vazia()
+	config.fazendeiros = 1
+	config.turbo_bots = 9.9  # config maliciosa/errada → clamp no base
+	var motor: GameEngine = GameEngine.new(config)
+	assert_float(motor.arena.cobra_por_id(1).multiplicador_turbo) \
+		.is_equal(SnakeModel.TURBO_BASE)
+
+
+func test_desafio_2_recalibrado_contem_gigantes_e_sprint() -> void:
+	var config: GameEngine.ConfigPartida = ChallengeRules.config_do_desafio(
+		ChallengeRules.Desafio.AGRESSAO_CONTROLADA)
+	assert_float(config.turbo_bots).is_equal_approx(1.3, 0.0001)
+	assert_int(config.tamanho_teto_bot).is_equal(12)
+	assert_int(config.cacadores).is_equal(1)
+
+
 func test_turbo_da_vantagem_de_caca_sobre_presa_sem_energia() -> void:
 	# A razão de existir do turbo: sem ele, perseguição em linha reta nunca
 	# alcança (velocidades iguais). Presa sem energia + caçador com turbo

@@ -48,7 +48,7 @@
   - **Fazendeiro** — evita conflito, prioriza comida, foge de cobras maiores
   - **Caçador** — persegue cobras menores dentro do raio de visão
   - **Oportunista** — farma, mas ataca alvos vulneráveis que cruzam seu caminho
-- **Dificuldade** = composição da arena (quantidade, tamanho inicial e agressividade dos bots), nunca "trapaça" (bots não veem através da névoa nem reagem mais rápido que o permitido)
+- **Dificuldade** = composição da arena (quantidade, tamanho inicial, agressividade, **força de turbo** e **teto de crescimento** dos bots), nunca "trapaça" (bots não veem através da névoa nem reagem mais rápido que o permitido). Os dois eixos novos vieram do playtest de ago/2026: paridade total de turbo torna a caça impossível em campo aberto, e bots que se devoram sem teto viram gigantes que dominam a partida
 - **Determinismo:** todo o `bot_engine` e o spawn de comida usam RNG seedável. Desafios têm seed fixa; modo Arcade usa seed aleatória exibida no resultado ("Repetir esta arena")
 - **Simulação:** tick fixo de física (`_physics_process`, 60Hz); nenhuma dependência de rede em gameplay
 
@@ -69,7 +69,9 @@ decisões de gasto de energia — exatamente o risco/recompensa que o jogo ensin
 - **Controle:** botão de turbo no canto oposto ao joystick (segurar = acelerar).
 - **Bots usam turbo sob as MESMAS regras de energia** (Caçador ao perseguir;
   todas as personalidades ao fugir), decidindo na cadência honesta de 100ms.
-  Bots nunca recebem os buffs do jogador.
+  Bots nunca recebem os buffs do jogador; a FORÇA do turbo deles é eixo de
+  composição da arena (`turbo_bots`, sempre ≤ 1.5 — capacidade transparente,
+  não trapaça). Padrão do Arcade: 1.4.
 - **Determinismo preservado:** turbo do jogador é input; o dos bots deriva do
   estado + RNG seedável.
 
