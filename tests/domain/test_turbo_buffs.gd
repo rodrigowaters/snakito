@@ -208,17 +208,17 @@ func test_turbo_dos_bots_nunca_passa_do_base_do_jogador() -> void:
 
 
 func test_desafio_2_calibrado_no_playtest() -> void:
-	# Calibragem final (3 rodadas de playtest + lote de 12 trajetórias no
-	# simulador: conclui 10/12, morre 2/12, fuga média 13%): presas
-	# alcançáveis (turbo 1.3) e contidas (teto 8); 2 caçadores-ALFA que
-	# nascem grandes (11) e crescem até 30 — a ameaça escala com o jogador.
+	# Trava a calibragem de 5 iterações de playtest (08/08). Se algum valor
+	# mudar, mudou a experiência validada — rode tools/simular_desafios.gd
+	# e atualize a banda documentada junto.
 	var config: GameEngine.ConfigPartida = ChallengeRules.config_do_desafio(
 		ChallengeRules.Desafio.AGRESSAO_CONTROLADA)
-	assert_float(config.turbo_bots).is_equal_approx(1.3, 0.0001)
+	assert_float(config.turbo_bots).is_equal_approx(1.25, 0.0001)
 	assert_int(config.tamanho_teto_bot).is_equal(8)
 	assert_int(config.cacadores).is_equal(2)
-	assert_int(config.tamanho_inicial_cacador).is_equal(11)
+	assert_int(config.tamanho_inicial_cacador).is_equal(10)
 	assert_int(config.tamanho_teto_cacador).is_equal(30)
+	assert_vector(config.tamanho_arena).is_equal(Vector2(2000.0, 2000.0))
 
 
 func test_cacador_tem_spawn_e_teto_proprios() -> void:

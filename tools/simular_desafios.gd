@@ -8,7 +8,7 @@ extends SceneTree
 
 const NOMES_ESTADO: Array[String] = ["EM_ANDAMENTO", "CONCLUIDO", "FALHOU"]
 const NOMES_MOTIVO: Array[String] = ["NENHUM", "META", "MATOU", "MORREU", "TEMPO"]
-const LOTE: int = 12
+const LOTE: int = 24
 
 
 func _initialize() -> void:
@@ -24,11 +24,13 @@ func _initialize() -> void:
 	var conclusoes: int = 0
 	var mortes: int = 0
 	var soma_fuga: float = 0.0
+	var soma_vizinhos: float = 0.0
 	var soma_tempo_conclusao: float = 0.0
 	for semente_jogador: int in range(1, LOTE + 1):
 		var r: Dictionary = _jogar(
 			ChallengeRules.Desafio.AGRESSAO_CONTROLADA, semente_jogador, true)
 		soma_fuga += r.fuga
+		soma_vizinhos += r.vizinhos
 		if r.estado == ChallengeRules.Estado.CONCLUIDO:
 			conclusoes += 1
 			soma_tempo_conclusao += r.tempo
@@ -37,8 +39,8 @@ func _initialize() -> void:
 		print("  #%02d: %s (%s) | %5.1fs | abates %d | fuga %2.0f%%" % [
 			semente_jogador, NOMES_ESTADO[r.estado], NOMES_MOTIVO[r.motivo],
 			r.tempo, r.abates, r.fuga])
-	print("RESUMO D2: conclui %d/%d | morre %d/%d | fuga média %.0f%% | tempo médio de conclusão %.0fs" % [
-		conclusoes, LOTE, mortes, LOTE, soma_fuga / LOTE,
+	print("RESUMO D2: conclui %d/%d | morre %d/%d | fuga média %.0f%% | lotação média %.1f bots NA TELA | conclusão média %.0fs" % [
+		conclusoes, LOTE, mortes, LOTE, soma_fuga / LOTE, soma_vizinhos / LOTE,
 		(soma_tempo_conclusao / conclusoes) if conclusoes > 0 else 0.0])
 	quit()
 
@@ -52,6 +54,7 @@ func _jogar(desafio: ChallengeRules.Desafio, semente_jogador: int, caca: bool) -
 	# RNG PRÓPRIO da trajetória — não perturba a sequência da partida.
 	var rng_jogador: RngService = RngService.new(semente_jogador)
 	var ticks_fugindo: int = 0
+	var soma_vizinhos: int = 0  # lotação: bots dentro da visão do jogador
 
 	while motor.estado == GameEngine.Estado.EM_ANDAMENTO \
 			and regras.estado == ChallengeRules.Estado.EM_ANDAMENTO:
@@ -74,6 +77,16 @@ func _jogar(desafio: ChallengeRules.Desafio, semente_jogador: int, caca: bool) -
 		direcao = direcao.rotated(rng_jogador.float_entre(-0.25, 0.25))
 		motor.avancar(direcao, turbo)
 		regras.avaliar(motor)
+		# Lotação como o JOGADOR vê: bots dentro do enquadramento da câmera
+		# (mesma fórmula de zoom do jogo.gd — tela 412×915, zoom mín 0.55).
+		var zoom: float = clampf(SnakeModel.VISAO_BASE / jogador.raio_visao(), 0.55, 1.0)
+		var meia_tela: Vector2 = Vector2(412.0, 915.0) * 0.5 / zoom
+		for outra: SnakeModel in motor.arena.cobras:
+			if outra == jogador or not outra.viva:
+				continue
+			var delta_pos: Vector2 = (outra.posicao - jogador.posicao).abs()
+			if delta_pos.x <= meia_tela.x and delta_pos.y <= meia_tela.y:
+				soma_vizinhos += 1
 
 	return {
 		"estado": regras.estado,
@@ -82,6 +95,7 @@ func _jogar(desafio: ChallengeRules.Desafio, semente_jogador: int, caca: bool) -
 		"pontos": motor.jogador().pontos,
 		"abates": motor.jogador().abates,
 		"fuga": 100.0 * ticks_fugindo / maxf(1.0, float(motor.tick_atual)),
+		"vizinhos": float(soma_vizinhos) / maxf(1.0, float(motor.tick_atual)),
 	}
 
 

@@ -60,35 +60,32 @@ static func config_do_desafio(desafio_: Desafio) -> GameEngine.ConfigPartida:
 			config.tamanho_max_bot = 4
 			config.agressividade = 0.3
 		Desafio.AGRESSAO_CONTROLADA:
-			# Lição: caçar com critério — SENDO caçado. Arena compacta (mais
-			# encontros), presas com sprint mais fraco (alcançáveis com
-			# esforço), 2 caçadores + oportunistas agressivos mantendo o
-			# risco vivo, e teto de crescimento segurando a bola de neve.
-			# Calibrado em 2 rodadas de playtest (08/08): v1 impossível
-			# (paridade de turbo + gigantes), v2 estéril (fuga 0%).
+			# Lição: caçar com critério — SENDO caçado. Calibrado em 5
+			# iterações de playtest com validação estatística no simulador
+			# (histórico completo no git). Os princípios que sobraram:
+			# · presas alcançáveis (turbo_bots < jogador) e contidas (teto 8)
+			# · 2 caçadores-ALFA nascem 10 e crescem até 30 — a ameaça escala
+			#   com o jogador em vez de evaporar no tamanho 11
+			# · arena aberta (~2 bots no enquadramento da câmera): respiro
+			#   entre encontros, não "campo de batalha"
+			# · comida contida: crescimento visível a partida inteira
+			# Banda validada (24 trajetórias sintéticas): conclui 17/24,
+			# morre 7/24 (fuga ingênua — humanos escapam melhor), fuga média
+			# 21%, conclusão média 46s.
 			config.semente = SEED_DESAFIO_2
 			config.duracao_seg = DURACAO_DESAFIO_2_SEG
-			config.tamanho_arena = Vector2(1600.0, 1600.0)
-			# 45 (era 70): com comida densa demais as presas batiam no teto
-			# em ~3s e a arena parecia estática ("os bots não se alimentam?",
-			# playtest 08/08) — menos comida = crescimento visível ao longo
-			# da partida.
-			config.qtd_comida = 45
-			config.fazendeiros = 18
+			config.tamanho_arena = Vector2(2000.0, 2000.0)
+			config.qtd_comida = 50
+			config.fazendeiros = 11
 			config.cacadores = 2
-			config.oportunistas = 4
+			config.oportunistas = 2
 			config.tamanho_min_bot = 1
 			config.tamanho_max_bot = 5
 			config.agressividade = 0.5
-			config.turbo_bots = 1.3
-			# Presas contidas (teto 8) + 2 caçadores-ALFA que já NASCEM
-			# grandes (14, teto 30): ameaça do primeiro ao último segundo,
-			# escalando com o jogador em vez de evaporar no tamanho 11
-			# (iterado em 3 rodadas de playtest — "não tive a sensação da
-			# caça" quando os alfas nasciam pequenos).
+			config.turbo_bots = 1.25
 			config.tamanho_teto_bot = 8
 			config.tamanho_teto_cacador = 30
-			config.tamanho_inicial_cacador = 11
+			config.tamanho_inicial_cacador = 10
 	return config
 
 
