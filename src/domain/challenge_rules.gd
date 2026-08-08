@@ -69,7 +69,11 @@ static func config_do_desafio(desafio_: Desafio) -> GameEngine.ConfigPartida:
 			config.semente = SEED_DESAFIO_2
 			config.duracao_seg = DURACAO_DESAFIO_2_SEG
 			config.tamanho_arena = Vector2(1600.0, 1600.0)
-			config.qtd_comida = 70
+			# 45 (era 70): com comida densa demais as presas batiam no teto
+			# em ~3s e a arena parecia estática ("os bots não se alimentam?",
+			# playtest 08/08) — menos comida = crescimento visível ao longo
+			# da partida.
+			config.qtd_comida = 45
 			config.fazendeiros = 18
 			config.cacadores = 2
 			config.oportunistas = 4
