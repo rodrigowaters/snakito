@@ -66,6 +66,17 @@ Design system importado do Claude Design (projeto `Design System Snakito`, v1.0,
 
 **Pendência estética (não bloqueia):** gradientes de CTA aproximados pelo tom médio (`StyleBoxFlat` não desenha gradiente; `StyleBoxTexture`/shader quando o polimento importar). Estados `hover` = `normal` de propósito: alvo é Android.
 
+## Domínio (implementado)
+
+Core loop completo em `src/domain/` (5 de 7 arquivos; `strategy_analyzer.gd` e `challenge_rules.gd` são M1/M2): `rng_service`, `snake_model`, `arena_model`, `bot_engine`, `game_engine`. Testes em `tests/domain/` (45 casos). Interpretações onde a spec (docs §2) é omissa — decididas e documentadas nas constantes do código:
+
+- **Limiar de devorar em inteiros** (`11·tamanho_menor ≤ 10·tamanho_maior`): comparar com `1.1 * tamanho` em float erra o limiar exato (1.1 não tem representação binária finita)
+- **Knockback:** qualquer contato não-devorável separa as duas cobras, a menor deslocando mais (contém o "empurra até 5% menores" da spec)
+- **Borda desliza, não mata** (público 7+; mudar = flag de config)
+- **Curvas escolhidas:** abate = `100·√tamanho_vítima` clamp 100–500; crescimento por abate = metade do tamanho da vítima; sobrevivência = +1 ponto/s; velocidade constante (boost é opcional na spec, fora do MVP)
+- **Determinismo é contrato:** ordem do array `cobras`, ordem de spawn (fazendeiros→caçadores→oportunistas) e decisões de bot escalonadas por `(tick + id) % 6` fazem parte da seed
+- **Bots honestos:** visão limitada via `raio_visao()` em toda consulta; reação a cada 6 ticks (100ms)
+
 ## Conformidade (sempre)
 
 Política de Famílias do Google Play; coleta mínima (username, e-mail, stats de partida); consentimento parental <13; exclusão de conta no app; build `.aab` com Play App Signing; `tagForChildDirectedTreatment` quando anúncios entrarem.
@@ -74,7 +85,7 @@ Política de Famílias do Google Play; coleta mínima (username, e-mail, stats d
 
 - [x] Documentação aprovada (`docs/snakito-instrucoes.md` v2.0) + emenda de Trilhas nas Instruções Globais
 - [ ] **Spike (go/no-go, 2–3 dias):** export `.aab` assinado com plugins Billing+AdMob compilando; mini-arena com 30 bots + joystick a 60fps em aparelho mediano; Sentry reportando crash de teste
-- [ ] MVP (sem 1–2): domínio puro + testes, 3 bots, Home/Jogo/Resultado, 1 skin — 100% offline, sem conta
+- [~] MVP (sem 1–2): **domínio puro + testes ✅ (45 testes, 54 no total com o tema)**; 3 bots ✅; falta Home/Jogo/Resultado + 1 skin — 100% offline, sem conta
 - [ ] M1 (sem 3–4): auth (e-mail + Google), fila offline + `submit_session` + ranking, desafios 1–2, onboarding sem texto, +3 skins
 - [ ] M2 (sem 5–6): AdMob, Billing "Remover Anúncios", analyzer completo, desafios 3–4, EN/ES, publicação
 - [x] Design system e telas em alta fidelidade geradas via Claude Design; tokens portados para `src/ui/theme/` (ver *Fundação visual*)
