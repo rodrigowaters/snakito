@@ -58,6 +58,49 @@
 - **Desafio 3:** "Sobreviva 3 min numa arena com 2 caçadores de tamanho 100+" (defesa)
 - **Desafio 4:** "Termine no Top 3 de uma arena com 20 bots" (integração completa)
 
+### 2.6 Turbo & Buffs (aprovado em ago/2026)
+
+**Turbo — mecânica de partida, todas as cobras.** Aceleração ×1.5 com custo de
+energia: barra de 100, consome 40/s ativo, regenera 16/s solto, exige ≥10 para
+ATIVAR (desliga só em 0 — histerese contra liga-desliga). Sem turbo, perseguição
+nunca alcança (velocidades base são iguais); com turbo, caçar e fugir viram
+decisões de gasto de energia — exatamente o risco/recompensa que o jogo ensina.
+
+- **Controle:** botão de turbo no canto oposto ao joystick (segurar = acelerar).
+- **Bots usam turbo sob as MESMAS regras de energia** (Caçador ao perseguir;
+  todas as personalidades ao fugir), decidindo na cadência honesta de 100ms.
+  Bots nunca recebem os buffs do jogador.
+- **Determinismo preservado:** turbo do jogador é input; o dos bots deriva do
+  estado + RNG seedável.
+
+**Buffs permanentes — loja com moedas (M2).** Preço por nível `200 × growth^N`
+(conforme o design; a tela da loja confirma: Velocidade Nv 2 = 298 moedas).
+
+| Buff | growth | Efeito por nível | Teto (Nv 10) |
+|---|---|---|---|
+| Velocidade | 1.22 | +0.05 no multiplicador do turbo | turbo ×2.0 |
+| Ímã | 1.42 | +15 de raio de atração (Nv 1 = 40) | raio 175 |
+| Pontos Iniciais | 1.13 | +5 pontos no início da partida | +50 |
+
+- Buffs afetam **apenas o jogador** (jogo é PvE; dificuldade dos bots é
+  composição de arena, nunca reação ao poder do jogador).
+- Ímã atrai comida a 120 u/s dentro do raio; não atravessa a névoa de visão.
+- Super buffs de Evolução (+1%/+3% por patente): seção própria quando o
+  sistema de XP/patentes for especificado.
+
+**Integridade educacional & ranking.**
+
+- **Desafios SEMPRE ignoram buffs** — partida por seed precisa ser comparável
+  ("aprender por comparação de decisões"). O turbo base vale: é mecânica igual
+  para todos.
+- Arcade aplica buffs; `submit_session` envia os níveis de buff no payload e a
+  validação de plausibilidade da Edge Function os considera nos limites do motor.
+- Ranking global do Arcade aceita score com buff; o M1 cria ranking separado de
+  desafios (puros).
+- O princípio do §11 permanece intacto para skins. Para buffs, o enunciado é:
+  *vantagem comprável só contra bots, nunca sobre a comparabilidade educacional,
+  e sempre alcançável grátis com moedas de partida*.
+
 ---
 
 ## 3. Arquitetura de domínio (GDScript puro, sem cena)
@@ -96,7 +139,7 @@ Todos os tokens (cores, fontes, espaçamentos) vivem num único `Theme` resource
 - **Arena:** `Node2D` com câmera (`Camera2D`) seguindo o jogador; culling nativo do Godot; fundo em grade com parallax leve
 - **Minimap:** `SubViewport` mostrando densidade de cobras (não identidades)
 - **HUD** (`CanvasLayer`): tamanho/level, tempo restante, pontuação, posição ("4º de 28")
-- **Controles:** joystick virtual (touch) ou arrastar direcional; deslizar para cima = aceleração com custo de energia (opcional); botão de pausa com feedback sonoro
+- **Controles:** joystick virtual flutuante (touch) com fallback de teclado; **botão de turbo** no canto oposto ao joystick (segurar = acelerar — mecânica em §2.6); botão de pausa com feedback sonoro
 
 ### 4.3 Tela pós-partida
 - Posição final, breakdown de pontos (comida + kills + sobrevivência)
@@ -228,7 +271,7 @@ Duração total: ~30 segundos.
 
 ---
 
-**Versão:** 2.0 (substitui Snake Clash v1.0)
+**Versão:** 2.1 (adiciona §2.6 Turbo & Buffs; substitui Snake Clash v1.0)
 **Data:** Ago 2026
-**Stack:** Godot 4.8 + GDScript tipado · Supabase (REST + Edge Functions) · gdUnit4 · Sentry (SDK oficial) · Firebase Analytics (plugin comunitário) · AdMob + Play Billing (plugins Godot)
+**Stack:** Godot 4 (estável atual: 4.7.1) + GDScript tipado · Supabase (REST + Edge Functions) · gdUnit4 · Sentry (SDK oficial) · Firebase Analytics (plugin comunitário) · AdMob + Play Billing (plugins Godot)
 **Status:** Aguardando aprovação → spike
