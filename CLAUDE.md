@@ -77,6 +77,7 @@ Core loop completo em `src/domain/` (5 de 7 arquivos; `strategy_analyzer.gd` e `
 - **Determinismo é contrato:** ordem do array `cobras`, ordem de spawn (fazendeiros→caçadores→oportunistas) e decisões de bot escalonadas por `(tick + id) % 6` fazem parte da seed
 - **Bots honestos:** visão limitada via `raio_visao()` em toda consulta; reação a cada 6 ticks (100ms)
 - **Turbo & buffs (§2.6, aprovado):** turbo ×1.5 com energia (100 · consumo 40/s · regen 16/s · histerese em 10, com epsilon anti-resíduo-float); bots usam turbo nas mesmas regras (fuga/caça), nunca os buffs do jogador; buffs por nível com teto (`_aplicar_buffs`); **desafios criam config com `aplicar_buffs = false`**
+- **Desafios 1–2 (`challenge_rules.gd`):** avaliador puro com trava (resolvido não des-resolve); seed fixa por desafio (101/202); prioridades documentadas (D1: matar derrota antes da meta; D2: meta no mesmo tick da morte vale); composição pedagógica é nossa (D1 sem caçadores). **Achados do simulador (`tools/simular_desafios.gd`):** D1 saudável (bot vence em 3s, parado MORRE aos 34s — sem exploit de sobrevivência); D2 precisa de playtest humano — 3 estratégias sintéticas fizeram no máx. 1/3 abates; caça 1v1 em campo aberto é paridade estrutural (fuga e caça drenam igual), abates vêm de presa exausta/encurralada/fogo cruzado; **bots se devoram e viram gigantes** (maior bot: 60 aos 25s) — knobs: agressividade, composição, meta
 
 ## Cenas (implementado)
 
@@ -98,7 +99,7 @@ Política de Famílias do Google Play; coleta mínima (username, e-mail, stats d
 - [ ] **Spike (go/no-go, 2–3 dias):** export `.aab` assinado com plugins Billing+AdMob compilando; mini-arena com 30 bots + joystick a 60fps em aparelho mediano; Sentry reportando crash de teste
 - [x] MVP jogável (sem 1–2): domínio puro + 45 testes ✅; 3 bots ✅; Home/Jogo/Resultado ✅; skin padrão (verde) ✅; feedback visual §7 ✅ (pulso ao comer, confete no kill, pontos flutuando, flash+háptica na morte) — 100% offline, sem conta. Pendências: **sons** (sem assets de áudio ainda), minimap, modo daltonismo em jogo, balanceamento (jogador parado morre em ~3s — aprovado inicialmente pelo Rodrigo em 08/08), i18n das strings
 - Spike Android — pré-requisitos na máquina: SDK (`~/Library/Android/sdk`) ✅, adb ✅, Java 17 ✅; **faltam** export templates do Godot (~1GB), keystore e aparelho para o teste de 60fps
-- [ ] M1 (sem 3–4): auth (e-mail + Google), fila offline + `submit_session` + ranking, desafios 1–2, onboarding sem texto, +3 skins
+- [ ] M1 (sem 3–4): auth (e-mail + Google), fila offline + `submit_session` + ranking, desafios 1–2 (**domínio ✅** — falta UI + análise pós-partida), onboarding sem texto, +3 skins
 - [ ] M2 (sem 5–6): AdMob, Billing "Remover Anúncios", analyzer completo, desafios 3–4, EN/ES, publicação
 - [x] Design system e telas em alta fidelidade geradas via Claude Design; tokens portados para `src/ui/theme/` (ver *Fundação visual*)
 
