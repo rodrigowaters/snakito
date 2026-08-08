@@ -14,10 +14,13 @@ Documentação aprovada → próximo passo: **spike de go/no-go** (export `.aab`
 
 ```
 CLAUDE.md
+project.godot    # projeto Godot 4.8 (mínimo; presets Android virão no spike)
+assets/          # fontes (OFL), símbolos de daltonismo, futuros sprites/sons
 docs/            # instruções, documentação, referência de design (.dc.html)
 src/domain/      # lógica pura (RefCounted, sem cena) — testada com gdUnit4
 src/scenes/      # arena e jogo
 src/ui/          # telas Control (Home, Loja, Ranking, Configurações...)
 tests/           # gdUnit4
+tools/           # scripts de editor (ex.: gerar_tema.gd)
 export/          # presets .aab
 ```

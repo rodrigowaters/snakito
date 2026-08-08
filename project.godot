@@ -1,0 +1,28 @@
+; Engine configuration file.
+; Projeto mínimo para a fundação de tokens: permite abrir o editor, importar
+; assets/ e rodar tools/gerar_tema.gd. Export presets Android, plugins
+; (Billing/AdMob/Sentry) e cena principal entram no spike de go/no-go.
+
+config_version=5
+
+[application]
+
+config/name="Snakito"
+config/features=PackedStringArray("4.8", "Mobile")
+
+[display]
+
+window/size/viewport_width=412
+window/size/viewport_height=915
+window/handheld/orientation=1
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+
+[gui]
+
+theme/custom="res://src/ui/theme/snakito_theme.tres"
+
+[rendering]
+
+renderer/rendering_method="mobile"
+textures/vram_compression/import_etc2_astc=true

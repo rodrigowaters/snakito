@@ -1,28 +1,46 @@
-[gd_resource type="Theme" load_steps=31 format=3 uid="uid://cs8nk1t0thm3a"]
+[gd_resource type="Theme" load_steps=37 format=3 uid="uid://cs8nk1t0thm3a"]
 
-; Botão secundário · vidro · alvo 56dp
+[ext_resource type="FontFile" path="res://assets/fonts/fredoka-variable.ttf" id="1_fredoka"]
+[ext_resource type="FontFile" path="res://assets/fonts/nunito-variable.ttf" id="2_nunito"]
+
+[sub_resource type="FontVariation" id="FontVariation_fredoka_600"]
+base_font = ExtResource("1_fredoka")
+variation_opentype = {
+"wght": 600
+}
+
+[sub_resource type="FontVariation" id="FontVariation_fredoka_700"]
+base_font = ExtResource("1_fredoka")
+variation_opentype = {
+"wght": 700
+}
+
+[sub_resource type="FontVariation" id="FontVariation_nunito_700"]
+base_font = ExtResource("2_nunito")
+variation_opentype = {
+"wght": 700
+}
+
+[sub_resource type="FontVariation" id="FontVariation_nunito_800"]
+base_font = ExtResource("2_nunito")
+variation_opentype = {
+"wght": 800
+}
+
+[sub_resource type="FontVariation" id="FontVariation_nunito_legenda"]
+base_font = ExtResource("2_nunito")
+variation_opentype = {
+"wght": 800
+}
+spacing_glyph = 1
+
+; Botão secundário · vidro · alvo 56dp (hover = normal: alvo é Android)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sec_normal"]
 content_margin_left = 24.0
 content_margin_right = 24.0
 content_margin_top = 16.0
 content_margin_bottom = 16.0
 bg_color = Color(1, 1, 1, 0.06)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(1, 1, 1, 0.12)
-corner_radius_top_left = 16
-corner_radius_top_right = 16
-corner_radius_bottom_right = 16
-corner_radius_bottom_left = 16
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sec_hover"]
-content_margin_left = 24.0
-content_margin_right = 24.0
-content_margin_top = 16.0
-content_margin_bottom = 16.0
-bg_color = Color(1, 1, 1, 0.1)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
@@ -77,7 +95,7 @@ corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 
-; CTA primário · gradiente aproximado pelo tom médio
+; CTA primário · tom médio do gradiente · press = darkened(6%)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pri_normal"]
 content_margin_left = 24.0
 content_margin_right = 24.0
@@ -89,23 +107,12 @@ corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pri_hover"]
-content_margin_left = 24.0
-content_margin_right = 24.0
-content_margin_top = 16.0
-content_margin_bottom = 16.0
-bg_color = Color(0.27451, 0.831373, 0.572549, 1)
-corner_radius_top_left = 16
-corner_radius_top_right = 16
-corner_radius_bottom_right = 16
-corner_radius_bottom_left = 16
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pri_press"]
 content_margin_left = 24.0
 content_margin_right = 24.0
 content_margin_top = 16.0
 content_margin_bottom = 16.0
-bg_color = Color(0.223529, 0.760784, 0.501961, 1)
+bg_color = Color(0.221176, 0.759373, 0.501333, 1)
 corner_radius_top_left = 16
 corner_radius_top_right = 16
 corner_radius_bottom_right = 16
@@ -123,23 +130,12 @@ corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_her_hover"]
-content_margin_left = 24.0
-content_margin_right = 24.0
-content_margin_top = 20.0
-content_margin_bottom = 20.0
-bg_color = Color(0.27451, 0.831373, 0.572549, 1)
-corner_radius_top_left = 16
-corner_radius_top_right = 16
-corner_radius_bottom_right = 16
-corner_radius_bottom_left = 16
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_her_press"]
 content_margin_left = 24.0
 content_margin_right = 24.0
 content_margin_top = 20.0
 content_margin_bottom = 20.0
-bg_color = Color(0.223529, 0.760784, 0.501961, 1)
+bg_color = Color(0.221176, 0.759373, 0.501333, 1)
 corner_radius_top_left = 16
 corner_radius_top_right = 16
 corner_radius_bottom_right = 16
@@ -195,7 +191,7 @@ content_margin_left = 24.0
 content_margin_right = 24.0
 content_margin_top = 16.0
 content_margin_bottom = 16.0
-bg_color = Color(0.921569, 0.545098, 0.235294, 1)
+bg_color = Color(0.921569, 0.545569, 0.235922, 1)
 corner_radius_top_left = 16
 corner_radius_top_right = 16
 corner_radius_bottom_right = 16
@@ -205,8 +201,8 @@ corner_radius_bottom_left = 16
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_chip_normal"]
 content_margin_left = 16.0
 content_margin_right = 16.0
-content_margin_top = 14.0
-content_margin_bottom = 14.0
+content_margin_top = 13.0
+content_margin_bottom = 13.0
 bg_color = Color(1, 1, 1, 0.06)
 border_width_left = 1
 border_width_top = 1
@@ -221,8 +217,8 @@ corner_radius_bottom_left = 999
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_chip_press"]
 content_margin_left = 16.0
 content_margin_right = 16.0
-content_margin_top = 14.0
-content_margin_bottom = 14.0
+content_margin_top = 13.0
+content_margin_bottom = 13.0
 bg_color = Color(1, 1, 1, 0.04)
 border_width_left = 1
 border_width_top = 1
@@ -238,8 +234,8 @@ corner_radius_bottom_left = 999
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_chipa_normal"]
 content_margin_left = 16.0
 content_margin_right = 16.0
-content_margin_top = 14.0
-content_margin_bottom = 14.0
+content_margin_top = 13.0
+content_margin_bottom = 13.0
 bg_color = Color(0.235294, 0.807843, 0.533333, 1)
 corner_radius_top_left = 999
 corner_radius_top_right = 999
@@ -249,9 +245,9 @@ corner_radius_bottom_left = 999
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_chipa_press"]
 content_margin_left = 16.0
 content_margin_right = 16.0
-content_margin_top = 14.0
-content_margin_bottom = 14.0
-bg_color = Color(0.223529, 0.760784, 0.501961, 1)
+content_margin_top = 13.0
+content_margin_bottom = 13.0
+bg_color = Color(0.221176, 0.759373, 0.501333, 1)
 corner_radius_top_left = 999
 corner_radius_top_right = 999
 corner_radius_bottom_right = 999
@@ -260,8 +256,8 @@ corner_radius_bottom_left = 999
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_foco_pilula"]
 content_margin_left = 16.0
 content_margin_right = 16.0
-content_margin_top = 14.0
-content_margin_bottom = 14.0
+content_margin_top = 13.0
+content_margin_bottom = 13.0
 bg_color = Color(0, 0, 0, 0)
 border_width_left = 2
 border_width_top = 2
@@ -348,12 +344,28 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
+; ProgressBar · trilho
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_barra_fundo"]
+bg_color = Color(0.137255, 0.156863, 0.254902, 1)
+corner_radius_top_left = 999
+corner_radius_top_right = 999
+corner_radius_bottom_right = 999
+corner_radius_bottom_left = 999
+
+; ProgressBar · preenchimento
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_barra_cheia"]
+bg_color = Color(0.235294, 0.807843, 0.533333, 1)
+corner_radius_top_left = 999
+corner_radius_top_right = 999
+corner_radius_bottom_right = 999
+corner_radius_bottom_left = 999
+
 ; Campo de texto · alvo 56dp
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_campo_normal"]
 content_margin_left = 16.0
 content_margin_right = 16.0
-content_margin_top = 18.0
-content_margin_bottom = 18.0
+content_margin_top = 17.0
+content_margin_bottom = 17.0
 bg_color = Color(1, 1, 1, 0.06)
 border_width_left = 2
 border_width_top = 2
@@ -368,8 +380,8 @@ corner_radius_bottom_left = 16
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_campo_foco"]
 content_margin_left = 16.0
 content_margin_right = 16.0
-content_margin_top = 18.0
-content_margin_bottom = 18.0
+content_margin_top = 17.0
+content_margin_bottom = 17.0
 bg_color = Color(1, 1, 1, 0.06)
 border_width_left = 2
 border_width_top = 2
@@ -384,8 +396,8 @@ corner_radius_bottom_left = 16
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_campo_erro"]
 content_margin_left = 16.0
 content_margin_right = 16.0
-content_margin_top = 18.0
-content_margin_bottom = 18.0
+content_margin_top = 17.0
+content_margin_bottom = 17.0
 bg_color = Color(1, 1, 1, 0.06)
 border_width_left = 2
 border_width_top = 2
@@ -400,8 +412,8 @@ corner_radius_bottom_left = 16
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_campo_ro"]
 content_margin_left = 16.0
 content_margin_right = 16.0
-content_margin_top = 18.0
-content_margin_bottom = 18.0
+content_margin_top = 17.0
+content_margin_bottom = 17.0
 bg_color = Color(1, 1, 1, 0.04)
 corner_radius_top_left = 16
 corner_radius_top_right = 16
@@ -412,11 +424,12 @@ corner_radius_bottom_left = 16
 
 [resource]
 ; ---------------------------------------------------------------------------
-; Snakito Theme v1.0 — GERADO a partir de src/ui/theme/tokens.gd.
-; Não edite valores aqui à mão: altere tokens.gd e regenere.
-; PENDÊNCIA: sem fontes (.ttf de Fredoka/Nunito ainda não estão no repo).
+; Snakito Theme v1.1 — GERADO a partir de src/ui/theme/tokens.gd.
+; Não edite valores aqui à mão: altere tokens.gd e regenere com
+; tools/gerar_tema.gd (Arquivo > Executar no editor Godot).
 ; ---------------------------------------------------------------------------
 default_base_scale = 1.0
+default_font = SubResource("FontVariation_nunito_700")
 default_font_size = 15
 Button/colors/font_color = Color(0.956863, 0.964706, 1, 1)
 Button/colors/font_hover_color = Color(0.956863, 0.964706, 1, 1)
@@ -427,9 +440,10 @@ Button/colors/font_outline_color = Color(0, 0, 0, 0)
 Button/colors/icon_normal_color = Color(0.956863, 0.964706, 1, 1)
 Button/constants/h_separation = 8
 Button/constants/outline_size = 0
+Button/fonts/font = SubResource("FontVariation_fredoka_600")
 Button/font_sizes/font_size = 18
 Button/styles/normal = SubResource("StyleBoxFlat_sec_normal")
-Button/styles/hover = SubResource("StyleBoxFlat_sec_hover")
+Button/styles/hover = SubResource("StyleBoxFlat_sec_normal")
 Button/styles/pressed = SubResource("StyleBoxFlat_sec_press")
 Button/styles/disabled = SubResource("StyleBoxFlat_sec_disab")
 Button/styles/focus = SubResource("StyleBoxFlat_foco")
@@ -456,8 +470,8 @@ LineEdit/styles/focus = SubResource("StyleBoxFlat_campo_foco")
 LineEdit/styles/read_only = SubResource("StyleBoxFlat_campo_ro")
 ProgressBar/colors/font_color = Color(0.956863, 0.964706, 1, 1)
 ProgressBar/font_sizes/font_size = 13
-ProgressBar/styles/background = SubResource("StyleBoxFlat_sup2")
-ProgressBar/styles/fill = SubResource("StyleBoxFlat_chipa_normal")
+ProgressBar/styles/background = SubResource("StyleBoxFlat_barra_fundo")
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_barra_cheia")
 CampoErro/base_type = &"LineEdit"
 CampoErro/colors/font_color = Color(0.956863, 0.964706, 1, 1)
 CampoErro/colors/font_placeholder_color = Color(0.494118, 0.533333, 0.658824, 1)
@@ -476,7 +490,7 @@ BotaoPrimario/colors/icon_normal_color = Color(0.043137, 0.141176, 0.086275, 1)
 BotaoPrimario/constants/h_separation = 8
 BotaoPrimario/font_sizes/font_size = 18
 BotaoPrimario/styles/normal = SubResource("StyleBoxFlat_pri_normal")
-BotaoPrimario/styles/hover = SubResource("StyleBoxFlat_pri_hover")
+BotaoPrimario/styles/hover = SubResource("StyleBoxFlat_pri_normal")
 BotaoPrimario/styles/pressed = SubResource("StyleBoxFlat_pri_press")
 BotaoPrimario/styles/disabled = SubResource("StyleBoxFlat_sec_disab")
 BotaoPrimario/styles/focus = SubResource("StyleBoxFlat_foco")
@@ -490,7 +504,7 @@ BotaoHeroi/colors/icon_normal_color = Color(0.043137, 0.141176, 0.086275, 1)
 BotaoHeroi/constants/h_separation = 8
 BotaoHeroi/font_sizes/font_size = 18
 BotaoHeroi/styles/normal = SubResource("StyleBoxFlat_her_normal")
-BotaoHeroi/styles/hover = SubResource("StyleBoxFlat_her_hover")
+BotaoHeroi/styles/hover = SubResource("StyleBoxFlat_her_normal")
 BotaoHeroi/styles/pressed = SubResource("StyleBoxFlat_her_press")
 BotaoHeroi/styles/disabled = SubResource("StyleBoxFlat_sec_disab")
 BotaoHeroi/styles/focus = SubResource("StyleBoxFlat_foco")
@@ -504,7 +518,7 @@ BotaoSecundario/colors/icon_normal_color = Color(0.956863, 0.964706, 1, 1)
 BotaoSecundario/constants/h_separation = 8
 BotaoSecundario/font_sizes/font_size = 18
 BotaoSecundario/styles/normal = SubResource("StyleBoxFlat_sec_normal")
-BotaoSecundario/styles/hover = SubResource("StyleBoxFlat_sec_hover")
+BotaoSecundario/styles/hover = SubResource("StyleBoxFlat_sec_normal")
 BotaoSecundario/styles/pressed = SubResource("StyleBoxFlat_sec_press")
 BotaoSecundario/styles/disabled = SubResource("StyleBoxFlat_sec_disab")
 BotaoSecundario/styles/focus = SubResource("StyleBoxFlat_foco")
@@ -544,6 +558,7 @@ Chip/colors/font_focus_color = Color(0.65098, 0.682353, 0.796078, 1)
 Chip/colors/font_disabled_color = Color(0.494118, 0.533333, 0.658824, 1)
 Chip/colors/icon_normal_color = Color(0.65098, 0.682353, 0.796078, 1)
 Chip/constants/h_separation = 8
+Chip/fonts/font = SubResource("FontVariation_nunito_800")
 Chip/font_sizes/font_size = 15
 Chip/styles/normal = SubResource("StyleBoxFlat_chip_normal")
 Chip/styles/hover = SubResource("StyleBoxFlat_chip_normal")
@@ -558,6 +573,7 @@ ChipAtivo/colors/font_focus_color = Color(0.043137, 0.141176, 0.086275, 1)
 ChipAtivo/colors/font_disabled_color = Color(0.494118, 0.533333, 0.658824, 1)
 ChipAtivo/colors/icon_normal_color = Color(0.043137, 0.141176, 0.086275, 1)
 ChipAtivo/constants/h_separation = 8
+ChipAtivo/fonts/font = SubResource("FontVariation_nunito_800")
 ChipAtivo/font_sizes/font_size = 15
 ChipAtivo/styles/normal = SubResource("StyleBoxFlat_chipa_normal")
 ChipAtivo/styles/hover = SubResource("StyleBoxFlat_chipa_normal")
@@ -575,18 +591,22 @@ PilulaContador/styles/panel = SubResource("StyleBoxFlat_sup2")
 TituloHero/base_type = &"Label"
 TituloHero/colors/font_color = Color(0.956863, 0.964706, 1, 1)
 TituloHero/constants/line_spacing = 0
+TituloHero/fonts/font = SubResource("FontVariation_fredoka_700")
 TituloHero/font_sizes/font_size = 44
 TituloScore/base_type = &"Label"
 TituloScore/colors/font_color = Color(0.956863, 0.964706, 1, 1)
 TituloScore/constants/line_spacing = 0
+TituloScore/fonts/font = SubResource("FontVariation_fredoka_700")
 TituloScore/font_sizes/font_size = 34
 TituloLg/base_type = &"Label"
 TituloLg/colors/font_color = Color(0.956863, 0.964706, 1, 1)
 TituloLg/constants/line_spacing = 1
+TituloLg/fonts/font = SubResource("FontVariation_fredoka_600")
 TituloLg/font_sizes/font_size = 26
 TituloMd/base_type = &"Label"
 TituloMd/colors/font_color = Color(0.956863, 0.964706, 1, 1)
 TituloMd/constants/line_spacing = 2
+TituloMd/fonts/font = SubResource("FontVariation_fredoka_600")
 TituloMd/font_sizes/font_size = 20
 TextoCorpo/base_type = &"Label"
 TextoCorpo/colors/font_color = Color(0.956863, 0.964706, 1, 1)
@@ -607,6 +627,7 @@ TextoMuted/font_sizes/font_size = 19
 TextoLegenda/base_type = &"Label"
 TextoLegenda/colors/font_color = Color(0.65098, 0.682353, 0.796078, 1)
 TextoLegenda/constants/line_spacing = 2
+TextoLegenda/fonts/font = SubResource("FontVariation_nunito_legenda")
 TextoLegenda/font_sizes/font_size = 12
 TextoSucesso/base_type = &"Label"
 TextoSucesso/colors/font_color = Color(0.290196, 0.870588, 0.501961, 1)

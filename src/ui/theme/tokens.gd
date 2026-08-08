@@ -49,6 +49,15 @@ const COR_SUPERFICIE_2: Color = Color("#232841")
 const COR_SUPERFICIE_VIDRO: Color = Color(1.0, 1.0, 1.0, 0.06)
 ## Borda do vidro — dá o recorte que o preenchimento sozinho não dá.
 const COR_SUPERFICIE_VIDRO_BORDA: Color = Color(1.0, 1.0, 1.0, 0.12)
+## Vidro no estado pressionado — reduz o alpha (um véu branco não tem
+## "tom mais escuro"; escurecer seria pintar de cinza).
+const COR_SUPERFICIE_VIDRO_PRESS: Color = Color(1.0, 1.0, 1.0, 0.04)
+## Fundo de card de conteúdo sobre o gradiente do app.
+const COR_CARD_FUNDO: Color = Color(1.0, 1.0, 1.0, 0.05)
+## Borda de card de conteúdo.
+const COR_CARD_BORDA: Color = Color(1.0, 1.0, 1.0, 0.10)
+## Fundo de controle desabilitado.
+const COR_FUNDO_DESABILITADO: Color = Color(1.0, 1.0, 1.0, 0.04)
 ## Faixa do HUD sobreposta à arena; escurece o fundo sem escondê-lo.
 const COR_SUPERFICIE_HUD: Color = Color(Color("#0E1018"), 0.78)
 ## Fundo de modal (opaco, para não competir com o conteúdo atrás).
@@ -141,6 +150,14 @@ const SIMBOLO_INTERVALO_SEGMENTOS: int = 3
 ## Fração do diâmetro do segmento ocupada pelo símbolo.
 const SIMBOLO_ESCALA: float = 0.62
 
+## Diretório dos assets SVG dos símbolos (gerados a partir de `docs/design`).
+const DIR_SIMBOLOS_DALTONISMO: String = "res://assets/daltonismo/"
+## Nome do arquivo de cada símbolo, indexado por `SimboloDaltonismo`.
+const ARQUIVOS_SIMBOLO: Array[String] = [
+	"circulo", "triangulo", "quadrado", "losango",
+	"estrela", "hexagono", "cruz", "meia_lua",
+]
+
 
 # ==============================================================================
 # 5 · CORES — COMIDA
@@ -164,6 +181,10 @@ const COR_SUCESSO: Color = Color("#4ADE80")
 const COR_PERIGO_ACAO: Color = Color("#FF6B6B")
 ## Perigo como TEXTO (mensagens de erro) — clareado para passar AA em corpo 13px.
 const COR_PERIGO_TEXTO: Color = Color("#FF9B9B")
+## Fundo do botão destrutivo (véu do vermelho de ação).
+const COR_PERIGO_FUNDO: Color = Color(Color("#FF6B6B"), 0.14)
+## Borda do botão destrutivo.
+const COR_PERIGO_BORDA: Color = Color(Color("#FF6B6B"), 0.4)
 ## Alerta: tempo esgotando, saldo insuficiente.
 const COR_ALERTA: Color = Color("#FFD43B")
 ## Informação: dicas estratégicas do analisador.
@@ -253,14 +274,13 @@ const CORES_RARIDADE: Array[Color] = [
 # ==============================================================================
 # 10 · TIPOGRAFIA
 # ==============================================================================
-# PENDÊNCIA: os arquivos .ttf ainda não existem no repositório. Enquanto isso,
-# `snakito_theme.tres` não referencia fontes e o Godot usa a fonte padrão do
-# projeto — tamanhos e cores já valem, o desenho da letra não.
+# Fontes variáveis (licença OFL, cópias e licenças em `assets/fonts/`).
+# O Theme aplica cada peso via `FontVariation` no eixo `wght`.
 
 ## Fonte display — títulos, números, rótulos de botão. Arredondada e amigável.
-const CAMINHO_FONTE_DISPLAY: String = "res://assets/fonts/Fredoka-VariableFont_wdth,wght.ttf"
+const CAMINHO_FONTE_DISPLAY: String = "res://assets/fonts/fredoka-variable.ttf"
 ## Fonte de corpo — UI e parágrafos. x-height alta, legível em 12px.
-const CAMINHO_FONTE_CORPO: String = "res://assets/fonts/Nunito-VariableFont_wght.ttf"
+const CAMINHO_FONTE_CORPO: String = "res://assets/fonts/nunito-variable.ttf"
 
 ## Pesos usados (eixo `wght` da fonte variável, via `FontVariation`).
 const PESO_REGULAR: int = 400
@@ -310,8 +330,7 @@ const PESO_CORPO_SM: int = PESO_BOLD
 const TAM_LEGENDA: int = 12
 const ALTURA_LINHA_LEGENDA: int = 16
 const PESO_LEGENDA: int = PESO_EXTRABOLD
-## Espaçamento entre letras da legenda, em em. Aplicar via
-## `FontVariation.spacing_glyph = round(TRACKING_LEGENDA * TAM_LEGENDA)`.
+## Espaçamento entre letras da legenda, em em. Converter com `tracking_em_pixels()`.
 const TRACKING_LEGENDA: float = 0.04
 
 ## Reserva de crescimento de texto para DE/FR. Botões e chips usam altura
@@ -388,6 +407,8 @@ const PRESS_ESCURECIMENTO: float = 0.06
 const FOCO_ESPESSURA: int = 2
 ## Cor do anel de foco.
 const COR_FOCO: Color = Color("#38BDF8")
+## Fundo da seleção de texto em campos de edição.
+const COR_SELECAO_TEXTO: Color = Color(Color("#4ADE80"), 0.35)
 ## Opacidade de controle desabilitado.
 const OPACIDADE_DESABILITADO: float = 0.4
 
@@ -424,6 +445,23 @@ static func simbolo_cobra(cor: CorCobra) -> SimboloDaltonismo:
 ## Cor de uma raridade de skin.
 static func cor_raridade(raridade: Raridade) -> Color:
 	return CORES_RARIDADE[int(raridade)]
+
+
+## Caminho do asset SVG de um símbolo do modo daltonismo.
+static func caminho_simbolo(simbolo: SimboloDaltonismo) -> String:
+	return DIR_SIMBOLOS_DALTONISMO + ARQUIVOS_SIMBOLO[int(simbolo)] + ".svg"
+
+
+## Cor de um CTA sólido no estado pressionado (escurecida em `PRESS_ESCURECIMENTO`).
+static func cor_press(base: Color) -> Color:
+	return base.darkened(PRESS_ESCURECIMENTO)
+
+
+## Tracking em pixels inteiros para `FontVariation.spacing_glyph`.
+## 0.04em × 12px = 0.48px arredondaria para zero e apagaria o tracking da
+## legenda — por isso o piso é 1px.
+static func tracking_em_pixels(tamanho: int) -> int:
+	return maxi(1, roundi(TRACKING_LEGENDA * float(tamanho)))
 
 
 ## Converte altura de linha de design (CSS `line-height`) no `line_spacing`

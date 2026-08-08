@@ -47,18 +47,21 @@ Design system importado do Claude Design (projeto `Design System Snakito`, v1.0,
 | `docs/design/snakito-tokens.json` | Tokens originais (inclui economia/IAP, ainda não portados) |
 | `docs/design/wcag-report.md` | Relatório de contraste WCAG 2.1 AA |
 | `src/ui/theme/tokens.gd` | `SnakitoTokens` — constantes tipadas (cores, tipografia, espaçamento, raios, toque, daltonismo) |
-| `src/ui/theme/snakito_theme.tres` | `Theme` do Godot: 6 tipos base + 25 variações, 30 StyleBoxes |
+| `src/ui/theme/snakito_theme.tres` | `Theme`: 6 tipos base + 25 variações, fontes ligadas via `FontVariation` |
+| `tools/gerar_tema.gd` | EditorScript que regenera o `.tres` a partir do `tokens.gd` (Arquivo > Executar) |
+| `assets/fonts/` | Fredoka + Nunito variáveis (OFL, licenças incluídas) |
+| `assets/daltonismo/` | 8 símbolos SVG do modo daltonismo (1 por cor de cobra) |
+| `tests/ui/theme/test_tokens_contraste.gd` | Regressão WCAG dos tokens (gdUnit4) |
+| `project.godot` | Projeto mínimo (nome, portrait 412×915, renderer mobile, tema global); presets Android entram no spike |
 
-**Regra operacional:** valores visuais literais só existem nesses **dois** arquivos de `src/ui/theme/`. Cenas consomem `SnakitoTokens.*` ou variações do `Theme` (`BotaoPrimario`, `TituloLg`, `CardPainel`, …). O `.tres` é derivado do `tokens.gd` — ao mudar um token, o `.tres` precisa ser regerado junto.
+**Regra operacional:** valores visuais literais só existem em `tokens.gd` + `snakito_theme.tres`. Cenas consomem `SnakitoTokens.*` ou variações do `Theme` (`BotaoPrimario`, `TituloLg`, `CardPainel`, …). Ao mudar um token, regenere o `.tres` com `tools/gerar_tema.gd` e rode os testes de contraste.
 
 **Contraste:** 0 reprovações. Única restrição de uso: `COR_TEXTO_MUTED` (#7E88A8) só em texto grande — ≥19px negrito ou ≥24px normal.
 
-**Pendências da fundação** (bloqueiam fidelidade visual, não bloqueiam código):
-- Fontes Fredoka e Nunito (`.ttf`) ausentes; o `Theme` não referencia fontes ainda
-- Símbolos do modo daltonismo definidos no design (8 formas, 1 por cor) mas **sem assets exportados** — só existem como SVG inline no doc
-- Gradientes de CTA aproximados por cor sólida (`StyleBoxFlat` não faz gradiente)
-- Falta `tools/gerar_tema.gd` (EditorScript) para regerar o `.tres` a partir do `tokens.gd`
-- Falta teste gdUnit4 de regressão de contraste usando `SnakitoTokens.razao_contraste()`
+**Pendências da fundação:**
+- Nada foi executado na engine ainda (Godot não instalado nesta máquina). Na primeira abertura do editor: deixar importar `assets/`, rodar `tools/gerar_tema.gd` e conferir que o `.tres` regenerado carrega igual ao versionado
+- Instalar o addon gdUnit4 (`addons/gdUnit4`) e rodar `tests/`
+- Gradientes de CTA seguem aproximados pelo tom médio (`StyleBoxFlat` não desenha gradiente; usar `StyleBoxTexture`/shader quando o polimento importar). Estados `hover` = `normal` de propósito: alvo é Android
 
 ## Conformidade (sempre)
 
