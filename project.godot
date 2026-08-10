@@ -17,6 +17,7 @@ config/features=PackedStringArray("4.7", "Mobile")
 [debug]
 
 settings/stdout/print_fps=true
+settings/gdscript/always_track_call_stacks=true
 
 [display]
 
@@ -42,3 +43,7 @@ locale/translations=PackedStringArray("res://addons/admob/gdscript/sample/transl
 
 renderer/rendering_method="mobile"
 textures/vram_compression/import_etc2_astc=true
+
+[sentry]
+
+schema_version=4

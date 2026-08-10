@@ -86,6 +86,23 @@ func _montar_conteudo() -> void:
 		botao.disabled = true
 		coluna.add_child(botao)
 
+	# Gatilho do crash de teste do Sentry (critério do spike) — só em builds
+	# de debug; some na build de loja.
+	if OS.is_debug_build():
+		var crash: Button = Button.new()
+		crash.text = "🐛 Crash de teste (Sentry)"
+		crash.theme_type_variation = &"BotaoDestrutivo"
+		crash.pressed.connect(_crash_de_teste)
+		coluna.add_child(crash)
+
+
+## Envia um evento de erro e, em seguida, derruba o app de verdade — testa o
+## caminho de evento imediato E o de crash nativo (sobe no próximo boot).
+func _crash_de_teste() -> void:
+	SentrySDK.capture_message("Crash de teste — spike Snakito", SentrySDK.LEVEL_ERROR)
+	await get_tree().create_timer(2.0).timeout
+	OS.crash("Crash de teste do spike Snakito (proposital)")
+
 
 func _espaco(altura: int) -> Control:
 	var espaco: Control = Control.new()

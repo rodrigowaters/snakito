@@ -97,12 +97,12 @@ Política de Famílias do Google Play; coleta mínima (username, e-mail, stats d
 ## Estado atual & roadmap
 
 - [x] Documentação aprovada (`docs/snakito-instrucoes.md` v2.0) + emenda de Trilhas nas Instruções Globais
-- [ ] **Spike (go/no-go, 2–3 dias):** export `.aab` assinado com plugins Billing+AdMob compilando; mini-arena com 30 bots + joystick a 60fps em aparelho mediano; Sentry reportando crash de teste
+- [x] **Spike (go/no-go): APROVADO — GO.** `.aab` assinado com Billing+AdMob compilando (e vivos em runtime no aparelho); arena 30 bots a 115–119fps num moto g35; Sentry entregando evento com HTTP 200
 - [x] MVP jogável (sem 1–2): domínio puro + 45 testes ✅; 3 bots ✅; Home/Jogo/Resultado ✅; skin padrão (verde) ✅; feedback visual §7 ✅ (pulso ao comer, confete no kill, pontos flutuando, flash+háptica na morte) — 100% offline, sem conta. Pendências: **sons** (sem assets de áudio ainda), minimap, modo daltonismo em jogo, balanceamento (jogador parado morre em ~3s — aprovado inicialmente pelo Rodrigo em 08/08), i18n das strings
-- **Spike Android — 2 de 3 critérios APROVADOS (08/08):**
+- **Spike Android — 3 de 3 critérios APROVADOS: GO (08–10/08):**
   - ✅ **60fps em aparelho mediano**: moto g35 5G via adb — arena 30 bots a 115–119fps (pior frame de gameplay: 76); 1 hitch único de load (mascarável)
   - ✅ **`.aab` assinado com Billing+AdMob compilando juntos**: gradle build ok; dex contém `com/android/billingclient` e `com/poingstudios/godot/admob`; **11 singletons vivos em runtime** no aparelho (incl. `UserMessagingPlatform`/`ConsentInformation` — UMP p/ famílias); AAB assinado com debug keystore (upload key do Play fica p/ publicação)
-  - ⏳ **Sentry**: falta DSN (conta do Rodrigo)
+  - ✅ **Sentry**: SDK oficial 2.1.1 em `addons/sentry` (com libs Android); DSN em `override.cfg` (gitignorado, entra no export via `include_filter`); evento de erro entregue com **HTTP 200** via SDK no desktop; botão "🐛 Crash de teste" na Home (só builds debug) envia evento + crash nativo proposital. Config: chaves `sentry/options/*` (dsn, environment, release, debug_printing, skip_auto_init_on_editor_play=false)
   - Infra local: templates 4.7.1 instalados, keystore debug gerado, editor_settings apontando SDK/Java; presets `Android AAB` + `Android APK (aparelho)`; plugins vendorados em `addons/` (Billing 3.3.0; AdMob poing v5 nightly + template nativo 4.7.1 — os AARs nativos em `addons/admob/android/bin` são gitignorados pelo próprio addon: re-baixar `android-template-v4.7.1.zip` em clone novo); `android/` (template gradle) é gerado, gitignorado
   - Export headless: `JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home godot --headless --export-debug "Android AAB" export/snakito.aab` (Godot segfaulta AO SAIR depois de gravar o artefato — quirk macOS, inofensivo)
   - Pendências menores: ícone do projeto (warning no export; assets do ícone adaptativo existem só como SVG no design), `tagForChildDirectedTreatment` quando anúncios ativarem

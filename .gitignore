@@ -21,3 +21,6 @@ reports/
 
 # Template gradle do Godot (regenerável: godot --headless --install-android-build-template --export-debug ...)
 android/
+
+# Sentry: DSN local (entra no export via include_filter)
+override.cfg
