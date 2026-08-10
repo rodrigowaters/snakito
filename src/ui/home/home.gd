@@ -10,6 +10,12 @@ const CENA_JOGO: String = "res://src/scenes/jogo/jogo.tscn"
 
 
 func _ready() -> void:
+	# Primeira abertura: onboarding sem texto (docs §8) antes de tudo.
+	# Deferred — trocar de cena dentro do _ready da cena atual é frágil.
+	if not ProgressoLocal.onboarding_visto():
+		get_tree().change_scene_to_file.call_deferred(
+			"res://src/scenes/onboarding/onboarding.tscn")
+		return
 	# Anchors do root vivem no .tscn (definir só em _ready não dimensiona
 	# o root Control — a janela não redispara o layout).
 	_montar_fundo()
@@ -85,6 +91,13 @@ func _montar_conteudo() -> void:
 	desafios.pressed.connect(func() -> void:
 		get_tree().change_scene_to_file("res://src/ui/desafios/desafios.tscn"))
 	coluna.add_child(desafios)
+
+	var skins: Button = Button.new()
+	skins.text = "Skins"
+	skins.theme_type_variation = &"BotaoSecundario"
+	skins.pressed.connect(func() -> void:
+		get_tree().change_scene_to_file("res://src/ui/skins/skins.tscn"))
+	coluna.add_child(skins)
 
 	var ranking: Button = Button.new()
 	ranking.text = "Ranking"

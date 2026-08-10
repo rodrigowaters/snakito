@@ -24,3 +24,4 @@ android/
 
 # Sentry: DSN local (entra no export via include_filter)
 override.cfg
+build/

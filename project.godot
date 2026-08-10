@@ -50,6 +50,7 @@ locale/translations=PackedStringArray("res://addons/admob/gdscript/sample/transl
 
 renderer/rendering_method="mobile"
 textures/vram_compression/import_etc2_astc=true
+environment/defaults/default_clear_color=Color(0.098, 0.0784, 0.1882, 1)
 
 [sentry]
 

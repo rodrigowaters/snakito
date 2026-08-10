@@ -27,4 +27,12 @@ static func config_para_jogar() -> GameEngine.ConfigPartida:
 	regras_desafio = null
 	var semente: int = proxima_semente if proxima_semente >= 0 else RngService.semente_aleatoria()
 	proxima_semente = -1
-	return GameEngine.ConfigPartida.padrao(semente)
+	var config: GameEngine.ConfigPartida = GameEngine.ConfigPartida.padrao(semente)
+	# Dificuldade escolhida no onboarding (docs §8, passo 4): "tranquila"
+	# alivia a pressão predatória sem mexer no ritmo de alimentação.
+	if regras_desafio == null and ProgressoLocal.dificuldade() == ProgressoLocal.Dificuldade.TRANQUILA:
+		config.cacadores = 3
+		config.oportunistas = 8
+		config.agressividade = 0.35
+		config.turbo_bots = 1.3
+	return config
