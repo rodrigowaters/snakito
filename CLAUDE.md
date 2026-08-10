@@ -90,6 +90,13 @@ Fluxo Home → Jogo → Resultado completo e verificado por screenshot (`tools/c
 - "Maior visão" do jogador = zoom da câmera (leitura de render do docs §2.2)
 - Performance do domínio: **0.66ms/tick** com 30 bots neste Mac (`tools/bench_dominio.gd`); orçamento de frame é 16.6ms — o teste de 60fps no aparelho é sobre o render
 
+## Pendência: fidelidade às telas do Claude Design (decisão de 10/08)
+
+As telas atuais usam os tokens/componentes fielmente (regra dura #4), mas **não seguem as composições hi-fi** de `docs/design/Snakito Telas.dc.html` (26 telas com decisões registradas: "Home 1d+1e · HUD 1h · pós 8c ..."). O Rodrigo decidiu registrar como pendência e priorizar o backend-cliente. Ao pagar a dívida, usar o HTML das telas como blueprint e entregar lado-a-lado (screenshot × design) para validação:
+
+- **Refazer composição** (feature já existe): Home (sem moedas/fase por ora — preview da skin equipada, "▶ Jogar Arcade", nav em grade), HUD ("1h"), Pausa ("04c"), Pós-partida ("8c"), Desafios ("07")
+- **Construir quando a feature chegar**: Mapa/fases (02), Evolução (03), Renascimento (04b), Ranking (08 — próxima do backend-cliente), Loja (09*), Configurações (10), Onboarding (11a-d), Chefe/Duelo/Prorrogação (12*), Recompensa diária (01b), Info do jogador (02b), Ranking da fase (06)
+
 ## Backend Supabase (provisionado)
 
 Projeto **snakito** · ref `cfpsounmrhoodijmrths` · região **sa-east-1 (São Paulo)** · org "aplicativos" · $0/mês. Fonte versionada em `supabase/` (migrations + functions); mudanças de schema SEMPRE via migration nova (nunca editar as antigas) e rodar `get_advisors` depois de DDL — advisors zerados em 10/08.
