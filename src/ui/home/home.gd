@@ -79,12 +79,18 @@ func _montar_conteudo() -> void:
 		get_tree().change_scene_to_file(CENA_JOGO))
 	coluna.add_child(jogar)
 
-	for texto: String in ["Desafios", "Ranking"]:
-		var botao: Button = Button.new()
-		botao.text = texto + "  ·  em breve"
-		botao.theme_type_variation = &"BotaoSecundario"
-		botao.disabled = true
-		coluna.add_child(botao)
+	var desafios: Button = Button.new()
+	desafios.text = "Desafios"
+	desafios.theme_type_variation = &"BotaoSecundario"
+	desafios.pressed.connect(func() -> void:
+		get_tree().change_scene_to_file("res://src/ui/desafios/desafios.tscn"))
+	coluna.add_child(desafios)
+
+	var ranking: Button = Button.new()
+	ranking.text = "Ranking  ·  em breve"
+	ranking.theme_type_variation = &"BotaoSecundario"
+	ranking.disabled = true
+	coluna.add_child(ranking)
 
 	# Gatilho do crash de teste do Sentry (critério do spike) — só em builds
 	# de debug; some na build de loja.

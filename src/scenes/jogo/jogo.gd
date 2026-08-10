@@ -73,6 +73,8 @@ func _physics_process(delta: float) -> void:
 	# Desafio ativo: resolver (meta atingida ou falha) encerra a partida já.
 	if Sessao.regras_desafio != null \
 			and Sessao.regras_desafio.avaliar(motor) != ChallengeRules.Estado.EM_ANDAMENTO:
+		if Sessao.regras_desafio.estado == ChallengeRules.Estado.CONCLUIDO:
+			ProgressoLocal.marcar_desafio_concluido(Sessao.regras_desafio.desafio)
 		_transicionando = true
 		_ir_para_resultado()
 

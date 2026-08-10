@@ -68,7 +68,7 @@ Design system importado do Claude Design (projeto `Design System Snakito`, v1.0,
 
 ## Domínio (implementado)
 
-Core loop completo em `src/domain/` (5 de 7 arquivos; `strategy_analyzer.gd` e `challenge_rules.gd` são M1/M2): `rng_service`, `snake_model`, `arena_model`, `bot_engine`, `game_engine`. Testes em `tests/domain/` (45 casos). Interpretações onde a spec (docs §2) é omissa — decididas e documentadas nas constantes do código:
+Domínio COMPLETO em `src/domain/` — os 7 arquivos da arquitetura: `rng_service`, `snake_model`, `arena_model`, `bot_engine`, `game_engine`, `challenge_rules`, `strategy_analyzer` (análise v1: heurísticas tipadas sobre energia na morte, morte precoce, tamanho ao caçar, ritmo de coleta — máx. 2 achados por prioridade de enum; a UI traduz). Testes em `tests/domain/`. Interpretações onde a spec (docs §2) é omissa — decididas e documentadas nas constantes do código:
 
 - **Limiar de devorar em inteiros** (`11·tamanho_menor ≤ 10·tamanho_maior`): comparar com `1.1 * tamanho` em float erra o limiar exato (1.1 não tem representação binária finita)
 - **Knockback:** qualquer contato não-devorável separa as duas cobras, a menor deslocando mais (contém o "empurra até 5% menores" da spec)
@@ -106,7 +106,7 @@ Política de Famílias do Google Play; coleta mínima (username, e-mail, stats d
   - Infra local: templates 4.7.1 instalados, keystore debug gerado, editor_settings apontando SDK/Java; presets `Android AAB` + `Android APK (aparelho)`; plugins vendorados em `addons/` (Billing 3.3.0; AdMob poing v5 nightly + template nativo 4.7.1 — os AARs nativos em `addons/admob/android/bin` são gitignorados pelo próprio addon: re-baixar `android-template-v4.7.1.zip` em clone novo); `android/` (template gradle) é gerado, gitignorado
   - Export headless: `JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home godot --headless --export-debug "Android AAB" export/snakito.aab` (Godot segfaulta AO SAIR depois de gravar o artefato — quirk macOS, inofensivo)
   - Pendências menores: ícone do projeto (warning no export; assets do ícone adaptativo existem só como SVG no design), `tagForChildDirectedTreatment` quando anúncios ativarem
-- [ ] M1 (sem 3–4): auth (e-mail + Google), fila offline + `submit_session` + ranking, desafios 1–2 (**domínio ✅** — falta UI + análise pós-partida), onboarding sem texto, +3 skins
+- [~] M1 (sem 3–4): **desafios 1–2 completos ✅** (tela de seleção + selo de concluído em `user://progresso.cfg` via `ProgressoLocal`) e **análise pós-partida v1 ✅** (card na tela de resultado); faltam: auth (e-mail + Google) + consentimento parental, fila offline + `submit_session` + ranking, onboarding sem texto, +3 skins
 - [ ] M2 (sem 5–6): AdMob, Billing "Remover Anúncios", analyzer completo, desafios 3–4, EN/ES, publicação
 - [x] Design system e telas em alta fidelidade geradas via Claude Design; tokens portados para `src/ui/theme/` (ver *Fundação visual*)
 

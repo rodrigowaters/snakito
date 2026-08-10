@@ -69,6 +69,12 @@ func _montar_conteudo(motor: GameEngine) -> void:
 
 	coluna.add_child(_card_breakdown(motor, jogador))
 
+	# Análise estratégica v1 (docs §4.3): o que aprender desta partida.
+	var achados: Array[StrategyAnalyzer.Achado] = \
+		StrategyAnalyzer.analisar(motor, Sessao.regras_desafio)
+	if not achados.is_empty():
+		coluna.add_child(_card_analise(achados))
+
 	var seed_rotulo: Label = Label.new()
 	seed_rotulo.text = "ARENA #%d" % motor.rng.semente
 	seed_rotulo.theme_type_variation = &"TextoLegenda"
@@ -99,6 +105,45 @@ func _montar_conteudo(motor: GameEngine) -> void:
 	menu.pressed.connect(func() -> void:
 		get_tree().change_scene_to_file(CENA_HOME))
 	coluna.add_child(menu)
+
+
+## Texto pt-BR de cada achado do analisador (i18n no M2).
+const TEXTOS_ACHADO: Dictionary[StrategyAnalyzer.Achado, String] = {
+	StrategyAnalyzer.Achado.DESAFIO_PROIBIA_MATAR:
+		"Este desafio pedia ZERO abates — paciência também é estratégia.",
+	StrategyAnalyzer.Achado.GERENCIE_ENERGIA:
+		"Você morreu sem energia: guarde turbo para fugir, não só para caçar.",
+	StrategyAnalyzer.Achado.FUJA_DOS_MAIORES:
+		"Cobras 10% maiores devoram no toque — fuja, cresça, e só então enfrente.",
+	StrategyAnalyzer.Achado.CRESCA_ANTES_DE_CACAR:
+		"Você caçou pequeno demais: coma antes, cace depois.",
+	StrategyAnalyzer.Achado.COLETE_MAIS_RAPIDO:
+		"Faltou ritmo: cada comida vale 10 pontos — trace rotas entre elas.",
+	StrategyAnalyzer.Achado.CACE_PRESAS_CANSADAS:
+		"Presas descansadas escapam: ataque quem já foge de outra cobra.",
+	StrategyAnalyzer.Achado.BOM_DESEMPENHO:
+		"Mandou bem! Repita a arena e compare suas decisões.",
+}
+
+
+## Card da análise estratégica: até 2 dicas concretas.
+func _card_analise(achados: Array[StrategyAnalyzer.Achado]) -> PanelContainer:
+	var card: PanelContainer = PanelContainer.new()
+	card.theme_type_variation = &"CardPainel"
+	var pilha: VBoxContainer = VBoxContainer.new()
+	pilha.add_theme_constant_override("separation", T.ESP_XS)
+	card.add_child(pilha)
+	var titulo: Label = Label.new()
+	titulo.text = "ANÁLISE DA PARTIDA"
+	titulo.theme_type_variation = &"TextoLegenda"
+	pilha.add_child(titulo)
+	for achado: StrategyAnalyzer.Achado in achados:
+		var dica: Label = Label.new()
+		dica.text = "💡 " + TEXTOS_ACHADO[achado]
+		dica.theme_type_variation = &"TextoInfo"
+		dica.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		pilha.add_child(dica)
+	return card
 
 
 ## Desfecho: Arcade fala de sobrevivência; desafio fala da meta e do motivo.
