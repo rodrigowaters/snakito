@@ -16,7 +16,12 @@ static func enfileirar(payload: Dictionary) -> void:
 	var secoes: PackedStringArray = cfg.get_sections()
 	if secoes.size() >= MAX_PENDENTES:
 		cfg.erase_section(secoes[0])  # descarta a mais antiga
-	var id: String = "%d_%06d" % [Time.get_unix_time_from_system(), randi() % 1000000]
+	# Ordem cronológica garantida: unix time ordena entre boots; ticks_usec
+	# (monotônico no processo) ordena dentro do mesmo segundo. Sufixo
+	# aleatório aqui era bug flaky: duas partidas no mesmo segundo podiam
+	# inverter de ordem no sort().
+	var id: String = "%012d_%012d" % [
+		int(Time.get_unix_time_from_system()), Time.get_ticks_usec()]
 	cfg.set_value(id, "payload", payload)
 	cfg.save_encrypted_pass(CAMINHO, OS.get_unique_id())
 

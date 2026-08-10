@@ -13,6 +13,7 @@ config_version=5
 config/name="Snakito"
 run/main_scene="res://src/ui/home/home.tscn"
 config/features=PackedStringArray("4.7", "Mobile")
+config/icon="res://assets/icone/icon.svg"
 
 [autoload]
 
@@ -33,7 +34,7 @@ window/handheld/orientation=1
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg", "res://addons/GodotGooglePlayBilling/plugin.cfg", "res://addons/admob/plugin.cfg")
+enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg", "res://addons/GodotGooglePlayBilling/plugin.cfg", "res://addons/admob/plugin.cfg", "res://addons/GoogleSignIn/plugin.cfg")
 
 [gui]
 

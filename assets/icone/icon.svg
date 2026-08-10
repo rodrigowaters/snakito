@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 100 100">
+<!-- Ícone do Snakito — logo-cobra do design system (Cosmic Soft) -->
+<rect width="100" height="100" rx="22" fill="#12141F"/>
+<circle cx="34" cy="76" r="7" fill="#4ADE80" opacity=".45"></circle><circle cx="46" cy="80" r="7.5" fill="#4ADE80" opacity=".6"></circle><circle cx="58" cy="78" r="8" fill="#4ADE80" opacity=".72"></circle><circle cx="67" cy="70" r="8.5" fill="#4ADE80" opacity=".82"></circle><circle cx="66" cy="59" r="9" fill="#4ADE80" opacity=".88"></circle><circle cx="56" cy="52" r="9" fill="#4ADE80" opacity=".92"></circle><circle cx="44" cy="47" r="9" fill="#4ADE80" opacity=".95"></circle><circle cx="35" cy="39" r="9.5" fill="#4ADE80"></circle><circle cx="41" cy="29" r="10" fill="#4ADE80"></circle><circle cx="54" cy="24" r="12" fill="#4ADE80"></circle><circle cx="50" cy="20.5" r="3.1" fill="#fff"></circle><circle cx="58.5" cy="20.5" r="3.1" fill="#fff"></circle><circle cx="50.6" cy="21.2" r="1.5" fill="#12141F"></circle><circle cx="59.1" cy="21.2" r="1.5" fill="#12141F"></circle><circle cx="73" cy="34" r="4.5" fill="#FF6B6B"></circle>
+</svg>

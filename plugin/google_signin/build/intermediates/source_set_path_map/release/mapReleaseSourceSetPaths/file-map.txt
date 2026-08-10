@@ -1,0 +1,7 @@
+com.snakito.googlesignin-pngs-0 /Users/rodrigo/Projects/snakito/plugin/google_signin/build/generated/res/pngs/release
+com.snakito.googlesignin-resValues-1 /Users/rodrigo/Projects/snakito/plugin/google_signin/build/generated/res/resValues/release
+com.snakito.googlesignin-mergeReleaseResources-2 /Users/rodrigo/Projects/snakito/plugin/google_signin/build/intermediates/incremental/release/mergeReleaseResources/merged.dir
+com.snakito.googlesignin-mergeReleaseResources-3 /Users/rodrigo/Projects/snakito/plugin/google_signin/build/intermediates/incremental/release/mergeReleaseResources/stripped.dir
+com.snakito.googlesignin-release-4 /Users/rodrigo/Projects/snakito/plugin/google_signin/build/intermediates/merged_res/release/mergeReleaseResources
+com.snakito.googlesignin-main-5 /Users/rodrigo/Projects/snakito/plugin/google_signin/src/main/res
+com.snakito.googlesignin-release-6 /Users/rodrigo/Projects/snakito/plugin/google_signin/src/release/res

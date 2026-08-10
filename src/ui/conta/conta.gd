@@ -56,12 +56,12 @@ func _montar_deslogado() -> void:
 	var google: Button = Button.new()
 	google.text = "Entrar com Google"
 	google.theme_type_variation = &"BotaoPrimario"
-	var plugin_presente: bool = Engine.has_singleton("GodotGoogleSignIn")
-	google.disabled = not plugin_presente
+	var disponivel: bool = Engine.has_singleton("GoogleSignIn") and _web_client_id() != ""
+	google.disabled = not disponivel
 	google.pressed.connect(_entrar_com_google)
 	_coluna.add_child(google)
-	if not plugin_presente:
-		_texto("Login disponível no aparelho Android\n(configuração do Google em andamento)", &"TextoMuted")
+	if not disponivel:
+		_texto("Login disponível no aparelho Android", &"TextoMuted")
 
 
 func _montar_criar_perfil() -> void:
@@ -97,10 +97,30 @@ func _montar_logado() -> void:
 	_coluna.add_child(sair)
 
 
+## Audiência do token: o OAuth client WEB (o mesmo do provider no Supabase).
+## Vem do override.cfg (fora do git, dentro do export) — é público por design.
+func _web_client_id() -> String:
+	return str(ProjectSettings.get_setting("google/web_client_id", ""))
+
+
 func _entrar_com_google() -> void:
-	# Integração do plugin nativo pendente (OAuth). Quando existir:
-	# id_token = await plugin.solicitar() → Rede.entrar_com_google(id_token).
-	push_warning("Conta: plugin Google Sign-In ainda não integrado")
+	var plugin: Object = Engine.get_singleton("GoogleSignIn")
+	plugin.connect("token_recebido", _ao_receber_token, CONNECT_ONE_SHOT)
+	plugin.connect("falhou", _ao_falhar_google, CONNECT_ONE_SHOT)
+	plugin.call("solicitar", _web_client_id())
+
+
+func _ao_receber_token(id_token: String) -> void:
+	if await Rede.entrar_com_google(id_token):
+		_remontar()  # sessao_mudou também dispara; garantia extra
+	else:
+		_ao_falhar_google("supabase_recusou")
+
+
+func _ao_falhar_google(codigo: String) -> void:
+	push_warning("Conta: login Google falhou (%s)" % codigo)
+	_remontar()
+	_texto("Não deu para entrar agora (%s).\nTente de novo." % codigo, &"TextoPerigo")
 
 
 func _texto(conteudo: String, variacao: StringName) -> Label:

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.snakito.googlesignin" >
+
+    <uses-sdk android:minSdkVersion="24" />
+
+    <application>
+        <meta-data
+            android:name="org.godotengine.plugin.v2.GoogleSignIn"
+            android:value="com.snakito.googlesignin.GoogleSignInPlugin" />
+    </application>
+
+</manifest>

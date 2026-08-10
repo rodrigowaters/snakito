@@ -1,0 +1,24 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/rodrigo/Projects/snakito/plugin/google_signin/src/main/AndroidManifest.xml:1:1-7:12
+INJECTED from /Users/rodrigo/Projects/snakito/plugin/google_signin/src/main/AndroidManifest.xml:1:1-7:12
+	package
+		INJECTED from /Users/rodrigo/Projects/snakito/plugin/google_signin/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/rodrigo/Projects/snakito/plugin/google_signin/src/main/AndroidManifest.xml:1:11-69
+application
+ADDED from /Users/rodrigo/Projects/snakito/plugin/google_signin/src/main/AndroidManifest.xml:2:5-6:19
+meta-data#org.godotengine.plugin.v2.GoogleSignIn
+ADDED from /Users/rodrigo/Projects/snakito/plugin/google_signin/src/main/AndroidManifest.xml:3:9-5:75
+	android:value
+		ADDED from /Users/rodrigo/Projects/snakito/plugin/google_signin/src/main/AndroidManifest.xml:5:13-72
+	android:name
+		ADDED from /Users/rodrigo/Projects/snakito/plugin/google_signin/src/main/AndroidManifest.xml:4:13-66
+uses-sdk
+INJECTED from /Users/rodrigo/Projects/snakito/plugin/google_signin/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/rodrigo/Projects/snakito/plugin/google_signin/src/main/AndroidManifest.xml
+INJECTED from /Users/rodrigo/Projects/snakito/plugin/google_signin/src/main/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /Users/rodrigo/Projects/snakito/plugin/google_signin/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/rodrigo/Projects/snakito/plugin/google_signin/src/main/AndroidManifest.xml
