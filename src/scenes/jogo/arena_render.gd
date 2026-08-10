@@ -66,19 +66,27 @@ func _draw() -> void:
 			_desenhar_cobra(cobra, visivel)
 
 
-## Cor base de uma cobra: jogador = verde (skin padrão do MVP); bots ciclam
-## as OUTRAS 7 cores — verde é exclusiva do jogador. Bots verdes criavam
-## crise de identidade em tela ("qual cobra sou eu?!", playtest 10/08).
+## Cor base de uma cobra: jogador = skin equipada (ProgressoLocal, com cache
+## em memória — zero I/O no _draw); bots ciclam as OUTRAS 7 cores — a cor do
+## jogador é exclusiva dele. Bots com a cor do jogador criavam crise de
+## identidade em tela ("qual cobra sou eu?!", playtest 10/08).
 static func cor_de(cobra: SnakeModel) -> Color:
-	if cobra.eh_jogador():
-		return T.CORES_COBRA_BASE[0]
-	return T.CORES_COBRA_BASE[1 + (cobra.id - 1) % (T.CORES_COBRA_BASE.size() - 1)]
+	return _cor_na(T.CORES_COBRA_BASE, cobra)
 
 
 static func cor_escura_de(cobra: SnakeModel) -> Color:
+	return _cor_na(T.CORES_COBRA_ESCURA, cobra)
+
+
+static func _cor_na(paleta: Array[Color], cobra: SnakeModel) -> Color:
+	var skin: int = ProgressoLocal.skin_equipada()
 	if cobra.eh_jogador():
-		return T.CORES_COBRA_ESCURA[0]
-	return T.CORES_COBRA_ESCURA[1 + (cobra.id - 1) % (T.CORES_COBRA_ESCURA.size() - 1)]
+		return paleta[skin]
+	# Bots percorrem a paleta pulando o índice da skin do jogador.
+	var indice: int = (cobra.id - 1) % (paleta.size() - 1)
+	if indice >= skin:
+		indice += 1
+	return paleta[indice]
 
 
 func _retangulo_visivel() -> Rect2:

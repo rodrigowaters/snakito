@@ -43,4 +43,5 @@ func _draw() -> void:
 		draw_circle(cobra.posicao * escala, RAIO_PONTO_COBRA, T.COR_TEXTO_SECUNDARIO)
 	var jogador: SnakeModel = _motor.jogador()
 	if jogador.viva:
-		draw_circle(jogador.posicao * escala, RAIO_PONTO_JOGADOR, T.CORES_COBRA_BASE[0])
+		draw_circle(jogador.posicao * escala, RAIO_PONTO_JOGADOR,
+			ArenaRender.cor_de(jogador))
