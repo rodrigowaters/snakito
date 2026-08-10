@@ -57,11 +57,11 @@ func test_composicao_da_arena_segue_a_config() -> void:
 	assert_int(contagem[SnakeModel.Personalidade.FAZENDEIRO]).is_equal(12)
 	assert_int(contagem[SnakeModel.Personalidade.CACADOR]).is_equal(6)
 	assert_int(contagem[SnakeModel.Personalidade.OPORTUNISTA]).is_equal(12)
-	assert_int(motor.arena.comidas.size()).is_equal(80)
+	assert_int(motor.arena.comidas.size()).is_equal(110)
 	for cobra: SnakeModel in motor.arena.cobras:
 		assert_bool(motor.arena.limites().has_point(cobra.posicao)).is_true()
 		if not cobra.eh_jogador():
-			assert_int(cobra.tamanho).is_between(1, 8)
+			assert_int(cobra.tamanho).is_between(1, 5)
 			# Ninguém nasce colado no jogador (spawn seguro).
 			assert_float(cobra.posicao.distance_to(motor.jogador().posicao)) \
 				.is_greater_equal(GameEngine.DISTANCIA_SPAWN_MIN)

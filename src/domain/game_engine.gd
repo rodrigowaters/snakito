@@ -64,12 +64,12 @@ class ConfigPartida:
 	var semente: int = 1
 	var tamanho_arena: Vector2 = Vector2(2400.0, 2400.0)
 	var duracao_seg: int = 180
-	var qtd_comida: int = 80
+	var qtd_comida: int = 110
 	var fazendeiros: int = 12
 	var cacadores: int = 6
 	var oportunistas: int = 12
 	var tamanho_min_bot: int = 1
-	var tamanho_max_bot: int = 8
+	var tamanho_max_bot: int = 5
 	var agressividade: float = 0.5
 	## Multiplicador de turbo dos BOTS — eixo de composição/dificuldade
 	## (§2.6): capacidade transparente sob as mesmas regras de energia,
@@ -79,12 +79,12 @@ class ConfigPartida:
 	## Teto de crescimento dos bots (0 = sem teto). Bots se devoram e viram
 	## gigantes (simulador: tamanho 286 em 2 min na arena compacta) — o teto
 	## contém a bola de neve onde ela estraga a partida.
-	var tamanho_teto_bot: int = 0
+	var tamanho_teto_bot: int = 20
 	## Teto próprio dos CAÇADORES (0 = herdam o teto geral). Permite
 	## predadores-alfa que continuam ameaçando o jogador crescido — e visão
 	## escala com tamanho, então a perseguição deles é longa por natureza —
 	## enquanto o resto da arena fica contido.
-	var tamanho_teto_cacador: int = 0
+	var tamanho_teto_cacador: int = 35
 	## Tamanho de NASCIMENTO dos caçadores (0 = sorteio padrão). Ameaça desde
 	## o primeiro segundo — e é o eixo que o Desafio 3 da spec exige
 	## ("2 caçadores de tamanho 100+", docs §2.5).

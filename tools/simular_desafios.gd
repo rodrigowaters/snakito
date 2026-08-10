@@ -42,7 +42,54 @@ func _initialize() -> void:
 	print("RESUMO D2: conclui %d/%d | morre %d/%d | fuga média %.0f%% | lotação média %.1f bots NA TELA | conclusão média %.0fs" % [
 		conclusoes, LOTE, mortes, LOTE, soma_fuga / LOTE, soma_vizinhos / LOTE,
 		(soma_tempo_conclusao / conclusoes) if conclusoes > 0 else 0.0])
+
+	_lote_arcade()
 	quit()
+
+
+## Lote do ARCADE (config padrão, seed variando como no jogo real):
+## mede as dores do playtest — ritmo de comida, tamanho alcançado e quantas
+## cobras "maiores que eu" existem em média.
+func _lote_arcade() -> void:
+	print("== Arcade · lote de %d partidas ==" % LOTE)
+	var mortes: int = 0
+	var soma_vida: float = 0.0
+	var soma_tamanho: float = 0.0
+	var soma_comidas_min: float = 0.0
+	var soma_ameacas: float = 0.0
+	var soma_score: float = 0.0
+	for semente: int in range(1, LOTE + 1):
+		var motor: GameEngine = GameEngine.new(GameEngine.ConfigPartida.padrao(semente * 7919))
+		var cerebro: BotEngine = BotEngine.new()
+		var rng_jogador: RngService = RngService.new(semente)
+		var soma_ameacas_partida: int = 0
+		while motor.estado == GameEngine.Estado.EM_ANDAMENTO:
+			var jogador: SnakeModel = motor.jogador()
+			var direcao: Vector2 = cerebro.decidir(jogador, motor.arena, rng_jogador)
+			var turbo: bool = jogador.quer_turbo
+			if not jogador.quer_turbo and jogador.tamanho >= 3:
+				var presa: SnakeModel = cerebro.presa_mais_proxima(
+					jogador, motor.arena, jogador.raio_visao())
+				if presa != null:
+					direcao = (presa.posicao - jogador.posicao).normalized()
+					turbo = jogador.energia > 30.0
+			direcao = direcao.rotated(rng_jogador.float_entre(-0.25, 0.25))
+			motor.avancar(direcao, turbo)
+			for outra: SnakeModel in motor.arena.cobras:
+				if outra.viva and not outra.eh_jogador() and outra.pode_devorar(jogador):
+					soma_ameacas_partida += 1
+		var jogador_final: SnakeModel = motor.jogador()
+		if not jogador_final.viva:
+			mortes += 1
+		var minutos: float = maxf(0.05, motor.segundos_decorridos() / 60.0)
+		soma_vida += motor.segundos_decorridos()
+		soma_tamanho += float(jogador_final.tamanho)
+		soma_comidas_min += jogador_final.comidas / minutos
+		soma_ameacas += float(soma_ameacas_partida) / maxf(1.0, float(motor.tick_atual))
+		soma_score += float(jogador_final.pontos)
+	print("RESUMO ARCADE: morre %d/%d | vida média %.0fs | tamanho final médio %.1f | comidas/min %.1f | ameaças médias %.1f | score médio %.0f" % [
+		mortes, LOTE, soma_vida / LOTE, soma_tamanho / LOTE,
+		soma_comidas_min / LOTE, soma_ameacas / LOTE, soma_score / LOTE])
 
 
 ## Joga um desafio com o jogador sintético; `caca` liga a caça ingênua
