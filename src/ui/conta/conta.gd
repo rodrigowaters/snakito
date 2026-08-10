@@ -8,7 +8,14 @@ extends Control
 
 const T := preload("res://src/ui/theme/tokens.gd")
 
+## Etapas do cadastro pós-login (docs §9: consentimento parental <13).
+enum Etapa { IDADE, CONSENTIMENTO, APELIDO }
+
 var _coluna: VBoxContainer
+var _etapa: Etapa = Etapa.IDADE
+## Usuário declarou <13 — exige consentimento; a idade NÃO é armazenada.
+var _menor_de_13: bool = false
+var _confirmando_exclusao: bool = false
 
 
 func _ready() -> void:
@@ -39,7 +46,13 @@ func _remontar() -> void:
 	if not Rede.logado():
 		_montar_deslogado()
 	elif not Rede.tem_perfil():
-		_montar_criar_perfil()
+		match _etapa:
+			Etapa.IDADE:
+				_montar_idade()
+			Etapa.CONSENTIMENTO:
+				_montar_consentimento()
+			Etapa.APELIDO:
+				_montar_criar_perfil()
 	else:
 		_montar_logado()
 
@@ -64,6 +77,65 @@ func _montar_deslogado() -> void:
 		_texto("Login disponível no aparelho Android", &"TextoMuted")
 
 
+## Porta de idade (docs §9): só uma pergunta, e a resposta não é guardada —
+## apenas decide se o consentimento parental é necessário.
+func _montar_idade() -> void:
+	_texto("Para criar seu perfil:\nqual é a sua idade?", &"TextoSecundario")
+	var mais: Button = Button.new()
+	mais.text = "Tenho 13 anos ou mais"
+	mais.theme_type_variation = &"BotaoPrimario"
+	mais.pressed.connect(func() -> void:
+		_menor_de_13 = false
+		_etapa = Etapa.APELIDO
+		_remontar())
+	_coluna.add_child(mais)
+	var menos: Button = Button.new()
+	menos.text = "Tenho menos de 13 anos"
+	menos.theme_type_variation = &"BotaoSecundario"
+	menos.pressed.connect(func() -> void:
+		_menor_de_13 = true
+		_etapa = Etapa.CONSENTIMENTO
+		_remontar())
+	_coluna.add_child(menos)
+
+
+## Consentimento parental (docs §9, LGPD): o responsável lê e autoriza.
+func _montar_consentimento() -> void:
+	var card: PanelContainer = PanelContainer.new()
+	card.theme_type_variation = &"CardPainel"
+	var pilha: VBoxContainer = VBoxContainer.new()
+	pilha.add_theme_constant_override("separation", T.ESP_XS)
+	card.add_child(pilha)
+	var titulo: Label = Label.new()
+	titulo.text = "PARA O RESPONSÁVEL"
+	titulo.theme_type_variation = &"TextoLegenda"
+	pilha.add_child(titulo)
+	var texto: Label = Label.new()
+	texto.text = "Este jogo é educativo e coleta o mínimo: um apelido " + \
+		"(sem nome real), e-mail de login e estatísticas de partida. " + \
+		"Sem anúncios nesta versão. A conta pode ser excluída a qualquer " + \
+		"momento aqui mesmo no app."
+	texto.theme_type_variation = &"TextoCorpo"
+	texto.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	pilha.add_child(texto)
+	_coluna.add_child(card)
+
+	var autorizo: Button = Button.new()
+	autorizo.text = "Sou responsável e autorizo"
+	autorizo.theme_type_variation = &"BotaoPrimario"
+	autorizo.pressed.connect(func() -> void:
+		_etapa = Etapa.APELIDO
+		_remontar())
+	_coluna.add_child(autorizo)
+	var depois: Button = Button.new()
+	depois.text = "Agora não"
+	depois.theme_type_variation = &"BotaoSecundario"
+	depois.pressed.connect(func() -> void:
+		Rede.sair()  # sem consentimento, sem conta — o jogo segue offline
+		get_tree().change_scene_to_file("res://src/ui/home/home.tscn"))
+	_coluna.add_child(depois)
+
+
 func _montar_criar_perfil() -> void:
 	_texto("Escolha seu apelido na arena.\nSem nome real — é público no ranking!", &"TextoSecundario")
 	var campo: LineEdit = LineEdit.new()
@@ -76,7 +148,8 @@ func _montar_criar_perfil() -> void:
 	criar.theme_type_variation = &"BotaoPrimario"
 	criar.pressed.connect(func() -> void:
 		criar.disabled = true
-		var motivo: String = await Rede.criar_perfil(campo.text.strip_edges())
+		var motivo: String = await Rede.criar_perfil(
+			campo.text.strip_edges(), _menor_de_13)
 		if motivo != "":
 			erro.text = motivo
 			criar.disabled = false)
@@ -92,9 +165,36 @@ func _montar_logado() -> void:
 		_texto("Todas as partidas sincronizadas ✓", &"TextoSucesso")
 	var sair: Button = Button.new()
 	sair.text = "Sair da conta"
-	sair.theme_type_variation = &"BotaoDestrutivo"
+	sair.theme_type_variation = &"BotaoSecundario"
 	sair.pressed.connect(Rede.sair)
 	_coluna.add_child(sair)
+
+	if not _confirmando_exclusao:
+		var excluir: Button = Button.new()
+		excluir.text = "Excluir conta…"
+		excluir.theme_type_variation = &"BotaoDestrutivo"
+		excluir.pressed.connect(func() -> void:
+			_confirmando_exclusao = true
+			_remontar())
+		_coluna.add_child(excluir)
+	else:
+		# Confirmação dupla (docs §9): apaga perfil, sessões e ranking.
+		_texto("Isto apaga DEFINITIVAMENTE seu perfil,\nsuas partidas e sua posição no ranking.", &"TextoPerigo")
+		var confirmar: Button = Button.new()
+		confirmar.text = "Excluir minha conta definitivamente"
+		confirmar.theme_type_variation = &"BotaoDestrutivo"
+		confirmar.pressed.connect(func() -> void:
+			confirmar.disabled = true
+			if not await Rede.excluir_conta():
+				confirmar.disabled = false)  # falhou: deixa tentar de novo
+		_coluna.add_child(confirmar)
+		var cancelar: Button = Button.new()
+		cancelar.text = "Cancelar"
+		cancelar.theme_type_variation = &"BotaoPrimario"
+		cancelar.pressed.connect(func() -> void:
+			_confirmando_exclusao = false
+			_remontar())
+		_coluna.add_child(cancelar)
 
 
 ## Audiência do token: o OAuth client WEB (o mesmo do provider no Supabase).

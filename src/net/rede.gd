@@ -99,13 +99,18 @@ func atualizar_perfil() -> void:
 		_username = ""
 
 
-## Cria o perfil do usuário logado. Devolve "" em sucesso ou o motivo do erro.
-func criar_perfil(nome: String) -> String:
+## Cria o perfil do usuário logado. `com_consentimento_parental` = usuário
+## declarou <13 e um responsável autorizou (docs §9 — a idade em si NÃO é
+## coletada, só o carimbo do consentimento quando necessário).
+## Devolve "" em sucesso ou o motivo do erro.
+func criar_perfil(nome: String, com_consentimento_parental: bool = false) -> String:
 	if nome.length() < 3 or nome.length() > 20:
 		return "o apelido precisa ter de 3 a 20 caracteres"
+	var corpo: Dictionary = {"id": _user_id, "username": nome}
+	if com_consentimento_parental:
+		corpo["parental_consent_at"] = Time.get_datetime_string_from_system(true) + "Z"
 	var resposta: Dictionary = await _com_renovacao(
-		HTTPClient.METHOD_POST, "/rest/v1/profiles",
-		{"id": _user_id, "username": nome})
+		HTTPClient.METHOD_POST, "/rest/v1/profiles", corpo)
 	if resposta.status == 201:
 		_username = nome
 		sessao_mudou.emit()
@@ -113,6 +118,17 @@ func criar_perfil(nome: String) -> String:
 	if resposta.status == 409:
 		return "este apelido já está em uso"
 	return "não deu para criar o perfil agora — tente de novo"
+
+
+## Exclusão de conta dentro do app (docs §9): a Edge Function apaga o
+## usuário e o cascade elimina perfil, sessões e leaderboard.
+func excluir_conta() -> bool:
+	var resposta: Dictionary = await _com_renovacao(
+		HTTPClient.METHOD_POST, "/functions/v1/delete_account", {"confirmar": true})
+	if resposta.status == 200:
+		sair()
+		return true
+	return false
 
 
 # ------------------------------------------------------------------ sessões
