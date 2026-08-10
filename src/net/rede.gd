@@ -204,6 +204,14 @@ func _requisitar(
 		return {"status": 0, "dados": null}
 	var resultado: Array = await http.request_completed
 	http.queue_free()
+	var codigo_transporte: int = resultado[0]
 	var status: int = resultado[1]
 	var texto: String = (resultado[3] as PackedByteArray).get_string_from_utf8()
-	return {"status": status, "dados": JSON.parse_string(texto) if texto != "" else null}
+	if OS.is_debug_build():
+		print("Rede: %s %s → transporte=%d http=%d corpo[0:80]=%s" % [
+			"GET" if metodo == HTTPClient.METHOD_GET else "POST",
+			caminho, codigo_transporte, status, texto.substr(0, 80).c_escape()])
+	var dados: Variant = null
+	if texto != "":
+		dados = JSON.parse_string(texto)  # null se o corpo não for JSON
+	return {"status": status, "dados": dados}
