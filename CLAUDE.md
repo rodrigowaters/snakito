@@ -90,6 +90,16 @@ Fluxo Home → Jogo → Resultado completo e verificado por screenshot (`tools/c
 - "Maior visão" do jogador = zoom da câmera (leitura de render do docs §2.2)
 - Performance do domínio: **0.66ms/tick** com 30 bots neste Mac (`tools/bench_dominio.gd`); orçamento de frame é 16.6ms — o teste de 60fps no aparelho é sobre o render
 
+## Backend Supabase (provisionado)
+
+Projeto **snakito** · ref `cfpsounmrhoodijmrths` · região **sa-east-1 (São Paulo)** · org "aplicativos" · $0/mês. Fonte versionada em `supabase/` (migrations + functions); mudanças de schema SEMPRE via migration nova (nunca editar as antigas) e rodar `get_advisors` depois de DDL — advisors zerados em 10/08.
+
+- URL: `https://cfpsounmrhoodijmrths.supabase.co` · chave publishable (pública por design): `sb_publishable_6F6vxEdvykR96c6fqE2ZMQ_EpQM16Yz`
+- Tabelas (docs §6): `profiles` (sem e-mail — coleta mínima: e-mail só em `auth.users`, desvio documentado na migration), `game_sessions` (com níveis de buff p/ plausibilidade §2.6.3), `leaderboard` (semana ISO, trigger de upsert com `best_score`/`total_kills`/`games`), `entitlements`
+- RLS: dono lê o que é seu; leaderboard leitura autenticada; **zero policies de escrita** em sessions/leaderboard/entitlements — só service role escreve
+- Edge Function `submit_session` (verify_jwt): valida plausibilidade contra os limites do motor — teto de score (comida×10 + abates×500 + duração + buff), abates/comidas por segundo, tamanho máximo por abate, **buff em desafio = rejeição**, relógio (futuro >5min / passado >30d). 422 devolve o motivo. Limites espelham `game_engine.gd` — manter em sincronia
+- Pendências do M1-backend: cliente Godot (auth e-mail+Google, criação de perfil/username, fila offline `user://` + envio via `HTTPRequest`), tela de Ranking, consentimento parental <13, exclusão de conta
+
 ## Conformidade (sempre)
 
 Política de Famílias do Google Play; coleta mínima (username, e-mail, stats de partida); consentimento parental <13; exclusão de conta no app; build `.aab` com Play App Signing; `tagForChildDirectedTreatment` quando anúncios entrarem.
