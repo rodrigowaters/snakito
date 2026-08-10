@@ -26,6 +26,8 @@ var hud: Hud
 var efeitos: Efeitos
 
 var _transicionando: bool = false
+## Início da partida em UTC — vai no payload da sessão (docs §6).
+var _inicio_utc: String
 # Estado do tick anterior, por id — para detectar eventos (comer/abate/morte)
 # sem sujar o domínio com sinais.
 var _comidas_previas: Dictionary[int, int] = {}
@@ -35,6 +37,7 @@ var _vivas_previas: Dictionary[int, bool] = {}
 
 
 func _ready() -> void:
+	_inicio_utc = Time.get_datetime_string_from_system(true) + "Z"
 	motor = GameEngine.new(Sessao.config_para_jogar())
 
 	render = ArenaRender.new()
@@ -114,9 +117,37 @@ func _memorizar_estado() -> void:
 
 func _ir_para_resultado() -> void:
 	Sessao.ultimo_motor = motor
+	# Toda partida encerrada entra na fila offline — logado ou não (docs §6);
+	# a Rede despacha quando houver rede + login + perfil.
+	FilaSessoes.enfileirar(_payload_da_sessao())
+	Rede.despachar_fila()
 	var espera: float = DELAY_RESULTADO_TEMPO if motor.jogador().viva else DELAY_RESULTADO_MORTE
 	await get_tree().create_timer(espera).timeout
 	get_tree().change_scene_to_file(CENA_RESULTADO)
+
+
+## Payload no formato do `submit_session` (limites validados no servidor).
+func _payload_da_sessao() -> Dictionary:
+	var jogador: SnakeModel = motor.jogador()
+	var regras: ChallengeRules = Sessao.regras_desafio
+	return {
+		"seed": motor.rng.semente,
+		"started_at": _inicio_utc,
+		"duration_seconds": maxi(1, int(motor.segundos_decorridos())),
+		"final_rank": motor.posicao_no_ranking(jogador),
+		"score": jogador.pontos,
+		"size_reached": jogador.tamanho,
+		"kills": jogador.abates,
+		"food_eaten": jogador.comidas,
+		"challenge": int(regras.desafio) if regras != null else null,
+		"challenge_completed": (regras.estado == ChallengeRules.Estado.CONCLUIDO) \
+			if regras != null else null,
+		# Desafio nunca aplica buffs (config zera); Arcade envia os níveis reais.
+		"buff_speed_level": motor.config.nivel_velocidade,
+		"buff_magnet_level": motor.config.nivel_ima,
+		"buff_start_points_level": motor.config.nivel_pontos_iniciais,
+		"client_version": Rede.VERSAO_CLIENTE,
+	}
 
 
 ## Joystick tem prioridade; teclado (setas/WASD via ações ui_*) serve ao

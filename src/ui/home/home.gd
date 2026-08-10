@@ -87,10 +87,18 @@ func _montar_conteudo() -> void:
 	coluna.add_child(desafios)
 
 	var ranking: Button = Button.new()
-	ranking.text = "Ranking  ·  em breve"
+	ranking.text = "Ranking"
 	ranking.theme_type_variation = &"BotaoSecundario"
-	ranking.disabled = true
+	ranking.pressed.connect(func() -> void:
+		get_tree().change_scene_to_file("res://src/ui/ranking/ranking.tscn"))
 	coluna.add_child(ranking)
+
+	var conta: Button = Button.new()
+	conta.text = ("Conta · " + Rede.username()) if Rede.tem_perfil() else "Conta"
+	conta.theme_type_variation = &"BotaoSecundario"
+	conta.pressed.connect(func() -> void:
+		get_tree().change_scene_to_file("res://src/ui/conta/conta.tscn"))
+	coluna.add_child(conta)
 
 	# Gatilho do crash de teste do Sentry (critério do spike) — só em builds
 	# de debug; some na build de loja.
