@@ -105,10 +105,12 @@ func _desenhar_comidas(visivel: Rect2) -> void:
 	for posicao: Vector2 in motor.arena.comidas:
 		if not visivel.has_point(posicao):
 			continue
-		# Halo suave + miolo, como no design (food/comum + realce).
-		draw_circle(posicao, ArenaModel.RAIO_COMIDA * 1.8, Color(T.COR_COMIDA_COMUM, 0.25))
-		draw_circle(posicao, ArenaModel.RAIO_COMIDA, T.COR_COMIDA_COMUM)
-		draw_circle(posicao, ArenaModel.RAIO_COMIDA * 0.45, T.COR_COMIDA_COMUM_REALCE)
+		# Halo suave + miolo, como no design (food/comum + realce). O desenho
+		# é maior que a colisão (RAIO_COMIDA) de propósito: legibilidade no
+		# celular — e errar "para o generoso" no toque nunca frustra.
+		draw_circle(posicao, ArenaModel.RAIO_COMIDA * 2.4, Color(T.COR_COMIDA_COMUM, 0.22))
+		draw_circle(posicao, ArenaModel.RAIO_COMIDA * 1.35, T.COR_COMIDA_COMUM)
+		draw_circle(posicao, ArenaModel.RAIO_COMIDA * 0.6, T.COR_COMIDA_COMUM_REALCE)
 
 
 func _desenhar_cobra(cobra: SnakeModel, visivel: Rect2) -> void:

@@ -11,8 +11,12 @@ const CENA_HOME: String = "res://src/ui/home/home.tscn"
 
 ## Suavização da câmera (posição) e do zoom.
 const CAMERA_SUAVIZACAO: float = 6.0
-## Zoom nunca aproxima além de 1:1 nem afasta além deste fator.
-const ZOOM_MIN: float = 0.55
+## Zoom BASE da câmera (cobra pequena). 1:1 no celular deixava tudo
+## minúsculo — "a visibilidade está péssima" (playtest 10/08); 1.6 enquadra
+## ~258×572 unidades: a cobra fica legível e a visão ainda cabe na tela.
+const ZOOM_BASE: float = 1.6
+## Piso do zoom-out ao crescer (abaixo disso volta a virar poeira).
+const ZOOM_MIN: float = 0.85
 ## Pausa dramática entre o fim da partida e a tela de resultado.
 const DELAY_RESULTADO_MORTE: float = 1.2
 const DELAY_RESULTADO_TEMPO: float = 0.6
@@ -164,7 +168,8 @@ func _direcao_do_input() -> Vector2:
 func _seguir_jogador(delta: float) -> void:
 	var jogador: SnakeModel = motor.jogador()
 	camera.position = camera.position.lerp(jogador.posicao, minf(1.0, CAMERA_SUAVIZACAO * delta))
-	var alvo_zoom: float = clampf(SnakeModel.VISAO_BASE / jogador.raio_visao(), ZOOM_MIN, 1.0)
+	var alvo_zoom: float = clampf(
+		ZOOM_BASE * SnakeModel.VISAO_BASE / jogador.raio_visao(), ZOOM_MIN, ZOOM_BASE)
 	var zoom_atual: float = lerpf(camera.zoom.x, alvo_zoom, minf(1.0, CAMERA_SUAVIZACAO * delta))
 	camera.zoom = Vector2(zoom_atual, zoom_atual)
 
