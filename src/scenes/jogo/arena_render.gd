@@ -67,13 +67,18 @@ func _draw() -> void:
 
 
 ## Cor base de uma cobra: jogador = verde (skin padrão do MVP); bots ciclam
-## a paleta de 8 cores do design.
+## as OUTRAS 7 cores — verde é exclusiva do jogador. Bots verdes criavam
+## crise de identidade em tela ("qual cobra sou eu?!", playtest 10/08).
 static func cor_de(cobra: SnakeModel) -> Color:
-	return T.CORES_COBRA_BASE[cobra.id % T.CORES_COBRA_BASE.size()]
+	if cobra.eh_jogador():
+		return T.CORES_COBRA_BASE[0]
+	return T.CORES_COBRA_BASE[1 + (cobra.id - 1) % (T.CORES_COBRA_BASE.size() - 1)]
 
 
 static func cor_escura_de(cobra: SnakeModel) -> Color:
-	return T.CORES_COBRA_ESCURA[cobra.id % T.CORES_COBRA_ESCURA.size()]
+	if cobra.eh_jogador():
+		return T.CORES_COBRA_ESCURA[0]
+	return T.CORES_COBRA_ESCURA[1 + (cobra.id - 1) % (T.CORES_COBRA_ESCURA.size() - 1)]
 
 
 func _retangulo_visivel() -> Rect2:

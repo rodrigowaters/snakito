@@ -30,6 +30,10 @@ var hud: Hud
 var efeitos: Efeitos
 
 var _transicionando: bool = false
+## A partida só ANDA depois do primeiro toque — sem isso a cobra sai andando
+## sozinha na direção padrão e morre antes de o jogador se orientar
+## ("não consigo jogar", playtest 10/08).
+var _comecou: bool = false
 ## Início da partida em UTC — vai no payload da sessão (docs §6).
 var _inicio_utc: String
 # Estado do tick anterior, por id — para detectar eventos (comer/abate/morte)
@@ -60,6 +64,7 @@ func _ready() -> void:
 	hud.sair_pedido.connect(_sair_para_home)
 	add_child(hud)
 	hud.atualizar(motor)
+	render.registrar_tick()  # primeiro frame do mundo congelado
 	_memorizar_estado()
 
 
@@ -70,6 +75,14 @@ func _physics_process(delta: float) -> void:
 		_transicionando = true
 		_ir_para_resultado()
 		return
+
+	# Mundo congelado até o primeiro toque (bots também — justo).
+	if not _comecou:
+		if _direcao_do_input() != Vector2.ZERO:
+			_comecou = true
+			hud.esconder_convite_de_inicio()
+		else:
+			return
 
 	motor.avancar(_direcao_do_input(), hud.turbo_desejado())
 	_processar_eventos()

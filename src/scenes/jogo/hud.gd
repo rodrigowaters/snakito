@@ -26,6 +26,7 @@ var _flash: ColorRect
 var _energia: ProgressBar
 var _turbo_pressionado: bool = false
 var _meta: Label
+var _convite: Label
 
 
 func _ready() -> void:
@@ -38,7 +39,29 @@ func _ready() -> void:
 	_montar_barra_topo()
 	_montar_turbo()
 	_montar_flash()
+	_montar_convite_de_inicio()
 	_montar_modal_pausa()
+
+
+## Convite "toque para começar" — some no primeiro toque.
+func _montar_convite_de_inicio() -> void:
+	_convite = Label.new()
+	_convite.text = "Toque e arraste\npara começar"
+	_convite.theme_type_variation = &"TituloLg"
+	_convite.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_convite.set_anchors_preset(Control.PRESET_CENTER)
+	_convite.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	_convite.grow_vertical = Control.GROW_DIRECTION_BOTH
+	_convite.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(_convite)
+	# Pulso suave para chamar o olho sem gritar.
+	var tween: Tween = create_tween().set_loops()
+	tween.tween_property(_convite, "modulate:a", 0.45, 0.8)
+	tween.tween_property(_convite, "modulate:a", 1.0, 0.8)
+
+
+func esconder_convite_de_inicio() -> void:
+	_convite.visible = false
 
 
 ## O jogador está segurando o turbo? (botão na tela ou Shift no desktop)

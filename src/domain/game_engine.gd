@@ -104,7 +104,7 @@ class ConfigPartida:
 
 ## Distância mínima de spawn de bot em relação ao jogador — ninguém nasce
 ## colado numa cobra que pode devorá-lo no primeiro tick.
-const DISTANCIA_SPAWN_MIN: float = 400.0
+const DISTANCIA_SPAWN_MIN: float = 550.0
 ## Tentativas de reposicionar um spawn ruim antes de aceitar o último ponto.
 const TENTATIVAS_SPAWN: int = 20
 
