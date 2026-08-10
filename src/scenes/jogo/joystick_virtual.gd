@@ -33,6 +33,8 @@ func direcao() -> Vector2:
 
 
 func _gui_input(evento: InputEvent) -> void:
+	if OS.is_debug_build():
+		print("Joystick[gui]: ", evento.get_class())
 	if evento is InputEventScreenTouch:
 		var toque: InputEventScreenTouch = evento
 		_definir(toque.pressed, toque.position)
@@ -48,6 +50,22 @@ func _gui_input(evento: InputEvent) -> void:
 	elif evento is InputEventMouseMotion and _ativo:
 		var movimento: InputEventMouseMotion = evento
 		_ponta = movimento.position
+		queue_redraw()
+
+
+## Rede de segurança do toque: no aparelho o toque cru pode não chegar ao
+## _gui_input (depende da emulação toque→mouse). O que os botões não
+## consumirem cai aqui — mesmas coordenadas de design do full-rect.
+func _unhandled_input(evento: InputEvent) -> void:
+	if OS.is_debug_build():
+		if evento is InputEventScreenTouch or evento is InputEventScreenDrag:
+			print("Joystick[unhandled]: ", evento.get_class())
+	if evento is InputEventScreenTouch:
+		var toque: InputEventScreenTouch = evento
+		_definir(toque.pressed, toque.position)
+	elif evento is InputEventScreenDrag and _ativo:
+		var arrasto: InputEventScreenDrag = evento
+		_ponta = arrasto.position
 		queue_redraw()
 
 
