@@ -27,6 +27,7 @@ var _energia: ProgressBar
 var _turbo_pressionado: bool = false
 var _meta: Label
 var _convite: Label
+var _minimapa: Minimapa
 
 
 func _ready() -> void:
@@ -37,10 +38,26 @@ func _ready() -> void:
 	add_child(joystick)
 
 	_montar_barra_topo()
+	_montar_minimapa()
 	_montar_turbo()
 	_montar_flash()
 	_montar_convite_de_inicio()
 	_montar_modal_pausa()
+
+
+## Minimapa no canto superior direito, abaixo da barra (docs §4.2).
+func _montar_minimapa() -> void:
+	var canto: MarginContainer = MarginContainer.new()
+	canto.set_anchors_preset(Control.PRESET_TOP_RIGHT)
+	canto.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+	canto.grow_vertical = Control.GROW_DIRECTION_END
+	canto.add_theme_constant_override("margin_right", T.ESP_MD)
+	# Abaixo da barra do topo (altura da barra ≈ toque padrão + margens).
+	canto.add_theme_constant_override("margin_top", T.TOQUE_PADRAO + T.ESP_LG)
+	canto.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(canto)
+	_minimapa = Minimapa.new()
+	canto.add_child(_minimapa)
 
 
 ## Convite "toque para começar" — some no primeiro toque.
@@ -126,6 +143,7 @@ func atualizar(motor: GameEngine) -> void:
 	_posicao.text = "%dº/%d" % [motor.posicao_no_ranking(jogador), motor.arena.cobras.size()]
 	_tamanho.text = "×%d" % jogador.tamanho
 	_energia.value = jogador.energia
+	_minimapa.atualizar(motor)
 	# Progresso do desafio ativo (Arcade não mostra nada).
 	var regras: ChallengeRules = Sessao.regras_desafio
 	_meta.visible = regras != null
