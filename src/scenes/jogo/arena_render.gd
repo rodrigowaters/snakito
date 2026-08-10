@@ -77,10 +77,11 @@ static func cor_escura_de(cobra: SnakeModel) -> Color:
 
 
 func _retangulo_visivel() -> Rect2:
-	var inversa: Transform2D = get_viewport_transform().affine_inverse()
-	var topo: Vector2 = inversa * Vector2.ZERO
-	var base: Vector2 = inversa * get_viewport_rect().size
-	return Rect2(topo, base - topo).abs()
+	# get_canvas_transform (mundo → coords de design do viewport) — e NÃO
+	# get_viewport_transform, que no aparelho inclui o stretch da tela e
+	# encolhia o culling: com zoom 1.6 só ~1/4 do mundo era desenhado
+	# (playtest 10/08, "o jogo está ocupando 1/4 da tela").
+	return get_canvas_transform().affine_inverse() * get_viewport_rect()
 
 
 func _desenhar_fundo(visivel: Rect2) -> void:
