@@ -62,7 +62,7 @@ Design system importado do Claude Design (projeto `Design System Snakito`, v1.0,
 
 **Contraste:** 0 reprovações. Única restrição de uso: `COR_TEXTO_MUTED` (#7E88A8) só em texto grande — ≥19px negrito ou ≥24px normal.
 
-**Armadilhas de GDScript já encontradas** (a engine reprova, o olho não): construtores `Packed*Array(...)` e referências diretas a classe (`const T := SnakitoTokens`) não são expressão constante — use `Array[int]` e `preload(...)`; `EditorScript` só instancia no editor — lógica reutilizável vai para RefCounted.
+**Armadilhas de GDScript já encontradas** (a engine reprova, o olho não): construtores `Packed*Array(...)` e referências diretas a classe (`const T := SnakitoTokens`) não são expressão constante — use `Array[int]` e `preload(...)`; `EditorScript` só instancia no editor — lógica reutilizável vai para RefCounted. **Armadilhas de aparelho** (só aparecem com stretch de tela real): culling/visível em `_draw` usa `get_canvas_transform()` (mundo→design), NUNCA `get_viewport_transform()` (inclui o stretch — encolheu o mundo a 1/4 no moto g35); o boot splash cinza padrão do Godot parece tela morta em screenshot — está na cor da marca agora. Bug que só existe no celular exige screenshot do celular.
 
 **Pendência estética (não bloqueia):** gradientes de CTA aproximados pelo tom médio (`StyleBoxFlat` não desenha gradiente; `StyleBoxTexture`/shader quando o polimento importar). Estados `hover` = `normal` de propósito: alvo é Android.
 
