@@ -129,7 +129,7 @@ src/domain/
 ## 4. Camadas da UI (Godot)
 
 ### 4.1 Telas funcionais (nós `Control` + `Theme` central)
-- **Login / Cadastro** (e-mail + Google Sign-In; exige internet só neste passo)
+- **Login / Cadastro** — **APENAS Google Sign-In** (decisão de ago/2026: zero fluxo de senha/e-mail próprio; menos superfície de dado e de suporte). Exige internet só neste passo
 - **Home** (Arcade, Desafios, Ranking Global, Configurações)
 - **Loja** (skins, Remover Anúncios — Fases 2+)
 - **Ranking** (semana/mês/geral; requer conexão, com estado offline elegante)
@@ -229,7 +229,7 @@ Duração total: ~30 segundos.
 - [ ] 1 skin padrão — tudo 100% offline, sem conta ainda
 
 ### M1 (Semana 3–4)
-- [ ] Auth Supabase (e-mail + Google Sign-In) + consentimento parental
+- [ ] Auth Supabase (APENAS Google Sign-In) + consentimento parental
 - [ ] Fila offline de sessões + Edge Function `submit_session` + ranking
 - [ ] Desafios 1 & 2 + análise pós-partida v1
 - [ ] Onboarding animado + 3 skins adicionais
@@ -273,7 +273,7 @@ Duração total: ~30 segundos.
 
 ---
 
-**Versão:** 2.1 (adiciona §2.6 Turbo & Buffs; substitui Snake Clash v1.0)
+**Versão:** 2.2 (auth só-Google; adiciona §2.6 Turbo & Buffs; substitui Snake Clash v1.0)
 **Data:** Ago 2026
 **Stack:** Godot 4 (estável atual: 4.7.1) + GDScript tipado · Supabase (REST + Edge Functions) · gdUnit4 · Sentry (SDK oficial) · Firebase Analytics (plugin comunitário) · AdMob + Play Billing (plugins Godot)
 **Status:** Aguardando aprovação → spike

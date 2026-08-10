@@ -105,7 +105,7 @@ Projeto **snakito** · ref `cfpsounmrhoodijmrths` · região **sa-east-1 (São P
 - Tabelas (docs §6): `profiles` (sem e-mail — coleta mínima: e-mail só em `auth.users`, desvio documentado na migration), `game_sessions` (com níveis de buff p/ plausibilidade §2.6.3), `leaderboard` (semana ISO, trigger de upsert com `best_score`/`total_kills`/`games`), `entitlements`
 - RLS: dono lê o que é seu; leaderboard leitura autenticada; **zero policies de escrita** em sessions/leaderboard/entitlements — só service role escreve
 - Edge Function `submit_session` (verify_jwt): valida plausibilidade contra os limites do motor — teto de score (comida×10 + abates×500 + duração + buff), abates/comidas por segundo, tamanho máximo por abate, **buff em desafio = rejeição**, relógio (futuro >5min / passado >30d). 422 devolve o motivo. Limites espelham `game_engine.gd` — manter em sincronia
-- Pendências do M1-backend: cliente Godot (auth e-mail+Google, criação de perfil/username, fila offline `user://` + envio via `HTTPRequest`), tela de Ranking, consentimento parental <13, exclusão de conta
+- Pendências do M1-backend: cliente Godot (auth **APENAS Google Sign-In** — decisão 10/08; criação de perfil/username, fila offline `user://` + envio via `HTTPRequest`), tela de Ranking, consentimento parental <13, exclusão de conta. **Dependem do Rodrigo:** criar OAuth clients no Google Cloud (Web p/ Supabase + Android com SHA-1) e habilitar o provider Google no painel do Supabase
 
 ## Conformidade (sempre)
 
