@@ -222,7 +222,22 @@ func test_desafio_2_calibrado_no_playtest() -> void:
 	assert_int(config.cacadores).is_equal(2)
 	assert_int(config.tamanho_inicial_cacador).is_equal(14)
 	assert_int(config.tamanho_teto_cacador).is_equal(40)
+	assert_float(config.distancia_spawn_cacador).is_equal(1000.0)
 	assert_vector(config.tamanho_arena).is_equal(Vector2(2000.0, 2000.0))
+
+
+func test_cacador_nasce_na_distancia_propria() -> void:
+	# Playtest 11/08: alfa nascendo perto mata a criança em 3s. O eixo
+	# distancia_spawn_cacador afasta SÓ os caçadores; o resto usa a global.
+	var config: GameEngine.ConfigPartida = _config_vazia()
+	config.semente = 99
+	config.cacadores = 4
+	config.distancia_spawn_cacador = 1000.0
+	var motor: GameEngine = GameEngine.new(config)
+	var centro: Vector2 = config.tamanho_arena * 0.5
+	for cobra: SnakeModel in motor.arena.cobras:
+		if cobra.personalidade == SnakeModel.Personalidade.CACADOR:
+			assert_float(cobra.posicao.distance_to(centro)).is_greater_equal(1000.0)
 
 
 func test_cacador_tem_spawn_e_teto_proprios() -> void:

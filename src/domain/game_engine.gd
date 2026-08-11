@@ -97,6 +97,11 @@ class ConfigPartida:
 	## o primeiro segundo — e é o eixo que o Desafio 3 da spec exige
 	## ("2 caçadores de tamanho 100+", docs §2.5).
 	var tamanho_inicial_cacador: int = 0
+	## Distância mínima de spawn dos CAÇADORES em relação ao jogador
+	## (0 = usa a global). Playtest de 11/08: alfas grandes nascendo a 550
+	## matavam a criança em 3s — "para um adulto é válido, para uma criança
+	## não". Nascer longe dá o começo para crescer sem enfraquecer o alfa.
+	var distancia_spawn_cacador: float = 0.0
 	# Buffs do jogador (docs §2.6.2). Desafios criam a config com
 	# aplicar_buffs = false — partida por seed tem que ser comparável.
 	var aplicar_buffs: bool = true
@@ -248,10 +253,14 @@ func _resolver_turbo() -> void:
 func _spawn_bots(personalidade: SnakeModel.Personalidade, quantidade: int, primeiro_id: int) -> int:
 	var jogador_pos: Vector2 = config.tamanho_arena * 0.5
 	var area: Rect2 = arena.limites().grow(-SnakeModel.RAIO_BASE * 4.0)
+	var dist_min: float = DISTANCIA_SPAWN_MIN
+	if personalidade == SnakeModel.Personalidade.CACADOR \
+			and config.distancia_spawn_cacador > 0.0:
+		dist_min = config.distancia_spawn_cacador
 	for i: int in quantidade:
 		var posicao: Vector2 = rng.ponto_no_retangulo(area)
 		for tentativa: int in TENTATIVAS_SPAWN:
-			if posicao.distance_to(jogador_pos) >= DISTANCIA_SPAWN_MIN:
+			if posicao.distance_to(jogador_pos) >= dist_min:
 				break
 			posicao = rng.ponto_no_retangulo(area)
 		var tamanho_inicial: int

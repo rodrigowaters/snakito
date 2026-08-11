@@ -87,6 +87,10 @@ static func config_do_desafio(desafio_: Desafio) -> GameEngine.ConfigPartida:
 			config.tamanho_teto_bot = 8
 			config.tamanho_teto_cacador = 40
 			config.tamanho_inicial_cacador = 14
+			# Alfas nascem LONGE (playtest 11/08): morrer em 3s no início
+			# frustra a criança — o desafio é para ser vencido pela leitura,
+			# não sofrido na loteria do spawn.
+			config.distancia_spawn_cacador = 1000.0
 	return config
 
 
