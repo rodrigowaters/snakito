@@ -112,9 +112,10 @@ func _cabecalho(motor: GameEngine, jogador: SnakeModel, regras: ChallengeRules) 
 	pilha.alignment = BoxContainer.ALIGNMENT_CENTER
 	pilha.add_theme_constant_override("separation", T.ESP_MICRO)
 
+	# A morte tem tela própria (04b Renascimento) — aqui é só o contexto,
+	# como no blueprint 05 ("FASE OCEANO · 28 COBRAS"; sem fases: ARENA).
 	var legenda: Label = Label.new()
-	legenda.text = "%s · %d COBRAS" % [_texto_desfecho(motor).to_upper(),
-		motor.arena.cobras.size()]
+	legenda.text = "ARENA · %d COBRAS" % motor.arena.cobras.size()
 	legenda.theme_type_variation = &"TextoLegenda"
 	legenda.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	pilha.add_child(legenda)
@@ -386,11 +387,6 @@ func _espaco_flexivel() -> Control:
 	var espaco: Control = Control.new()
 	espaco.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	return espaco
-
-
-## Desfecho curto para a legenda do topo.
-func _texto_desfecho(motor: GameEngine) -> String:
-	return "Fim da partida" if motor.jogador().viva else "Você foi devorado"
 
 
 ## Estado do desafio para o subtítulo (no lugar do recorde do Arcade).

@@ -153,12 +153,21 @@ func _memorizar_estado() -> void:
 
 func _ir_para_resultado() -> void:
 	Sessao.ultimo_motor = motor
+	# Morte no ARCADE passa pelo Renascimento (blueprint 04b — morte suave);
+	# desafio não: morte resolve o desafio e renascer quebraria a seed.
+	if not motor.jogador().viva and Sessao.regras_desafio == null:
+		await get_tree().create_timer(DELAY_RESULTADO_MORTE).timeout
+		var renascimento: Renascimento = Renascimento.new()
+		add_child(renascimento)
+		await renascimento.resolvido
+	else:
+		var espera: float = DELAY_RESULTADO_TEMPO if motor.jogador().viva \
+			else DELAY_RESULTADO_MORTE
+		await get_tree().create_timer(espera).timeout
 	# Toda partida encerrada entra na fila offline — logado ou não (docs §6);
 	# a Rede despacha quando houver rede + login + perfil.
 	FilaSessoes.enfileirar(_payload_da_sessao())
 	Rede.despachar_fila()
-	var espera: float = DELAY_RESULTADO_TEMPO if motor.jogador().viva else DELAY_RESULTADO_MORTE
-	await get_tree().create_timer(espera).timeout
 	get_tree().change_scene_to_file(CENA_RESULTADO)
 
 
