@@ -9,8 +9,9 @@ extends CanvasLayer
 
 const T := preload("res://src/ui/theme/tokens.gd")
 
-## Segundos até seguir sozinho para o resultado.
-const CONTAGEM_SEG: float = 5.0
+## Segundos até seguir sozinho para o resultado (10 a pedido do Rodrigo,
+## 11/08 — folga para a criança ler as opções).
+const CONTAGEM_SEG: float = 10.0
 
 signal resolvido
 
