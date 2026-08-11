@@ -1,12 +1,19 @@
 class_name Home
 extends Control
-## Tela inicial do MVP: Jogar Arcade + entradas futuras desabilitadas
-## (Desafios e Ranking chegam no M1). Árvore construída em código, consumindo
-## só tokens e variações do Theme.
+## Tela inicial — composição fiel ao blueprint "01 Home" (1d+1e) do Claude
+## Design (`docs/design/Snakito Telas.dc.html`), M2. Adaptações registradas:
+## sem moedas/tickets/fase (economia é M3+) e sem ⚙ (Configurações é M3);
+## a grade de navegação usa os destinos existentes (Desafios/Ranking/Skins/
+## Conta). Árvore em código, consumindo só tokens e variações do Theme.
 
 const T := preload("res://src/ui/theme/tokens.gd")
 
 const CENA_JOGO: String = "res://src/scenes/jogo/jogo.tscn"
+
+## Célula da grade de navegação (blueprint: 84px de altura, 4 colunas).
+const ALTURA_CELULA_NAV: float = 84.0
+## Mascote do hero (blueprint: 210×152 — cobra de 4 círculos crescentes).
+const MASCOTE_TAMANHO: Vector2 = Vector2(210.0, 152.0)
 
 
 func _ready() -> void:
@@ -55,72 +62,188 @@ func _montar_conteudo() -> void:
 	margem.set_anchors_preset(Control.PRESET_FULL_RECT)
 	for lado: String in ["left", "right"]:
 		margem.add_theme_constant_override("margin_" + lado, T.ESP_LG)
-	margem.add_theme_constant_override("margin_top", T.ESP_2XL)
+	margem.add_theme_constant_override("margin_top", T.ESP_2XL + T.ESP_MICRO)
 	margem.add_theme_constant_override("margin_bottom", T.ESP_XL)
 	add_child(margem)
 
 	var coluna: VBoxContainer = VBoxContainer.new()
-	coluna.add_theme_constant_override("separation", T.ESP_MD)
-	coluna.alignment = BoxContainer.ALIGNMENT_CENTER
+	coluna.add_theme_constant_override("separation", T.ESP_SM)
 	margem.add_child(coluna)
+
+	coluna.add_child(_barra_topo())
+	coluna.add_child(_hero())
+	coluna.add_child(_rodape_navegacao())
+
+
+# ------------------------------------------------------------ barra do topo
+
+## Blueprint: chip-avatar à esquerda (cabecinha na cor da skin) e ⚙ à
+## direita. Sem Configurações ainda (M3), o avatar leva à Conta e o ⚙ fica
+## de fora até a tela existir.
+func _barra_topo() -> Control:
+	var barra: HBoxContainer = HBoxContainer.new()
+	var avatar: Button = Button.new()
+	avatar.theme_type_variation = &"Chip"
+	avatar.custom_minimum_size = Vector2(float(T.TOQUE_MIN), float(T.TOQUE_MIN))
+	avatar.pressed.connect(func() -> void:
+		get_tree().change_scene_to_file("res://src/ui/conta/conta.tscn"))
+	avatar.draw.connect(func() -> void:
+		_desenhar_cabecinha(avatar, avatar.size * 0.5, avatar.size.y * 0.36))
+	barra.add_child(avatar)
+	var espaco: Control = Control.new()
+	espaco.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	barra.add_child(espaco)
+	return barra
+
+
+# -------------------------------------------------------------------- hero
+
+func _hero() -> Control:
+	var hero: VBoxContainer = VBoxContainer.new()
+	hero.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	hero.alignment = BoxContainer.ALIGNMENT_CENTER
+	hero.add_theme_constant_override("separation", T.ESP_SM)
+
+	# Mascote: cobra de 4 círculos crescentes na cor da skin, com carinha —
+	# desenho do blueprint reproduzido em _draw (sem asset).
+	var mascote: Control = Control.new()
+	mascote.custom_minimum_size = MASCOTE_TAMANHO
+	mascote.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	mascote.draw.connect(_desenhar_mascote.bind(mascote))
+	hero.add_child(mascote)
 
 	var titulo: Label = Label.new()
 	titulo.text = "Snakito"
 	titulo.theme_type_variation = &"TituloHero"
 	titulo.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	coluna.add_child(titulo)
+	# Gradiente verde→azul do logo: aproximado pela cor primária (mesma
+	# pendência estética registrada dos CTAs — shader quando o polimento
+	# importar).
+	titulo.add_theme_color_override("font_color", T.CORES_COBRA_BASE[0])
+	hero.add_child(titulo)
 
-	var subtitulo: Label = Label.new()
-	subtitulo.text = "Cresça, cace e vença a arena"
-	subtitulo.theme_type_variation = &"TextoSecundario"
-	subtitulo.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	coluna.add_child(subtitulo)
+	# Pílula "skin equipada" — toque leva à tela de Skins (blueprint 1e).
+	var centro: HBoxContainer = HBoxContainer.new()
+	centro.alignment = BoxContainer.ALIGNMENT_CENTER
+	var pilula: Button = Button.new()
+	pilula.theme_type_variation = &"Chip"
+	pilula.text = "● %s equipada" % _nome_da_skin()
+	pilula.pressed.connect(func() -> void:
+		get_tree().change_scene_to_file("res://src/ui/skins/skins.tscn"))
+	pilula.add_theme_color_override("font_color",
+		T.CORES_COBRA_BASE[ProgressoLocal.skin_equipada()])
+	centro.add_child(pilula)
+	hero.add_child(centro)
+	return hero
 
-	coluna.add_child(_espaco(T.ESP_2XL))
+
+# ------------------------------------------------------- rodapé (CTA + nav)
+
+func _rodape_navegacao() -> Control:
+	var rodape: VBoxContainer = VBoxContainer.new()
+	rodape.add_theme_constant_override("separation", T.ESP_SM)
 
 	var jogar: Button = Button.new()
-	jogar.text = "Jogar Arcade"
+	jogar.text = "▶ Jogar Arcade"
 	jogar.theme_type_variation = &"BotaoHeroi"
+	jogar.custom_minimum_size = Vector2(0.0, float(T.TOQUE_HEROI))
 	jogar.pressed.connect(func() -> void:
 		get_tree().change_scene_to_file(CENA_JOGO))
-	coluna.add_child(jogar)
+	rodape.add_child(jogar)
 
-	var desafios: Button = Button.new()
-	desafios.text = "Desafios"
-	desafios.theme_type_variation = &"BotaoSecundario"
-	desafios.pressed.connect(func() -> void:
-		get_tree().change_scene_to_file("res://src/ui/desafios/desafios.tscn"))
-	coluna.add_child(desafios)
+	# Grade de navegação 4×1 (blueprint 1d) com os destinos que existem.
+	var grade: GridContainer = GridContainer.new()
+	grade.columns = 4
+	grade.add_theme_constant_override("h_separation", T.ESP_XS)
+	grade.add_child(_celula_nav("🎯", "Desafios", "res://src/ui/desafios/desafios.tscn"))
+	grade.add_child(_celula_nav("🏆", "Ranking", "res://src/ui/ranking/ranking.tscn"))
+	grade.add_child(_celula_nav("🎨", "Skins", "res://src/ui/skins/skins.tscn"))
+	grade.add_child(_celula_nav("👤", "Conta", "res://src/ui/conta/conta.tscn"))
+	rodape.add_child(grade)
 
-	var skins: Button = Button.new()
-	skins.text = "Skins"
-	skins.theme_type_variation = &"BotaoSecundario"
-	skins.pressed.connect(func() -> void:
-		get_tree().change_scene_to_file("res://src/ui/skins/skins.tscn"))
-	coluna.add_child(skins)
-
-	var ranking: Button = Button.new()
-	ranking.text = "Ranking"
-	ranking.theme_type_variation = &"BotaoSecundario"
-	ranking.pressed.connect(func() -> void:
-		get_tree().change_scene_to_file("res://src/ui/ranking/ranking.tscn"))
-	coluna.add_child(ranking)
-
-	var conta: Button = Button.new()
-	conta.text = ("Conta · " + Rede.username()) if Rede.tem_perfil() else "Conta"
-	conta.theme_type_variation = &"BotaoSecundario"
-	conta.pressed.connect(func() -> void:
-		get_tree().change_scene_to_file("res://src/ui/conta/conta.tscn"))
-	coluna.add_child(conta)
-
-	# Gatilho do crash de teste do Sentry (critério do spike) — só em builds
-	# de debug; some na build de loja.
+	# Gatilho do crash de teste do Sentry — só em builds de debug.
 	if OS.is_debug_build():
 		var crash: Button = Button.new()
 		crash.text = "🐛 Crash de teste (Sentry)"
 		crash.theme_type_variation = &"BotaoDestrutivo"
 		crash.pressed.connect(_crash_de_teste)
-		coluna.add_child(crash)
+		rodape.add_child(crash)
+	return rodape
+
+
+func _celula_nav(emoji: String, nome: String, cena: String) -> Button:
+	var celula: Button = Button.new()
+	celula.theme_type_variation = &"BotaoSecundario"
+	celula.custom_minimum_size = Vector2(0.0, ALTURA_CELULA_NAV)
+	celula.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	celula.pressed.connect(func() -> void:
+		get_tree().change_scene_to_file(cena))
+	# Conteúdo empilhado (emoji sobre rótulo) — filhos ignoram o mouse para
+	# o toque cair sempre no Button.
+	var pilha: VBoxContainer = VBoxContainer.new()
+	pilha.set_anchors_preset(Control.PRESET_FULL_RECT)
+	pilha.alignment = BoxContainer.ALIGNMENT_CENTER
+	pilha.add_theme_constant_override("separation", T.ESP_MICRO)
+	pilha.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var icone: Label = Label.new()
+	icone.text = emoji
+	icone.theme_type_variation = &"TituloMd"
+	icone.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	icone.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	pilha.add_child(icone)
+	var rotulo: Label = Label.new()
+	rotulo.text = nome
+	rotulo.theme_type_variation = &"TextoCorpoSm"
+	rotulo.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	rotulo.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	pilha.add_child(rotulo)
+	celula.add_child(pilha)
+	return celula
+
+
+# ---------------------------------------------------------------- desenhos
+
+## Cobra do blueprint: 4 círculos crescentes (rabo→cabeça) na cor da skin,
+## cabeça com olhos e sorriso.
+func _desenhar_mascote(alvo: Control) -> void:
+	var cor: Color = T.CORES_COBRA_BASE[ProgressoLocal.skin_equipada()]
+	var escala: Vector2 = alvo.size / Vector2(200.0, 150.0)  # viewBox do design
+	var corpo: Array[Vector3] = [  # (cx, cy, raio) do blueprint
+		Vector3(52.0, 112.0, 16.0), Vector3(76.0, 98.0, 19.0),
+		Vector3(104.0, 86.0, 23.0), Vector3(138.0, 76.0, 28.0),
+	]
+	var alfas: Array[float] = [0.5, 0.7, 0.85, 1.0]
+	for i: int in corpo.size():
+		alvo.draw_circle(
+			Vector2(corpo[i].x, corpo[i].y) * escala,
+			corpo[i].z * escala.x, Color(cor, alfas[i]))
+	_desenhar_carinha(alvo, Vector2(138.0, 76.0) * escala, 28.0 * escala.x)
+
+
+func _desenhar_cabecinha(alvo: Control, centro: Vector2, raio: float) -> void:
+	var cor: Color = T.CORES_COBRA_BASE[ProgressoLocal.skin_equipada()]
+	alvo.draw_circle(centro, raio, cor)
+	_desenhar_carinha(alvo, centro, raio)
+
+
+## Olhos + sorriso (proporções do SVG do blueprint).
+func _desenhar_carinha(alvo: Control, centro: Vector2, raio: float) -> void:
+	for lado: float in [-1.0, 1.0]:
+		var olho: Vector2 = centro + Vector2(lado * raio * 0.36, -raio * 0.28)
+		alvo.draw_circle(olho, raio * 0.23, T.COR_SIMBOLO_DALTONISMO)
+		alvo.draw_circle(olho + Vector2(raio * 0.05, raio * 0.04),
+			raio * 0.11, T.COR_APP_FUNDO_INICIO)
+	alvo.draw_arc(centro + Vector2(0.0, raio * 0.18), raio * 0.30,
+		deg_to_rad(35.0), deg_to_rad(145.0), 12,
+		T.COR_APP_FUNDO_INICIO, maxf(2.0, raio * 0.12))
+
+
+func _nome_da_skin() -> String:
+	var indice: int = ProgressoLocal.skin_equipada()
+	for skin: Dictionary in Skins.SKINS:
+		if int(skin["indice"]) == indice:
+			return str(skin["nome"])
+	return "Skin"
 
 
 ## Envia um evento de erro e, em seguida, derruba o app de verdade — testa o
@@ -129,9 +252,3 @@ func _crash_de_teste() -> void:
 	SentrySDK.capture_message("Crash de teste — spike Snakito", SentrySDK.LEVEL_ERROR)
 	await get_tree().create_timer(2.0).timeout
 	OS.crash("Crash de teste do spike Snakito (proposital)")
-
-
-func _espaco(altura: int) -> Control:
-	var espaco: Control = Control.new()
-	espaco.custom_minimum_size = Vector2(0.0, float(altura))
-	return espaco
