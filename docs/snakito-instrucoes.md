@@ -290,9 +290,18 @@ Duração total: ~30 segundos.
 - [ ] Desafios 1 & 2 + análise pós-partida v1
 - [ ] Onboarding animado + 3 skins adicionais
 
-### M2 (Semana 5–6)
+### M2 — Fidelidade ao Claude Design (reordenado em 11/08 pelo Rodrigo)
+- [ ] Refazer composição das telas existentes pelos blueprints hi-fi
+      (`docs/design/Snakito Telas.dc.html`): Home (1d+1e), HUD (1h),
+      Pausa (04c), Pós-partida (8c), Desafios (07), Ranking (08)
+- [ ] Realinhar o onboarding (11a-d) ao desenho
+- [ ] Método: entrega lado-a-lado (screenshot × design) para validação
+      tela a tela; tokens/Theme continuam a única fonte de valores
+
+### M3 (antigo M2)
 - [ ] AdMob (banners entre partidas + rewarded) com entitlement check
-- [ ] Play Billing: "Remover Anúncios" + restaurar compras
+- [ ] Play Billing: "Remover Anúncios" + restaurar compras (tela Loja 09*)
+- [ ] Sons + modo daltonismo em jogo (tela Configurações 10)
 - [ ] Desafios 3 & 4 + strategy analyzer completo
 - [ ] Idiomas: EN, ES (CSV de tradução; pt-BR padrão)
 - [ ] Publicação Play Store (checklist da linha completo)
