@@ -265,7 +265,9 @@ func _rodape_navegacao() -> Control:
 	grade.add_child(_celula_nav("🎯", "Desafios", "res://src/ui/desafios/desafios.tscn"))
 	grade.add_child(_celula_nav("🏆", "Ranking", "res://src/ui/ranking/ranking.tscn"))
 	grade.add_child(_celula_nav("🛍", "Loja"))
-	grade.add_child(_celula_nav("⬆️", "Evolução"))
+	# ⬆️ desenhado à mão: o Godot ignora o seletor U+FE0F e renderizava o
+	# glifo monocromático no lugar do emoji colorido do blueprint.
+	grade.add_child(_celula_nav("", "Evolução", "", _desenhar_icone_evolucao))
 	rodape.add_child(grade)
 
 	# Gatilho do crash de teste do Sentry — só em builds de debug.
@@ -280,7 +282,13 @@ func _rodape_navegacao() -> Control:
 
 ## `cena` vazia = destino ainda não existe: célula presente e desabilitada
 ## (mesmo padrão do ⚙ — o desenho manda, a feature chega depois).
-func _celula_nav(emoji: String, nome: String, cena: String = "") -> Button:
+## `desenho` (opcional) troca o emoji por um ícone desenhado à mão.
+func _celula_nav(
+	emoji: String,
+	nome: String,
+	cena: String = "",
+	desenho: Callable = Callable(),
+) -> Button:
 	var celula: Button = Button.new()
 	celula.theme_type_variation = &"CartaoNav"
 	celula.custom_minimum_size = Vector2(0.0, ALTURA_CELULA_NAV)
@@ -290,19 +298,28 @@ func _celula_nav(emoji: String, nome: String, cena: String = "") -> Button:
 	else:
 		celula.pressed.connect(func() -> void:
 			get_tree().change_scene_to_file(cena))
-	# Conteúdo empilhado (emoji sobre rótulo) — filhos ignoram o mouse para
+	# Conteúdo empilhado (ícone sobre rótulo) — filhos ignoram o mouse para
 	# o toque cair sempre no Button.
 	var pilha: VBoxContainer = VBoxContainer.new()
 	pilha.set_anchors_preset(Control.PRESET_FULL_RECT)
 	pilha.alignment = BoxContainer.ALIGNMENT_CENTER
 	pilha.add_theme_constant_override("separation", T.ESP_MICRO)
 	pilha.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var icone: Label = Label.new()
-	icone.text = emoji
-	icone.theme_type_variation = &"TituloMd"
-	icone.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	icone.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	pilha.add_child(icone)
+	if desenho.is_valid():
+		var icone_desenhado: Control = Control.new()
+		icone_desenhado.custom_minimum_size = \
+			Vector2(0.0, float(T.ALTURA_LINHA_TITULO_MD))
+		icone_desenhado.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		icone_desenhado.draw.connect(func() -> void:
+			desenho.call(icone_desenhado))
+		pilha.add_child(icone_desenhado)
+	else:
+		var icone: Label = Label.new()
+		icone.text = emoji
+		icone.theme_type_variation = &"TituloMd"
+		icone.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		icone.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		pilha.add_child(icone)
 	var rotulo: Label = Label.new()
 	rotulo.text = nome
 	rotulo.theme_type_variation = &"RotuloNav"
@@ -317,11 +334,9 @@ func _celula_nav(emoji: String, nome: String, cena: String = "") -> Button:
 
 # ---------------------------------------------------------------- desenhos
 
-## Retângulo arredondado preenchido por gradiente diagonal (135° do design):
-## polígono com cor POR VÉRTICE — StyleBoxFlat não desenha gradiente.
-func _desenhar_gradiente_arredondado(alvo: Control, cor_a: Color, cor_b: Color) -> void:
-	var rect: Rect2 = Rect2(Vector2.ZERO, alvo.size)
-	var raio: float = float(T.RAIO_CARD)
+## Contorno de retângulo arredondado como polígono (para preenchimentos que
+## o StyleBoxFlat não faz: gradientes e desenhos em _draw).
+func _poligono_arredondado(rect: Rect2, raio: float) -> PackedVector2Array:
 	var pontos: PackedVector2Array = PackedVector2Array()
 	var cantos: Array[Vector2] = [
 		rect.position + Vector2(raio, raio),
@@ -334,11 +349,41 @@ func _desenhar_gradiente_arredondado(alvo: Control, cor_a: Color, cor_b: Color) 
 		for passo: int in ARCO_PASSOS + 1:
 			var angulo: float = inicio + PI * 0.5 * float(passo) / float(ARCO_PASSOS)
 			pontos.append(cantos[canto] + Vector2(cos(angulo), sin(angulo)) * raio)
+	return pontos
+
+
+## Retângulo arredondado preenchido por gradiente diagonal (135° do design):
+## polígono com cor POR VÉRTICE — StyleBoxFlat não desenha gradiente.
+func _desenhar_gradiente_arredondado(alvo: Control, cor_a: Color, cor_b: Color) -> void:
+	var rect: Rect2 = Rect2(Vector2.ZERO, alvo.size)
+	var pontos: PackedVector2Array = _poligono_arredondado(rect, float(T.RAIO_CARD))
 	var cores: PackedColorArray = PackedColorArray()
 	var diagonal: float = rect.size.x + rect.size.y
 	for ponto: Vector2 in pontos:
 		cores.append(cor_a.lerp(cor_b, (ponto.x + ponto.y) / diagonal))
 	alvo.draw_polygon(pontos, cores)
+
+
+## Ícone da Evolução (blueprint: emoji ⬆️ — seta branca em quadrado azul
+## arredondado), desenhado à mão para render idêntico em qualquer aparelho.
+func _desenhar_icone_evolucao(alvo: Control) -> void:
+	var lado: float = alvo.size.y
+	var caixa: Rect2 = Rect2(
+		Vector2((alvo.size.x - lado) * 0.5, 0.0), Vector2(lado, lado))
+	alvo.draw_colored_polygon(
+		_poligono_arredondado(caixa, lado * 0.28), T.CORES_COBRA_BASE[1])
+	var centro: Vector2 = caixa.get_center()
+	var s: float = lado * 0.5  # envelope da seta
+	var seta: PackedVector2Array = PackedVector2Array([
+		centro + Vector2(0.0, -s * 0.5),          # ponta
+		centro + Vector2(s * 0.45, -s * 0.02),
+		centro + Vector2(s * 0.18, -s * 0.02),
+		centro + Vector2(s * 0.18, s * 0.5),      # haste
+		centro + Vector2(-s * 0.18, s * 0.5),
+		centro + Vector2(-s * 0.18, -s * 0.02),
+		centro + Vector2(-s * 0.45, -s * 0.02),
+	])
+	alvo.draw_colored_polygon(seta, T.COR_SIMBOLO_DALTONISMO)
 
 
 ## Cobra do blueprint: 4 círculos crescentes (rabo→cabeça) na cor da skin,
