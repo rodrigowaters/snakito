@@ -78,6 +78,16 @@ static func definir_dificuldade(valor: Dificuldade) -> void:
 	_salvar()
 
 
+## Háptica ligada? (toggle da Pausa, blueprint 04c — padrão ligada)
+static func vibracao() -> bool:
+	return _abrir().get_value("jogo", "vibracao", true)
+
+
+static func definir_vibracao(ligada: bool) -> void:
+	_abrir().set_value("jogo", "vibracao", ligada)
+	_salvar()
+
+
 # ------------------------------------------------------------------ internos
 
 static func _abrir() -> ConfigFile:

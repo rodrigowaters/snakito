@@ -228,7 +228,7 @@ func _processar_eventos() -> void:
 	for cobra: SnakeModel in motor.arena.cobras:
 		if not cobra.viva and _vivas_previas.get(cobra.id, false):
 			efeitos.confete(cobra.posicao, ArenaRender.cor_de(cobra))
-			if cobra.eh_jogador():
+			if cobra.eh_jogador() and ProgressoLocal.vibracao():
 				Input.vibrate_handheld(200)  # suave — metade da morte real
 	_memorizar_estado()
 

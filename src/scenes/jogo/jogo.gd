@@ -125,10 +125,11 @@ func _processar_eventos() -> void:
 			efeitos.confete(cobra.posicao, ArenaRender.cor_de(cobra))
 			if cobra.eh_jogador():
 				hud.flash_morte()
-				Input.vibrate_handheld(VIBRACAO_MORTE_MS)
+				if ProgressoLocal.vibracao():
+					Input.vibrate_handheld(VIBRACAO_MORTE_MS)
 	# Cortes do jogador (docs §2.7): sofreu → háptica curta; aplicou → pulso.
 	var jogador: SnakeModel = motor.jogador()
-	if jogador.cortes_sofridos > _cortes_sofridos_previos:
+	if jogador.cortes_sofridos > _cortes_sofridos_previos and ProgressoLocal.vibracao():
 		Input.vibrate_handheld(VIBRACAO_CORTE_MS)
 	if jogador.cortes_feitos > _cortes_feitos_previos:
 		render.pulsar_crescimento(jogador.id)

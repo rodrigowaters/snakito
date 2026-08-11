@@ -16,8 +16,6 @@ const ALTURA_CELULA_NAV: float = 84.0
 ## Mascote do hero (blueprint: 210×152) e viewBox do SVG original.
 const MASCOTE_TAMANHO: Vector2 = Vector2(210.0, 152.0)
 const MASCOTE_VIEWBOX: Vector2 = Vector2(200.0, 150.0)
-## Segmentos por canto no polígono arredondado do CTA.
-const ARCO_PASSOS: int = 8
 
 
 func _ready() -> void:
@@ -255,7 +253,7 @@ func _rodape_navegacao() -> Control:
 	jogar.pressed.connect(func() -> void:
 		get_tree().change_scene_to_file(CENA_JOGO))
 	jogar.draw.connect(func() -> void:
-		_desenhar_gradiente_arredondado(jogar,
+		DesenhoUi.gradiente_arredondado(jogar, jogar.size, float(T.RAIO_CARD),
 			T.COR_CTA_PRIMARIO_INICIO, T.COR_CTA_PRIMARIO_FIM))
 	jogar.button_down.connect(func() -> void: jogar.modulate.a = 0.85)
 	jogar.button_up.connect(func() -> void: jogar.modulate.a = 1.0)
@@ -348,36 +346,6 @@ func _celula_nav(
 
 # ---------------------------------------------------------------- desenhos
 
-## Contorno de retângulo arredondado como polígono (para preenchimentos que
-## o StyleBoxFlat não faz: gradientes e desenhos em _draw).
-func _poligono_arredondado(rect: Rect2, raio: float) -> PackedVector2Array:
-	var pontos: PackedVector2Array = PackedVector2Array()
-	var cantos: Array[Vector2] = [
-		rect.position + Vector2(raio, raio),
-		Vector2(rect.end.x - raio, rect.position.y + raio),
-		rect.end - Vector2(raio, raio),
-		Vector2(rect.position.x + raio, rect.end.y - raio),
-	]
-	for canto: int in 4:
-		var inicio: float = PI + PI * 0.5 * canto
-		for passo: int in ARCO_PASSOS + 1:
-			var angulo: float = inicio + PI * 0.5 * float(passo) / float(ARCO_PASSOS)
-			pontos.append(cantos[canto] + Vector2(cos(angulo), sin(angulo)) * raio)
-	return pontos
-
-
-## Retângulo arredondado preenchido por gradiente diagonal (135° do design):
-## polígono com cor POR VÉRTICE — StyleBoxFlat não desenha gradiente.
-func _desenhar_gradiente_arredondado(alvo: Control, cor_a: Color, cor_b: Color) -> void:
-	var rect: Rect2 = Rect2(Vector2.ZERO, alvo.size)
-	var pontos: PackedVector2Array = _poligono_arredondado(rect, float(T.RAIO_CARD))
-	var cores: PackedColorArray = PackedColorArray()
-	var diagonal: float = rect.size.x + rect.size.y
-	for ponto: Vector2 in pontos:
-		cores.append(cor_a.lerp(cor_b, (ponto.x + ponto.y) / diagonal))
-	alvo.draw_polygon(pontos, cores)
-
-
 ## Ícone da Evolução (blueprint: emoji ⬆️ — seta branca em quadrado azul
 ## arredondado), desenhado à mão para render idêntico em qualquer aparelho.
 func _desenhar_icone_evolucao(alvo: Control) -> void:
@@ -385,7 +353,7 @@ func _desenhar_icone_evolucao(alvo: Control) -> void:
 	var caixa: Rect2 = Rect2(
 		Vector2((alvo.size.x - lado) * 0.5, 0.0), Vector2(lado, lado))
 	alvo.draw_colored_polygon(
-		_poligono_arredondado(caixa, lado * 0.28), T.CORES_COBRA_BASE[1])
+		DesenhoUi.poligono_arredondado(caixa, lado * 0.28), T.CORES_COBRA_BASE[1])
 	var centro: Vector2 = caixa.get_center()
 	var s: float = lado * 0.5  # envelope da seta
 	var seta: PackedVector2Array = PackedVector2Array([
