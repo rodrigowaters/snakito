@@ -255,14 +255,17 @@ func _rodape_navegacao() -> Control:
 	jogar.add_child(texto_jogar)
 	rodape.add_child(jogar)
 
-	# Grade de navegação 4×1 (blueprint 1d) com os destinos que existem.
+	# Grade de navegação 4×1 EXATAMENTE como o blueprint 1d: Desafios ·
+	# Ranking · Loja · Evolução. Loja (M3) e Evolução (pós-lançamento)
+	# guardam o lugar desabilitadas — Skins e Conta já têm os caminhos do
+	# próprio desenho (pílula "equipada" e avatar do topo).
 	var grade: GridContainer = GridContainer.new()
 	grade.columns = 4
 	grade.add_theme_constant_override("h_separation", T.ESP_XS)
 	grade.add_child(_celula_nav("🎯", "Desafios", "res://src/ui/desafios/desafios.tscn"))
 	grade.add_child(_celula_nav("🏆", "Ranking", "res://src/ui/ranking/ranking.tscn"))
-	grade.add_child(_celula_nav("🎨", "Skins", "res://src/ui/skins/skins.tscn"))
-	grade.add_child(_celula_nav("👤", "Conta", "res://src/ui/conta/conta.tscn"))
+	grade.add_child(_celula_nav("🛍", "Loja"))
+	grade.add_child(_celula_nav("⬆️", "Evolução"))
 	rodape.add_child(grade)
 
 	# Gatilho do crash de teste do Sentry — só em builds de debug.
@@ -275,13 +278,18 @@ func _rodape_navegacao() -> Control:
 	return rodape
 
 
-func _celula_nav(emoji: String, nome: String, cena: String) -> Button:
+## `cena` vazia = destino ainda não existe: célula presente e desabilitada
+## (mesmo padrão do ⚙ — o desenho manda, a feature chega depois).
+func _celula_nav(emoji: String, nome: String, cena: String = "") -> Button:
 	var celula: Button = Button.new()
 	celula.theme_type_variation = &"CartaoNav"
 	celula.custom_minimum_size = Vector2(0.0, ALTURA_CELULA_NAV)
 	celula.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	celula.pressed.connect(func() -> void:
-		get_tree().change_scene_to_file(cena))
+	if cena == "":
+		celula.disabled = true
+	else:
+		celula.pressed.connect(func() -> void:
+			get_tree().change_scene_to_file(cena))
 	# Conteúdo empilhado (emoji sobre rótulo) — filhos ignoram o mouse para
 	# o toque cair sempre no Button.
 	var pilha: VBoxContainer = VBoxContainer.new()
@@ -301,6 +309,8 @@ func _celula_nav(emoji: String, nome: String, cena: String) -> Button:
 	rotulo.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	rotulo.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	pilha.add_child(rotulo)
+	if celula.disabled:
+		pilha.modulate.a = 0.45  # conteúdo apagado junto com o botão
 	celula.add_child(pilha)
 	return celula
 
