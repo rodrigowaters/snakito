@@ -319,6 +319,11 @@ const PESO_TITULO_MD: int = PESO_SEMIBOLD
 ## button — Fredoka 600 · 18/24. Rótulo de botão.
 const TAM_BOTAO: int = 18
 const ALTURA_LINHA_BOTAO: int = 24
+
+## CTA-herói das TELAS hi-fi (01 Home: Fredoka 600 22px) — difere do
+## design system (18px); no conflito, a tela desenhada manda (M2).
+const TAM_CTA_HEROI: int = 22
+const ALTURA_LINHA_CTA_HEROI: int = 28
 const PESO_BOTAO: int = PESO_SEMIBOLD
 
 ## body — Nunito 700 · 15/22. Texto corrido padrão.

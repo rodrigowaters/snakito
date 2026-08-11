@@ -163,7 +163,7 @@ corner_radius_bottom_left = 16
 [sub_resource type="FontVariation" id="FontVariation_iwscb"]
 base_font = ExtResource("1_fredoka")
 variation_opentype = {
-"wght": 600
+2003265652: 600
 }
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i62jq"]
@@ -260,7 +260,7 @@ corner_radius_bottom_left = 20
 [sub_resource type="FontVariation" id="FontVariation_dwrey"]
 base_font = ExtResource("2_nunito")
 variation_opentype = {
-"wght": 800
+2003265652: 800
 }
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cwxny"]
@@ -494,20 +494,20 @@ corner_radius_bottom_left = 999
 [sub_resource type="FontVariation" id="FontVariation_fru43"]
 base_font = ExtResource("2_nunito")
 variation_opentype = {
-"wght": 800
+2003265652: 800
 }
 spacing_glyph = 1
 
 [sub_resource type="FontVariation" id="FontVariation_5nqq6"]
 base_font = ExtResource("1_fredoka")
 variation_opentype = {
-"wght": 700
+2003265652: 700
 }
 
 [sub_resource type="FontVariation" id="FontVariation_4wl06"]
 base_font = ExtResource("2_nunito")
 variation_opentype = {
-"wght": 700
+2003265652: 700
 }
 
 [resource]
@@ -698,6 +698,11 @@ ProgressBar/colors/font_color = Color(0.95686275, 0.9647059, 1, 1)
 ProgressBar/font_sizes/font_size = 13
 ProgressBar/styles/background = SubResource("StyleBoxFlat_hcdh2")
 ProgressBar/styles/fill = SubResource("StyleBoxFlat_dweel")
+RotuloCtaHeroi/base_type = &"Label"
+RotuloCtaHeroi/colors/font_color = Color(0.043137256, 0.14117648, 0.08627451, 1)
+RotuloCtaHeroi/constants/line_spacing = 2
+RotuloCtaHeroi/font_sizes/font_size = 22
+RotuloCtaHeroi/fonts/font = SubResource("FontVariation_iwscb")
 RotuloNav/base_type = &"Label"
 RotuloNav/colors/font_color = Color(0.95686275, 0.9647059, 1, 1)
 RotuloNav/constants/line_spacing = 2

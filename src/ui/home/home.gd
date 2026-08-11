@@ -246,8 +246,7 @@ func _rodape_navegacao() -> Control:
 	jogar.button_up.connect(func() -> void: jogar.modulate.a = 1.0)
 	var texto_jogar: Label = Label.new()
 	texto_jogar.text = "▶ Jogar Arcade"
-	texto_jogar.theme_type_variation = &"TituloMd"
-	texto_jogar.add_theme_color_override("font_color", T.COR_TEXTO_SOBRE_PRIMARIO)
+	texto_jogar.theme_type_variation = &"RotuloCtaHeroi"
 	texto_jogar.set_anchors_preset(Control.PRESET_FULL_RECT)
 	texto_jogar.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	texto_jogar.vertical_alignment = VERTICAL_ALIGNMENT_CENTER

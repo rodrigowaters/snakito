@@ -43,9 +43,12 @@ func _checar_tema(tema: Theme) -> void:
 		return
 	_ok(true, "tema carrega")
 	_ok(tema.default_font is FontVariation, "default_font é FontVariation")
+	# Peso via TAG numérico do TextServer — chave String NÃO aplica o eixo
+	# (bug silencioso corrigido no M2: o app inteiro pesava 400).
+	var tag_peso: int = TextServerManager.get_primary_interface().name_to_tag("weight")
 	if tema.default_font is FontVariation:
 		var fv: FontVariation = tema.default_font as FontVariation
-		_ok(int(fv.variation_opentype.get("wght", 0)) == 700, "default_font wght=700 (Nunito)")
+		_ok(int(fv.variation_opentype.get(tag_peso, 0)) == 700, "default_font wght=700 (Nunito)")
 		_ok(fv.base_font != null, "default_font tem base_font carregada")
 	_ok(tema.default_font_size == SnakitoTokens.TAM_CORPO, "default_font_size = 15")
 	_ok(tema.get_type_variation_base(&"BotaoPrimario") == &"Button", "BotaoPrimario ← Button")
@@ -54,7 +57,7 @@ func _checar_tema(tema: Theme) -> void:
 	_ok(tema.get_type_variation_base(&"CardPainel") == &"PanelContainer", "CardPainel ← PanelContainer")
 	var fonte_botao: Font = tema.get_font(&"font", &"Button")
 	_ok(fonte_botao is FontVariation
-		and int((fonte_botao as FontVariation).variation_opentype.get("wght", 0)) == 600,
+		and int((fonte_botao as FontVariation).variation_opentype.get(tag_peso, 0)) == 600,
 		"Button usa Fredoka wght=600")
 	var heroi: StyleBoxFlat = tema.get_stylebox(&"normal", &"BotaoHeroi") as StyleBoxFlat
 	_ok(heroi != null and int(heroi.content_margin_top) == 20, "BotaoHeroi margem vertical 20 (alvo 64dp)")

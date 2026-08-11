@@ -174,6 +174,8 @@ static func construir() -> Theme:
 	_variacao_texto(tema, &"TextoCorpoSm", T.TAM_CORPO_SM, T.ALTURA_LINHA_CORPO_SM, T.COR_TEXTO_SECUNDARIO)
 	# Rótulo das células de navegação (blueprint 1d: Fredoka 13 branco).
 	_variacao_texto(tema, &"RotuloNav", T.TAM_CORPO_SM, T.ALTURA_LINHA_CORPO_SM, T.COR_TEXTO_PRIMARIO, fredoka_semibold)
+	# Rótulo do CTA-herói (blueprint 01: Fredoka 600 22px sobre o gradiente).
+	_variacao_texto(tema, &"RotuloCtaHeroi", T.TAM_CTA_HEROI, T.ALTURA_LINHA_CTA_HEROI, T.COR_TEXTO_SOBRE_PRIMARIO, fredoka_semibold)
 	_variacao_texto(tema, &"TextoSecundario", T.TAM_CORPO, T.ALTURA_LINHA_CORPO, T.COR_TEXTO_SECUNDARIO)
 	# TextoMuted usa o MENOR tamanho permitido para #7E88A8 (negrito ≥ 19px);
 	# altura de linha herdada da escala title/md, o degrau mais próximo.
@@ -192,7 +194,12 @@ static func construir() -> Theme:
 static func _fonte(caminho: String, peso: int, tracking: int = 0) -> FontVariation:
 	var fonte: FontVariation = FontVariation.new()
 	fonte.base_font = load(caminho) as Font
-	fonte.variation_opentype = {"wght": peso}
+	# ARMADILHA: chave String ("wght") NÃO aplica o eixo da fonte variável —
+	# falha silenciosa que deixou o app inteiro no peso 400 desde a fundação
+	# (descoberta na fidelidade do CTA, M2). O tag numérico aplica.
+	fonte.variation_opentype = {
+		TextServerManager.get_primary_interface().name_to_tag("weight"): peso,
+	}
 	if tracking > 0:
 		fonte.spacing_glyph = tracking
 	return fonte
