@@ -27,13 +27,14 @@ const ENERGIA_MAX: float = 100.0
 ## Multiplicador de velocidade do turbo sem buff (bots usam sempre este).
 const TURBO_BASE: float = 1.5
 
-# --- Velocidade por tamanho (docs §2.2, ago/2026) ------------------------------
-## Curva: 1 + GANHO·(√tamanho − 1), clamp no teto. √ para o ganho desacelerar;
-## tamanho 1 = exatamente 1.0 (o novato anda na base). No teto (+25%), o
-## gigante alcança pequenos sem turbo — é a recompensa de crescer que o
-## playtest pediu; o teto impede a bola de neve de ficar incaçável.
-const VEL_GANHO_POR_TAMANHO: float = 0.03
-const VEL_TETO_TAMANHO: float = 1.25
+# --- Velocidade por nível (docs §2.2, ago/2026) ---------------------------------
+## Curva: 1 + GANHO·(√nível − 1), clamp no teto. √ para o ganho desacelerar;
+## nível 1 = exatamente 1.0 (o novato anda na base). Recalibrada no playtest
+## de 11/08 ("mesmo com meu nível eu estava na mesma velocidade que menores"):
+## 0.03/1.25 dava +6,5% no nível 10 — imperceptível. Agora nível 9 = +12%,
+## 25 = +24%, 36+ ≈ teto (+35%). O teto impede a bola de neve incaçável.
+const VEL_GANHO_POR_TAMANHO: float = 0.06
+const VEL_TETO_TAMANHO: float = 1.35
 
 # --- Corpo (docs §2.7) ----------------------------------------------------------
 ## Comprimento do corpo em unidades de mundo: linear no tamanho. Única fonte

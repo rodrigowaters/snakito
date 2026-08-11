@@ -28,7 +28,7 @@ func test_velocidade_cresce_com_tamanho_com_teto() -> void:
 	assert_float(cobra.multiplicador_tamanho()).is_equal_approx(1.0, 0.0001)
 	cobra.tamanho = 25
 	cobra.nivel = 25
-	assert_float(cobra.multiplicador_tamanho()).is_equal_approx(1.12, 0.0001)
+	assert_float(cobra.multiplicador_tamanho()).is_equal_approx(1.24, 0.0001)
 	cobra.tamanho = 10000  # absurdo de propósito: o teto segura
 	cobra.nivel = 10000
 	assert_float(cobra.multiplicador_tamanho()) \
