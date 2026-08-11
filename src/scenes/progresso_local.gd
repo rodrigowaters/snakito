@@ -78,6 +78,21 @@ static func definir_dificuldade(valor: Dificuldade) -> void:
 	_salvar()
 
 
+## Melhor posição no Arcade (blueprint 05: "sua melhor posição até hoje!").
+## 0 = nunca terminou uma partida. Registrar devolve true se virou recorde.
+static func melhor_posicao() -> int:
+	return _abrir().get_value("jogo", "melhor_posicao", 0)
+
+
+static func registrar_posicao(posicao: int) -> bool:
+	var atual: int = melhor_posicao()
+	if atual == 0 or posicao < atual:
+		_abrir().set_value("jogo", "melhor_posicao", posicao)
+		_salvar()
+		return true
+	return false
+
+
 ## Háptica ligada? (toggle da Pausa, blueprint 04c — padrão ligada)
 static func vibracao() -> bool:
 	return _abrir().get_value("jogo", "vibracao", true)

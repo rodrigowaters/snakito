@@ -46,6 +46,16 @@ func test_desafio_concluido_persiste() -> void:
 		.is_true()
 
 
+func test_melhor_posicao_so_melhora() -> void:
+	# Blueprint 05: "sua melhor posição até hoje!" — 0 = nunca terminou.
+	assert_int(ProgressoLocal.melhor_posicao()).is_equal(0)
+	assert_bool(ProgressoLocal.registrar_posicao(9)).is_true()   # 1ª partida
+	assert_bool(ProgressoLocal.registrar_posicao(12)).is_false() # piorou
+	assert_bool(ProgressoLocal.registrar_posicao(3)).is_true()   # recorde
+	ProgressoLocal._resetar_cache_para_testes()
+	assert_int(ProgressoLocal.melhor_posicao()).is_equal(3)
+
+
 func test_economia_zerada_persiste_e_nunca_negativa() -> void:
 	# Economia liga no M3 — os contadores já existem, zerados (11/08).
 	assert_int(ProgressoLocal.moedas()).is_equal(0)

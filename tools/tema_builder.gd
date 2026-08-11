@@ -178,6 +178,8 @@ static func construir() -> Theme:
 	_variacao_texto(tema, &"RotuloNav", T.TAM_CORPO_SM, T.ALTURA_LINHA_CORPO_SM, T.COR_TEXTO_PRIMARIO, fredoka_semibold)
 	# Rótulo do CTA-herói (blueprint 01: Fredoka 600 22px sobre o gradiente).
 	_variacao_texto(tema, &"RotuloCtaHeroi", T.TAM_CTA_HEROI, T.ALTURA_LINHA_CTA_HEROI, T.COR_TEXTO_SOBRE_PRIMARIO, fredoka_semibold)
+	# Posição final da pós-partida (blueprint 05: "4º" gigante amarelo).
+	_variacao_texto(tema, &"TituloPosicao", T.TAM_POSICAO_FINAL, T.ALTURA_LINHA_POSICAO_FINAL, T.COR_ALERTA, fredoka_bold)
 	_variacao_texto(tema, &"TextoSecundario", T.TAM_CORPO, T.ALTURA_LINHA_CORPO, T.COR_TEXTO_SECUNDARIO)
 	# TextoMuted usa o MENOR tamanho permitido para #7E88A8 (negrito ≥ 19px);
 	# altura de linha herdada da escala title/md, o degrau mais próximo.

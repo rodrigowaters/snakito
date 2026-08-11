@@ -324,6 +324,10 @@ const ALTURA_LINHA_BOTAO: int = 24
 ## design system (18px); no conflito, a tela desenhada manda (M2).
 const TAM_CTA_HEROI: int = 22
 const ALTURA_LINHA_CTA_HEROI: int = 28
+
+## Posição final da pós-partida (tela 05: Fredoka 700 64px, amarelo).
+const TAM_POSICAO_FINAL: int = 64
+const ALTURA_LINHA_POSICAO_FINAL: int = 66
 const PESO_BOTAO: int = PESO_SEMIBOLD
 
 ## body — Nunito 700 · 15/22. Texto corrido padrão.
