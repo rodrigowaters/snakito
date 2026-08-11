@@ -46,6 +46,19 @@ func test_desafio_concluido_persiste() -> void:
 		.is_true()
 
 
+func test_economia_zerada_persiste_e_nunca_negativa() -> void:
+	# Economia liga no M3 — os contadores já existem, zerados (11/08).
+	assert_int(ProgressoLocal.moedas()).is_equal(0)
+	assert_int(ProgressoLocal.tickets()).is_equal(0)
+	ProgressoLocal.adicionar_moedas(120)
+	ProgressoLocal.adicionar_tickets(2)
+	ProgressoLocal._resetar_cache_para_testes()
+	assert_int(ProgressoLocal.moedas()).is_equal(120)
+	assert_int(ProgressoLocal.tickets()).is_equal(2)
+	ProgressoLocal.adicionar_moedas(-999)  # gastar além do saldo não negativa
+	assert_int(ProgressoLocal.moedas()).is_equal(0)
+
+
 func test_config_arcade_respeita_dificuldade_tranquila() -> void:
 	# A escolha do onboarding muda a COMPOSIÇÃO do Arcade (nunca trapaça).
 	ProgressoLocal.definir_dificuldade(ProgressoLocal.Dificuldade.TRANQUILA)

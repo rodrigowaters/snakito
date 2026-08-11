@@ -36,6 +36,28 @@ static func equipar_skin(indice: int) -> void:
 	_salvar()
 
 
+# ----------------------------------------------------------------- economia
+# Moedas e tickets (docs §5 — economia é M3): a Home já EXIBE os contadores
+# (blueprint 1d) e a persistência está pronta; ganhar/gastar liga no M3.
+
+static func moedas() -> int:
+	return _abrir().get_value("economia", "moedas", 0)
+
+
+static func tickets() -> int:
+	return _abrir().get_value("economia", "tickets", 0)
+
+
+static func adicionar_moedas(quantidade: int) -> void:
+	_abrir().set_value("economia", "moedas", maxi(0, moedas() + quantidade))
+	_salvar()
+
+
+static func adicionar_tickets(quantidade: int) -> void:
+	_abrir().set_value("economia", "tickets", maxi(0, tickets() + quantidade))
+	_salvar()
+
+
 # --------------------------------------------------------- onboarding & jogo
 
 static func onboarding_visto() -> bool:

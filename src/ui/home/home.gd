@@ -77,11 +77,13 @@ func _montar_conteudo() -> void:
 
 # ------------------------------------------------------------ barra do topo
 
-## Blueprint: chip-avatar à esquerda (cabecinha na cor da skin) e ⚙ à
-## direita. Sem Configurações ainda (M3), o avatar leva à Conta e o ⚙ fica
-## de fora até a tela existir.
+## Blueprint: chip-avatar à esquerda, contadores de economia no centro e ⚙
+## à direita. Economia EXIBIDA desde já (zerada — ganhar/gastar é M3, decisão
+## de 11/08); o ⚙ fica de fora até Configurações existir (M3). O avatar leva
+## à Conta.
 func _barra_topo() -> Control:
 	var barra: HBoxContainer = HBoxContainer.new()
+	barra.add_theme_constant_override("separation", T.ESP_XS)
 	var avatar: Button = Button.new()
 	avatar.theme_type_variation = &"Chip"
 	avatar.custom_minimum_size = Vector2(float(T.TOQUE_MIN), float(T.TOQUE_MIN))
@@ -93,7 +95,46 @@ func _barra_topo() -> Control:
 	var espaco: Control = Control.new()
 	espaco.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	barra.add_child(espaco)
+	barra.add_child(_contador_moedas())
+	barra.add_child(_contador("🎟️", ProgressoLocal.tickets()))
 	return barra
+
+
+## Pílula do contador de moedas — a moedinha é desenhada (círculo dourado
+## com borda, como no blueprint), não emoji: consistência entre aparelhos.
+func _contador_moedas() -> Control:
+	var pilula: PanelContainer = _contador("", ProgressoLocal.moedas())
+	var moeda: Control = Control.new()
+	moeda.custom_minimum_size = Vector2(float(T.ESP_LG), 0.0)
+	moeda.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	moeda.draw.connect(func() -> void:
+		var centro: Vector2 = moeda.size * 0.5
+		moeda.draw_circle(centro, 10.0, T.COR_MOEDA_BORDA)
+		moeda.draw_circle(centro, 7.0, T.COR_MOEDA))
+	var linha: HBoxContainer = pilula.get_child(0)
+	linha.add_child(moeda)
+	linha.move_child(moeda, 0)
+	return pilula
+
+
+func _contador(emoji: String, valor: int) -> PanelContainer:
+	var pilula: PanelContainer = PanelContainer.new()
+	pilula.theme_type_variation = &"PilulaContador"
+	pilula.custom_minimum_size = Vector2(0.0, float(T.TOQUE_MIN) - float(T.ESP_MICRO))
+	var linha: HBoxContainer = HBoxContainer.new()
+	linha.add_theme_constant_override("separation", T.ESP_MICRO + 2)
+	linha.alignment = BoxContainer.ALIGNMENT_CENTER
+	pilula.add_child(linha)
+	if emoji != "":
+		var icone: Label = Label.new()
+		icone.text = emoji
+		icone.theme_type_variation = &"TextoCorpo"
+		linha.add_child(icone)
+	var numero: Label = Label.new()
+	numero.text = str(valor)
+	numero.theme_type_variation = &"TextoCorpo"
+	linha.add_child(numero)
+	return pilula
 
 
 # -------------------------------------------------------------------- hero

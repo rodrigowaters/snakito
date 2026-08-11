@@ -170,6 +170,11 @@ const COR_COMIDA_COMUM_REALCE: Color = Color("#FF9B9B")
 ## Comida premium (multiplicador de pontos).
 const COR_COMIDA_PREMIUM: Color = Color("#FFD43B")
 
+## Moeda da economia (design `economy/currency/icon` — primeiro porte dos
+## tokens de economia, M2; ganhar/gastar liga no M3).
+const COR_MOEDA: Color = Color("#FFD43B")
+const COR_MOEDA_BORDA: Color = Color("#C9A11C")
+
 
 # ==============================================================================
 # 6 · CORES — SEMÂNTICAS
