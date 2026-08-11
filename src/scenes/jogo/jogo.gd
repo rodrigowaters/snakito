@@ -168,10 +168,12 @@ func _ir_para_resultado() -> void:
 	# a Rede despacha quando houver rede + login + perfil.
 	FilaSessoes.enfileirar(_payload_da_sessao())
 	Rede.despachar_fila()
-	# Desafio CONCLUÍDO celebra primeiro (blueprint 12c); o resto vai
-	# direto à pós-partida.
-	if Sessao.regras_desafio != null \
-			and Sessao.regras_desafio.estado == ChallengeRules.Estado.CONCLUIDO:
+	# Vitórias celebram primeiro (blueprint 12c): desafio concluído ou a
+	# ARENA DOMINADA no Arcade; o resto vai direto à pós-partida.
+	var desafio_concluido: bool = Sessao.regras_desafio != null \
+		and Sessao.regras_desafio.estado == ChallengeRules.Estado.CONCLUIDO
+	var arcade_dominado: bool = Sessao.regras_desafio == null and motor.arena_dominada()
+	if desafio_concluido or arcade_dominado:
 		get_tree().change_scene_to_file("res://src/ui/celebracao/celebracao.tscn")
 	else:
 		get_tree().change_scene_to_file(CENA_RESULTADO)

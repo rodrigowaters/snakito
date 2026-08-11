@@ -28,7 +28,9 @@
 1. Você entra na arena como cobra pequena (tamanho = 1)
 2. **Objetivo:** comer comida ou bots menores → crescer → subir no ranking da partida
 3. **Risco:** bots maiores podem devorá-lo → morte → tela de resultado
-4. **Duração:** partida com tempo limite (ex.: 3 min) ou até morrer
+4. **Duração:** partida com tempo limite (ex.: 3 min), até morrer — ou até
+   **dominar a arena** (última cobra viva = vitória imediata com celebração;
+   playtest de 11/08: exterminar todos os bots não podia terminar em nada)
 5. **Pontuação:** tempo sobrevivido + comida + bots devorados
 
 ### 2.2 Crescimento

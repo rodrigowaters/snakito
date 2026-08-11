@@ -67,6 +67,7 @@ func _ready() -> void:
 	config.cacadores = 0
 	config.oportunistas = 0
 	config.aplicar_buffs = false
+	config.vitoria_por_dominio = false  # devorar a figura da vinheta não "vence"
 	motor = GameEngine.new(config)
 
 	render = ArenaRender.new()

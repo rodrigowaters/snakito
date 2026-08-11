@@ -109,7 +109,10 @@ func test_devorar_no_limiar_exato_de_10_por_cento() -> void:
 	assert_int(jogador.pontos).is_equal(GameEngine.pontos_por_abate(10))
 	# Crescimento proporcional: metade do tamanho da vítima.
 	assert_int(jogador.tamanho).is_equal(11 + 5)
-	assert_that(motor.estado).is_equal(GameEngine.Estado.EM_ANDAMENTO)
+	# Era a última cobra viva → ARENA DOMINADA encerra na hora (docs §2.1,
+	# playtest 11/08 — antes a partida seguia vazia até o relógio).
+	assert_that(motor.estado).is_equal(GameEngine.Estado.ENCERRADA)
+	assert_bool(motor.arena_dominada()).is_true()
 
 
 func test_diferenca_menor_que_10_por_cento_vira_knockback() -> void:
@@ -203,3 +206,19 @@ func test_ranking_por_pontos_com_desempate_estavel() -> void:
 func test_seed_fica_visivel_para_repetir_a_arena() -> void:
 	var motor: GameEngine = GameEngine.new(GameEngine.ConfigPartida.padrao(4242))
 	assert_int(motor.rng.semente).is_equal(4242)
+
+
+func test_arena_dominada_encerra_a_partida() -> void:
+	# Playtest 11/08: exterminar todos os bots "e nada aconteceu" — ser a
+	# última cobra viva encerra a partida como vitória imediata.
+	var config: GameEngine.ConfigPartida = GameEngine.ConfigPartida.padrao(11)
+	config.fazendeiros = 1
+	config.cacadores = 0
+	config.oportunistas = 0
+	config.qtd_comida = 0
+	var motor: GameEngine = GameEngine.new(config)
+	assert_bool(motor.arena_dominada()).is_false()
+	motor.arena.cobra_por_id(1).viva = false  # último bot cai
+	motor.avancar(Vector2.RIGHT)
+	assert_bool(motor.arena_dominada()).is_true()
+	assert_int(motor.estado).is_equal(GameEngine.Estado.ENCERRADA)

@@ -102,6 +102,9 @@ class ConfigPartida:
 	## matavam a criança em 3s — "para um adulto é válido, para uma criança
 	## não". Nascer longe dá o começo para crescer sem enfraquecer o alfa.
 	var distancia_spawn_cacador: float = 0.0
+	## Última cobra viva encerra como vitória (docs §2.1). O onboarding
+	## desliga: as vinhetas devoram figuras sem que isso "vença" nada.
+	var vitoria_por_dominio: bool = true
 	# Buffs do jogador (docs §2.6.2). Desafios criam a config com
 	# aplicar_buffs = false — partida por seed tem que ser comparável.
 	var aplicar_buffs: bool = true
@@ -177,9 +180,20 @@ func avancar(direcao_jogador: Vector2, turbo_jogador: bool = false) -> void:
 			if cobra.viva:
 				cobra.pontos += PONTOS_POR_SEGUNDO
 
-	# Fim de partida: tempo esgotado ou morte do jogador (docs §2.1).
-	if tick_atual >= config.duracao_seg * TICKS_POR_SEGUNDO or not jogador_.viva:
+	# Fim de partida: tempo esgotado, morte do jogador — ou ARENA DOMINADA
+	# (playtest 11/08: exterminou todos os bots e "nada aconteceu"; ser a
+	# última cobra viva é vitória imediata, não espera de relógio).
+	if tick_atual >= config.duracao_seg * TICKS_POR_SEGUNDO \
+			or not jogador_.viva or arena_dominada():
 		estado = Estado.ENCERRADA
+
+
+## O jogador é a última cobra viva? (vitória por extermínio — docs §2.1)
+## Exige que a arena TENHA tido bots (jogador sozinho numa config vazia de
+## teste/tutorial não "domina" nada) e respeita o desligamento por config.
+func arena_dominada() -> bool:
+	return config.vitoria_por_dominio and arena.cobras.size() > 1 \
+		and jogador().viva and arena.cobras_vivas().size() == 1
 
 
 func jogador() -> SnakeModel:

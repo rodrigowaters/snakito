@@ -1,10 +1,11 @@
 class_name Celebracao
 extends Control
 ## Celebração de vitória — blueprint "12c Fase concluída" (M2). Sem o sistema
-## de fases/chefe (pós-lançamento), a tela celebra o DESAFIO CONCLUÍDO, que
-## antes caía seco na pós-partida. Adaptações registradas: pill do desafio no
-## lugar da fase; placar "VOCÊ vs META" no lugar de "VOCÊ vs CHEFE"; pill de
-## moedas zerada (economia M3); CTA puxa o próximo desafio (ou o Arcade).
+## de fases/chefe (pós-lançamento), a tela celebra o DESAFIO CONCLUÍDO e a
+## ARENA DOMINADA no Arcade (última cobra viva — playtest 11/08). Adaptações
+## registradas: pill do desafio/arcade no lugar da fase; placar "VOCÊ vs
+## META" (desafio) ou "VOCÊ vs ARENA" (extermínio) no lugar de "VOCÊ vs
+## CHEFE"; pill de moedas zerada (economia M3); CTA puxa o próximo passo.
 
 const T := preload("res://src/ui/theme/tokens.gd")
 
@@ -29,7 +30,10 @@ const NOMES_DESAFIO: Dictionary[ChallengeRules.Desafio, String] = {
 
 
 func _ready() -> void:
-	if Sessao.ultimo_motor == null or Sessao.regras_desafio == null:
+	var motor: GameEngine = Sessao.ultimo_motor
+	var valido: bool = motor != null \
+		and (Sessao.regras_desafio != null or motor.arena_dominada())
+	if not valido:
 		get_tree().change_scene_to_file.call_deferred(CENA_HOME)
 		return
 	_montar_fundo()
@@ -87,8 +91,11 @@ func _montar_conteudo() -> void:
 	var pill: PanelContainer = PanelContainer.new()
 	pill.add_theme_stylebox_override("panel", _caixa_pill(T.CORES_COBRA_BASE[0]))
 	var texto_pill: Label = Label.new()
-	texto_pill.text = "🎯 DESAFIO %d · %s" % [int(regras.desafio) + 1,
-		NOMES_DESAFIO.get(regras.desafio, "")]
+	if regras != null:
+		texto_pill.text = "🎯 DESAFIO %d · %s" % [int(regras.desafio) + 1,
+			NOMES_DESAFIO.get(regras.desafio, "")]
+	else:
+		texto_pill.text = "🐍 ARCADE · %d COBRAS" % motor.arena.cobras.size()
 	texto_pill.theme_type_variation = &"TextoLegenda"
 	texto_pill.add_theme_color_override("font_color", T.CORES_COBRA_BASE[0])
 	pill.add_child(texto_pill)
@@ -101,7 +108,7 @@ func _montar_conteudo() -> void:
 	coluna.add_child(meio)
 
 	var titulo: Label = Label.new()
-	titulo.text = "Desafio concluído!"
+	titulo.text = "Desafio concluído!" if regras != null else "Arena dominada!"
 	titulo.theme_type_variation = &"TituloHero"
 	titulo.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	meio.add_child(titulo)
@@ -133,15 +140,23 @@ func _montar_conteudo() -> void:
 	var conteudo_placar: HBoxContainer = HBoxContainer.new()
 	conteudo_placar.add_theme_constant_override("separation", T.ESP_MD)
 	placar.add_child(conteudo_placar)
-	conteudo_placar.add_child(_coluna_placar("VOCÊ",
-		str(regras.progresso_atual(motor)), T.CORES_COBRA_BASE[0], 1.0))
 	var vs: Label = Label.new()
 	vs.text = "vs"
 	vs.theme_type_variation = &"TextoMuted"
 	vs.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	conteudo_placar.add_child(vs)
-	conteudo_placar.add_child(_coluna_placar("META 🎯",
-		str(regras.progresso_meta()), T.COR_ALERTA, 0.7))
+	if regras != null:
+		conteudo_placar.add_child(_coluna_placar("VOCÊ",
+			str(regras.progresso_atual(motor)), T.CORES_COBRA_BASE[0], 1.0))
+		conteudo_placar.add_child(vs)
+		conteudo_placar.add_child(_coluna_placar("META 🎯",
+			str(regras.progresso_meta()), T.COR_ALERTA, 0.7))
+	else:
+		# Extermínio: seus abates contra a arena inteira ("devorei X de N").
+		conteudo_placar.add_child(_coluna_placar("VOCÊ",
+			str(motor.jogador().abates), T.CORES_COBRA_BASE[0], 1.0))
+		conteudo_placar.add_child(vs)
+		conteudo_placar.add_child(_coluna_placar("ARENA 👑",
+			str(motor.arena.cobras.size() - 1), T.COR_ALERTA, 0.7))
 
 	# Pill de moedas (economia liga no M3 — regra do design: recompensa por
 	# desafio; zerada guarda o lugar).
@@ -230,8 +245,9 @@ func _botoes(regras: ChallengeRules) -> Control:
 	pilha.add_theme_constant_override("separation", T.ESP_XS + 2)
 
 	# CTA: o PRÓXIMO passo (blueprint: "▶ Jogar fase 4") — próximo desafio,
-	# ou o Arcade quando os desafios acabaram (3–4 chegam no M3).
-	var tem_proximo: bool = regras.desafio == ChallengeRules.Desafio.FARMING_PURO
+	# ou o Arcade (extermínio, ou desafios esgotados — 3–4 chegam no M3).
+	var tem_proximo: bool = regras != null \
+		and regras.desafio == ChallengeRules.Desafio.FARMING_PURO
 	var cta: Button = Button.new()
 	cta.theme_type_variation = &"BotaoHeroi"
 	cta.flat = true
@@ -246,8 +262,12 @@ func _botoes(regras: ChallengeRules) -> Control:
 			Sessao.regras_desafio = null
 		get_tree().change_scene_to_file(CENA_JOGO))
 	var texto_cta: Label = Label.new()
-	texto_cta.text = "▶ Desafio 2 — Agressão controlada" if tem_proximo \
-		else "▶ Jogar Arcade"
+	if tem_proximo:
+		texto_cta.text = "▶ Desafio 2 — Agressão controlada"
+	elif regras == null:
+		texto_cta.text = "▶ Jogar de novo"
+	else:
+		texto_cta.text = "▶ Jogar Arcade"
 	texto_cta.theme_type_variation = &"TituloMd"
 	texto_cta.add_theme_color_override("font_color", T.COR_TEXTO_SOBRE_PRIMARIO)
 	texto_cta.set_anchors_preset(Control.PRESET_FULL_RECT)
