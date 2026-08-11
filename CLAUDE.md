@@ -80,6 +80,18 @@ Domínio COMPLETO em `src/domain/` — os 7 arquivos da arquitetura: `rng_servic
 - **Desafios 1–2 (`challenge_rules.gd`):** avaliador puro com trava (resolvido não des-resolve); seed fixa por desafio (101/202); prioridades documentadas (D1: matar derrota antes da meta; D2: meta no mesmo tick da morte vale); composição pedagógica é nossa (D1 sem caçadores)
 - **Calibragem do D2 em 3 rodadas de playtest com o Rodrigo (08/08):** 4 eixos novos de composição, todos capacidade transparente (nunca trapaça) — `turbo_bots` (paridade de turbo torna caça 1v1 impossível; Arcade 1.4, D2 1.3), `tamanho_teto_bot` (contém a bola de neve de bots que se devoram — chegavam a 286; jogador NUNCA tem teto), `tamanho_teto_cacador` e `tamanho_inicial_cacador` (caçadores-ALFA nascem 11 e crescem até 30 — a ameaça escala com o jogador em vez de evaporar; é também o eixo que o Desafio 3 exige: "caçadores de tamanho 100+"). **Metodologia (`tools/simular_desafios.gd`):** lote de 12 trajetórias sintéticas com ruído angular ("imprecisão humana" — sem ruído o lote degenera na mesma partida, comida sempre visível zera o consumo de RNG do vagueio); calibragem final após 5 rodadas de playtest (impossível → estéril → caça ok → 'campo de batalha' → aberto): arena 2000², 15 bots, alfas nascem 10, turbo_bots 1.25; banda em 24 trajetórias: conclui 17/24, morre 7/24 (fuga sintética ingênua — teto pessimista), fuga 21%, ~2.3 bots na tela, conclusão média 46s
 
+## Corte de corpo & velocidade por tamanho (docs §2.7 e §2.2 — pós-M1, 11/08)
+
+Aprovado pelo Rodrigo após playtest do M1 ("comer o rabo", "comi cresci fiquei mais rápido"):
+
+- **Corpo virou estado do DOMÍNIO** (`SnakeModel.corpo`, trilha aparada em `12·(3+tamanho)` unidades) — o render desenha o corpo do domínio, não uma trilha própria. Colisão de corte: cabeça × pontos do corpo (com zona de pescoço e "espessura" 0.7·raio da vítima).
+- **Regras do corte**: mesma regra 11/10 do abate (só maior corta); vítima encolhe à fração do ponto do corte; trecho perdido vira comida equivalente (1/unidade — preserva a invariante de plausibilidade `tamanho ≤ 1+comidas+abates·teto`); **sem pontos**; kill/morte continuam SÓ pela cabeça; proteção de 1s pós-corte (senão a cabeça retalha em série); corpo de morta desaparece; cabeça no corpo sem poder devorar = nada (atravessa).
+- **Velocidade por tamanho**: `1 + 0.03·(√tamanho−1)` clamp 1.25, TODAS as cobras (tamanho 1 = exatamente 1.0 — testes de movimento não mudam). Compõe com turbo e buff.
+- **Bots cortam**: caçador/oportunista miram o ponto mais próximo da presa (corpo ou cabeça, amostrado a cada 4 pontos).
+- **Consequência de meta**: "maior = mais rápido" quebrou a premissa de paridade da calibragem — D2 trivializou (24/24, 0 mortes) e foi recalibrado: alfas nascem 14, teto 40, turbo 1.4 → banda 20/24, morre 4/24, fuga 17%, 44s. Arcade seguiu na banda (morre 8/24, vida 129s) mas o churn de cortes derruba comida em linha e o piloto sintético chega a tamanho ~290 — **fim de jogo fácil continua em aberto** (alavanca sugerida: alfas escalando com o líder; aguarda veredito de playtest).
+- `submit_session` v2: `CRESCIMENTO_POR_ABATE_MAX` 15→60 (bug latente: devorar alfa 35 do Arcade dava falso 422; D3 com caçadores 100+ estouraria).
+- Bench: 1.34ms/tick (era 0.66) — corpo+corte dobraram o domínio, folga grande no frame de 16.6ms.
+
 ## Cenas (implementado)
 
 Fluxo Home → Jogo → Resultado completo e verificado por screenshot (`tools/capturar_tela.gd`). Padrões estabelecidos:
