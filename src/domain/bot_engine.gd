@@ -27,6 +27,16 @@ const CACA_POR_AGRESSIVIDADE: float = 0.4
 const OPORTUNIDADE_BASE: float = 0.35
 const OPORTUNIDADE_POR_AGRESSIVIDADE: float = 0.4
 
+## Coragem por personalidade (§2.7, playtest 11/08: "se atacarem as caudas
+## podem se alimentar e ficar do mesmo nível"): fração da visão em que um
+## devorador À VISTA vira motivo de fuga. Fazendeiro foge ao avistar (1.0);
+## caçador e oportunista toleram cabeça superior distante — é a janela em
+## que colhem o rabo dos grandes. Honesto: a coragem não enxerga mais longe,
+## só foge mais tarde (e às vezes paga com a vida).
+const MEDO_FAZENDEIRO: float = 1.0
+const MEDO_CACADOR: float = 0.6
+const MEDO_OPORTUNISTA: float = 0.75
+
 ## Rumo de vagueio corrente por id de bot (memória entre decisões).
 var _vagueio: Dictionary[int, Vector2] = {}
 
@@ -64,6 +74,12 @@ func decidir(bot: SnakeModel, arena: ArenaModel, rng: RngService) -> Vector2:
 			if presa != null:
 				bot.quer_turbo = true
 				return (ponto_de_ataque(bot, presa) - bot.posicao).normalized()
+			# Sem presa devorável: colher rabo (até de superiores — a cabeça
+			# deles está fora do raio de medo, senão estaríamos fugindo).
+			var rabo_caca: Vector2 = _rabo_mais_proximo(bot, arena, alcance_caca)
+			if rabo_caca != Vector2.INF:
+				bot.quer_turbo = true
+				return (rabo_caca - bot.posicao).normalized()
 		SnakeModel.Personalidade.OPORTUNISTA:
 			var alcance_oportunidade: float = bot.raio_visao() \
 				* (OPORTUNIDADE_BASE + OPORTUNIDADE_POR_AGRESSIVIDADE * bot.agressividade)
@@ -125,10 +141,21 @@ func _rabo_mais_proximo(bot: SnakeModel, arena: ArenaModel, alcance: float) -> V
 	return melhor
 
 
-## Cobra viva mais próxima que PODE DEVORAR o bot, dentro da visão dele.
+## Cobra viva mais próxima que PODE DEVORAR o bot, dentro do raio de MEDO
+## dele (fração da visão que depende da coragem da personalidade).
 func ameaca_mais_proxima(bot: SnakeModel, arena: ArenaModel) -> SnakeModel:
-	return _mais_proxima(bot, arena, bot.raio_visao(),
+	return _mais_proxima(bot, arena, bot.raio_visao() * _fracao_medo(bot),
 		func(outra: SnakeModel) -> bool: return outra.pode_devorar(bot))
+
+
+func _fracao_medo(bot: SnakeModel) -> float:
+	match bot.personalidade:
+		SnakeModel.Personalidade.CACADOR:
+			return MEDO_CACADOR
+		SnakeModel.Personalidade.OPORTUNISTA:
+			return MEDO_OPORTUNISTA
+		_:
+			return MEDO_FAZENDEIRO
 
 
 ## Cobra viva mais próxima que o bot pode devorar, dentro de `alcance`.

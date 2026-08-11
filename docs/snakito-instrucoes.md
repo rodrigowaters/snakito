@@ -137,9 +137,13 @@ tática — proteger o próprio rabo e atacar o rabo alheio.
    sendo SÓ devorar a cabeça. Morte também: a cobra só morre pela cabeça.
 6. **Bots usam o corte** — caçador/oportunista miram o ponto mais próximo da
    presa (corpo ou cabeça), dentro da visão, sob as mesmas regras. Com o
-   corte livre, o OPORTUNISTA também colhe o rabo de qualquer cobra à vista
-   (inclusive maiores) — honesto por construção: a fuga tem prioridade, então
-   ele só colhe rabo cuja cabeça dona está fora da visão dele.
+   corte livre, caçador E oportunista colhem o rabo de qualquer cobra
+   (inclusive superiores) — é o caminho deles para "ficar do mesmo nível"
+   (playtest 11/08). **Coragem por personalidade**: o raio de fuga é uma
+   fração da visão — fazendeiro foge ao avistar um devorador (1.0), caçador
+   tolera até 0.6·visão e oportunista até 0.75·visão; no meio-termo, colhem
+   rabo. Honesto: coragem não enxerga mais longe, só foge mais tarde — e às
+   vezes paga com a vida.
 
 **Decisões de implementação (onde a regra acima é omissa):**
 - **Proteção pós-corte:** a vítima fica incortável por 1s (60 ticks) após

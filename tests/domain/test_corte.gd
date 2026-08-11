@@ -188,6 +188,41 @@ func test_abate_pontua_pelo_nivel_e_cresce_pela_massa() -> void:
 	assert_int(jogador.nivel).is_equal(32)
 
 
+func test_coragem_cacador_colhe_rabo_de_superior_fazendeiro_foge() -> void:
+	# Playtest 11/08: bots corajosos colhem o rabo dos grandes para subir de
+	# nível; só o fazendeiro continua fugindo ao avistar.
+	var motor: GameEngine = _motor()
+	var gigante: SnakeModel = motor.jogador()
+	gigante.tamanho = 40
+	gigante.nivel = 40
+	_construir_corpo(motor, gigante, 240)
+	var rabo: Vector2 = gigante.corpo[gigante.corpo.size() - 5]
+	var cerebro: BotEngine = BotEngine.new()
+	var rng: RngService = RngService.new(1)
+
+	# Cabeça do gigante à vista mas FORA do raio de medo do caçador
+	# (0.6·visão); o rabo está perto → decisão aponta para o rabo.
+	var cacador: SnakeModel = SnakeModel.new(
+		70, SnakeModel.Personalidade.CACADOR, rabo + Vector2(0.0, 80.0), 5)
+	var visao: float = cacador.raio_visao()
+	assert_float(cacador.posicao.distance_to(gigante.posicao)) \
+		.is_greater(visao * BotEngine.MEDO_CACADOR)  # sanidade do cenário
+	motor.arena.adicionar_cobra(cacador)
+	var rumo_cacador: Vector2 = cerebro.decidir(cacador, motor.arena, rng)
+	var para_o_rabo: Vector2 = (rabo - cacador.posicao).normalized()
+	assert_float(rumo_cacador.dot(para_o_rabo)).is_greater(0.9)
+
+	# Fazendeiro no MESMO lugar: devorador à vista → foge (afasta do gigante).
+	var fazendeiro: SnakeModel = SnakeModel.new(
+		71, SnakeModel.Personalidade.FAZENDEIRO, rabo + Vector2(0.0, 80.0), 5)
+	motor.arena.adicionar_cobra(fazendeiro)
+	if fazendeiro.posicao.distance_to(gigante.posicao) <= fazendeiro.raio_visao():
+		var rumo_fazendeiro: Vector2 = cerebro.decidir(fazendeiro, motor.arena, rng)
+		var para_o_gigante: Vector2 = \
+			(gigante.posicao - fazendeiro.posicao).normalized()
+		assert_float(rumo_fazendeiro.dot(para_o_gigante)).is_less(0.0)
+
+
 func test_determinismo_com_cortes_ativos() -> void:
 	# Mesma seed, arena cheia de bots que se cortam: estado final idêntico.
 	var config_a: GameEngine.ConfigPartida = GameEngine.ConfigPartida.padrao(4242)
