@@ -47,6 +47,9 @@ var _cortes_feitos_previos: int = 0
 
 ## Vibração ao SOFRER um corte (docs §2.7) — mais curta que a da morte.
 const VIBRACAO_CORTE_MS: int = 150
+## Vibração ao ABATER (clímax da caçada) — linguagem háptica completa:
+## curta = fui ferido · média = cacei · longa = morri.
+const VIBRACAO_ABATE_MS: int = 200
 
 
 func _ready() -> void:
@@ -120,6 +123,8 @@ func _processar_eventos() -> void:
 			efeitos.pontos_flutuantes(
 				cobra.posicao, delta_pontos - comidas_novas * GameEngine.PONTOS_COMIDA)
 			render.pulsar_crescimento(cobra.id)
+			if ProgressoLocal.vibracao():
+				Input.vibrate_handheld(VIBRACAO_ABATE_MS)
 		# Morreu neste tick → confete na cor da vítima; jogador ganha flash+háptica.
 		if not cobra.viva and _vivas_previas.get(cobra.id, false):
 			efeitos.confete(cobra.posicao, ArenaRender.cor_de(cobra))
