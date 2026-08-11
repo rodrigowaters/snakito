@@ -158,22 +158,6 @@ func _montar_conteudo() -> void:
 		conteudo_placar.add_child(_coluna_placar("ARENA 👑",
 			str(motor.arena.cobras.size() - 1), T.COR_ALERTA, 0.7))
 
-	# Legenda do placar (playtest 11/08: "o que seriam esses números?").
-	var legenda_placar: Label = Label.new()
-	if regras != null:
-		legenda_placar.text = "seu progresso contra a meta do desafio"
-	else:
-		var rivais: int = motor.arena.cobras.size() - 1
-		var abates: int = motor.jogador().abates
-		var restantes: int = rivais - abates
-		legenda_placar.text = "você devorou %d das %d rivais" % [abates, rivais] \
-			+ (" — as outras %d se comeram entre si" % restantes if restantes > 0 else "!")
-	legenda_placar.theme_type_variation = &"TextoLegenda"
-	legenda_placar.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	legenda_placar.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	legenda_placar.size_flags_horizontal = Control.SIZE_FILL
-	meio.add_child(legenda_placar)
-
 	# Pill de moedas (economia liga no M3 — regra do design: recompensa por
 	# desafio; zerada guarda o lugar).
 	var linha_moedas: HBoxContainer = HBoxContainer.new()
