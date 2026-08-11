@@ -35,6 +35,11 @@
 - Comida aleatória no mapa: +1 de tamanho, +10 pontos
 - Bots devorados: crescimento proporcional ao tamanho da vítima, +100–500 pontos (escala não-linear)
 - **Visibilidade:** quanto maior, maior o raio de visão (vantagem estratégica e maior exposição)
+- **Velocidade cresce com o tamanho** (aprovado em ago/2026, playtest): comer →
+  crescer → ficar mais rápido, dentro da partida. Curva suave com teto
+  (`1 + ganho·(√tamanho − 1)`, clamp) para não virar bola de neve; vale para
+  TODAS as cobras — bots sob as mesmas regras (honestidade). Compõe com o turbo
+  (§2.6) e com o buff de conta (§2.6.2), que continuam existindo por cima.
 
 ### 2.3 Morte & Perda
 - Qualquer cobra 10% maior pode matá-lo em um toque
@@ -102,6 +107,40 @@ decisões de gasto de energia — exatamente o risco/recompensa que o jogo ensin
 - O princípio do §11 permanece intacto para skins. Para buffs, o enunciado é:
   *vantagem comprável só contra bots, nunca sobre a comparabilidade educacional,
   e sempre alcançável grátis com moedas de partida*.
+
+### 2.7 Corte de corpo (aprovado em ago/2026, pós-playtest do M1)
+
+O corpo deixa de ser só visual: vira estado do domínio com colisão. Nova camada
+tática — proteger o próprio rabo e atacar o rabo alheio.
+
+**Regras (decididas pelo Rodrigo):**
+1. **Quem corta:** mesma regra do abate — só quem pode devorar (≥10% maior,
+   razão 11/10 em inteiros) corta o corpo da menor.
+2. **Cabeça no corpo:** se a que encosta é ≥10% maior, corta; senão, é colisão
+   e **nada acontece** (atravessa — knockback continua exclusivo do contato
+   cabeça-cabeça).
+3. **O que a vítima perde:** encolhe para o tamanho proporcional ao ponto do
+   corte (cortou na metade → metade do tamanho); o corpo é aparado ali.
+4. **A parte cortada vira comida** espalhada ao longo do trecho perdido, com
+   valor equivalente ao tamanho perdido (1 comida por unidade — invariante de
+   plausibilidade preservada: `tamanho ≤ 1 + comidas + crescimento por abate`).
+5. **Sem pontos pelo corte.** Kill (pontos + crescimento por abate) continua
+   sendo SÓ devorar a cabeça. Morte também: a cobra só morre pela cabeça.
+6. **Bots usam o corte** — caçador/oportunista miram o ponto mais próximo da
+   presa (corpo ou cabeça), dentro da visão, sob as mesmas regras.
+
+**Decisões de implementação (onde a regra acima é omissa):**
+- **Proteção pós-corte:** a vítima fica incortável por 1s (60 ticks) após
+  sofrer um corte — sem isso, a cabeça deslizando pelo corpo retalha a vítima
+  até 1 em poucos ticks. Devorar a cabeça NÃO tem proteção.
+- **Pescoço é zona de cabeça:** pontos do corpo muito próximos da cabeça da
+  vítima não contam como corpo (ali vale a colisão cabeça-cabeça).
+- **Comprimento do corpo:** linear no tamanho (`12·(3 + tamanho)` unidades),
+  única fonte de verdade — o render desenha o corpo do domínio.
+- **Corpo de cobra morta desaparece** (não vira comida): o prêmio do abate já
+  é pontos + crescimento; comida dupla inflaria o farm de kill.
+- **Corte no rabo extremo que não muda o tamanho inteiro** (fração ≈ 1) não
+  faz nada — evita cortes cosméticos infinitos.
 
 ---
 
