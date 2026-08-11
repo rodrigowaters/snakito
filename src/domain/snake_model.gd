@@ -55,8 +55,13 @@ var personalidade: Personalidade
 var posicao: Vector2
 ## Direção de movimento (unitária). O GameEngine move; bots/input só apontam.
 var direcao: Vector2 = Vector2.RIGHT
-## Tamanho em unidades de crescimento (começa em 1 — docs §2.1).
+## MASSA física em unidades de crescimento (começa em 1 — docs §2.1). É o que
+## o corpo tem de comprimento e o que um corte leva embora (§2.7).
 var tamanho: int = 1
+## NÍVEL — a evolução na partida (docs §2.7, decisão do Rodrigo): sobe com
+## comida e abate e NUNCA desce. Visão, velocidade e o direito de devorar
+## derivam DAQUI — ser cortado não rebaixa o que você conquistou.
+var nivel: int = 1
 var pontos: int = 0
 var viva: bool = true
 ## 0..1 — escala o alcance de caça/oportunidade (dificuldade da arena, §2.4).
@@ -102,25 +107,29 @@ func _init(
 	personalidade = personalidade_
 	posicao = posicao_
 	tamanho = tamanho_
+	nivel = tamanho_
 
 
 func eh_jogador() -> bool:
 	return personalidade == Personalidade.JOGADOR
 
 
-## Raio de colisão atual.
+## Raio de colisão atual — do NÍVEL: a cabeça mostra o poder, não a massa
+## (uma gigante raspada continua com cara de gigante — aviso honesto).
 func raio() -> float:
-	return RAIO_BASE + RAIO_POR_TAMANHO * sqrt(float(tamanho))
+	return RAIO_BASE + RAIO_POR_TAMANHO * sqrt(float(nivel))
 
 
 ## Raio de visão atual — bots HONESTOS só enxergam dentro dele (regra dura #3).
+## Do NÍVEL (§2.7): ser cortado não cega.
 func raio_visao() -> float:
-	return minf(VISAO_BASE + VISAO_POR_TAMANHO * float(tamanho), VISAO_MAX)
+	return minf(VISAO_BASE + VISAO_POR_TAMANHO * float(nivel), VISAO_MAX)
 
 
-## Esta cobra é pelo menos 10% maior que a outra? (condição de devorar)
+## Esta cobra é pelo menos 10% "maior" que a outra? (condição de devorar)
+## Por NÍVEL (§2.7): ser cortado não devolve ninguém ao cardápio.
 func pode_devorar(outra: SnakeModel) -> bool:
-	return tamanho * DEVORAR_DENOMINADOR >= outra.tamanho * DEVORAR_NUMERADOR
+	return nivel * DEVORAR_DENOMINADOR >= outra.nivel * DEVORAR_NUMERADOR
 
 
 ## Multiplicador de velocidade neste tick: fator do tamanho (docs §2.2)
@@ -132,18 +141,22 @@ func multiplicador_velocidade() -> float:
 	return fator
 
 
-## Fator de velocidade pelo tamanho: comer → crescer → correr mais (§2.2).
+## Fator de velocidade pelo NÍVEL: comer → evoluir → correr mais (§2.2).
+## Ser cortado não desacelera (§2.7).
 func multiplicador_tamanho() -> float:
 	return minf(
-		1.0 + VEL_GANHO_POR_TAMANHO * (sqrt(float(tamanho)) - 1.0),
+		1.0 + VEL_GANHO_POR_TAMANHO * (sqrt(float(nivel)) - 1.0),
 		VEL_TETO_TAMANHO,
 	)
 
 
-## Comprimento-alvo do corpo (unidades de mundo) para o tamanho atual.
+## Comprimento-alvo do corpo (unidades de mundo) — da MASSA: é o físico que
+## o corte leva e a comida repõe.
 func comprimento_corpo() -> float:
 	return CORPO_COMPRIMENTO_POR_TAMANHO * (CORPO_BASE_SEGMENTOS + float(tamanho))
 
 
+## Comer/abater cresce as DUAS réguas: massa (corpo) e nível (poder).
 func crescer(quantidade: int) -> void:
 	tamanho += quantidade
+	nivel += quantidade

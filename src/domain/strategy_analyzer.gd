@@ -73,5 +73,5 @@ static func _analisar_morte(
 		achados.append(Achado.FUJA_DOS_MAIORES)
 	if regras != null \
 			and regras.desafio == ChallengeRules.Desafio.AGRESSAO_CONTROLADA \
-			and jogador.tamanho < TAMANHO_MINIMO_CACA:
+			and jogador.nivel < TAMANHO_MINIMO_CACA:
 		achados.append(Achado.CRESCA_ANTES_DE_CACAR)

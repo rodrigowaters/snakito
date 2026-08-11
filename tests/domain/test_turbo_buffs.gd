@@ -186,6 +186,7 @@ func test_composicao_limita_turbo_e_crescimento_dos_bots() -> void:
 	assert_float(bot.multiplicador_turbo).is_equal_approx(1.2, 0.0001)
 	# Bot no teto não cresce mais comendo (mas ainda pontua)...
 	bot.tamanho = 5
+	bot.nivel = 5
 	motor.arena.comidas.append(bot.posicao)
 	motor.avancar(Vector2.ZERO)
 	assert_int(bot.tamanho).is_equal(5)
@@ -193,6 +194,7 @@ func test_composicao_limita_turbo_e_crescimento_dos_bots() -> void:
 	# ...e o JOGADOR nunca tem teto — a progressão dele é o jogo.
 	var jogador: SnakeModel = motor.jogador()
 	jogador.tamanho = 5
+	jogador.nivel = 5
 	motor.arena.comidas.append(jogador.posicao)
 	motor.avancar(Vector2.ZERO)
 	assert_int(jogador.tamanho).is_equal(6)
@@ -239,7 +241,9 @@ func test_cacador_tem_spawn_e_teto_proprios() -> void:
 	assert_int(cacador.tamanho).is_equal(9)     # nasce grande
 	# Cada um respeita o próprio teto ao comer.
 	cacador.tamanho = 11
+	cacador.nivel = 11
 	fazendeiro.tamanho = 5
+	fazendeiro.nivel = 5
 	motor.arena.comidas.append(cacador.posicao)
 	motor.arena.comidas.append(fazendeiro.posicao)
 	motor.avancar(Vector2.ZERO)
@@ -255,6 +259,7 @@ func test_turbo_da_vantagem_de_caca_sobre_presa_sem_energia() -> void:
 		var motor: GameEngine = GameEngine.new(_config_vazia())
 		var jogador: SnakeModel = motor.jogador()
 		jogador.tamanho = 12
+		jogador.nivel = 12
 		var presa: SnakeModel = SnakeModel.new(
 			5, SnakeModel.Personalidade.FAZENDEIRO,
 			jogador.posicao + Vector2(60.0, 0.0), 1)

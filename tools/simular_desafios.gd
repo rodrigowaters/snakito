@@ -67,7 +67,7 @@ func _lote_arcade() -> void:
 			var jogador: SnakeModel = motor.jogador()
 			var direcao: Vector2 = cerebro.decidir(jogador, motor.arena, rng_jogador)
 			var turbo: bool = jogador.quer_turbo
-			if not jogador.quer_turbo and jogador.tamanho >= 3:
+			if not jogador.quer_turbo and jogador.nivel >= 3:
 				var presa: SnakeModel = cerebro.presa_mais_proxima(
 					jogador, motor.arena, jogador.raio_visao())
 				if presa != null:
@@ -83,7 +83,7 @@ func _lote_arcade() -> void:
 			mortes += 1
 		var minutos: float = maxf(0.05, motor.segundos_decorridos() / 60.0)
 		soma_vida += motor.segundos_decorridos()
-		soma_tamanho += float(jogador_final.tamanho)
+		soma_tamanho += float(jogador_final.nivel)
 		soma_comidas_min += jogador_final.comidas / minutos
 		soma_ameacas += float(soma_ameacas_partida) / maxf(1.0, float(motor.tick_atual))
 		soma_score += float(jogador_final.pontos)
@@ -112,7 +112,7 @@ func _jogar(desafio: ChallengeRules.Desafio, semente_jogador: int, caca: bool) -
 		var turbo: bool = jogador.quer_turbo  # fuga decidida pelo cérebro
 		if jogador.quer_turbo:
 			ticks_fugindo += 1
-		elif caca and jogador.tamanho >= 3:
+		elif caca and jogador.nivel >= 3:
 			var presa: SnakeModel = cerebro.presa_mais_proxima(
 				jogador, motor.arena, jogador.raio_visao())
 			if presa != null:

@@ -27,8 +27,10 @@ func test_velocidade_cresce_com_tamanho_com_teto() -> void:
 	var cobra: SnakeModel = SnakeModel.new(1, SnakeModel.Personalidade.JOGADOR, Vector2.ZERO)
 	assert_float(cobra.multiplicador_tamanho()).is_equal_approx(1.0, 0.0001)
 	cobra.tamanho = 25
+	cobra.nivel = 25
 	assert_float(cobra.multiplicador_tamanho()).is_equal_approx(1.12, 0.0001)
 	cobra.tamanho = 10000  # absurdo de propósito: o teto segura
+	cobra.nivel = 10000
 	assert_float(cobra.multiplicador_tamanho()) \
 		.is_equal_approx(SnakeModel.VEL_TETO_TAMANHO, 0.0001)
 
@@ -51,6 +53,7 @@ func test_corte_livre_qualquer_uma_corta() -> void:
 	var motor: GameEngine = _motor()
 	var jogador: SnakeModel = motor.jogador()
 	jogador.tamanho = 30
+	jogador.nivel = 30
 	_construir_corpo(motor, jogador, 200)
 	var pequena: SnakeModel = SnakeModel.new(50, SnakeModel.Personalidade.CACADOR,
 		jogador.corpo[jogador.corpo.size() - 10], 1)
@@ -66,6 +69,7 @@ func test_corte_encolhe_derruba_comida_e_nao_pontua() -> void:
 	var motor: GameEngine = _motor()
 	var jogador: SnakeModel = motor.jogador()
 	jogador.tamanho = 20
+	jogador.nivel = 20
 	_construir_corpo(motor, jogador, 200)
 	var predadora: SnakeModel = SnakeModel.new(
 		50, SnakeModel.Personalidade.CACADOR, Vector2.ZERO, 30)
@@ -97,6 +101,7 @@ func test_protecao_impede_retalhamento_em_serie() -> void:
 	var motor: GameEngine = _motor()
 	var jogador: SnakeModel = motor.jogador()
 	jogador.tamanho = 20
+	jogador.nivel = 20
 	_construir_corpo(motor, jogador, 200)
 	var predadora: SnakeModel = SnakeModel.new(
 		50, SnakeModel.Personalidade.CACADOR, jogador.corpo[jogador.corpo.size() / 2], 30)
@@ -114,6 +119,7 @@ func test_zona_do_pescoco_nao_corta() -> void:
 	var motor: GameEngine = _motor()
 	var jogador: SnakeModel = motor.jogador()
 	jogador.tamanho = 20
+	jogador.nivel = 20
 	_construir_corpo(motor, jogador, 200)
 	var predadora: SnakeModel = SnakeModel.new(
 		50, SnakeModel.Personalidade.CACADOR, Vector2.ZERO, 22)
@@ -127,6 +133,59 @@ func test_zona_do_pescoco_nao_corta() -> void:
 	predadora.direcao = Vector2.ZERO
 	motor.avancar(Vector2.RIGHT)
 	assert_int(jogador.cortes_sofridos).is_equal(0)
+
+
+func test_corte_leva_massa_mas_nao_rebaixa_nivel() -> void:
+	# Decisão do Rodrigo (§2.7): visão + velocidade + direito de devorar são
+	# do NÍVEL, que nunca desce — o corte leva só a MASSA (corpo).
+	var motor: GameEngine = _motor()
+	var jogador: SnakeModel = motor.jogador()
+	jogador.tamanho = 20
+	jogador.nivel = 20
+	_construir_corpo(motor, jogador, 200)
+	var visao_antes: float = jogador.raio_visao()
+	var velocidade_antes: float = jogador.multiplicador_tamanho()
+	var raio_antes: float = jogador.raio()
+	var predadora: SnakeModel = SnakeModel.new(
+		50, SnakeModel.Personalidade.CACADOR, jogador.corpo[jogador.corpo.size() / 2], 30)
+	predadora.direcao = Vector2.ZERO
+	motor.arena.adicionar_cobra(predadora)
+	motor.avancar(Vector2.RIGHT)
+
+	assert_int(jogador.cortes_sofridos).is_equal(1)
+	assert_int(jogador.tamanho).is_less(20)          # massa caiu
+	assert_int(jogador.nivel).is_equal(20)           # nível intacto
+	assert_float(jogador.raio_visao()).is_equal(visao_antes)
+	assert_float(jogador.multiplicador_tamanho()).is_equal(velocidade_antes)
+	assert_float(jogador.raio()).is_equal(raio_antes)
+	# Direito de devorar preservado: uma cobra nível 15 continuava no cardápio.
+	var quinze: SnakeModel = SnakeModel.new(
+		60, SnakeModel.Personalidade.FAZENDEIRO, Vector2(100.0, 100.0), 15)
+	assert_bool(jogador.pode_devorar(quinze)).is_true()
+	# E a recuperação: comer devolve massa (e segue subindo o nível).
+	var massa_pos_corte: int = jogador.tamanho
+	motor.arena.comidas.append(jogador.posicao + jogador.direcao * 4.0)
+	motor.avancar(jogador.direcao)
+	assert_int(jogador.tamanho).is_equal(massa_pos_corte + 1)
+	assert_int(jogador.nivel).is_equal(21)
+
+
+func test_abate_pontua_pelo_nivel_e_cresce_pela_massa() -> void:
+	# Vítima raspada: prestígio (pontos) pelo nível 16, carne (crescimento)
+	# pela massa 4 que sobrou.
+	var motor: GameEngine = _motor()
+	var jogador: SnakeModel = motor.jogador()
+	jogador.tamanho = 30
+	jogador.nivel = 30
+	var vitima: SnakeModel = SnakeModel.new(
+		50, SnakeModel.Personalidade.FAZENDEIRO, jogador.posicao, 16)
+	vitima.tamanho = 4  # foi cortada: massa 4, nível 16
+	motor.arena.adicionar_cobra(vitima)
+	motor.avancar(Vector2.RIGHT)
+	assert_bool(vitima.viva).is_false()
+	assert_int(jogador.pontos).is_equal(GameEngine.pontos_por_abate(16))
+	assert_int(jogador.tamanho).is_equal(32)  # 30 + 4/2
+	assert_int(jogador.nivel).is_equal(32)
 
 
 func test_determinismo_com_cortes_ativos() -> void:

@@ -393,6 +393,7 @@ func _cortar(cortadora: SnakeModel, vitima: SnakeModel, indice: int) -> void:
 		var passo: int = indice + int(float(removidos - 1) * (float(m) + 0.5) / float(perda))
 		arena.comidas.append(vitima.corpo[passo])
 
+	# Só a MASSA cai — nível, visão, velocidade e pontos ficam intactos (§2.7).
 	vitima.tamanho = novo_tamanho
 	vitima.corpo.resize(indice)
 	vitima.protegida_de_corte_ate = tick_atual + PROTECAO_CORTE_TICKS
@@ -425,13 +426,15 @@ func _resolver_contatos() -> void:
 func _devorar(predadora: SnakeModel, vitima: SnakeModel) -> void:
 	vitima.viva = false
 	vitima.corpo.clear()  # corpo de morta desaparece — não vira comida (§2.7)
-	predadora.pontos += pontos_por_abate(vitima.tamanho)
+	# Pontos pelo NÍVEL (o prestígio de vencer quem evoluiu); crescimento pela
+	# MASSA (só se come o que existe fisicamente — vítima raspada rende menos).
+	predadora.pontos += pontos_por_abate(vitima.nivel)
 	predadora.abates += 1
 	_crescer_com_teto(predadora, maxi(1, roundi(vitima.tamanho * FRACAO_CRESCIMENTO_ABATE)))
 
 
 ## Crescimento com o teto de composição aplicado aos BOTS (jogador nunca
-## tem teto — a progressão dele é o jogo).
+## tem teto — a progressão dele é o jogo). O teto vale para as duas réguas.
 func _crescer_com_teto(cobra: SnakeModel, quantidade: int) -> void:
 	cobra.crescer(quantidade)
 	if cobra.eh_jogador():
@@ -442,6 +445,7 @@ func _crescer_com_teto(cobra: SnakeModel, quantidade: int) -> void:
 		teto = config.tamanho_teto_cacador
 	if teto > 0:
 		cobra.tamanho = mini(cobra.tamanho, teto)
+		cobra.nivel = mini(cobra.nivel, teto)
 
 
 ## Contato sem devorar (diferença < 10%): as duas se empurram para fora da

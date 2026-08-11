@@ -42,6 +42,7 @@ func _roteiro() -> void:
 
 	print("FASE 2 — abater (confete + pontos flutuando)")
 	jogador.tamanho = 12
+	jogador.nivel = 12
 	var vitima: SnakeModel = SnakeModel.new(
 		_id_sem_decisao_imediata(motor.tick_atual),
 		SnakeModel.Personalidade.FAZENDEIRO,

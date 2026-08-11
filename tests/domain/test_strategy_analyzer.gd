@@ -66,6 +66,7 @@ func test_morrer_pequeno_cacando_ensina_a_crescer() -> void:
 	jogador.viva = false
 	jogador.energia = 80.0
 	jogador.tamanho = 2
+	jogador.nivel = 2
 	jogador.ticks_vividos = 60 * 60
 	var regras: ChallengeRules = _regras_resolvidas(ChallengeRules.Desafio.AGRESSAO_CONTROLADA, motor)
 	var achados: Array[StrategyAnalyzer.Achado] = StrategyAnalyzer.analisar(motor, regras)
@@ -101,6 +102,7 @@ func test_limite_de_dois_achados() -> void:
 	jogador.viva = false
 	jogador.energia = 0.0
 	jogador.tamanho = 2
+	jogador.nivel = 2
 	jogador.ticks_vividos = 5 * 60
 	var regras: ChallengeRules = _regras_resolvidas(ChallengeRules.Desafio.AGRESSAO_CONTROLADA, motor)
 	var achados: Array[StrategyAnalyzer.Achado] = StrategyAnalyzer.analisar(motor, regras)

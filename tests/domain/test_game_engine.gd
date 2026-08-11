@@ -98,6 +98,7 @@ func test_devorar_no_limiar_exato_de_10_por_cento() -> void:
 	var motor: GameEngine = GameEngine.new(_config_vazia())
 	var jogador: SnakeModel = motor.jogador()
 	jogador.tamanho = 11
+	jogador.nivel = 11
 	var vitima: SnakeModel = SnakeModel.new(
 		5, SnakeModel.Personalidade.FAZENDEIRO, jogador.posicao + Vector2(5.0, 0.0), 10)
 	motor.arena.adicionar_cobra(vitima)
@@ -115,6 +116,7 @@ func test_diferenca_menor_que_10_por_cento_vira_knockback() -> void:
 	var motor: GameEngine = GameEngine.new(_config_vazia())
 	var jogador: SnakeModel = motor.jogador()
 	jogador.tamanho = 12
+	jogador.nivel = 12
 	var outra: SnakeModel = SnakeModel.new(
 		5, SnakeModel.Personalidade.FAZENDEIRO, jogador.posicao + Vector2(5.0, 0.0), 11)
 	motor.arena.adicionar_cobra(outra)

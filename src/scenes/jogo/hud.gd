@@ -141,7 +141,7 @@ func atualizar(motor: GameEngine) -> void:
 	_tempo.text = "%d:%02d" % [restante / 60, restante % 60]
 	_tempo.theme_type_variation = &"TextoAlerta" if restante <= LIMIAR_ALERTA_SEG else &"TextoCorpo"
 	_posicao.text = "%dº/%d" % [motor.posicao_no_ranking(jogador), motor.arena.cobras.size()]
-	_tamanho.text = "×%d" % jogador.tamanho
+	_tamanho.text = "×%d" % jogador.nivel  # nível: não desce com corte (§2.7)
 	_energia.value = jogador.energia
 	_minimapa.atualizar(motor)
 	# Progresso do desafio ativo (Arcade não mostra nada).

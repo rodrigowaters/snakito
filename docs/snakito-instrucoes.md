@@ -121,8 +121,15 @@ tática — proteger o próprio rabo e atacar o rabo alheio.
    jogo perigoso. Se o teste reprovar, voltar à regra 11/10.)
 2. **Cabeça no corpo:** corta (fora da zona do pescoço) — knockback continua
    exclusivo do contato cabeça-cabeça.
-3. **O que a vítima perde:** encolhe para o tamanho proporcional ao ponto do
-   corte (cortou na metade → metade do tamanho); o corpo é aparado ali.
+3. **O que a vítima perde: SÓ MASSA.** Duas réguas separadas (decisão do
+   Rodrigo, ago/2026): **nível** (sobe com comida/abate, NUNCA desce — dele
+   derivam visão, velocidade e o direito de devorar) e **massa/corpo** (o
+   físico). O corte encolhe a massa para a fração do ponto do corte e apara o
+   corpo ali; nível, pontos, visão e velocidade ficam intactos — ser cortado
+   não rebaixa o que você conquistou, e comer devolve a massa. A cabeça
+   (raio) mostra o NÍVEL: gigante raspada continua com cara de gigante.
+   Abate: pontos pelo nível da vítima; crescimento pela massa que sobrou
+   (só se come o que existe).
 4. **A parte cortada vira comida** espalhada ao longo do trecho perdido, com
    valor equivalente ao tamanho perdido (1 comida por unidade — invariante de
    plausibilidade preservada: `tamanho ≤ 1 + comidas + crescimento por abate`).

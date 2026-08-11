@@ -166,7 +166,7 @@ func _payload_da_sessao() -> Dictionary:
 		"duration_seconds": maxi(1, int(motor.segundos_decorridos())),
 		"final_rank": motor.posicao_no_ranking(jogador),
 		"score": jogador.pontos,
-		"size_reached": jogador.tamanho,
+		"size_reached": jogador.nivel,  # nível = pico (monotônico, §2.7)
 		"kills": jogador.abates,
 		"food_eaten": jogador.comidas,
 		"challenge": int(regras.desafio) if regras != null else null,
