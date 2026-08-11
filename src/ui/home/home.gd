@@ -92,8 +92,10 @@ func _barra_topo() -> Control:
 	avatar.custom_minimum_size = Vector2(float(T.TOQUE_MIN), float(T.TOQUE_MIN))
 	avatar.pressed.connect(func() -> void:
 		get_tree().change_scene_to_file("res://src/ui/conta/conta.tscn"))
+	# Blueprint do avatar: cabeça de 36px SÓ com olhos (sem sorriso) e brilho
+	# radial no topo-esquerda.
 	avatar.draw.connect(func() -> void:
-		_desenhar_cabecinha(avatar, avatar.size * 0.5, avatar.size.y * 0.375))
+		_desenhar_cabeca_avatar(avatar, avatar.size * 0.5, avatar.size.y * 0.375))
 	barra.add_child(avatar)
 
 	barra.add_child(_espaco_flexivel())
@@ -106,6 +108,12 @@ func _barra_topo() -> Control:
 	config.text = "⚙"
 	config.custom_minimum_size = Vector2(float(T.TOQUE_MIN), float(T.TOQUE_MIN))
 	config.disabled = true  # Configurações chega no M3 — o lugar já é dela
+	# Desabilitado mas FIEL: mesmo vidro e mesmo glifo branco do desenho
+	# (o estado desabilitado padrão apagava o chip e fugia do blueprint).
+	var tema: Theme = ThemeDB.get_project_theme()
+	config.add_theme_stylebox_override("disabled",
+		tema.get_stylebox(&"normal", &"ChipQuadrado"))
+	config.add_theme_color_override("font_disabled_color", T.COR_TEXTO_PRIMARIO)
 	barra.add_child(config)
 	return barra
 
@@ -171,35 +179,42 @@ func _hero() -> Control:
 
 	hero.add_child(_titulo_gradiente())
 
-	# Pílula "skin equipada" (blueprint 1e): bolinha na cor + texto cinza.
+	# Pílula "skin equipada" (blueprint 1e): abraça o conteúdo — bolinha com
+	# brilho radial (ícone gerado) + texto cinza 13px extrabold.
 	var centro: HBoxContainer = HBoxContainer.new()
 	centro.alignment = BoxContainer.ALIGNMENT_CENTER
 	var pilula: Button = Button.new()
 	pilula.theme_type_variation = &"Chip"
+	pilula.text = "%s equipada" % _nome_da_skin()
+	pilula.add_theme_font_size_override("font_size", T.TAM_CORPO_SM)
+	pilula.icon = _textura_bolinha_skin()
+	# A variação Chip modula ícones com a cor do texto (cinza) — a bolinha
+	# tem cor própria: modulação neutra.
+	for estado: StringName in [&"icon_normal_color", &"icon_pressed_color", &"icon_hover_color", &"icon_focus_color"]:
+		pilula.add_theme_color_override(estado, Color.WHITE)
 	pilula.pressed.connect(func() -> void:
 		get_tree().change_scene_to_file("res://src/ui/skins/skins.tscn"))
-	var conteudo: HBoxContainer = HBoxContainer.new()
-	conteudo.set_anchors_preset(Control.PRESET_FULL_RECT)
-	conteudo.alignment = BoxContainer.ALIGNMENT_CENTER
-	conteudo.add_theme_constant_override("separation", T.ESP_XS)
-	conteudo.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var bolinha: Control = Control.new()
-	bolinha.custom_minimum_size = Vector2(float(T.ESP_MD), 0.0)
-	bolinha.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	bolinha.draw.connect(func() -> void:
-		bolinha.draw_circle(bolinha.size * 0.5, 8.0,
-			T.CORES_COBRA_BASE[ProgressoLocal.skin_equipada()]))
-	conteudo.add_child(bolinha)
-	var rotulo: Label = Label.new()
-	rotulo.text = "%s equipada" % _nome_da_skin()
-	rotulo.theme_type_variation = &"TextoCorpoSm"
-	rotulo.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	conteudo.add_child(rotulo)
-	pilula.add_child(conteudo)
-	pilula.custom_minimum_size = Vector2(200.0, 0.0)  # largura do conteúdo
 	centro.add_child(pilula)
 	hero.add_child(centro)
 	return hero
+
+
+## Bolinha da skin com o brilho radial do design, como textura de ícone
+## (borda esvanece → círculo antisserrilhado; cantos ficam transparentes).
+func _textura_bolinha_skin() -> Texture2D:
+	var cor: Color = T.CORES_COBRA_BASE[ProgressoLocal.skin_equipada()]
+	var gradiente: Gradient = Gradient.new()
+	gradiente.offsets = PackedFloat32Array([0.0, 0.5, 0.92, 1.0])
+	gradiente.colors = PackedColorArray([
+		cor.lightened(0.4), cor, cor, Color(cor, 0.0)])
+	var textura: GradientTexture2D = GradientTexture2D.new()
+	textura.gradient = gradiente
+	textura.fill = GradientTexture2D.FILL_RADIAL
+	textura.fill_from = Vector2(0.5, 0.5)
+	textura.fill_to = Vector2(1.0, 0.5)
+	textura.width = T.ESP_MD
+	textura.height = T.ESP_MD
+	return textura
 
 
 ## Logo com o gradiente verde→azul REAL do design, interpolado por letra
@@ -399,13 +414,34 @@ func _desenhar_mascote(alvo: Control) -> void:
 		alvo.draw_circle(
 			Vector2(corpo[i].x, corpo[i].y) * escala,
 			corpo[i].z * escala.x, Color(cor, alfas[i]))
-	_desenhar_carinha(alvo, Vector2(138.0, 76.0) * escala, 28.0 * escala.x)
+	var cabeca: Vector2 = Vector2(138.0, 76.0) * escala
+	_desenhar_brilho(alvo, cabeca, 28.0 * escala.x)
+	_desenhar_carinha(alvo, cabeca, 28.0 * escala.x)
 
 
-func _desenhar_cabecinha(alvo: Control, centro: Vector2, raio: float) -> void:
+## Cabeça do avatar (blueprint: SÓ olhos, sem sorriso, com brilho radial).
+func _desenhar_cabeca_avatar(alvo: Control, centro: Vector2, raio: float) -> void:
 	var cor: Color = T.CORES_COBRA_BASE[ProgressoLocal.skin_equipada()]
 	alvo.draw_circle(centro, raio, cor)
-	_desenhar_carinha(alvo, centro, raio)
+	_desenhar_brilho(alvo, centro, raio)
+	_desenhar_olhos_avatar(alvo, centro, raio)
+
+
+## Brilho radial do design (radial-gradient 32%/28%): círculo claro
+## deslocado ao topo-esquerda, contido na cabeça.
+func _desenhar_brilho(alvo: Control, centro: Vector2, raio: float) -> void:
+	var cor: Color = T.CORES_COBRA_BASE[ProgressoLocal.skin_equipada()]
+	alvo.draw_circle(
+		centro + Vector2(-raio * 0.25, -raio * 0.3), raio * 0.55,
+		Color(cor.lightened(0.35), 0.55))
+
+
+func _desenhar_olhos_avatar(alvo: Control, centro: Vector2, raio: float) -> void:
+	for lado: float in [-1.0, 1.0]:
+		var olho: Vector2 = centro + Vector2(lado * raio * 0.33, -raio * 0.12)
+		alvo.draw_circle(olho, raio * 0.2, T.COR_SIMBOLO_DALTONISMO)
+		alvo.draw_circle(olho + Vector2(raio * 0.04, raio * 0.04),
+			raio * 0.1, T.COR_APP_FUNDO_INICIO)
 
 
 ## Olhos + sorriso (proporções do SVG do blueprint).

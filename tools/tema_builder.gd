@@ -71,7 +71,9 @@ static func construir() -> Theme:
 	var card: StyleBoxFlat = _caixa(T.COR_CARD_FUNDO, T.RAIO_CARD, T.ESP_MD, T.ESP_MD, T.COR_CARD_BORDA, T.BORDA_FINA)
 	var modal: StyleBoxFlat = _caixa(T.COR_SUPERFICIE_MODAL, T.RAIO_MODAL, T.ESP_LG, T.ESP_LG, T.COR_SUPERFICIE_VIDRO_BORDA, T.BORDA_FINA)
 	var hud: StyleBoxFlat = _caixa(T.COR_SUPERFICIE_HUD, T.RAIO_BOTAO, T.ESP_MD, T.ESP_SM)
-	var pilula_contador: StyleBoxFlat = _caixa(T.COR_SUPERFICIE_2, T.RAIO_CHIP, T.ESP_SM, T.ESP_XS)
+	# Badge de contador do blueprint (Home 01): VIDRO com borda, raio de
+	# pílula (era superfície sólida raio 12 — infiel ao desenho, M2).
+	var pilula_contador: StyleBoxFlat = _caixa(T.COR_SUPERFICIE_VIDRO, T.RAIO_PILULA, T.ESP_SM, T.ESP_XS, T.COR_SUPERFICIE_VIDRO_BORDA, T.BORDA_FINA)
 	var barra_fundo: StyleBoxFlat = _caixa(T.COR_SUPERFICIE_2, T.RAIO_PILULA, 0, 0)
 	var barra_cheia: StyleBoxFlat = _caixa(T.COR_CTA_PRIMARIO_MEDIO, T.RAIO_PILULA, 0, 0)
 	var campo: StyleBoxFlat = _caixa(T.COR_SUPERFICIE_VIDRO, T.RAIO_BOTAO, T.ESP_MD, mv_campo, T.COR_SUPERFICIE_VIDRO_BORDA, T.BORDA_DESTAQUE)
