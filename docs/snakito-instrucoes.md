@@ -114,11 +114,13 @@ O corpo deixa de ser só visual: vira estado do domínio com colisão. Nova cama
 tática — proteger o próprio rabo e atacar o rabo alheio.
 
 **Regras (decididas pelo Rodrigo):**
-1. **Quem corta:** mesma regra do abate — só quem pode devorar (≥10% maior,
-   razão 11/10 em inteiros) corta o corpo da menor.
-2. **Cabeça no corpo:** se a que encosta é ≥10% maior, corta; senão, é colisão
-   e **nada acontece** (atravessa — knockback continua exclusivo do contato
-   cabeça-cabeça).
+1. **Quem corta (EM TESTE, ago/2026):** QUALQUER cobra corta qualquer corpo —
+   sem regra de tamanho. É o contra-golpe do pequeno: o líder gigante tem o
+   rabo comprido exposto. (Versão original: só quem pode devorar cortava;
+   trocada a pedido do Rodrigo no playtest do corte para deixar o fim de
+   jogo perigoso. Se o teste reprovar, voltar à regra 11/10.)
+2. **Cabeça no corpo:** corta (fora da zona do pescoço) — knockback continua
+   exclusivo do contato cabeça-cabeça.
 3. **O que a vítima perde:** encolhe para o tamanho proporcional ao ponto do
    corte (cortou na metade → metade do tamanho); o corpo é aparado ali.
 4. **A parte cortada vira comida** espalhada ao longo do trecho perdido, com
@@ -127,7 +129,10 @@ tática — proteger o próprio rabo e atacar o rabo alheio.
 5. **Sem pontos pelo corte.** Kill (pontos + crescimento por abate) continua
    sendo SÓ devorar a cabeça. Morte também: a cobra só morre pela cabeça.
 6. **Bots usam o corte** — caçador/oportunista miram o ponto mais próximo da
-   presa (corpo ou cabeça), dentro da visão, sob as mesmas regras.
+   presa (corpo ou cabeça), dentro da visão, sob as mesmas regras. Com o
+   corte livre, o OPORTUNISTA também colhe o rabo de qualquer cobra à vista
+   (inclusive maiores) — honesto por construção: a fuga tem prioridade, então
+   ele só colhe rabo cuja cabeça dona está fora da visão dele.
 
 **Decisões de implementação (onde a regra acima é omissa):**
 - **Proteção pós-corte:** a vítima fica incortável por 1s (60 ticks) após

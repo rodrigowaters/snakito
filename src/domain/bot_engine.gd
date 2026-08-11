@@ -71,6 +71,15 @@ func decidir(bot: SnakeModel, arena: ArenaModel, rng: RngService) -> Vector2:
 			if presa != null:
 				bot.quer_turbo = true
 				return (ponto_de_ataque(bot, presa) - bot.posicao).normalized()
+			# Corte livre (§2.7 em teste): sem presa devorável, colher o rabo
+			# de QUALQUER cobra é oportunidade — inclusive do líder gigante.
+			# Honesto por construção: se um devorador está com a cabeça
+			# dentro da visão, a fuga (acima) já decidiu — chegar aqui
+			# significa que só há rabo "seguro" por perto.
+			var rabo: Vector2 = _rabo_mais_proximo(bot, arena, alcance_oportunidade)
+			if rabo != Vector2.INF:
+				bot.quer_turbo = true
+				return (rabo - bot.posicao).normalized()
 
 	# Fazendeiro sempre cai aqui; Caçador/Oportunista caem sem presa à vista.
 	return _rumo_comida_ou_vagueio(bot, arena, rng)
@@ -89,6 +98,30 @@ func ponto_de_ataque(bot: SnakeModel, presa: SnakeModel) -> Vector2:
 			melhor_dist2 = dist2
 			melhor = presa.corpo[i]
 		i += 4
+	return melhor
+
+
+## Ponto de corpo alheio mais próximo dentro de `alcance` (corte livre, §2.7
+## em teste). Vector2.INF = nenhum. Pula a zona do pescoço da dona (lá é
+## colisão de cabeça, não corte).
+func _rabo_mais_proximo(bot: SnakeModel, arena: ArenaModel, alcance: float) -> Vector2:
+	var melhor: Vector2 = Vector2.INF
+	var melhor_dist2: float = alcance * alcance
+	for outra: SnakeModel in arena.cobras:
+		if outra == bot or not outra.viva:
+			continue
+		var pescoco: float = outra.raio() * SnakeModel.CORPO_ZONA_PESCOCO_RAIOS
+		var pescoco2: float = pescoco * pescoco
+		var i: int = 4
+		while i < outra.corpo.size():
+			var ponto: Vector2 = outra.corpo[i]
+			i += 4
+			if outra.posicao.distance_squared_to(ponto) < pescoco2:
+				continue
+			var dist2: float = bot.posicao.distance_squared_to(ponto)
+			if dist2 < melhor_dist2:
+				melhor_dist2 = dist2
+				melhor = ponto
 	return melhor
 
 

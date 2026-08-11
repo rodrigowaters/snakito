@@ -45,22 +45,21 @@ func test_corpo_e_aparado_no_comprimento_do_tamanho() -> void:
 	assert_float(total).is_less(jogador.comprimento_corpo() + 12.0)
 
 
-func test_so_quem_pode_devorar_corta() -> void:
+func test_corte_livre_qualquer_uma_corta() -> void:
+	# EM TESTE (§2.7, ago/2026): sem regra de tamanho — até a MENOR corta o
+	# corpo da maior (contra-golpe do pequeno contra o líder gigante).
 	var motor: GameEngine = _motor()
 	var jogador: SnakeModel = motor.jogador()
-	jogador.tamanho = 10
-	_construir_corpo(motor, jogador, 60)
-	# Igual (10 vs 10) NÃO corta — mesma regra 11/10 do abate.
-	var igual: SnakeModel = SnakeModel.new(50, SnakeModel.Personalidade.CACADOR,
-		jogador.corpo[jogador.corpo.size() - 1], 10)
-	motor.arena.adicionar_cobra(igual)
-	igual.direcao = Vector2.ZERO
-	motor.avancar(Vector2.RIGHT)
-	assert_int(jogador.cortes_sofridos).is_equal(0)
-	# 11 vs 10 corta (limiar exato em inteiros).
-	igual.tamanho = 11
+	jogador.tamanho = 30
+	_construir_corpo(motor, jogador, 200)
+	var pequena: SnakeModel = SnakeModel.new(50, SnakeModel.Personalidade.CACADOR,
+		jogador.corpo[jogador.corpo.size() - 10], 1)
+	motor.arena.adicionar_cobra(pequena)
+	pequena.direcao = Vector2.ZERO
 	motor.avancar(Vector2.RIGHT)
 	assert_int(jogador.cortes_sofridos).is_equal(1)
+	assert_int(pequena.cortes_feitos).is_equal(1)
+	assert_bool(jogador.viva).is_true()
 
 
 func test_corte_encolhe_derruba_comida_e_nao_pontua() -> void:
