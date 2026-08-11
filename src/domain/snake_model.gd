@@ -27,6 +27,23 @@ const ENERGIA_MAX: float = 100.0
 ## Multiplicador de velocidade do turbo sem buff (bots usam sempre este).
 const TURBO_BASE: float = 1.5
 
+# --- Velocidade por tamanho (docs §2.2, ago/2026) ------------------------------
+## Curva: 1 + GANHO·(√tamanho − 1), clamp no teto. √ para o ganho desacelerar;
+## tamanho 1 = exatamente 1.0 (o novato anda na base). No teto (+25%), o
+## gigante alcança pequenos sem turbo — é a recompensa de crescer que o
+## playtest pediu; o teto impede a bola de neve de ficar incaçável.
+const VEL_GANHO_POR_TAMANHO: float = 0.03
+const VEL_TETO_TAMANHO: float = 1.25
+
+# --- Corpo (docs §2.7) ----------------------------------------------------------
+## Comprimento do corpo em unidades de mundo: linear no tamanho. Única fonte
+## de verdade — o render desenha ESTE corpo, não uma trilha própria.
+const CORPO_BASE_SEGMENTOS: float = 3.0
+const CORPO_COMPRIMENTO_POR_TAMANHO: float = 12.0
+## Zona do pescoço (em raios da vítima): pontos do corpo a menos disso da
+## cabeça não contam como corpo cortável — ali vale a colisão cabeça-cabeça.
+const CORPO_ZONA_PESCOCO_RAIOS: float = 2.0
+
 # --- Regra de devorar (docs §2.3: "qualquer cobra 10% maior mata em um toque")
 # Razão 11/10 em inteiros: comparar com float (1.1 * tamanho) erra no limiar
 # exato (1.1 não tem representação binária finita — 11 >= 1.1*10 dá falso!).
@@ -58,10 +75,21 @@ var multiplicador_turbo: float = TURBO_BASE
 ## Raio do ímã de comida; 0 = sem ímã (buff exclusivo do jogador).
 var raio_ima: float = 0.0
 
+# --- Corpo (docs §2.7) ---
+## Trilha da cabeça, do ponto mais recente ([0] = pescoço) ao rabo. Estado de
+## DOMÍNIO: é aqui que o corte colide; o render desenha esta trilha.
+var corpo: PackedVector2Array = PackedVector2Array()
+## Tick até o qual esta cobra está protegida de novos cortes (proteção de 1s
+## após sofrer um — sem ela a cabeça deslizando retalha até 1 em poucos ticks).
+var protegida_de_corte_ate: int = -1
+
 # --- Estatísticas para resultado e análise pós-partida ---
 var comidas: int = 0
 var abates: int = 0
 var ticks_vividos: int = 0
+## Cortes que esta cobra APLICOU / SOFREU (docs §2.7 — insumo de análise).
+var cortes_feitos: int = 0
+var cortes_sofridos: int = 0
 
 
 func _init(
@@ -95,9 +123,26 @@ func pode_devorar(outra: SnakeModel) -> bool:
 	return tamanho * DEVORAR_DENOMINADOR >= outra.tamanho * DEVORAR_NUMERADOR
 
 
-## Multiplicador de velocidade neste tick (turbo ativo ou não).
+## Multiplicador de velocidade neste tick: fator do tamanho (docs §2.2)
+## composto com o turbo quando ativo.
 func multiplicador_velocidade() -> float:
-	return multiplicador_turbo if turbo_ativo else 1.0
+	var fator: float = multiplicador_tamanho()
+	if turbo_ativo:
+		fator *= multiplicador_turbo
+	return fator
+
+
+## Fator de velocidade pelo tamanho: comer → crescer → correr mais (§2.2).
+func multiplicador_tamanho() -> float:
+	return minf(
+		1.0 + VEL_GANHO_POR_TAMANHO * (sqrt(float(tamanho)) - 1.0),
+		VEL_TETO_TAMANHO,
+	)
+
+
+## Comprimento-alvo do corpo (unidades de mundo) para o tamanho atual.
+func comprimento_corpo() -> float:
+	return CORPO_COMPRIMENTO_POR_TAMANHO * (CORPO_BASE_SEGMENTOS + float(tamanho))
 
 
 func crescer(quantidade: int) -> void:

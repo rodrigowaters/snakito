@@ -208,16 +208,18 @@ func test_turbo_dos_bots_nunca_passa_do_base_do_jogador() -> void:
 
 
 func test_desafio_2_calibrado_no_playtest() -> void:
-	# Trava a calibragem de 5 iterações de playtest (08/08). Se algum valor
-	# mudar, mudou a experiência validada — rode tools/simular_desafios.gd
-	# e atualize a banda documentada junto.
+	# Trava a calibragem validada. Se algum valor mudar, mudou a experiência —
+	# rode tools/simular_desafios.gd e atualize a banda documentada junto.
+	# Recalibrado em ago/2026 com corte+velocidade por tamanho (§2.2/§2.7):
+	# alfas nascem 14, teto 40, turbo 1.4 — banda: conclui 20/24, morre 4/24,
+	# fuga 17%, conclusão média 44s.
 	var config: GameEngine.ConfigPartida = ChallengeRules.config_do_desafio(
 		ChallengeRules.Desafio.AGRESSAO_CONTROLADA)
-	assert_float(config.turbo_bots).is_equal_approx(1.25, 0.0001)
+	assert_float(config.turbo_bots).is_equal_approx(1.4, 0.0001)
 	assert_int(config.tamanho_teto_bot).is_equal(8)
 	assert_int(config.cacadores).is_equal(2)
-	assert_int(config.tamanho_inicial_cacador).is_equal(10)
-	assert_int(config.tamanho_teto_cacador).is_equal(30)
+	assert_int(config.tamanho_inicial_cacador).is_equal(14)
+	assert_int(config.tamanho_teto_cacador).is_equal(40)
 	assert_vector(config.tamanho_arena).is_equal(Vector2(2000.0, 2000.0))
 
 

@@ -13,8 +13,6 @@ const ESCALA_MUNDO: float = 2.0
 const ESPACO_SEGMENTO: float = 0.9
 ## Limite de segmentos desenhados por cobra (performance na arena de 30 bots).
 const MAX_SEGMENTOS: int = 24
-## Pontos de trilha guardados por cobra (a 3 unidades/tick cobre o corpo máximo).
-const MAX_TRILHA: int = 400
 
 ## Pulso de escala ao comer (docs §7: crescimento suave, 0.3s ease out).
 const PULSO_CRESCIMENTO: float = 1.25
@@ -22,9 +20,6 @@ const PULSO_DURACAO: float = 0.3
 
 var motor: GameEngine
 
-## Trilha de posições recentes da cabeça, por id (estado de RENDER, não de jogo:
-## a colisão do domínio é pela cabeça; o corpo é visual).
-var _trilhas: Dictionary[int, PackedVector2Array] = {}
 ## Fator de escala visual corrente por id (1.0 = sem pulso).
 var _pulsos: Dictionary[int, float] = {}
 
@@ -40,18 +35,8 @@ func pulsar_crescimento(id: int) -> void:
 
 
 ## Chamar 1x por tick de física, depois de motor.avancar().
+## (O corpo agora é estado do DOMÍNIO — docs §2.7; aqui só se redesenha.)
 func registrar_tick() -> void:
-	for cobra: SnakeModel in motor.arena.cobras:
-		if not cobra.viva:
-			_trilhas.erase(cobra.id)
-			continue
-		if not _trilhas.has(cobra.id):
-			_trilhas[cobra.id] = PackedVector2Array()
-		var trilha: PackedVector2Array = _trilhas[cobra.id]
-		trilha.insert(0, cobra.posicao)
-		if trilha.size() > MAX_TRILHA:
-			trilha.resize(MAX_TRILHA)
-		_trilhas[cobra.id] = trilha
 	queue_redraw()
 
 
@@ -158,20 +143,19 @@ func _desenhar_olhos(cobra: SnakeModel, raio: float) -> void:
 		draw_circle(centro + frente * raio_olho * 0.35, raio_olho * 0.5, T.COR_ARENA_FUNDO)
 
 
+## Amostra o CORPO DO DOMÍNIO (docs §2.7 — o que se vê é o que colide) no
+## espaçamento visual dos segmentos.
 func _pontos_do_corpo(cobra: SnakeModel) -> PackedVector2Array:
 	var pontos: PackedVector2Array = PackedVector2Array()
-	if not _trilhas.has(cobra.id):
-		return pontos
-	var trilha: PackedVector2Array = _trilhas[cobra.id]
+	var corpo: PackedVector2Array = cobra.corpo
 	var espaco: float = cobra.raio() * ESPACO_SEGMENTO
-	var alvo: int = mini(3 + cobra.tamanho, MAX_SEGMENTOS)
 	var acumulado: float = 0.0
 	var proximo_em: float = espaco
-	for i: int in range(1, trilha.size()):
-		acumulado += trilha[i - 1].distance_to(trilha[i])
+	for i: int in range(1, corpo.size()):
+		acumulado += corpo[i - 1].distance_to(corpo[i])
 		if acumulado >= proximo_em:
-			pontos.append(trilha[i])
+			pontos.append(corpo[i])
 			proximo_em += espaco
-			if pontos.size() >= alvo:
+			if pontos.size() >= MAX_SEGMENTOS:
 				break
 	return pontos

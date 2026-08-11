@@ -63,17 +63,33 @@ func decidir(bot: SnakeModel, arena: ArenaModel, rng: RngService) -> Vector2:
 			var presa: SnakeModel = presa_mais_proxima(bot, arena, alcance_caca)
 			if presa != null:
 				bot.quer_turbo = true
-				return (presa.posicao - bot.posicao).normalized()
+				return (ponto_de_ataque(bot, presa) - bot.posicao).normalized()
 		SnakeModel.Personalidade.OPORTUNISTA:
 			var alcance_oportunidade: float = bot.raio_visao() \
 				* (OPORTUNIDADE_BASE + OPORTUNIDADE_POR_AGRESSIVIDADE * bot.agressividade)
 			var presa: SnakeModel = presa_mais_proxima(bot, arena, alcance_oportunidade)
 			if presa != null:
 				bot.quer_turbo = true
-				return (presa.posicao - bot.posicao).normalized()
+				return (ponto_de_ataque(bot, presa) - bot.posicao).normalized()
 
 	# Fazendeiro sempre cai aqui; Caçador/Oportunista caem sem presa à vista.
 	return _rumo_comida_ou_vagueio(bot, arena, rng)
+
+
+## Ponto de ataque na presa: o mais próximo entre cabeça e corpo (docs §2.7 —
+## cortar o rabo é caça válida e mais segura que mirar a cabeça). Corpo
+## amostrado com passo largo: decisão de 100ms não precisa de precisão de tick.
+func ponto_de_ataque(bot: SnakeModel, presa: SnakeModel) -> Vector2:
+	var melhor: Vector2 = presa.posicao
+	var melhor_dist2: float = bot.posicao.distance_squared_to(presa.posicao)
+	var i: int = 4
+	while i < presa.corpo.size():
+		var dist2: float = bot.posicao.distance_squared_to(presa.corpo[i])
+		if dist2 < melhor_dist2:
+			melhor_dist2 = dist2
+			melhor = presa.corpo[i]
+		i += 4
+	return melhor
 
 
 ## Cobra viva mais próxima que PODE DEVORAR o bot, dentro da visão dele.

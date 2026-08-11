@@ -41,6 +41,14 @@ const IMA_VELOCIDADE: float = 120.0
 ## +5 pontos iniciais por nível (teto: +50 no Nv 10).
 const BUFF_PONTOS_POR_NIVEL: int = 5
 
+# --- Corte de corpo (docs §2.7) -----------------------------------------------
+## Proteção após sofrer um corte: 1s incortável (devorar a cabeça NÃO respeita
+## esta proteção — ela existe só para a cabeça não retalhar o corpo em série).
+const PROTECAO_CORTE_TICKS: int = 60
+## "Espessura" de colisão do corpo, em fração do raio da vítima (o corpo
+## desenhado afina em direção ao rabo; 0.7 é o meio-termo do render).
+const ESPESSURA_CORPO: float = 0.7
+
 # --- Pontuação (docs §2.2; onde a spec não fixa número, a constante fixa) ----
 ## Comida: +1 tamanho, +10 pontos (fixado na spec).
 const PONTOS_COMIDA: int = 10
@@ -150,8 +158,10 @@ func avancar(direcao_jogador: Vector2, turbo_jogador: bool = false) -> void:
 	bots.atualizar(tick_atual, arena, rng)
 	_resolver_turbo()
 	_mover_cobras()
+	_registrar_corpos()
 	_resolver_comida()
 	_resolver_contatos()
+	_resolver_cortes()
 
 	tick_atual += 1
 	for cobra: SnakeModel in arena.cobras:
@@ -304,6 +314,92 @@ func _resolver_comida() -> void:
 	arena.repor_comida(config.qtd_comida, rng)
 
 
+## Atualiza a trilha do corpo de cada cobra (docs §2.7): a cabeça deste tick
+## entra na frente; o rabo é aparado no comprimento-alvo do tamanho atual.
+func _registrar_corpos() -> void:
+	for cobra: SnakeModel in arena.cobras:
+		if not cobra.viva:
+			continue
+		cobra.corpo.insert(0, cobra.posicao)
+		var alvo: float = cobra.comprimento_corpo()
+		var acumulado: float = 0.0
+		for i: int in range(1, cobra.corpo.size()):
+			acumulado += cobra.corpo[i - 1].distance_to(cobra.corpo[i])
+			if acumulado > alvo:
+				cobra.corpo.resize(i + 1)
+				break
+
+
+## Corte de corpo (docs §2.7): cabeça de quem PODE DEVORAR encostando no corpo
+## da menor corta ali — a vítima encolhe para a fração do ponto do corte e o
+## trecho perdido vira comida. Sem pontos; kill continua sendo só pela cabeça.
+func _resolver_cortes() -> void:
+	# Ordem fixa (atacante externo, vítima interno) — determinismo.
+	for a: SnakeModel in arena.cobras:
+		if not a.viva:
+			continue
+		for b: SnakeModel in arena.cobras:
+			if b == a or not b.viva:
+				continue
+			if tick_atual < b.protegida_de_corte_ate:
+				continue
+			if not a.pode_devorar(b):
+				continue
+			var indice: int = _indice_de_corte(a, b)
+			if indice > 0:
+				_cortar(a, b, indice)
+
+
+## Índice do ponto do corpo de `b` onde a cabeça de `a` encosta (0 = nenhum).
+## Pontos na zona do pescoço não contam — ali vale a colisão cabeça-cabeça.
+func _indice_de_corte(a: SnakeModel, b: SnakeModel) -> int:
+	var alcance: float = a.raio() + b.raio() * ESPESSURA_CORPO
+	var alcance2: float = alcance * alcance
+	# Rejeição barata: cabeça de A longe demais até do ponto mais distante
+	# possível do corpo de B (cabeça de B + comprimento do corpo).
+	var maximo: float = b.comprimento_corpo() + alcance
+	if a.posicao.distance_squared_to(b.posicao) > maximo * maximo:
+		return 0
+	var pescoco: float = b.raio() * SnakeModel.CORPO_ZONA_PESCOCO_RAIOS
+	var pescoco2: float = pescoco * pescoco
+	for i: int in range(1, b.corpo.size()):
+		var ponto: Vector2 = b.corpo[i]
+		if b.posicao.distance_squared_to(ponto) < pescoco2:
+			continue
+		if a.posicao.distance_squared_to(ponto) <= alcance2:
+			return i
+	return 0
+
+
+func _cortar(cortadora: SnakeModel, vitima: SnakeModel, indice: int) -> void:
+	# Fração do corpo que SOBRA = comprimento até o ponto / comprimento total.
+	var ate_o_corte: float = 0.0
+	var total: float = 0.0
+	for i: int in range(1, vitima.corpo.size()):
+		var trecho: float = vitima.corpo[i - 1].distance_to(vitima.corpo[i])
+		total += trecho
+		if i <= indice:
+			ate_o_corte += trecho
+	if total <= 0.0:
+		return
+	var novo_tamanho: int = maxi(1, floori(vitima.tamanho * ate_o_corte / total))
+	var perda: int = vitima.tamanho - novo_tamanho
+	if perda <= 0:
+		return  # corte cosmético no extremo do rabo — nada acontece (§2.7)
+
+	# O trecho perdido vira comida equivalente, espalhada ao longo dele (§2.7).
+	var removidos: int = vitima.corpo.size() - indice
+	for m: int in perda:
+		var passo: int = indice + int(float(removidos - 1) * (float(m) + 0.5) / float(perda))
+		arena.comidas.append(vitima.corpo[passo])
+
+	vitima.tamanho = novo_tamanho
+	vitima.corpo.resize(indice)
+	vitima.protegida_de_corte_ate = tick_atual + PROTECAO_CORTE_TICKS
+	vitima.cortes_sofridos += 1
+	cortadora.cortes_feitos += 1
+
+
 func _resolver_contatos() -> void:
 	# Pares em ordem fixa de índice — determinismo. Cobra devorada no meio da
 	# varredura sai dos pares seguintes pelo check de `viva`.
@@ -328,6 +424,7 @@ func _resolver_contatos() -> void:
 
 func _devorar(predadora: SnakeModel, vitima: SnakeModel) -> void:
 	vitima.viva = false
+	vitima.corpo.clear()  # corpo de morta desaparece — não vira comida (§2.7)
 	predadora.pontos += pontos_por_abate(vitima.tamanho)
 	predadora.abates += 1
 	_crescer_com_teto(predadora, maxi(1, roundi(vitima.tamanho * FRACAO_CRESCIMENTO_ABATE)))

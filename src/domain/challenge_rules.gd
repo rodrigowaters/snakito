@@ -69,9 +69,10 @@ static func config_do_desafio(desafio_: Desafio) -> GameEngine.ConfigPartida:
 			# · arena aberta (~2 bots no enquadramento da câmera): respiro
 			#   entre encontros, não "campo de batalha"
 			# · comida contida: crescimento visível a partida inteira
-			# Banda validada (24 trajetórias sintéticas): conclui 17/24,
-			# morre 7/24 (fuga ingênua — humanos escapam melhor), fuga média
-			# 21%, conclusão média 46s.
+			# RECALIBRADO com corte+velocidade por tamanho (§2.2/§2.7,
+			# ago/2026): "maior = mais rápido" quebrou a premissa da paridade
+			# e o D2 trivializou (24/24, 0 mortes). Alfas mais fortes
+			# devolvem a ameaça: nascem 14, teto 40, turbo 1.4.
 			config.semente = SEED_DESAFIO_2
 			config.duracao_seg = DURACAO_DESAFIO_2_SEG
 			config.tamanho_arena = Vector2(2000.0, 2000.0)
@@ -82,10 +83,10 @@ static func config_do_desafio(desafio_: Desafio) -> GameEngine.ConfigPartida:
 			config.tamanho_min_bot = 1
 			config.tamanho_max_bot = 5
 			config.agressividade = 0.5
-			config.turbo_bots = 1.25
+			config.turbo_bots = 1.4
 			config.tamanho_teto_bot = 8
-			config.tamanho_teto_cacador = 30
-			config.tamanho_inicial_cacador = 10
+			config.tamanho_teto_cacador = 40
+			config.tamanho_inicial_cacador = 14
 	return config
 
 

@@ -42,6 +42,11 @@ var _comidas_previas: Dictionary[int, int] = {}
 var _pontos_previos: Dictionary[int, int] = {}
 var _abates_previos: Dictionary[int, int] = {}
 var _vivas_previas: Dictionary[int, bool] = {}
+var _cortes_sofridos_previos: int = 0
+var _cortes_feitos_previos: int = 0
+
+## Vibração ao SOFRER um corte (docs §2.7) — mais curta que a da morte.
+const VIBRACAO_CORTE_MS: int = 150
 
 
 func _ready() -> void:
@@ -121,6 +126,14 @@ func _processar_eventos() -> void:
 			if cobra.eh_jogador():
 				hud.flash_morte()
 				Input.vibrate_handheld(VIBRACAO_MORTE_MS)
+	# Cortes do jogador (docs §2.7): sofreu → háptica curta; aplicou → pulso.
+	var jogador: SnakeModel = motor.jogador()
+	if jogador.cortes_sofridos > _cortes_sofridos_previos:
+		Input.vibrate_handheld(VIBRACAO_CORTE_MS)
+	if jogador.cortes_feitos > _cortes_feitos_previos:
+		render.pulsar_crescimento(jogador.id)
+	_cortes_sofridos_previos = jogador.cortes_sofridos
+	_cortes_feitos_previos = jogador.cortes_feitos
 	_memorizar_estado()
 
 
