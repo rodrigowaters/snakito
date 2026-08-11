@@ -38,26 +38,10 @@ func _ready() -> void:
 	add_child(joystick)
 
 	_montar_barra_topo()
-	_montar_minimapa()
 	_montar_turbo()
 	_montar_flash()
 	_montar_convite_de_inicio()
 	_montar_modal_pausa()
-
-
-## Minimapa no canto superior direito, abaixo da barra (docs §4.2).
-func _montar_minimapa() -> void:
-	var canto: MarginContainer = MarginContainer.new()
-	canto.set_anchors_preset(Control.PRESET_TOP_RIGHT)
-	canto.grow_horizontal = Control.GROW_DIRECTION_BEGIN
-	canto.grow_vertical = Control.GROW_DIRECTION_END
-	canto.add_theme_constant_override("margin_right", T.ESP_MD)
-	# Abaixo da barra do topo (altura da barra ≈ toque padrão + margens).
-	canto.add_theme_constant_override("margin_top", T.TOQUE_PADRAO + T.ESP_LG)
-	canto.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(canto)
-	_minimapa = Minimapa.new()
-	canto.add_child(_minimapa)
 
 
 ## Convite "toque para começar" — some no primeiro toque.
@@ -135,27 +119,31 @@ func _montar_flash() -> void:
 
 func atualizar(motor: GameEngine) -> void:
 	var jogador: SnakeModel = motor.jogador()
-	_pontos.text = str(jogador.pontos)
+	_pontos.text = formatar_milhar(jogador.pontos)
 	var restante: int = maxi(0, motor.config.duracao_seg - int(motor.segundos_decorridos()))
 	@warning_ignore("integer_division")
 	_tempo.text = "%d:%02d" % [restante / 60, restante % 60]
-	_tempo.theme_type_variation = &"TextoAlerta" if restante <= LIMIAR_ALERTA_SEG else &"TextoCorpo"
-	_posicao.text = "%dº/%d" % [motor.posicao_no_ranking(jogador), motor.arena.cobras.size()]
-	_tamanho.text = "×%d" % jogador.nivel  # nível: não desce com corte (§2.7)
+	# Timer amarelo por padrão (blueprint 04); vermelho na reta final.
+	_tempo.add_theme_color_override("font_color",
+		T.COR_PERIGO_ACAO if restante <= LIMIAR_ALERTA_SEG else T.COR_ALERTA)
+	_posicao.text = "%dº DE %d" % [motor.posicao_no_ranking(jogador), motor.arena.cobras.size()]
+	_tamanho.text = "TAM. %d" % jogador.nivel  # nível: não desce com corte (§2.7)
 	_energia.value = jogador.energia
 	_minimapa.atualizar(motor)
 	# Progresso do desafio ativo (Arcade não mostra nada).
 	var regras: ChallengeRules = Sessao.regras_desafio
 	_meta.visible = regras != null
 	if regras != null:
-		_meta.text = "Meta %d/%d" % [regras.progresso_atual(motor), regras.progresso_meta()]
+		_meta.text = "META %d/%d" % [regras.progresso_atual(motor), regras.progresso_meta()]
 
 
+## Barra única do blueprint 04: [pontos / POSIÇÃO] [tempo / TAM.] no
+## space-between com [minimapa 48 + pausa 48] à direita.
 func _montar_barra_topo() -> void:
 	var margem: MarginContainer = MarginContainer.new()
 	margem.set_anchors_preset(Control.PRESET_TOP_WIDE)
-	margem.add_theme_constant_override("margin_left", T.ESP_MD)
-	margem.add_theme_constant_override("margin_right", T.ESP_MD)
+	margem.add_theme_constant_override("margin_left", T.ESP_SM)
+	margem.add_theme_constant_override("margin_right", T.ESP_SM)
 	margem.add_theme_constant_override("margin_top", T.ESP_SM)
 	add_child(margem)
 
@@ -167,21 +155,43 @@ func _montar_barra_topo() -> void:
 	linha.add_theme_constant_override("separation", T.ESP_MD)
 	painel.add_child(linha)
 
-	_pontos = _rotulo(linha, &"TituloMd")
-	_tamanho = _rotulo(linha, &"TextoSecundario")
-	_meta = _rotulo(linha, &"TextoAlerta")
+	var col_esquerda: VBoxContainer = VBoxContainer.new()
+	col_esquerda.alignment = BoxContainer.ALIGNMENT_CENTER
+	linha.add_child(col_esquerda)
+	_pontos = _rotulo(col_esquerda, &"TituloMd")
+	_posicao = _rotulo(col_esquerda, &"TextoLegenda")
+
+	linha.add_child(_espaco_flexivel())
+
+	var col_centro: VBoxContainer = VBoxContainer.new()
+	col_centro.alignment = BoxContainer.ALIGNMENT_CENTER
+	linha.add_child(col_centro)
+	_tempo = _rotulo(col_centro, &"TituloMd")
+	_tempo.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_tamanho = _rotulo(col_centro, &"TextoLegenda")
+	_tamanho.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_meta = _rotulo(col_centro, &"TextoAlerta")
+	_meta.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_meta.visible = false
-	var espaco: Control = Control.new()
-	espaco.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	linha.add_child(espaco)
-	_tempo = _rotulo(linha, &"TextoCorpo")
-	_posicao = _rotulo(linha, &"TextoSecundario")
+
+	linha.add_child(_espaco_flexivel())
+
+	_minimapa = Minimapa.new(float(T.TOQUE_MIN))  # chip de 48 na barra (04)
+	_minimapa.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	linha.add_child(_minimapa)
 
 	var pausa: Button = Button.new()
-	pausa.text = "⏸"
-	pausa.theme_type_variation = &"BotaoSecundario"
+	pausa.text = "❚❚"
+	pausa.theme_type_variation = &"ChipQuadrado"
+	pausa.custom_minimum_size = Vector2(float(T.TOQUE_MIN), float(T.TOQUE_MIN))
 	pausa.pressed.connect(_abrir_pausa)
 	linha.add_child(pausa)
+
+
+func _espaco_flexivel() -> Control:
+	var espaco: Control = Control.new()
+	espaco.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	return espaco
 
 
 func _rotulo(pai: Container, variacao: StringName) -> Label:
@@ -190,6 +200,17 @@ func _rotulo(pai: Container, variacao: StringName) -> Label:
 	rotulo.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	pai.add_child(rotulo)
 	return rotulo
+
+
+## 2480 → "2.480" (separador de milhar pt-BR, como no design).
+static func formatar_milhar(valor: int) -> String:
+	var texto: String = str(valor)
+	var saida: String = ""
+	for i: int in texto.length():
+		if i > 0 and (texto.length() - i) % 3 == 0:
+			saida += "."
+		saida += texto[i]
+	return saida
 
 
 func _montar_modal_pausa() -> void:

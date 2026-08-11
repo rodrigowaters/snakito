@@ -19,6 +19,9 @@ const PULSO_CRESCIMENTO: float = 1.25
 const PULSO_DURACAO: float = 0.3
 
 var motor: GameEngine
+## Badges de pontos sobre as cobras (blueprint 04). O onboarding desliga —
+## tutorial é sem texto (docs §8).
+var mostrar_badges: bool = true
 
 ## Fator de escala visual corrente por id (1.0 = sem pulso).
 var _pulsos: Dictionary[int, float] = {}
@@ -49,6 +52,11 @@ func _draw() -> void:
 	for cobra: SnakeModel in motor.arena.cobras:
 		if cobra.viva:
 			_desenhar_cobra(cobra, visivel)
+	# Badges por cima de todas as cobras (blueprint 04).
+	if mostrar_badges:
+		for cobra: SnakeModel in motor.arena.cobras:
+			if cobra.viva and visivel.has_point(cobra.posicao):
+				_desenhar_badge_pontos(cobra)
 
 
 ## Cor base de uma cobra: jogador = skin equipada (ProgressoLocal, com cache
@@ -131,6 +139,58 @@ func _desenhar_cobra(cobra: SnakeModel, visivel: Rect2) -> void:
 	draw_circle(cobra.posicao, raio + 1.5, escura)
 	draw_circle(cobra.posicao, raio, base)
 	_desenhar_olhos(cobra, raio)
+
+
+## Badge de pontos sobre a cabeça (blueprint 04): pílula escura com a borda
+## codificando a AMEAÇA em relação ao jogador — leitura de risco em jogo:
+## vermelha = pode te devorar · verde = você pode devorar · branca = você
+## mesmo ou porte parecido (knockback).
+const BADGE_ALTURA: float = 20.0
+const BADGE_FONTE: int = 11
+const BADGE_FOLGA: float = 10.0
+
+func _desenhar_badge_pontos(cobra: SnakeModel) -> void:
+	var jogador: SnakeModel = motor.jogador()
+	var borda: Color
+	var cor_texto: Color
+	if cobra.eh_jogador() or not jogador.viva:
+		borda = Color(T.COR_TEXTO_PRIMARIO, 0.5)
+		cor_texto = T.COR_TEXTO_PRIMARIO
+	elif cobra.pode_devorar(jogador):
+		borda = T.COR_COMIDA_COMUM          # #FF6B6B — perigo (design 04)
+		cor_texto = T.COR_COMIDA_COMUM_REALCE
+	elif jogador.pode_devorar(cobra):
+		borda = T.CORES_COBRA_BASE[0]       # #4ADE80 — presa (design 04)
+		cor_texto = T.CORES_COBRA_BASE[0]
+	else:
+		borda = Color(T.COR_TEXTO_PRIMARIO, 0.5)
+		cor_texto = T.COR_TEXTO_PRIMARIO
+
+	var fonte: Font = ThemeDB.get_project_theme().get_font(&"font", &"TituloMd")
+	var texto: String = Hud.formatar_milhar(cobra.pontos)
+	var largura_texto: float = fonte.get_string_size(
+		texto, HORIZONTAL_ALIGNMENT_CENTER, -1, BADGE_FONTE).x
+	var largura: float = largura_texto + BADGE_ALTURA * 0.7
+	var centro: Vector2 = cobra.posicao \
+		+ Vector2(0.0, -cobra.raio() - BADGE_FOLGA - BADGE_ALTURA * 0.5)
+	var raio_pilula: float = BADGE_ALTURA * 0.5
+
+	# Cápsula: dois círculos + retângulo central; contorno com arcos.
+	var esquerda: Vector2 = centro + Vector2(-largura * 0.5 + raio_pilula, 0.0)
+	var direita: Vector2 = centro + Vector2(largura * 0.5 - raio_pilula, 0.0)
+	draw_circle(esquerda, raio_pilula, T.COR_SUPERFICIE_HUD)
+	draw_circle(direita, raio_pilula, T.COR_SUPERFICIE_HUD)
+	draw_rect(Rect2(esquerda - Vector2(0.0, raio_pilula),
+		Vector2(direita.x - esquerda.x, BADGE_ALTURA)), T.COR_SUPERFICIE_HUD)
+	draw_arc(esquerda, raio_pilula, PI * 0.5, PI * 1.5, 10, borda, 1.5)
+	draw_arc(direita, raio_pilula, -PI * 0.5, PI * 0.5, 10, borda, 1.5)
+	draw_line(esquerda + Vector2(0.0, -raio_pilula),
+		direita + Vector2(0.0, -raio_pilula), borda, 1.5)
+	draw_line(esquerda + Vector2(0.0, raio_pilula),
+		direita + Vector2(0.0, raio_pilula), borda, 1.5)
+	draw_string(fonte,
+		centro + Vector2(-largura_texto * 0.5, BADGE_FONTE * 0.36),
+		texto, HORIZONTAL_ALIGNMENT_LEFT, -1, BADGE_FONTE, cor_texto)
 
 
 func _desenhar_olhos(cobra: SnakeModel, raio: float) -> void:

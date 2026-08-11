@@ -71,6 +71,7 @@ func _ready() -> void:
 
 	render = ArenaRender.new()
 	render.motor = motor
+	render.mostrar_badges = false  # tutorial sem texto (docs §8)
 	add_child(render)
 	efeitos = Efeitos.new()
 	add_child(efeitos)
