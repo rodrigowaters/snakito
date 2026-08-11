@@ -223,6 +223,38 @@ func test_coragem_cacador_colhe_rabo_de_superior_fazendeiro_foge() -> void:
 		assert_float(rumo_fazendeiro.dot(para_o_gigante)).is_less(0.0)
 
 
+func test_persistencia_de_caca_desiste_e_muda_de_alvo() -> void:
+	# Playtest 11/08: perseguição eterna frustra. Após PERSISTENCIA ticks no
+	# mesmo alvo o caçador desiste, ignora ESSE alvo por DESCANSO ticks e
+	# elege outro disponível.
+	var arena: ArenaModel = ArenaModel.new(Vector2(4000.0, 4000.0))
+	var centro: Vector2 = Vector2(2000.0, 2000.0)
+	var cacador: SnakeModel = SnakeModel.new(1, SnakeModel.Personalidade.CACADOR, centro, 20)
+	var perto: SnakeModel = SnakeModel.new(2, SnakeModel.Personalidade.JOGADOR, centro + Vector2(120.0, 0.0), 2)
+	var longe: SnakeModel = SnakeModel.new(3, SnakeModel.Personalidade.JOGADOR, centro + Vector2(0.0, 200.0), 2)
+	arena.adicionar_cobra(cacador)
+	arena.adicionar_cobra(perto)
+	arena.adicionar_cobra(longe)
+	var cerebro: BotEngine = BotEngine.new()
+	var rng: RngService = RngService.new(1)
+
+	# Tick 0: elege o mais próximo (perto, à direita).
+	var rumo: Vector2 = cerebro.decidir(cacador, arena, rng, 0)
+	assert_float(rumo.dot(Vector2.RIGHT)).is_greater(0.9)
+	# Dentro do prazo: insiste no MESMO alvo mesmo havendo outro.
+	rumo = cerebro.decidir(cacador, arena, rng, BotEngine.PERSISTENCIA_CACA_TICKS - 10)
+	assert_float(rumo.dot(Vector2.RIGHT)).is_greater(0.9)
+	# Prazo estourado: desiste do perto e vai atrás do outro (para baixo).
+	rumo = cerebro.decidir(cacador, arena, rng, BotEngine.PERSISTENCIA_CACA_TICKS + 1)
+	assert_float(rumo.dot(Vector2.DOWN)).is_greater(0.9)
+	# E não reelege o desistido enquanto durar o descanso, mesmo mais perto.
+	longe.viva = false  # sobrou só o alvo em descanso
+	var tick_no_descanso: int = BotEngine.PERSISTENCIA_CACA_TICKS + 30
+	var presa: SnakeModel = cerebro._presa_com_persistencia(
+		cacador, arena, cacador.raio_visao(), tick_no_descanso)
+	assert_object(presa).is_null()
+
+
 func test_determinismo_com_cortes_ativos() -> void:
 	# Mesma seed, arena cheia de bots que se cortam: estado final idêntico.
 	var config_a: GameEngine.ConfigPartida = GameEngine.ConfigPartida.padrao(4242)

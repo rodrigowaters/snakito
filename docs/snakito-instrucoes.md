@@ -54,6 +54,7 @@
   - **Caçador** — persegue cobras menores dentro do raio de visão
   - **Oportunista** — farma, mas ataca alvos vulneráveis que cruzam seu caminho
 - **Dificuldade** = composição da arena (quantidade, tamanho inicial, agressividade, **força de turbo**, **teto de crescimento** e **distância de spawn dos caçadores**), nunca "trapaça" (bots não veem através da névoa nem reagem mais rápido que o permitido). Eixos nascidos de playtests de ago/2026: paridade total de turbo torna a caça impossível em campo aberto; bots que se devoram sem teto viram gigantes que dominam a partida; alfas nascendo perto matam a criança em 3s ("para um adulto é válido, para uma criança não") — nascer longe preserva o predador sem loteria de spawn
+- **Persistência de caça limitada** (playtest 11/08: "parecia que eu era o alvo principal"): um bot persegue o mesmo alvo por no máximo 5s; se não pegou, desiste e ignora aquele alvo por 8s (vai farmar/caçar outro). Fadiga de predador — determinística, não piedade
 - **Determinismo:** todo o `bot_engine` e o spawn de comida usam RNG seedável. Desafios têm seed fixa; modo Arcade usa seed aleatória exibida no resultado ("Repetir esta arena")
 - **Simulação:** tick fixo de física (`_physics_process`, 60Hz); nenhuma dependência de rede em gameplay
 

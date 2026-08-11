@@ -37,8 +37,21 @@ const MEDO_FAZENDEIRO: float = 1.0
 const MEDO_CACADOR: float = 0.6
 const MEDO_OPORTUNISTA: float = 0.75
 
+## Persistência de caça (playtest 11/08: "parecia que eu era o alvo
+## principal — podia ter um tempo pro cara mudar de alvo"): um bot persegue
+## o MESMO alvo por no máximo PERSISTENCIA e, se não pegou, desiste e ignora
+## AQUELE alvo por DESCANSO (vai farmar/caçar outro). Fadiga de predador —
+## honesta e determinística, não piedade scriptada.
+const PERSISTENCIA_CACA_TICKS: int = 300  # 5s perseguindo o mesmo alvo
+const DESCANSO_ALVO_TICKS: int = 480      # 8s ignorando o alvo que escapou
+
 ## Rumo de vagueio corrente por id de bot (memória entre decisões).
 var _vagueio: Dictionary[int, Vector2] = {}
+## Caça corrente: id do bot → id da presa perseguida, e desde que tick.
+var _alvo_caca: Dictionary[int, int] = {}
+var _caca_desde: Dictionary[int, int] = {}
+## Pares (bot, alvo desistido) → tick em que o descanso termina.
+var _descanso_alvo: Dictionary[Vector2i, int] = {}
 
 
 ## Atualiza a direção dos bots cuja vez de decidir chegou neste tick.
@@ -49,14 +62,14 @@ func atualizar(tick: int, arena: ArenaModel, rng: RngService) -> void:
 			continue
 		if (tick + cobra.id) % TICKS_REACAO != 0:
 			continue
-		cobra.direcao = decidir(cobra, arena, rng)
+		cobra.direcao = decidir(cobra, arena, rng, tick)
 
 
 ## Decide a direção — e a INTENÇÃO de turbo (docs §2.6) — de um bot AGORA.
 ## Turbo: liga ao fugir (todas as personalidades) e ao caçar; farmar/vaguear
 ## não gasta energia. Quem resolve a intenção contra as regras de energia é
 ## o GameEngine, com as MESMAS regras do jogador (bots honestos).
-func decidir(bot: SnakeModel, arena: ArenaModel, rng: RngService) -> Vector2:
+func decidir(bot: SnakeModel, arena: ArenaModel, rng: RngService, tick: int = 0) -> Vector2:
 	# Fugir de quem pode nos devorar tem prioridade máxima em TODAS as
 	# personalidades — bot que não foge não ensina risco/recompensa, só morre.
 	var ameaca: SnakeModel = ameaca_mais_proxima(bot, arena)
@@ -70,7 +83,7 @@ func decidir(bot: SnakeModel, arena: ArenaModel, rng: RngService) -> Vector2:
 		SnakeModel.Personalidade.CACADOR:
 			var alcance_caca: float = bot.raio_visao() \
 				* (CACA_BASE + CACA_POR_AGRESSIVIDADE * bot.agressividade)
-			var presa: SnakeModel = presa_mais_proxima(bot, arena, alcance_caca)
+			var presa: SnakeModel = _presa_com_persistencia(bot, arena, alcance_caca, tick)
 			if presa != null:
 				bot.quer_turbo = true
 				return (ponto_de_ataque(bot, presa) - bot.posicao).normalized()
@@ -83,7 +96,7 @@ func decidir(bot: SnakeModel, arena: ArenaModel, rng: RngService) -> Vector2:
 		SnakeModel.Personalidade.OPORTUNISTA:
 			var alcance_oportunidade: float = bot.raio_visao() \
 				* (OPORTUNIDADE_BASE + OPORTUNIDADE_POR_AGRESSIVIDADE * bot.agressividade)
-			var presa: SnakeModel = presa_mais_proxima(bot, arena, alcance_oportunidade)
+			var presa: SnakeModel = _presa_com_persistencia(bot, arena, alcance_oportunidade, tick)
 			if presa != null:
 				bot.quer_turbo = true
 				return (ponto_de_ataque(bot, presa) - bot.posicao).normalized()
@@ -162,6 +175,40 @@ func _fracao_medo(bot: SnakeModel) -> float:
 func presa_mais_proxima(bot: SnakeModel, arena: ArenaModel, alcance: float) -> SnakeModel:
 	return _mais_proxima(bot, arena, alcance,
 		func(outra: SnakeModel) -> bool: return bot.pode_devorar(outra))
+
+
+## Presa com PERSISTÊNCIA limitada: mantém o alvo corrente enquanto válido e
+## dentro do prazo; expirou → desiste, ignora AQUELE alvo por DESCANSO e
+## procura outro (alvos em descanso não são reeleitos).
+func _presa_com_persistencia(
+	bot: SnakeModel,
+	arena: ArenaModel,
+	alcance: float,
+	tick: int,
+) -> SnakeModel:
+	var alvo_id: int = _alvo_caca.get(bot.id, -1)
+	if alvo_id >= 0:
+		var alvo: SnakeModel = arena.cobra_por_id(alvo_id)
+		var valido: bool = alvo != null and alvo.viva \
+			and bot.pode_devorar(alvo) \
+			and bot.posicao.distance_to(alvo.posicao) <= alcance
+		if valido:
+			if tick - _caca_desde.get(bot.id, tick) < PERSISTENCIA_CACA_TICKS:
+				return alvo
+			# Cansou: desiste deste alvo por um tempo — muda de assunto.
+			_descanso_alvo[Vector2i(bot.id, alvo_id)] = tick + DESCANSO_ALVO_TICKS
+		# Escapou da vista/alcance sem cansaço → só esquece (pode reeleger).
+		_alvo_caca.erase(bot.id)
+		_caca_desde.erase(bot.id)
+
+	var presa: SnakeModel = _mais_proxima(bot, arena, alcance,
+		func(outra: SnakeModel) -> bool:
+			return bot.pode_devorar(outra) \
+				and tick >= _descanso_alvo.get(Vector2i(bot.id, outra.id), 0))
+	if presa != null:
+		_alvo_caca[bot.id] = presa.id
+		_caca_desde[bot.id] = tick
+	return presa
 
 
 func _mais_proxima(
