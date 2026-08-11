@@ -1,10 +1,11 @@
 class_name Home
 extends Control
 ## Tela inicial — composição fiel ao blueprint "01 Home" (1d+1e) do Claude
-## Design (`docs/design/Snakito Telas.dc.html`), M2. Adaptações registradas:
-## sem moedas/tickets/fase (economia é M3+) e sem ⚙ (Configurações é M3);
-## a grade de navegação usa os destinos existentes (Desafios/Ranking/Skins/
-## Conta). Árvore em código, consumindo só tokens e variações do Theme.
+## Design (`docs/design/Snakito Telas.dc.html`), M2. Gradientes REAIS:
+## título verde→azul por letra (RichTextLabel) e CTA por polígono com cor
+## por vértice. Adaptações registradas: economia exibida zerada (liga no
+## M3, decisão 11/08); ⚙ presente e desabilitado até Configurações (M3);
+## grade usa os destinos existentes. Árvore em código, só tokens/Theme.
 
 const T := preload("res://src/ui/theme/tokens.gd")
 
@@ -12,8 +13,11 @@ const CENA_JOGO: String = "res://src/scenes/jogo/jogo.tscn"
 
 ## Célula da grade de navegação (blueprint: 84px de altura, 4 colunas).
 const ALTURA_CELULA_NAV: float = 84.0
-## Mascote do hero (blueprint: 210×152 — cobra de 4 círculos crescentes).
+## Mascote do hero (blueprint: 210×152) e viewBox do SVG original.
 const MASCOTE_TAMANHO: Vector2 = Vector2(210.0, 152.0)
+const MASCOTE_VIEWBOX: Vector2 = Vector2(200.0, 150.0)
+## Segmentos por canto no polígono arredondado do CTA.
+const ARCO_PASSOS: int = 8
 
 
 func _ready() -> void:
@@ -77,27 +81,39 @@ func _montar_conteudo() -> void:
 
 # ------------------------------------------------------------ barra do topo
 
-## Blueprint: chip-avatar à esquerda, contadores de economia no centro e ⚙
-## à direita. Economia EXIBIDA desde já (zerada — ganhar/gastar é M3, decisão
-## de 11/08); o ⚙ fica de fora até Configurações existir (M3). O avatar leva
-## à Conta.
+## Blueprint: avatar | economia no centro | ⚙ — space-between. Economia
+## exibida zerada (liga no M3); ⚙ desabilitado até Configurações (M3).
 func _barra_topo() -> Control:
 	var barra: HBoxContainer = HBoxContainer.new()
 	barra.add_theme_constant_override("separation", T.ESP_XS)
+
 	var avatar: Button = Button.new()
-	avatar.theme_type_variation = &"Chip"
+	avatar.theme_type_variation = &"ChipQuadrado"
 	avatar.custom_minimum_size = Vector2(float(T.TOQUE_MIN), float(T.TOQUE_MIN))
 	avatar.pressed.connect(func() -> void:
 		get_tree().change_scene_to_file("res://src/ui/conta/conta.tscn"))
 	avatar.draw.connect(func() -> void:
-		_desenhar_cabecinha(avatar, avatar.size * 0.5, avatar.size.y * 0.36))
+		_desenhar_cabecinha(avatar, avatar.size * 0.5, avatar.size.y * 0.375))
 	barra.add_child(avatar)
-	var espaco: Control = Control.new()
-	espaco.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	barra.add_child(espaco)
+
+	barra.add_child(_espaco_flexivel())
 	barra.add_child(_contador_moedas())
 	barra.add_child(_contador("🎟️", ProgressoLocal.tickets()))
+	barra.add_child(_espaco_flexivel())
+
+	var config: Button = Button.new()
+	config.theme_type_variation = &"ChipQuadrado"
+	config.text = "⚙"
+	config.custom_minimum_size = Vector2(float(T.TOQUE_MIN), float(T.TOQUE_MIN))
+	config.disabled = true  # Configurações chega no M3 — o lugar já é dela
+	barra.add_child(config)
 	return barra
+
+
+func _espaco_flexivel() -> Control:
+	var espaco: Control = Control.new()
+	espaco.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	return espaco
 
 
 ## Pílula do contador de moedas — a moedinha é desenhada (círculo dourado
@@ -153,29 +169,60 @@ func _hero() -> Control:
 	mascote.draw.connect(_desenhar_mascote.bind(mascote))
 	hero.add_child(mascote)
 
-	var titulo: Label = Label.new()
-	titulo.text = "Snakito"
-	titulo.theme_type_variation = &"TituloHero"
-	titulo.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	# Gradiente verde→azul do logo: aproximado pela cor primária (mesma
-	# pendência estética registrada dos CTAs — shader quando o polimento
-	# importar).
-	titulo.add_theme_color_override("font_color", T.CORES_COBRA_BASE[0])
-	hero.add_child(titulo)
+	hero.add_child(_titulo_gradiente())
 
-	# Pílula "skin equipada" — toque leva à tela de Skins (blueprint 1e).
+	# Pílula "skin equipada" (blueprint 1e): bolinha na cor + texto cinza.
 	var centro: HBoxContainer = HBoxContainer.new()
 	centro.alignment = BoxContainer.ALIGNMENT_CENTER
 	var pilula: Button = Button.new()
 	pilula.theme_type_variation = &"Chip"
-	pilula.text = "● %s equipada" % _nome_da_skin()
 	pilula.pressed.connect(func() -> void:
 		get_tree().change_scene_to_file("res://src/ui/skins/skins.tscn"))
-	pilula.add_theme_color_override("font_color",
-		T.CORES_COBRA_BASE[ProgressoLocal.skin_equipada()])
+	var conteudo: HBoxContainer = HBoxContainer.new()
+	conteudo.set_anchors_preset(Control.PRESET_FULL_RECT)
+	conteudo.alignment = BoxContainer.ALIGNMENT_CENTER
+	conteudo.add_theme_constant_override("separation", T.ESP_XS)
+	conteudo.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var bolinha: Control = Control.new()
+	bolinha.custom_minimum_size = Vector2(float(T.ESP_MD), 0.0)
+	bolinha.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	bolinha.draw.connect(func() -> void:
+		bolinha.draw_circle(bolinha.size * 0.5, 8.0,
+			T.CORES_COBRA_BASE[ProgressoLocal.skin_equipada()]))
+	conteudo.add_child(bolinha)
+	var rotulo: Label = Label.new()
+	rotulo.text = "%s equipada" % _nome_da_skin()
+	rotulo.theme_type_variation = &"TextoCorpoSm"
+	rotulo.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	conteudo.add_child(rotulo)
+	pilula.add_child(conteudo)
+	pilula.custom_minimum_size = Vector2(200.0, 0.0)  # largura do conteúdo
 	centro.add_child(pilula)
 	hero.add_child(centro)
 	return hero
+
+
+## Logo com o gradiente verde→azul REAL do design, interpolado por letra
+## (Label não pinta gradiente; por glifo o olho não distingue do contínuo).
+func _titulo_gradiente() -> RichTextLabel:
+	var titulo: RichTextLabel = RichTextLabel.new()
+	titulo.bbcode_enabled = true
+	titulo.fit_content = true
+	titulo.scroll_active = false
+	titulo.autowrap_mode = TextServer.AUTOWRAP_OFF
+	titulo.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var tema: Theme = ThemeDB.get_project_theme()
+	titulo.add_theme_font_override("normal_font", tema.get_font(&"font", &"TituloHero"))
+	titulo.add_theme_font_size_override("normal_font_size",
+		tema.get_font_size(&"font_size", &"TituloHero"))
+	var texto: String = "Snakito"
+	var partes: String = ""
+	for i: int in texto.length():
+		var cor: Color = T.COR_CTA_PRIMARIO_INICIO.lerp(
+			T.CORES_COBRA_BASE[1], float(i) / float(texto.length() - 1))
+		partes += "[color=#%s]%s[/color]" % [cor.to_html(false), texto[i]]
+	titulo.text = "[center]%s[/center]" % partes
+	return titulo
 
 
 # ------------------------------------------------------- rodapé (CTA + nav)
@@ -184,12 +231,28 @@ func _rodape_navegacao() -> Control:
 	var rodape: VBoxContainer = VBoxContainer.new()
 	rodape.add_theme_constant_override("separation", T.ESP_SM)
 
+	# CTA hero com o gradiente REAL do design (COR_CTA_PRIMARIO_INICIO→FIM):
+	# polígono arredondado com cor por vértice, texto em Label filho.
 	var jogar: Button = Button.new()
-	jogar.text = "▶ Jogar Arcade"
 	jogar.theme_type_variation = &"BotaoHeroi"
+	jogar.flat = true
 	jogar.custom_minimum_size = Vector2(0.0, float(T.TOQUE_HEROI))
 	jogar.pressed.connect(func() -> void:
 		get_tree().change_scene_to_file(CENA_JOGO))
+	jogar.draw.connect(func() -> void:
+		_desenhar_gradiente_arredondado(jogar,
+			T.COR_CTA_PRIMARIO_INICIO, T.COR_CTA_PRIMARIO_FIM))
+	jogar.button_down.connect(func() -> void: jogar.modulate.a = 0.85)
+	jogar.button_up.connect(func() -> void: jogar.modulate.a = 1.0)
+	var texto_jogar: Label = Label.new()
+	texto_jogar.text = "▶ Jogar Arcade"
+	texto_jogar.theme_type_variation = &"TituloMd"
+	texto_jogar.add_theme_color_override("font_color", T.COR_TEXTO_SOBRE_PRIMARIO)
+	texto_jogar.set_anchors_preset(Control.PRESET_FULL_RECT)
+	texto_jogar.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	texto_jogar.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	texto_jogar.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	jogar.add_child(texto_jogar)
 	rodape.add_child(jogar)
 
 	# Grade de navegação 4×1 (blueprint 1d) com os destinos que existem.
@@ -214,7 +277,7 @@ func _rodape_navegacao() -> Control:
 
 func _celula_nav(emoji: String, nome: String, cena: String) -> Button:
 	var celula: Button = Button.new()
-	celula.theme_type_variation = &"BotaoSecundario"
+	celula.theme_type_variation = &"CartaoNav"
 	celula.custom_minimum_size = Vector2(0.0, ALTURA_CELULA_NAV)
 	celula.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	celula.pressed.connect(func() -> void:
@@ -234,7 +297,7 @@ func _celula_nav(emoji: String, nome: String, cena: String) -> Button:
 	pilha.add_child(icone)
 	var rotulo: Label = Label.new()
 	rotulo.text = nome
-	rotulo.theme_type_variation = &"TextoCorpoSm"
+	rotulo.theme_type_variation = &"RotuloNav"
 	rotulo.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	rotulo.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	pilha.add_child(rotulo)
@@ -244,11 +307,35 @@ func _celula_nav(emoji: String, nome: String, cena: String) -> Button:
 
 # ---------------------------------------------------------------- desenhos
 
+## Retângulo arredondado preenchido por gradiente diagonal (135° do design):
+## polígono com cor POR VÉRTICE — StyleBoxFlat não desenha gradiente.
+func _desenhar_gradiente_arredondado(alvo: Control, cor_a: Color, cor_b: Color) -> void:
+	var rect: Rect2 = Rect2(Vector2.ZERO, alvo.size)
+	var raio: float = float(T.RAIO_CARD)
+	var pontos: PackedVector2Array = PackedVector2Array()
+	var cantos: Array[Vector2] = [
+		rect.position + Vector2(raio, raio),
+		Vector2(rect.end.x - raio, rect.position.y + raio),
+		rect.end - Vector2(raio, raio),
+		Vector2(rect.position.x + raio, rect.end.y - raio),
+	]
+	for canto: int in 4:
+		var inicio: float = PI + PI * 0.5 * canto
+		for passo: int in ARCO_PASSOS + 1:
+			var angulo: float = inicio + PI * 0.5 * float(passo) / float(ARCO_PASSOS)
+			pontos.append(cantos[canto] + Vector2(cos(angulo), sin(angulo)) * raio)
+	var cores: PackedColorArray = PackedColorArray()
+	var diagonal: float = rect.size.x + rect.size.y
+	for ponto: Vector2 in pontos:
+		cores.append(cor_a.lerp(cor_b, (ponto.x + ponto.y) / diagonal))
+	alvo.draw_polygon(pontos, cores)
+
+
 ## Cobra do blueprint: 4 círculos crescentes (rabo→cabeça) na cor da skin,
 ## cabeça com olhos e sorriso.
 func _desenhar_mascote(alvo: Control) -> void:
 	var cor: Color = T.CORES_COBRA_BASE[ProgressoLocal.skin_equipada()]
-	var escala: Vector2 = alvo.size / Vector2(200.0, 150.0)  # viewBox do design
+	var escala: Vector2 = alvo.size / MASCOTE_VIEWBOX
 	var corpo: Array[Vector3] = [  # (cx, cy, raio) do blueprint
 		Vector3(52.0, 112.0, 16.0), Vector3(76.0, 98.0, 19.0),
 		Vector3(104.0, 86.0, 23.0), Vector3(138.0, 76.0, 28.0),

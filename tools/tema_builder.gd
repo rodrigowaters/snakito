@@ -137,6 +137,18 @@ static func construir() -> Theme:
 	_variacao_botao(tema, &"Chip", chip, chip_press, desabilitado, foco_pilula, T.COR_TEXTO_SECUNDARIO, T.TAM_CORPO, nunito_extrabold)
 	_variacao_botao(tema, &"ChipAtivo", chip_ativo, chip_ativo_press, desabilitado, foco_pilula, T.COR_TEXTO_SOBRE_PRIMARIO, T.TAM_CORPO, nunito_extrabold)
 
+	# Blueprint da Home (M2): chip QUADRADO de vidro (avatar/⚙, raio de botão,
+	# margens mínimas — o tamanho vem da cena: 48×48) e cartão da grade de
+	# navegação (vidro, raio de card, conteúdo empilhado pela cena).
+	var chip_quadrado: StyleBoxFlat = _caixa(T.COR_SUPERFICIE_VIDRO, T.RAIO_BOTAO, T.ESP_MICRO, T.ESP_MICRO, T.COR_SUPERFICIE_VIDRO_BORDA, T.BORDA_FINA)
+	var chip_quadrado_press: StyleBoxFlat = _caixa(T.COR_SUPERFICIE_VIDRO_PRESS, T.RAIO_BOTAO, T.ESP_MICRO, T.ESP_MICRO, T.COR_SUPERFICIE_VIDRO_BORDA, T.BORDA_FINA)
+	var foco_quadrado: StyleBoxFlat = _caixa(Color.TRANSPARENT, T.RAIO_BOTAO, T.ESP_MICRO, T.ESP_MICRO, T.COR_FOCO, T.BORDA_DESTAQUE)
+	_variacao_botao(tema, &"ChipQuadrado", chip_quadrado, chip_quadrado_press, desabilitado, foco_quadrado, T.COR_TEXTO_PRIMARIO, T.TAM_TITULO_MD)
+	var cartao_nav: StyleBoxFlat = _caixa(T.COR_SUPERFICIE_VIDRO, T.RAIO_CARD, T.ESP_XS, T.ESP_XS, T.COR_SUPERFICIE_VIDRO_BORDA, T.BORDA_FINA)
+	var cartao_nav_press: StyleBoxFlat = _caixa(T.COR_SUPERFICIE_VIDRO_PRESS, T.RAIO_CARD, T.ESP_XS, T.ESP_XS, T.COR_SUPERFICIE_VIDRO_BORDA, T.BORDA_FINA)
+	var foco_cartao: StyleBoxFlat = _caixa(Color.TRANSPARENT, T.RAIO_CARD, T.ESP_XS, T.ESP_XS, T.COR_FOCO, T.BORDA_DESTAQUE)
+	_variacao_botao(tema, &"CartaoNav", cartao_nav, cartao_nav_press, desabilitado, foco_cartao, T.COR_TEXTO_PRIMARIO, T.TAM_CORPO_SM)
+
 	# --------------------------------------------------- variações de painel
 	_variacao_painel(tema, &"CardPainel", card)
 	_variacao_painel(tema, &"ModalPainel", modal)
@@ -160,6 +172,8 @@ static func construir() -> Theme:
 	_variacao_texto(tema, &"TituloMd", T.TAM_TITULO_MD, T.ALTURA_LINHA_TITULO_MD, T.COR_TEXTO_PRIMARIO, fredoka_semibold)
 	_variacao_texto(tema, &"TextoCorpo", T.TAM_CORPO, T.ALTURA_LINHA_CORPO, T.COR_TEXTO_PRIMARIO)
 	_variacao_texto(tema, &"TextoCorpoSm", T.TAM_CORPO_SM, T.ALTURA_LINHA_CORPO_SM, T.COR_TEXTO_SECUNDARIO)
+	# Rótulo das células de navegação (blueprint 1d: Fredoka 13 branco).
+	_variacao_texto(tema, &"RotuloNav", T.TAM_CORPO_SM, T.ALTURA_LINHA_CORPO_SM, T.COR_TEXTO_PRIMARIO, fredoka_semibold)
 	_variacao_texto(tema, &"TextoSecundario", T.TAM_CORPO, T.ALTURA_LINHA_CORPO, T.COR_TEXTO_SECUNDARIO)
 	# TextoMuted usa o MENOR tamanho permitido para #7E88A8 (negrito ≥ 19px);
 	# altura de linha herdada da escala title/md, o degrau mais próximo.
