@@ -333,8 +333,8 @@ func _registrar_corpos() -> void:
 ## Corte de corpo (docs §2.7): cabeça encostando no corpo alheio corta ali —
 ## a vítima encolhe para a fração do ponto do corte e o trecho perdido vira
 ## comida. Sem pontos; kill continua sendo só pela cabeça.
-## EM TESTE (ago/2026): QUALQUER cobra corta qualquer corpo, sem regra de
-## tamanho — é o contra-golpe do pequeno que devolve perigo ao líder.
+## Corte livre (aprovado em playtest, 11/08): QUALQUER cobra corta qualquer
+## corpo, sem regra de tamanho — o contra-golpe do pequeno contra o líder.
 func _resolver_cortes() -> void:
 	# Ordem fixa (atacante externo, vítima interno) — determinismo.
 	for a: SnakeModel in arena.cobras:

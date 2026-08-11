@@ -48,7 +48,7 @@ func test_corpo_e_aparado_no_comprimento_do_tamanho() -> void:
 
 
 func test_corte_livre_qualquer_uma_corta() -> void:
-	# EM TESTE (§2.7, ago/2026): sem regra de tamanho — até a MENOR corta o
+	# Corte livre aprovado (§2.7): sem regra de tamanho — até a MENOR corta o
 	# corpo da maior (contra-golpe do pequeno contra o líder gigante).
 	var motor: GameEngine = _motor()
 	var jogador: SnakeModel = motor.jogador()
