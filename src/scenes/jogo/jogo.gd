@@ -168,7 +168,13 @@ func _ir_para_resultado() -> void:
 	# a Rede despacha quando houver rede + login + perfil.
 	FilaSessoes.enfileirar(_payload_da_sessao())
 	Rede.despachar_fila()
-	get_tree().change_scene_to_file(CENA_RESULTADO)
+	# Desafio CONCLUÍDO celebra primeiro (blueprint 12c); o resto vai
+	# direto à pós-partida.
+	if Sessao.regras_desafio != null \
+			and Sessao.regras_desafio.estado == ChallengeRules.Estado.CONCLUIDO:
+		get_tree().change_scene_to_file("res://src/ui/celebracao/celebracao.tscn")
+	else:
+		get_tree().change_scene_to_file(CENA_RESULTADO)
 
 
 ## Payload no formato do `submit_session` (limites validados no servidor).
