@@ -19,7 +19,9 @@ const PONTOS_POR_SEGUNDO = 1;
 const BUFF_PONTOS_MAX = 50; // Nv 10 × 5
 const COMIDAS_POR_SEGUNDO_MAX = 3; // teto físico generoso
 const ABATES_POR_SEGUNDO_MAX = 0.5; // 1 abate a cada 2s já seria frenético
-const CRESCIMENTO_POR_ABATE_MAX = 15; // vítima máxima ~30 (teto de alfa) / 2
+// Vítima máxima plausível ~120 (Desafio 3 terá caçadores 100+; alfa do
+// Arcade hoje é 35 — o teto antigo de 15 dava falso 422 ao devorar um alfa).
+const CRESCIMENTO_POR_ABATE_MAX = 60;
 const NIVEL_BUFF_MAX = 10;
 const IDADE_MAX_DIAS = 30; // fila offline pode segurar a sessão por dias
 const RELOGIO_FUTURO_MAX_MS = 5 * 60 * 1000;
