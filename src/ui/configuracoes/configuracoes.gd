@@ -23,14 +23,25 @@ func _ready() -> void:
 	margem.add_theme_constant_override("margin_top", T.ESP_2XL + T.ESP_MICRO)
 	margem.add_theme_constant_override("margin_bottom", T.ESP_LG + T.ESP_MICRO)
 	add_child(margem)
+	var externa: VBoxContainer = VBoxContainer.new()
+	externa.add_theme_constant_override("separation", T.ESP_XS + 2)
+	margem.add_child(externa)
+	externa.add_child(_cabecalho())
+	# Header fixo; seções roláveis — hoje o conteúdo cabe nos 412×915, mas
+	# proporções mais curtas / i18n / linhas futuras não podem cortar mudo.
+	var rolagem: ScrollContainer = ScrollContainer.new()
+	rolagem.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	rolagem.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	externa.add_child(rolagem)
 	_coluna = VBoxContainer.new()
+	_coluna.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_coluna.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_coluna.add_theme_constant_override("separation", T.ESP_XS + 2)
-	margem.add_child(_coluna)
+	rolagem.add_child(_coluna)
 	_montar_conteudo()
 
 
 func _montar_conteudo() -> void:
-	_coluna.add_child(_cabecalho())
 
 	_coluna.add_child(_titulo_secao("ÁUDIO"))
 	var audio: VBoxContainer = _card_lista()
