@@ -255,7 +255,7 @@ func _texto_desde() -> String:
 
 func _nome_da_skin() -> String:
 	var indice: int = ProgressoLocal.skin_equipada()
-	for skin: Dictionary in Skins.SKINS:
+	for skin: Dictionary in CatalogoSkins.SKINS:
 		if int(skin["indice"]) == indice:
 			return str(skin["nome"])
 	return "própria"
@@ -318,7 +318,7 @@ func _inventario() -> Control:
 	pilha.add_child(_linha_inventario("🎟️", "Tickets de pulo",
 		str(ProgressoLocal.tickets()), T.COR_TEXTO_PRIMARIO, true))
 	pilha.add_child(_linha_inventario("🐍", "Skins na coleção",
-		"%d / %d" % [Skins.SKINS.size(), Skins.SKINS.size()],
+		"%d / %d" % [CatalogoSkins.SKINS.size(), CatalogoSkins.SKINS.size()],
 		T.COR_TEXTO_PRIMARIO, true))
 	var evolucao: Control = _linha_inventario("", "Evolução", "em breve",
 		T.COR_TEXTO_SECUNDARIO, false,

@@ -183,7 +183,8 @@ func _hero() -> Control:
 	for estado: StringName in [&"icon_normal_color", &"icon_pressed_color", &"icon_hover_color", &"icon_focus_color"]:
 		pilula.add_theme_color_override(estado, Color.WHITE)
 	pilula.pressed.connect(func() -> void:
-		get_tree().change_scene_to_file("res://src/ui/skins/skins.tscn"))
+		Loja.proxima_aba = Loja.Aba.SKINS
+		get_tree().change_scene_to_file("res://src/ui/loja/loja.tscn"))
 	centro.add_child(pilula)
 	hero.add_child(centro)
 	return hero
@@ -268,7 +269,7 @@ func _rodape_navegacao() -> Control:
 	grade.add_theme_constant_override("h_separation", T.ESP_XS)
 	grade.add_child(_celula_nav("🎯", "Desafios", "res://src/ui/desafios/desafios.tscn"))
 	grade.add_child(_celula_nav("🏆", "Ranking", "res://src/ui/ranking/ranking.tscn"))
-	grade.add_child(_celula_nav("🛍", "Loja"))
+	grade.add_child(_celula_nav("🛍", "Loja", "res://src/ui/loja/loja.tscn"))
 	# ⬆️ desenhado à mão: o Godot ignora o seletor U+FE0F e renderizava o
 	# glifo monocromático no lugar do emoji colorido do blueprint.
 	grade.add_child(_celula_nav("", "Evolução", "", _desenhar_icone_evolucao))
@@ -407,7 +408,7 @@ func _desenhar_carinha(alvo: Control, centro: Vector2, raio: float) -> void:
 
 func _nome_da_skin() -> String:
 	var indice: int = ProgressoLocal.skin_equipada()
-	for skin: Dictionary in Skins.SKINS:
+	for skin: Dictionary in CatalogoSkins.SKINS:
 		if int(skin["indice"]) == indice:
 			return str(skin["nome"])
 	return "Skin"

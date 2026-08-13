@@ -101,3 +101,39 @@ func test_dificuldade_nunca_mexe_em_desafio() -> void:
 	assert_int(config.cacadores).is_equal(referencia.cacadores)
 	assert_float(config.agressividade).is_equal_approx(referencia.agressividade, 0.001)
 	Sessao.regras_desafio = null
+
+
+func test_gastar_moedas_exige_saldo() -> void:
+	assert_bool(ProgressoLocal.gastar_moedas(10)).is_false()
+	assert_int(ProgressoLocal.moedas()).is_equal(0)
+	ProgressoLocal.adicionar_moedas(300)
+	assert_bool(ProgressoLocal.gastar_moedas(244)).is_true()
+	assert_int(ProgressoLocal.moedas()).is_equal(56)
+
+
+func test_nivel_buff_sobe_ate_o_teto_do_motor() -> void:
+	assert_int(ProgressoLocal.nivel_buff("velocidade")).is_equal(0)
+	for _i: int in GameEngine.NIVEL_MAX_BUFF + 3:
+		ProgressoLocal.subir_buff("velocidade")
+	assert_int(ProgressoLocal.nivel_buff("velocidade")) \
+		.is_equal(GameEngine.NIVEL_MAX_BUFF)
+
+
+func test_config_arcade_carrega_buffs_comprados() -> void:
+	ProgressoLocal.subir_buff("ima")
+	ProgressoLocal.subir_buff("pontos")
+	Sessao.desafio_pendente = -1
+	Sessao.proxima_semente = 42
+	var config: GameEngine.ConfigPartida = Sessao.config_para_jogar()
+	assert_int(config.nivel_ima).is_equal(1)
+	assert_int(config.nivel_pontos_iniciais).is_equal(1)
+	assert_bool(config.aplicar_buffs).is_true()
+
+
+func test_desafio_continua_sem_buffs() -> void:
+	# Comparabilidade educacional (docs §2.6.3): desafio ignora buffs.
+	ProgressoLocal.subir_buff("velocidade")
+	Sessao.desafio_pendente = int(ChallengeRules.Desafio.FARMING_PURO)
+	var config: GameEngine.ConfigPartida = Sessao.config_para_jogar()
+	assert_bool(config.aplicar_buffs).is_false()
+	Sessao.regras_desafio = null

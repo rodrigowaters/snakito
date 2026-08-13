@@ -58,6 +58,29 @@ static func adicionar_tickets(quantidade: int) -> void:
 	_salvar()
 
 
+## Gasta moedas SE houver saldo; devolve false sem tocar no saldo se faltar.
+static func gastar_moedas(quantidade: int) -> bool:
+	if moedas() < quantidade:
+		return false
+	adicionar_moedas(-quantidade)
+	return true
+
+
+# ------------------------------------------------------------------- buffs
+# Níveis dos buffs permanentes (docs §2.6.2), comprados na Loja 09b.
+# `chave` = "velocidade" | "ima" | "pontos" (ver `PrecosLoja.BUFFS`).
+# A Sessao injeta na ConfigPartida do Arcade; desafios SEMPRE ignoram.
+
+static func nivel_buff(chave: String) -> int:
+	return _abrir().get_value("buffs", chave, 0)
+
+
+static func subir_buff(chave: String) -> void:
+	_abrir().set_value("buffs", chave,
+		mini(GameEngine.NIVEL_MAX_BUFF, nivel_buff(chave) + 1))
+	_salvar()
+
+
 # ---------------------------------------------------------------------- jogo
 
 ## Dificuldade do Arcade. Nasceu na escolha do onboarding (REMOVIDO em

@@ -35,4 +35,9 @@ static func config_para_jogar() -> GameEngine.ConfigPartida:
 		config.oportunistas = 8
 		config.agressividade = 0.35
 		config.turbo_bots = 1.3
+	# Buffs permanentes comprados na Loja (docs §2.6.2) — SÓ no Arcade:
+	# desafio já sai de config_do_desafio com aplicar_buffs = false.
+	config.nivel_velocidade = ProgressoLocal.nivel_buff("velocidade")
+	config.nivel_ima = ProgressoLocal.nivel_buff("ima")
+	config.nivel_pontos_iniciais = ProgressoLocal.nivel_buff("pontos")
 	return config

@@ -4,8 +4,9 @@ extends Control
 ## já: Vibração, Modo daltonismo (símbolos nas cobras — item do M3),
 ## Sair e Excluir conta. Sons/Música são TOGGLES
 ## por decisão de 13/08 (o desenho tinha sliders; liga/desliga é mais
-## simples p/ 7+) — persistem e o som consome no M3-sons. Guardam lugar: Idioma (i18n M3), Privacidade e responsáveis, Remover anúncios e
-## Restaurar compras (Billing M3).
+## simples p/ 7+) — persistem e o som consome no M3-sons. "Remover
+## anúncios" navega para a Loja (aba Pacotes). Guardam lugar: Idioma
+## (i18n M3), Privacidade e responsáveis, Restaurar compras (Billing M3).
 
 const T := preload("res://src/ui/theme/tokens.gd")
 
@@ -77,7 +78,10 @@ func _montar_conteudo() -> void:
 	conta.add_child(_linha_navegacao("🔒", "Privacidade e responsáveis", "›",
 		Callable(), true))
 	conta.add_child(_linha_navegacao("🚫", "Remover anúncios", "›",
-		Callable(), true))
+		func() -> void:
+			Loja.proxima_aba = Loja.Aba.PACOTES
+			get_tree().change_scene_to_file("res://src/ui/loja/loja.tscn"),
+		true))
 	conta.add_child(_linha_navegacao("🔄", "Restaurar compras", "›",
 		Callable(), true))
 	var pode_sair: bool = Rede.logado()
