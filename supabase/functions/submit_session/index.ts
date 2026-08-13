@@ -61,7 +61,7 @@ function validar(p: Payload): string | null {
   for (const nivel of [p.buff_speed_level, p.buff_magnet_level, p.buff_start_points_level]) {
     if (!inteiroEm(nivel, 0, NIVEL_BUFF_MAX)) return "nivel_de_buff";
   }
-  if (p.challenge !== null && ![0, 1].includes(p.challenge)) return "desafio";
+  if (p.challenge !== null && ![0, 1, 2, 3].includes(p.challenge)) return "desafio";
   // Desafio nunca aplica buffs (docs §2.6.3) — payload coerente ou mentira.
   if (
     p.challenge !== null &&

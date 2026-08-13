@@ -26,6 +26,21 @@ const CONFETES: Array = [
 const NOMES_DESAFIO: Dictionary[ChallengeRules.Desafio, String] = {
 	ChallengeRules.Desafio.FARMING_PURO: "FARMING PURO",
 	ChallengeRules.Desafio.AGRESSAO_CONTROLADA: "AGRESSÃO CONTROLADA",
+	ChallengeRules.Desafio.DEFESA: "DEFESA",
+	ChallengeRules.Desafio.INTEGRACAO_TOTAL: "INTEGRAÇÃO TOTAL",
+}
+
+## Encadeamento: concluiu N → o CTA puxa N+1 (D4 fecha o ciclo no Arcade).
+const PROXIMO_DESAFIO: Dictionary[ChallengeRules.Desafio, ChallengeRules.Desafio] = {
+	ChallengeRules.Desafio.FARMING_PURO: ChallengeRules.Desafio.AGRESSAO_CONTROLADA,
+	ChallengeRules.Desafio.AGRESSAO_CONTROLADA: ChallengeRules.Desafio.DEFESA,
+	ChallengeRules.Desafio.DEFESA: ChallengeRules.Desafio.INTEGRACAO_TOTAL,
+}
+
+const TITULOS_CTA: Dictionary[ChallengeRules.Desafio, String] = {
+	ChallengeRules.Desafio.AGRESSAO_CONTROLADA: "▶ Desafio 2 — Agressão controlada",
+	ChallengeRules.Desafio.DEFESA: "▶ Desafio 3 — Defesa",
+	ChallengeRules.Desafio.INTEGRACAO_TOTAL: "▶ Desafio 4 — Integração total",
 }
 
 
@@ -245,9 +260,9 @@ func _botoes(regras: ChallengeRules) -> Control:
 	pilha.add_theme_constant_override("separation", T.ESP_XS + 2)
 
 	# CTA: o PRÓXIMO passo (blueprint: "▶ Jogar fase 4") — próximo desafio,
-	# ou o Arcade (extermínio, ou desafios esgotados — 3–4 chegam no M3).
+	# ou o Arcade (extermínio, ou o D4 fechou o ciclo).
 	var tem_proximo: bool = regras != null \
-		and regras.desafio == ChallengeRules.Desafio.FARMING_PURO
+		and PROXIMO_DESAFIO.has(regras.desafio)
 	var cta: Button = Button.new()
 	cta.theme_type_variation = &"BotaoHeroi"
 	cta.flat = true
@@ -257,13 +272,13 @@ func _botoes(regras: ChallengeRules) -> Control:
 			T.COR_CTA_PRIMARIO_INICIO, T.COR_CTA_PRIMARIO_FIM))
 	cta.pressed.connect(func() -> void:
 		if tem_proximo:
-			Sessao.desafio_pendente = int(ChallengeRules.Desafio.AGRESSAO_CONTROLADA)
+			Sessao.desafio_pendente = int(PROXIMO_DESAFIO[regras.desafio])
 		else:
 			Sessao.regras_desafio = null
 		get_tree().change_scene_to_file(CENA_JOGO))
 	var texto_cta: Label = Label.new()
 	if tem_proximo:
-		texto_cta.text = "▶ Desafio 2 — Agressão controlada"
+		texto_cta.text = TITULOS_CTA[PROXIMO_DESAFIO[regras.desafio]]
 	elif regras == null:
 		texto_cta.text = "▶ Jogar de novo"
 	else:

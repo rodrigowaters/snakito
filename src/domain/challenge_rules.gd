@@ -1,8 +1,8 @@
 class_name ChallengeRules
 extends RefCounted
-## Regras e metas dos desafios progressivos (docs §2.5) — Desafios 1 e 2;
-## 3 e 4 chegam no M2. Puro: avalia o estado do GameEngine e NUNCA o altera;
-## a cena decide o que fazer quando o desafio se resolve.
+## Regras e metas dos 4 desafios progressivos (docs §2.5). Puro: avalia o
+## estado do GameEngine e NUNCA o altera; a cena decide o que fazer quando
+## o desafio se resolve.
 ##
 ## Contratos (docs §2.4 e §2.6.3):
 ## - Seed FIXA por desafio → o mesmo desafio gera exatamente a mesma partida
@@ -14,6 +14,8 @@ extends RefCounted
 enum Desafio {
 	FARMING_PURO,          # Desafio 1: 50 pontos em 1 min sem matar ninguém
 	AGRESSAO_CONTROLADA,   # Desafio 2: devore 3 bots antes de 2 min
+	DEFESA,                # Desafio 3: sobreviva 3 min com 2 caçadores 100+
+	INTEGRACAO_TOTAL,      # Desafio 4: termine no Top 3 com 20 bots
 }
 
 enum Estado { EM_ANDAMENTO, CONCLUIDO, FALHOU }
@@ -31,6 +33,15 @@ const META_PONTOS_DESAFIO_1: int = 50
 const SEED_DESAFIO_2: int = 202
 const DURACAO_DESAFIO_2_SEG: int = 120
 const META_ABATES_DESAFIO_2: int = 3
+
+# --- Desafio 3 · defesa ---------------------------------------------------------
+const SEED_DESAFIO_3: int = 303
+const DURACAO_DESAFIO_3_SEG: int = 180
+
+# --- Desafio 4 · integração total -----------------------------------------------
+const SEED_DESAFIO_4: int = 404
+const DURACAO_DESAFIO_4_SEG: int = 180
+const META_POSICAO_DESAFIO_4: int = 3
 
 var desafio: Desafio
 var estado: Estado = Estado.EM_ANDAMENTO
@@ -91,6 +102,47 @@ static func config_do_desafio(desafio_: Desafio) -> GameEngine.ConfigPartida:
 			# frustra a criança — o desafio é para ser vencido pela leitura,
 			# não sofrido na loteria do spawn.
 			config.distancia_spawn_cacador = 1000.0
+		Desafio.DEFESA:
+			# Lição: fugir É estratégia. 2 caçadores GIGANTES (spec: 100+) que
+			# o jogador jamais enfrenta — visão deles fica no teto (700), então
+			# eles SEMPRE te acham; sobreviver exige turbo, rota e paciência.
+			# A persistência de caça (5s/8s) é a janela de respiro que torna a
+			# lição jogável; nascem longe (loteria de spawn frustra criança).
+			config.semente = SEED_DESAFIO_3
+			config.duracao_seg = DURACAO_DESAFIO_3_SEG
+			config.tamanho_arena = Vector2(3000.0, 3000.0)
+			config.qtd_comida = 130
+			config.fazendeiros = 10
+			config.cacadores = 2
+			config.oportunistas = 6
+			config.tamanho_min_bot = 1
+			config.tamanho_max_bot = 5
+			config.agressividade = 0.6
+			# Gigante nível 100+ já anda no teto de velocidade (×1.35 = 243);
+			# turbo 1.1 garante que o TURBO do jogador sempre escapa (270 vs
+			# 267) — a lição é gestão de energia, não corrida perdida.
+			config.turbo_bots = 1.1
+			config.tamanho_teto_bot = 20
+			config.tamanho_inicial_cacador = 100
+			config.tamanho_teto_cacador = 130
+			config.distancia_spawn_cacador = 2000.0
+		Desafio.INTEGRACAO_TOTAL:
+			# Lição: juntar tudo — farmar, caçar, fugir e ADMINISTRAR pontos.
+			# Composição de Arcade honesta com exatamente 20 bots (spec).
+			config.semente = SEED_DESAFIO_4
+			config.duracao_seg = DURACAO_DESAFIO_4_SEG
+			config.qtd_comida = 90
+			config.fazendeiros = 8
+			config.cacadores = 4
+			config.oportunistas = 8
+			config.tamanho_min_bot = 1
+			config.tamanho_max_bot = 5
+			config.agressividade = 0.5
+			config.turbo_bots = 1.4
+			config.tamanho_teto_bot = 20
+			config.tamanho_teto_cacador = 35
+			config.tamanho_inicial_cacador = 8
+			config.distancia_spawn_cacador = 1000.0
 	return config
 
 
@@ -122,6 +174,24 @@ func avaliar(motor: GameEngine) -> Estado:
 				_falhar(Motivo.MORREU)
 			elif motor.estado == GameEngine.Estado.ENCERRADA:
 				_falhar(Motivo.TEMPO_ESGOTADO)
+		Desafio.DEFESA:
+			# Sobreviver até o fim (relógio OU arena dominada — exterminar os
+			# gigantes também é sobreviver, e que sobrevivência).
+			if not jogador.viva:
+				_falhar(Motivo.MORREU)
+			elif motor.estado == GameEngine.Estado.ENCERRADA:
+				_concluir()
+		Desafio.INTEGRACAO_TOTAL:
+			# "TERMINE no Top 3": morrer antes do fim falha — sem isso, morrer
+			# cedo com a arena ainda empatada em pontos viraria vitória de
+			# sorte. O rank vale no encerramento por tempo (ou domínio).
+			if not jogador.viva:
+				_falhar(Motivo.MORREU)
+			elif motor.estado == GameEngine.Estado.ENCERRADA:
+				if motor.posicao_no_ranking(jogador) <= META_POSICAO_DESAFIO_4:
+					_concluir()
+				else:
+					_falhar(Motivo.TEMPO_ESGOTADO)
 	return estado
 
 
@@ -133,6 +203,10 @@ func progresso_atual(motor: GameEngine) -> int:
 			return mini(jogador.pontos, META_PONTOS_DESAFIO_1)
 		Desafio.AGRESSAO_CONTROLADA:
 			return mini(jogador.abates, META_ABATES_DESAFIO_2)
+		Desafio.DEFESA:
+			return mini(int(motor.segundos_decorridos()), DURACAO_DESAFIO_3_SEG)
+		Desafio.INTEGRACAO_TOTAL:
+			return motor.posicao_no_ranking(jogador)
 	return 0
 
 
@@ -143,6 +217,10 @@ func progresso_meta() -> int:
 			return META_PONTOS_DESAFIO_1
 		Desafio.AGRESSAO_CONTROLADA:
 			return META_ABATES_DESAFIO_2
+		Desafio.DEFESA:
+			return DURACAO_DESAFIO_3_SEG
+		Desafio.INTEGRACAO_TOTAL:
+			return META_POSICAO_DESAFIO_4
 	return 0
 
 

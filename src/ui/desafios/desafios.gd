@@ -4,7 +4,7 @@ extends Control
 ## Adaptações registradas: subtítulo pedagógico no lugar de "RENOVAM EM 2
 ## DIAS" (não há rotação — nossos desafios são lições fixas por seed);
 ## pill de prêmio presente e ZERADA (valores chegam com a economia, M3);
-## Desafios 3–4 guardam lugar (M3); rodapé do buff de Evolução apagado.
+## rodapé do buff de Evolução apagado (Evolução é futuro).
 
 const T := preload("res://src/ui/theme/tokens.gd")
 
@@ -27,13 +27,13 @@ const FICHAS: Array[Dictionary] = [
 		"meta": "Devore 3 bots antes de 2 min — sendo caçado",
 	},
 	{
-		"desafio": -1,
+		"desafio": ChallengeRules.Desafio.DEFESA,
 		"icone": "💪", "cor": 1,
 		"titulo": "Defesa",
 		"meta": "Sobreviva 3 min com 2 caçadores gigantes",
 	},
 	{
-		"desafio": -1,
+		"desafio": ChallengeRules.Desafio.INTEGRACAO_TOTAL,
 		"icone": "🥉", "cor": 5,
 		"titulo": "Integração total",
 		"meta": "Termine no Top 3 de uma arena com 20 bots",

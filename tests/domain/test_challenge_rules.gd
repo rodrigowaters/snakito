@@ -147,3 +147,62 @@ func test_progresso_reporta_e_limita_na_meta() -> void:
 	motor2.jogador().abates = 1
 	assert_int(regras2.progresso_atual(motor2)).is_equal(1)
 	assert_int(regras2.progresso_meta()).is_equal(3)
+
+
+func test_desafio_3_sobreviver_conclui_morrer_falha() -> void:
+	# D3 Defesa: chegar vivo ao encerramento (tempo OU domínio) conclui.
+	var config: GameEngine.ConfigPartida = \
+		ChallengeRules.config_do_desafio(ChallengeRules.Desafio.DEFESA)
+	assert_int(config.tamanho_inicial_cacador).is_equal(100)  # spec: 100+
+	assert_int(config.cacadores).is_equal(2)
+	var motor: GameEngine = GameEngine.new(config)
+	var regras: ChallengeRules = ChallengeRules.new(ChallengeRules.Desafio.DEFESA)
+	assert_that(regras.avaliar(motor)).is_equal(ChallengeRules.Estado.EM_ANDAMENTO)
+	# Encerrou por tempo com o jogador vivo → concluído.
+	motor.tick_atual = config.duracao_seg * GameEngine.TICKS_POR_SEGUNDO
+	motor.avancar(Vector2.RIGHT)
+	assert_that(regras.avaliar(motor)).is_equal(ChallengeRules.Estado.CONCLUIDO)
+	# Morrer falha (instância nova).
+	var motor2: GameEngine = GameEngine.new(
+		ChallengeRules.config_do_desafio(ChallengeRules.Desafio.DEFESA))
+	var regras2: ChallengeRules = ChallengeRules.new(ChallengeRules.Desafio.DEFESA)
+	motor2.jogador().viva = false
+	motor2.avancar(Vector2.RIGHT)
+	assert_that(regras2.avaliar(motor2)).is_equal(ChallengeRules.Estado.FALHOU)
+	assert_that(regras2.motivo).is_equal(ChallengeRules.Motivo.MORREU)
+
+
+func test_desafio_4_top3_no_encerramento() -> void:
+	# D4: rank ≤3 NO ENCERRAMENTO conclui; morrer antes falha (senão morrer
+	# cedo com a arena empatada viraria vitória de sorte).
+	var config: GameEngine.ConfigPartida = \
+		ChallengeRules.config_do_desafio(ChallengeRules.Desafio.INTEGRACAO_TOTAL)
+	assert_int(config.fazendeiros + config.cacadores + config.oportunistas) \
+		.is_equal(20)  # spec: arena com 20 bots
+	# Morte antes do fim: falha mesmo que o rank estivesse bom.
+	var motor: GameEngine = GameEngine.new(config)
+	var regras: ChallengeRules = ChallengeRules.new(ChallengeRules.Desafio.INTEGRACAO_TOTAL)
+	motor.jogador().pontos = 99999
+	motor.jogador().viva = false
+	motor.avancar(Vector2.RIGHT)
+	assert_that(regras.avaliar(motor)).is_equal(ChallengeRules.Estado.FALHOU)
+	assert_that(regras.motivo).is_equal(ChallengeRules.Motivo.MORREU)
+	# Tempo esgotado em 1º → concluído.
+	var motor2: GameEngine = GameEngine.new(
+		ChallengeRules.config_do_desafio(ChallengeRules.Desafio.INTEGRACAO_TOTAL))
+	var regras2: ChallengeRules = ChallengeRules.new(ChallengeRules.Desafio.INTEGRACAO_TOTAL)
+	motor2.jogador().pontos = 99999
+	motor2.tick_atual = motor2.config.duracao_seg * GameEngine.TICKS_POR_SEGUNDO
+	motor2.avancar(Vector2.RIGHT)
+	assert_that(regras2.avaliar(motor2)).is_equal(ChallengeRules.Estado.CONCLUIDO)
+	# Tempo esgotado fora do Top 3 → falha por tempo.
+	var motor3: GameEngine = GameEngine.new(
+		ChallengeRules.config_do_desafio(ChallengeRules.Desafio.INTEGRACAO_TOTAL))
+	var regras3: ChallengeRules = ChallengeRules.new(ChallengeRules.Desafio.INTEGRACAO_TOTAL)
+	for cobra: SnakeModel in motor3.arena.cobras:
+		if not cobra.eh_jogador():
+			cobra.pontos = 1000
+	motor3.tick_atual = motor3.config.duracao_seg * GameEngine.TICKS_POR_SEGUNDO
+	motor3.avancar(Vector2.RIGHT)
+	assert_that(regras3.avaliar(motor3)).is_equal(ChallengeRules.Estado.FALHOU)
+	assert_that(regras3.motivo).is_equal(ChallengeRules.Motivo.TEMPO_ESGOTADO)

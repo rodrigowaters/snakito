@@ -43,8 +43,33 @@ func _initialize() -> void:
 		conclusoes, LOTE, mortes, LOTE, soma_fuga / LOTE, soma_vizinhos / LOTE,
 		(soma_tempo_conclusao / conclusoes) if conclusoes > 0 else 0.0])
 
+	_lote_desafio(ChallengeRules.Desafio.DEFESA, "D3")
+	_lote_desafio(ChallengeRules.Desafio.INTEGRACAO_TOTAL, "D4")
 	_lote_arcade()
 	quit()
+
+
+## Lote genérico de um desafio (mesmo formato do D2).
+func _lote_desafio(desafio: ChallengeRules.Desafio, nome: String) -> void:
+	print("== %s · lote de %d trajetórias ==" % [nome, LOTE])
+	var conclusoes: int = 0
+	var mortes: int = 0
+	var soma_fuga: float = 0.0
+	var soma_tempo: float = 0.0
+	for semente_jogador: int in range(1, LOTE + 1):
+		var r: Dictionary = _jogar(desafio, semente_jogador, true)
+		soma_fuga += r.fuga
+		if r.estado == ChallengeRules.Estado.CONCLUIDO:
+			conclusoes += 1
+			soma_tempo += r.tempo
+		elif r.motivo == ChallengeRules.Motivo.MORREU:
+			mortes += 1
+		print("  #%02d: %s (%s) | %5.1fs | abates %d | fuga %2.0f%%" % [
+			semente_jogador, NOMES_ESTADO[r.estado], NOMES_MOTIVO[r.motivo],
+			r.tempo, r.abates, r.fuga])
+	print("RESUMO %s: conclui %d/%d | morre %d/%d | fuga média %.0f%% | conclusão média %.0fs" % [
+		nome, conclusoes, LOTE, mortes, LOTE, soma_fuga / LOTE,
+		(soma_tempo / conclusoes) if conclusoes > 0 else 0.0])
 
 
 ## Lote do ARCADE (config padrão, seed variando como no jogo real):
