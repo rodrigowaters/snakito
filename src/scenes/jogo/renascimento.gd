@@ -120,6 +120,9 @@ func _montar() -> void:
 	ticket.text = "🎟️ Pular anúncio · usar 1 de %d" % ProgressoLocal.tickets()
 	ticket.theme_type_variation = &"BotaoSecundario"
 	ticket.disabled = true
+	ticket.add_theme_stylebox_override("disabled",
+		ThemeDB.get_project_theme().get_stylebox(&"normal", &"BotaoSecundario"))
+	ticket.add_theme_color_override("font_disabled_color", T.COR_TEXTO_SECUNDARIO)
 	coluna.add_child(ticket)
 
 	var ver_resultado: Button = Button.new()

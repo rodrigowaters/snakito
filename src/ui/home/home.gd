@@ -307,6 +307,10 @@ func _celula_nav(
 	celula.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	if cena == "":
 		celula.disabled = true
+		# Desabilitada mas fiel: mesmo vidro do desenho (o disabled padrão
+		# troca o stylebox); o conteúdo apagado sinaliza o "em breve".
+		celula.add_theme_stylebox_override("disabled",
+			ThemeDB.get_project_theme().get_stylebox(&"normal", &"CartaoNav"))
 	else:
 		celula.pressed.connect(func() -> void:
 			get_tree().change_scene_to_file(cena))

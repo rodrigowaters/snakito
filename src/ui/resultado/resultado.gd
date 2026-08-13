@@ -102,6 +102,11 @@ func _abas() -> Control:
 	futura.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	futura.disabled = true
 	futura.add_theme_font_size_override("font_size", T.TAM_CORPO_SM)
+	# Desabilitada mas fiel: vidro em pílula do desenho (o disabled padrão
+	# troca raio e fundo — armadilha já mordeu 3×).
+	futura.add_theme_stylebox_override("disabled",
+		ThemeDB.get_project_theme().get_stylebox(&"normal", &"Chip"))
+	futura.add_theme_color_override("font_disabled_color", T.COR_TEXTO_SECUNDARIO)
 	linha.add_child(futura)
 	return linha
 
@@ -378,6 +383,9 @@ func _botoes_finais(regras: ChallengeRules) -> Control:
 	compartilhar.theme_type_variation = &"BotaoSecundario"
 	compartilhar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	compartilhar.disabled = true  # plugin de share nativo é M3
+	compartilhar.add_theme_stylebox_override("disabled",
+		ThemeDB.get_project_theme().get_stylebox(&"normal", &"BotaoSecundario"))
+	compartilhar.add_theme_color_override("font_disabled_color", T.COR_TEXTO_SECUNDARIO)
 	linha.add_child(compartilhar)
 	pilha.add_child(linha)
 	return pilha
