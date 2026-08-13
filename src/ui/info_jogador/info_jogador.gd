@@ -62,15 +62,9 @@ func _montar_conteudo() -> void:
 	coluna.add_child(_inventario())
 	coluna.add_child(_jornada())
 	coluna.add_child(_espaco_flexivel())
-
-	# Adaptação: porta para a Conta (sair/excluir) — o avatar da Home abre
-	# esta tela agora.
-	var conta: Button = Button.new()
-	conta.text = "Conta e segurança…"
-	conta.theme_type_variation = &"BotaoSecundario"
-	conta.pressed.connect(func() -> void:
-		get_tree().change_scene_to_file("res://src/ui/conta/conta.tscn"))
-	coluna.add_child(conta)
+	# Decisão 13/08: sem botão de Conta aqui — sair/excluir/apelido vão
+	# morar na tela de Configurações (M3, atrás do ⚙ da Home). Até lá, a
+	# gestão de conta fica sem porta para quem está logado com perfil.
 
 
 func _cabecalho() -> Control:
