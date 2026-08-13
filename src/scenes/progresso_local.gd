@@ -104,23 +104,23 @@ static func registrar_posicao(posicao: int) -> bool:
 	return false
 
 
-## Volumes (tela 10): persistidos desde já — o áudio (M3-sons) consome
-## daqui quando chegar. Padrões = os do blueprint (75% / 40%).
-static func volume_sons() -> float:
-	return _abrir().get_value("audio", "sons", 0.75)
+## Áudio (tela 10, decisão 13/08: TOGGLES no lugar dos sliders do desenho —
+## liga/desliga é mais simples para 7+). O som consome daqui no M3-sons.
+static func sons_ligados() -> bool:
+	return _abrir().get_value("audio", "sons_ligados", true)
 
 
-static func definir_volume_sons(valor: float) -> void:
-	_abrir().set_value("audio", "sons", clampf(valor, 0.0, 1.0))
+static func definir_sons(ligados: bool) -> void:
+	_abrir().set_value("audio", "sons_ligados", ligados)
 	_salvar()
 
 
-static func volume_musica() -> float:
-	return _abrir().get_value("audio", "musica", 0.4)
+static func musica_ligada() -> bool:
+	return _abrir().get_value("audio", "musica_ligada", true)
 
 
-static func definir_volume_musica(valor: float) -> void:
-	_abrir().set_value("audio", "musica", clampf(valor, 0.0, 1.0))
+static func definir_musica(ligada: bool) -> void:
+	_abrir().set_value("audio", "musica_ligada", ligada)
 	_salvar()
 
 

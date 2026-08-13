@@ -2,8 +2,9 @@ class_name Configuracoes
 extends Control
 ## Configurações — composição fiel ao blueprint "10" (M3). Funcionais desde
 ## já: Vibração, Modo daltonismo (símbolos nas cobras — item do M3),
-## Sair e Excluir conta. Volumes de áudio FUNCIONAIS
-## e persistidos (o som consome no M3-sons). Guardam lugar: Idioma (i18n M3), Privacidade e responsáveis, Remover anúncios e
+## Sair e Excluir conta. Sons/Música são TOGGLES
+## por decisão de 13/08 (o desenho tinha sliders; liga/desliga é mais
+## simples p/ 7+) — persistem e o som consome no M3-sons. Guardam lugar: Idioma (i18n M3), Privacidade e responsáveis, Remover anúncios e
 ## Restaurar compras (Billing M3).
 
 const T := preload("res://src/ui/theme/tokens.gd")
@@ -39,14 +40,14 @@ func _montar_conteudo() -> void:
 
 	_coluna.add_child(_titulo_secao("ÁUDIO"))
 	var audio: VBoxContainer = _card_lista()
-	# Volumes FUNCIONAIS e persistidos (o áudio consome no M3-sons —
-	# mesmo padrão da economia: o controle existe antes do consumidor).
-	audio.add_child(_linha_slider("🔊", "Sons do jogo",
-		ProgressoLocal.volume_sons(),
-		func(valor: float) -> void: ProgressoLocal.definir_volume_sons(valor), true))
-	audio.add_child(_linha_slider("🎵", "Música",
-		ProgressoLocal.volume_musica(),
-		func(valor: float) -> void: ProgressoLocal.definir_volume_musica(valor), false))
+	# TOGGLES por decisão (13/08 — o desenho tinha sliders): liga/desliga é
+	# mais simples para 7+; persistem e o som consome no M3-sons.
+	audio.add_child(_linha_toggle("🔊", "Sons do jogo", "",
+		ProgressoLocal.sons_ligados(),
+		func(ligados: bool) -> void: ProgressoLocal.definir_sons(ligados), true))
+	audio.add_child(_linha_toggle("🎵", "Música", "",
+		ProgressoLocal.musica_ligada(),
+		func(ligada: bool) -> void: ProgressoLocal.definir_musica(ligada), false))
 
 	_coluna.add_child(_titulo_secao("JOGO"))
 	var jogo: VBoxContainer = _card_lista()
@@ -271,51 +272,6 @@ func _linha_navegacao(
 		partes[0].add_child(toque)  # empilha no envelope, cobrindo a linha
 	else:
 		partes[0].modulate.a = 0.55  # guardando lugar
-	return partes[0]
-
-
-## Slider do blueprint — FUNCIONAL: arrastar/tocar no trilho define o valor
-## (playtest 13/08: "o volume parece não mover"); `acao` persiste 0..1.
-func _linha_slider(
-	emoji: String,
-	rotulo: String,
-	fracao_inicial: float,
-	acao: Callable,
-	divisoria: bool,
-) -> Control:
-	var partes: Array = _linha_base(emoji, rotulo, "", divisoria)
-	var fracao: Array[float] = [fracao_inicial]  # caixa mutável p/ lambdas
-	var trilho: Control = Control.new()
-	trilho.custom_minimum_size = Vector2(110.0, 34.0)
-	trilho.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	trilho.draw.connect(func() -> void:
-		var meio: float = trilho.size.y * 0.5
-		trilho.draw_colored_polygon(DesenhoUi.poligono_arredondado(
-			Rect2(0.0, meio - 5.0, trilho.size.x, 10.0), 5.0),
-			Color(T.COR_TEXTO_PRIMARIO, 0.1))
-		# Preenchimento na MESMA linha do trilho (transform desloca a origem
-		# do helper, que desenha em (0,0)).
-		trilho.draw_set_transform(Vector2(0.0, meio - 5.0), 0.0, Vector2.ONE)
-		DesenhoUi.gradiente_arredondado(trilho,
-			Vector2(maxf(10.0, trilho.size.x * fracao[0]), 10.0), 5.0,
-			T.COR_CTA_PRIMARIO_FIM, T.COR_CTA_PRIMARIO_INICIO)
-		trilho.draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
-		# Botão branco com sombrinha, centrado no fim do preenchimento.
-		trilho.draw_circle(Vector2(trilho.size.x * fracao[0], meio) + Vector2(0.0, 1.5),
-			12.0, Color(T.COR_APP_FUNDO_INICIO, 0.35))
-		trilho.draw_circle(Vector2(trilho.size.x * fracao[0], meio), 12.0,
-			T.COR_TEXTO_PRIMARIO))
-	var aplicar: Callable = func(x: float) -> void:
-		fracao[0] = clampf(x / trilho.size.x, 0.0, 1.0)
-		acao.call(fracao[0])
-		trilho.queue_redraw()
-	trilho.gui_input.connect(func(evento: InputEvent) -> void:
-		if evento is InputEventMouseButton and evento.pressed:
-			aplicar.call(evento.position.x)
-		elif evento is InputEventMouseMotion \
-				and evento.button_mask & MOUSE_BUTTON_MASK_LEFT:
-			aplicar.call(evento.position.x))
-	partes[1].add_child(trilho)
 	return partes[0]
 
 
