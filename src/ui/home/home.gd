@@ -82,8 +82,11 @@ func _barra_topo() -> Control:
 	var avatar: Button = Button.new()
 	avatar.theme_type_variation = &"ChipQuadrado"
 	avatar.custom_minimum_size = Vector2(float(T.TOQUE_MIN), float(T.TOQUE_MIN))
+	# Com perfil → Informações do jogador (02b); sem → Conta (login).
 	avatar.pressed.connect(func() -> void:
-		get_tree().change_scene_to_file("res://src/ui/conta/conta.tscn"))
+		get_tree().change_scene_to_file(
+			"res://src/ui/info_jogador/info_jogador.tscn"
+			if Rede.tem_perfil() else "res://src/ui/conta/conta.tscn"))
 	# Blueprint do avatar: cabeça de 36px SÓ com olhos (sem sorriso) e brilho
 	# radial no topo-esquerda.
 	avatar.draw.connect(func() -> void:

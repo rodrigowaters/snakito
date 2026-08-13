@@ -164,6 +164,8 @@ func _ir_para_resultado() -> void:
 		var espera: float = DELAY_RESULTADO_TEMPO if motor.jogador().viva \
 			else DELAY_RESULTADO_MORTE
 		await get_tree().create_timer(espera).timeout
+	# Estatísticas locais da conta (tela 02b): recorde e abates acumulados.
+	ProgressoLocal.registrar_partida(motor.jogador().pontos, motor.jogador().abates)
 	# Toda partida encerrada entra na fila offline — logado ou não (docs §6);
 	# a Rede despacha quando houver rede + login + perfil.
 	FilaSessoes.enfileirar(_payload_da_sessao())

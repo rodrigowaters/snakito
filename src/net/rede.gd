@@ -21,6 +21,8 @@ var _access_token: String = ""
 var _refresh_token: String = ""
 var _user_id: String = ""
 var _username: String = ""
+## created_at do perfil (ISO) — "jogando desde {mês}" da tela 02b.
+var _criado_em: String = ""
 
 
 func _ready() -> void:
@@ -89,14 +91,21 @@ func _renovar() -> bool:
 
 # ----------------------------------------------------------------- perfil
 
-## Busca o username do perfil (RLS: dono lê). "" = perfil ainda não criado.
+## Busca o perfil (RLS: dono lê). username "" = perfil ainda não criado.
 func atualizar_perfil() -> void:
 	var resposta: Dictionary = await _com_renovacao(
-		HTTPClient.METHOD_GET, "/rest/v1/profiles?select=username", {})
+		HTTPClient.METHOD_GET, "/rest/v1/profiles?select=username,created_at", {})
 	if resposta.status == 200 and resposta.dados is Array and not (resposta.dados as Array).is_empty():
 		_username = resposta.dados[0].get("username", "")
+		_criado_em = str(resposta.dados[0].get("created_at", ""))
 	else:
 		_username = ""
+		_criado_em = ""
+
+
+## created_at do perfil em ISO ("" = desconhecido) — tela 02b.
+func criado_em() -> String:
+	return _criado_em
 
 
 ## Cria o perfil do usuário logado. `com_consentimento_parental` = usuário

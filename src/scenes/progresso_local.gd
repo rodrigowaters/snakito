@@ -72,6 +72,23 @@ static func definir_dificuldade(valor: Dificuldade) -> void:
 	_salvar()
 
 
+## Estatísticas acumuladas da conta local (tela 02b): recorde de pontos e
+## total de cobras devoradas — registradas ao fim de CADA partida.
+static func recorde_pontos() -> int:
+	return _abrir().get_value("estatisticas", "recorde_pontos", 0)
+
+
+static func total_abates() -> int:
+	return _abrir().get_value("estatisticas", "total_abates", 0)
+
+
+static func registrar_partida(pontos: int, abates: int) -> void:
+	_abrir().set_value("estatisticas", "recorde_pontos",
+		maxi(recorde_pontos(), pontos))
+	_abrir().set_value("estatisticas", "total_abates", total_abates() + abates)
+	_salvar()
+
+
 ## Melhor posição no Arcade (blueprint 05: "sua melhor posição até hoje!").
 ## 0 = nunca terminou uma partida. Registrar devolve true se virou recorde.
 static func melhor_posicao() -> int:
