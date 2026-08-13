@@ -45,7 +45,9 @@ func _montar_conteudo() -> void:
 	jogo.add_child(_linha_toggle("📳", "Vibração (háptica)", "",
 		ProgressoLocal.vibracao(),
 		func(ligada: bool) -> void: ProgressoLocal.definir_vibracao(ligada), true))
-	jogo.add_child(_linha_dificuldade())
+	# Dificuldade do Arcade NÃO tem linha aqui (playtest 13/08: "não está
+	# prevista no desenho") — fica interna no padrão CHEIA até o design
+	# prever um lugar para ela.
 	jogo.add_child(_linha_navegacao("🌐", "Idioma", "Português (BR) ›",
 		Callable(), true))
 	jogo.add_child(_linha_toggle("", "Modo daltonismo", "símbolos nas cobras",
@@ -275,56 +277,6 @@ func _linha_slider(emoji: String, rotulo: String, fracao: float, divisoria: bool
 			T.COR_TEXTO_PRIMARIO))
 	partes[1].add_child(trilho)
 	return partes[0]
-
-
-## Dificuldade do Arcade (adaptação — decisão de 13/08): Tranquila | Cheia.
-func _linha_dificuldade() -> Control:
-	var partes: Array = _linha_base("🐍", "Dificuldade do Arcade", "", true)
-	var grupo: HBoxContainer = HBoxContainer.new()
-	grupo.add_theme_constant_override("separation", T.ESP_MICRO + 2)
-	grupo.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	partes[1].add_child(grupo)
-	var botoes: Array[Button] = []
-	var opcoes: Array = [
-		["Tranquila", ProgressoLocal.Dificuldade.TRANQUILA],
-		["Cheia", ProgressoLocal.Dificuldade.CHEIA],
-	]
-	for opcao: Array in opcoes:
-		var botao: Button = Button.new()
-		botao.text = opcao[0]
-		botao.theme_type_variation = &"Chip"
-		botao.add_theme_font_size_override("font_size", T.TAM_LEGENDA)
-		botoes.append(botao)
-		grupo.add_child(botao)
-	var aplicar: Callable = func() -> void:
-		for i: int in botoes.size():
-			var ativa: bool = int(ProgressoLocal.dificuldade()) == int(opcoes[i][1])
-			if ativa:
-				botoes[i].add_theme_stylebox_override("normal",
-					_caixa_pill_ativa())
-				botoes[i].add_theme_color_override("font_color",
-					T.COR_TEXTO_SOBRE_PRIMARIO)
-			else:
-				botoes[i].remove_theme_stylebox_override("normal")
-				botoes[i].remove_theme_color_override("font_color")
-	for i: int in botoes.size():
-		var dificuldade: ProgressoLocal.Dificuldade = opcoes[i][1]
-		botoes[i].pressed.connect(func() -> void:
-			ProgressoLocal.definir_dificuldade(dificuldade)
-			aplicar.call())
-	aplicar.call()
-	return partes[0]
-
-
-func _caixa_pill_ativa() -> StyleBoxFlat:
-	var caixa: StyleBoxFlat = StyleBoxFlat.new()
-	caixa.bg_color = T.COR_CTA_PRIMARIO_MEDIO
-	caixa.set_corner_radius_all(T.RAIO_PILULA)
-	caixa.content_margin_left = float(T.ESP_SM)
-	caixa.content_margin_right = float(T.ESP_SM)
-	caixa.content_margin_top = float(T.ESP_MICRO) + 2.0
-	caixa.content_margin_bottom = float(T.ESP_MICRO) + 2.0
-	return caixa
 
 
 # ------------------------------------------------------------------ ícones
