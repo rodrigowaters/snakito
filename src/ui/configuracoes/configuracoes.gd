@@ -261,10 +261,17 @@ func _linha_slider(emoji: String, rotulo: String, fracao: float, divisoria: bool
 		trilho.draw_colored_polygon(DesenhoUi.poligono_arredondado(
 			Rect2(0.0, meio - 5.0, trilho.size.x, 10.0), 5.0),
 			Color(T.COR_TEXTO_PRIMARIO, 0.1))
+		# Preenchimento na MESMA linha do trilho (transform desloca a origem
+		# do helper, que desenha em (0,0)).
+		trilho.draw_set_transform(Vector2(0.0, meio - 5.0), 0.0, Vector2.ONE)
 		DesenhoUi.gradiente_arredondado(trilho,
 			Vector2(trilho.size.x * fracao, 10.0), 5.0,
 			T.COR_CTA_PRIMARIO_FIM, T.COR_CTA_PRIMARIO_INICIO)
-		trilho.draw_circle(Vector2(trilho.size.x * fracao, meio), 11.0,
+		trilho.draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+		# Botão branco com sombrinha, centrado no fim do preenchimento.
+		trilho.draw_circle(Vector2(trilho.size.x * fracao, meio) + Vector2(0.0, 1.5),
+			12.0, Color(T.COR_APP_FUNDO_INICIO, 0.35))
+		trilho.draw_circle(Vector2(trilho.size.x * fracao, meio), 12.0,
 			T.COR_TEXTO_PRIMARIO))
 	partes[1].add_child(trilho)
 	return partes[0]
