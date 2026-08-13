@@ -2,8 +2,8 @@ class_name Configuracoes
 extends Control
 ## Configurações — composição fiel ao blueprint "10" (M3). Funcionais desde
 ## já: Vibração, Modo daltonismo (símbolos nas cobras — item do M3),
-## Sair e Excluir conta. Guardam lugar: sliders de áudio (sons são M3),
-## Idioma (i18n M3), Privacidade e responsáveis, Remover anúncios e
+## Sair e Excluir conta. Volumes de áudio FUNCIONAIS
+## e persistidos (o som consome no M3-sons). Guardam lugar: Idioma (i18n M3), Privacidade e responsáveis, Remover anúncios e
 ## Restaurar compras (Billing M3).
 
 const T := preload("res://src/ui/theme/tokens.gd")
@@ -39,10 +39,14 @@ func _montar_conteudo() -> void:
 
 	_coluna.add_child(_titulo_secao("ÁUDIO"))
 	var audio: VBoxContainer = _card_lista()
-	# Sliders guardam lugar até o áudio chegar (M3).
-	audio.add_child(_linha_slider("🔊", "Sons do jogo", 0.75, true))
-	audio.add_child(_linha_slider("🎵", "Música", 0.4, false))
-	audio.get_parent().modulate.a = 0.55
+	# Volumes FUNCIONAIS e persistidos (o áudio consome no M3-sons —
+	# mesmo padrão da economia: o controle existe antes do consumidor).
+	audio.add_child(_linha_slider("🔊", "Sons do jogo",
+		ProgressoLocal.volume_sons(),
+		func(valor: float) -> void: ProgressoLocal.definir_volume_sons(valor), true))
+	audio.add_child(_linha_slider("🎵", "Música",
+		ProgressoLocal.volume_musica(),
+		func(valor: float) -> void: ProgressoLocal.definir_volume_musica(valor), false))
 
 	_coluna.add_child(_titulo_secao("JOGO"))
 	var jogo: VBoxContainer = _card_lista()
@@ -212,22 +216,31 @@ func _linha_toggle(
 	interruptor.custom_minimum_size = Vector2(58.0, 34.0)
 	interruptor.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	var estado: Array[bool] = [ativo]
+	# `deslize` anima 0..1 (playtest 13/08: "podia ter uma animação").
+	var deslize: Array[float] = [1.0 if ativo else 0.0]
 	interruptor.draw.connect(func() -> void:
 		var caixa: Rect2 = Rect2(Vector2.ZERO, interruptor.size)
-		if estado[0]:
+		var f: float = deslize[0]
+		# Fundo: mistura vidro→gradiente conforme o deslize.
+		interruptor.draw_colored_polygon(DesenhoUi.poligono_arredondado(
+			caixa, caixa.size.y * 0.5), Color(T.COR_TEXTO_PRIMARIO, 0.12))
+		if f > 0.01:
 			DesenhoUi.gradiente_arredondado(interruptor, interruptor.size,
-				caixa.size.y * 0.5, T.COR_CTA_PRIMARIO_INICIO, T.COR_CTA_PRIMARIO_FIM)
-		else:
-			interruptor.draw_colored_polygon(DesenhoUi.poligono_arredondado(
-				caixa, caixa.size.y * 0.5), Color(T.COR_TEXTO_PRIMARIO, 0.12))
+				caixa.size.y * 0.5,
+				Color(T.COR_CTA_PRIMARIO_INICIO, f), Color(T.COR_CTA_PRIMARIO_FIM, f))
 		var raio_botao: float = caixa.size.y * 0.5 - 4.0
-		var x: float = caixa.size.x - raio_botao - 4.0 if estado[0] else raio_botao + 4.0
+		var x: float = lerpf(raio_botao + 4.0, caixa.size.x - raio_botao - 4.0, f)
 		interruptor.draw_circle(Vector2(x, caixa.size.y * 0.5), raio_botao,
-			T.COR_TEXTO_PRIMARIO if estado[0] else T.COR_TEXTO_MUTED))
+			T.COR_TEXTO_MUTED.lerp(T.COR_TEXTO_PRIMARIO, f)))
 	interruptor.pressed.connect(func() -> void:
 		estado[0] = not estado[0]
 		acao.call(estado[0])
-		interruptor.queue_redraw())
+		var tween: Tween = interruptor.create_tween()
+		tween.tween_method(func(valor: float) -> void:
+			deslize[0] = valor
+			interruptor.queue_redraw(),
+			deslize[0], 1.0 if estado[0] else 0.0, 0.18) \
+			.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC))
 	partes[1].add_child(interruptor)
 	return partes[0]
 
@@ -261,11 +274,19 @@ func _linha_navegacao(
 	return partes[0]
 
 
-## Slider decorativo do blueprint (áudio guarda lugar até o M3 do som).
-func _linha_slider(emoji: String, rotulo: String, fracao: float, divisoria: bool) -> Control:
+## Slider do blueprint — FUNCIONAL: arrastar/tocar no trilho define o valor
+## (playtest 13/08: "o volume parece não mover"); `acao` persiste 0..1.
+func _linha_slider(
+	emoji: String,
+	rotulo: String,
+	fracao_inicial: float,
+	acao: Callable,
+	divisoria: bool,
+) -> Control:
 	var partes: Array = _linha_base(emoji, rotulo, "", divisoria)
+	var fracao: Array[float] = [fracao_inicial]  # caixa mutável p/ lambdas
 	var trilho: Control = Control.new()
-	trilho.custom_minimum_size = Vector2(110.0, 24.0)
+	trilho.custom_minimum_size = Vector2(110.0, 34.0)
 	trilho.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	trilho.draw.connect(func() -> void:
 		var meio: float = trilho.size.y * 0.5
@@ -276,14 +297,24 @@ func _linha_slider(emoji: String, rotulo: String, fracao: float, divisoria: bool
 		# do helper, que desenha em (0,0)).
 		trilho.draw_set_transform(Vector2(0.0, meio - 5.0), 0.0, Vector2.ONE)
 		DesenhoUi.gradiente_arredondado(trilho,
-			Vector2(trilho.size.x * fracao, 10.0), 5.0,
+			Vector2(maxf(10.0, trilho.size.x * fracao[0]), 10.0), 5.0,
 			T.COR_CTA_PRIMARIO_FIM, T.COR_CTA_PRIMARIO_INICIO)
 		trilho.draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
 		# Botão branco com sombrinha, centrado no fim do preenchimento.
-		trilho.draw_circle(Vector2(trilho.size.x * fracao, meio) + Vector2(0.0, 1.5),
+		trilho.draw_circle(Vector2(trilho.size.x * fracao[0], meio) + Vector2(0.0, 1.5),
 			12.0, Color(T.COR_APP_FUNDO_INICIO, 0.35))
-		trilho.draw_circle(Vector2(trilho.size.x * fracao, meio), 12.0,
+		trilho.draw_circle(Vector2(trilho.size.x * fracao[0], meio), 12.0,
 			T.COR_TEXTO_PRIMARIO))
+	var aplicar: Callable = func(x: float) -> void:
+		fracao[0] = clampf(x / trilho.size.x, 0.0, 1.0)
+		acao.call(fracao[0])
+		trilho.queue_redraw()
+	trilho.gui_input.connect(func(evento: InputEvent) -> void:
+		if evento is InputEventMouseButton and evento.pressed:
+			aplicar.call(evento.position.x)
+		elif evento is InputEventMouseMotion \
+				and evento.button_mask & MOUSE_BUTTON_MASK_LEFT:
+			aplicar.call(evento.position.x))
 	partes[1].add_child(trilho)
 	return partes[0]
 

@@ -104,6 +104,26 @@ static func registrar_posicao(posicao: int) -> bool:
 	return false
 
 
+## Volumes (tela 10): persistidos desde já — o áudio (M3-sons) consome
+## daqui quando chegar. Padrões = os do blueprint (75% / 40%).
+static func volume_sons() -> float:
+	return _abrir().get_value("audio", "sons", 0.75)
+
+
+static func definir_volume_sons(valor: float) -> void:
+	_abrir().set_value("audio", "sons", clampf(valor, 0.0, 1.0))
+	_salvar()
+
+
+static func volume_musica() -> float:
+	return _abrir().get_value("audio", "musica", 0.4)
+
+
+static func definir_volume_musica(valor: float) -> void:
+	_abrir().set_value("audio", "musica", clampf(valor, 0.0, 1.0))
+	_salvar()
+
+
 ## Modo daltonismo (tela 10): símbolos geométricos nas cobras (regra dura #4).
 static func daltonismo() -> bool:
 	return _abrir().get_value("jogo", "daltonismo", false)
