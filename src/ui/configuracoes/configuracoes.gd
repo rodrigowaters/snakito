@@ -32,6 +32,10 @@ func _ready() -> void:
 	var rolagem: ScrollContainer = ScrollContainer.new()
 	rolagem.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	rolagem.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	# Sem barra visível (padrão mobile) e com deadzone: sem ela, os botões
+	# que cobrem as linhas engolem o arrasto e o scroll engasga.
+	rolagem.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
+	rolagem.scroll_deadzone = 24
 	externa.add_child(rolagem)
 	_coluna = VBoxContainer.new()
 	_coluna.size_flags_horizontal = Control.SIZE_EXPAND_FILL
