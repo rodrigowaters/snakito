@@ -251,7 +251,15 @@ Todos os tokens (cores, fontes, espaçamentos) vivem num único `Theme` resource
 
 ---
 
-## 8. Onboarding animado (sem texto)
+## 8. Onboarding animado (sem texto) — REMOVIDO em 13/08/2026
+
+> **Decisão do Rodrigo (13/08):** o app NÃO terá onboarding. A seção abaixo
+> fica como registro histórico (foi implementado no M1 e removido no M2);
+> a escolha de dificuldade que vivia no passo 4 migra para a tela de
+> Configurações (M3). O jogo ensina jogando — badges de ameaça no HUD,
+> análise pós-partida e desafios cumprem o papel pedagógico.
+
+### (histórico) Onboarding animado (sem texto)
 
 1. Sua cobra pequena, uma comida brilha — você come, cresce (demonstração pura)
 2. Aparece um bot menor — você o devora; ele vira confete
@@ -296,7 +304,6 @@ Duração total: ~30 segundos.
 - [ ] Refazer composição das telas existentes pelos blueprints hi-fi
       (`docs/design/Snakito Telas.dc.html`): Home (1d+1e), HUD (1h),
       Pausa (04c), Pós-partida (8c), Desafios (07), Ranking (08)
-- [ ] Realinhar o onboarding (11a-d) ao desenho
 - [ ] Método: entrega lado-a-lado (screenshot × design) para validação
       tela a tela; tokens/Theme continuam a única fonte de valores
 

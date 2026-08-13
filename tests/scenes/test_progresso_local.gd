@@ -1,6 +1,6 @@
 class_name TestProgressoLocal
 extends GdUnitTestSuite
-## Progresso local: skin equipada, onboarding e dificuldade — persistência
+## Progresso local: skin equipada, economia e dificuldade — persistência
 ## em disco E comportamento do cache (o render lê a skin a cada frame).
 
 
@@ -16,7 +16,6 @@ func after_test() -> void:
 
 func test_padroes_de_fabrica() -> void:
 	assert_int(ProgressoLocal.skin_equipada()).is_equal(0)  # verde
-	assert_bool(ProgressoLocal.onboarding_visto()).is_false()
 	assert_int(int(ProgressoLocal.dificuldade())) \
 		.is_equal(int(ProgressoLocal.Dificuldade.CHEIA))
 	assert_bool(ProgressoLocal.desafio_concluido(ChallengeRules.Desafio.AGRESSAO_CONTROLADA)) \
@@ -30,11 +29,9 @@ func test_skin_persiste_no_disco() -> void:
 	assert_int(ProgressoLocal.skin_equipada()).is_equal(6)
 
 
-func test_onboarding_e_dificuldade_persistem() -> void:
-	ProgressoLocal.marcar_onboarding_visto()
+func test_dificuldade_persiste() -> void:
 	ProgressoLocal.definir_dificuldade(ProgressoLocal.Dificuldade.TRANQUILA)
 	ProgressoLocal._resetar_cache_para_testes()
-	assert_bool(ProgressoLocal.onboarding_visto()).is_true()
 	assert_int(int(ProgressoLocal.dificuldade())) \
 		.is_equal(int(ProgressoLocal.Dificuldade.TRANQUILA))
 
@@ -70,7 +67,7 @@ func test_economia_zerada_persiste_e_nunca_negativa() -> void:
 
 
 func test_config_arcade_respeita_dificuldade_tranquila() -> void:
-	# A escolha do onboarding muda a COMPOSIÇÃO do Arcade (nunca trapaça).
+	# A dificuldade muda a COMPOSIÇÃO do Arcade (nunca trapaça).
 	ProgressoLocal.definir_dificuldade(ProgressoLocal.Dificuldade.TRANQUILA)
 	Sessao.desafio_pendente = -1
 	Sessao.proxima_semente = 42
@@ -85,7 +82,7 @@ func test_config_arcade_respeita_dificuldade_tranquila() -> void:
 
 
 func test_dificuldade_nunca_mexe_em_desafio() -> void:
-	# Desafio é comparável por seed: a dificuldade do onboarding não o toca.
+	# Desafio é comparável por seed: a dificuldade do Arcade não o toca.
 	ProgressoLocal.definir_dificuldade(ProgressoLocal.Dificuldade.TRANQUILA)
 	Sessao.desafio_pendente = int(ChallengeRules.Desafio.AGRESSAO_CONTROLADA)
 	var config: GameEngine.ConfigPartida = Sessao.config_para_jogar()

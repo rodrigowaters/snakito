@@ -19,12 +19,6 @@ const MASCOTE_VIEWBOX: Vector2 = Vector2(200.0, 150.0)
 
 
 func _ready() -> void:
-	# Primeira abertura: onboarding sem texto (docs §8) antes de tudo.
-	# Deferred — trocar de cena dentro do _ready da cena atual é frágil.
-	if not ProgressoLocal.onboarding_visto():
-		get_tree().change_scene_to_file.call_deferred(
-			"res://src/scenes/onboarding/onboarding.tscn")
-		return
 	# Anchors do root vivem no .tscn (definir só em _ready não dimensiona
 	# o root Control — a janela não redispara o layout).
 	_montar_fundo()

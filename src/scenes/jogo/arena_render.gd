@@ -19,8 +19,7 @@ const PULSO_CRESCIMENTO: float = 1.25
 const PULSO_DURACAO: float = 0.3
 
 var motor: GameEngine
-## Badges de pontos sobre as cobras (blueprint 04). O onboarding desliga —
-## tutorial é sem texto (docs §8).
+## Badges de pontos sobre as cobras (blueprint 04).
 var mostrar_badges: bool = true
 
 ## Fator de escala visual corrente por id (1.0 = sem pulso).

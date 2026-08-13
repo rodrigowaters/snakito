@@ -102,8 +102,8 @@ class ConfigPartida:
 	## matavam a criança em 3s — "para um adulto é válido, para uma criança
 	## não". Nascer longe dá o começo para crescer sem enfraquecer o alfa.
 	var distancia_spawn_cacador: float = 0.0
-	## Última cobra viva encerra como vitória (docs §2.1). O onboarding
-	## desliga: as vinhetas devoram figuras sem que isso "vença" nada.
+	## Última cobra viva encerra como vitória (docs §2.1). Configs de
+	## teste/vinheta podem desligar.
 	var vitoria_por_dominio: bool = true
 	# Buffs do jogador (docs §2.6.2). Desafios criam a config com
 	# aplicar_buffs = false — partida por seed tem que ser comparável.

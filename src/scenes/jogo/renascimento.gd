@@ -157,7 +157,7 @@ func _montar() -> void:
 	linha_vip.add_child(vip)
 
 
-## Fantasminha do desenho — desenho compartilhado com o onboarding (11c).
+## Fantasminha do desenho (04b).
 func _desenhar_fantasma(alvo: Control) -> void:
 	DesenhoUi.fantasma(alvo, alvo.size)
 

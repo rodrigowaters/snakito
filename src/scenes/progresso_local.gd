@@ -1,13 +1,13 @@
 class_name ProgressoLocal
 extends RefCounted
 ## Progresso persistido no aparelho (`user://progresso.cfg`): desafios
-## concluídos, skin equipada, onboarding e dificuldade escolhida.
+## concluídos, skin equipada, economia e dificuldade escolhida.
 ## Leituras passam por cache em memória — o render consulta a skin a cada
 ## frame e não pode tocar disco.
 
 const CAMINHO: String = "user://progresso.cfg"
 
-## Dificuldade do Arcade escolhida no onboarding (docs §8, passo 4).
+## Dificuldade do Arcade (escolha vai para Configurações no M3).
 enum Dificuldade { TRANQUILA, CHEIA }
 
 static var _cache: ConfigFile = null
@@ -58,17 +58,11 @@ static func adicionar_tickets(quantidade: int) -> void:
 	_salvar()
 
 
-# --------------------------------------------------------- onboarding & jogo
+# ---------------------------------------------------------------------- jogo
 
-static func onboarding_visto() -> bool:
-	return _abrir().get_value("onboarding", "visto", false)
-
-
-static func marcar_onboarding_visto() -> void:
-	_abrir().set_value("onboarding", "visto", true)
-	_salvar()
-
-
+## Dificuldade do Arcade. Nasceu na escolha do onboarding (REMOVIDO em
+## 13/08 por decisão do Rodrigo); passa a ser escolhida na tela de
+## Configurações (M3). Até lá, vale o padrão CHEIA.
 static func dificuldade() -> Dificuldade:
 	return _abrir().get_value("jogo", "dificuldade", Dificuldade.CHEIA)
 
