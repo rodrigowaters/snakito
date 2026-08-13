@@ -108,7 +108,7 @@ Fluxo Home → Jogo → Resultado completo e verificado por screenshot (`tools/c
 As telas atuais usam os tokens/componentes fielmente (regra dura #4), mas **não seguem as composições hi-fi** de `docs/design/Snakito Telas.dc.html` (26 telas com decisões registradas: "Home 1d+1e · HUD 1h · pós 8c ..."). O Rodrigo decidiu registrar como pendência e priorizar o backend-cliente. Ao pagar a dívida, usar o HTML das telas como blueprint e entregar lado-a-lado (screenshot × design) para validação:
 
 - **Refazer composição** (feature já existe): Home (sem moedas/fase por ora — preview da skin equipada, "▶ Jogar Arcade", nav em grade), HUD ("1h"), Pausa ("04c"), Pós-partida ("8c"), Desafios ("07")
-- **Construir quando a feature chegar**: Mapa/fases (02), Evolução (03), Loja (09*), Configurações (10 — vai abrigar sair/excluir/apelido/dificuldade, decisão 13/08), Chefe/Duelo/Prorrogação (12*), Recompensa diária (01b), Ranking da fase (06). **Já construídas**: Renascimento (04b), Ranking (08), Fase concluída (12c → celebração de desafio/arena dominada), Info do jogador (02b — avatar da Home abre; SEM porta p/ Conta até Configurações). Onboarding (11a-d) removido por decisão.
+- **Construir quando a feature chegar**: Mapa/fases (02), Evolução (03), Loja (09*), Configurações (10), Chefe/Duelo/Prorrogação (12*), Recompensa diária (01b), Ranking da fase (06). **Já construídas**: Renascimento (04b), Ranking (08), Fase concluída (12c → celebração de desafio/arena dominada), Info do jogador (02b — avatar da Home abre; SEM porta p/ Conta até Configurações). Onboarding (11a-d) removido por decisão.
 
 ## Backend Supabase (provisionado)
 

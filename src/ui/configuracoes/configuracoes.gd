@@ -2,7 +2,6 @@ class_name Configuracoes
 extends Control
 ## Configurações — composição fiel ao blueprint "10" (M3). Funcionais desde
 ## já: Vibração, Modo daltonismo (símbolos nas cobras — item do M3),
-## Dificuldade do Arcade (adaptação: decisão de 13/08, não está no desenho),
 ## Sair e Excluir conta. Guardam lugar: sliders de áudio (sons são M3),
 ## Idioma (i18n M3), Privacidade e responsáveis, Remover anúncios e
 ## Restaurar compras (Billing M3).
