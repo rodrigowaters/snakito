@@ -135,9 +135,12 @@ func _perfil() -> Control:
 	var linha_editar: HBoxContainer = HBoxContainer.new()
 	linha_editar.alignment = BoxContainer.ALIGNMENT_CENTER
 	var editar: Button = Button.new()
-	editar.text = "✏️ Editar apelido"
+	editar.text = "Editar apelido"
 	editar.theme_type_variation = &"Chip"
 	editar.add_theme_font_size_override("font_size", T.TAM_CORPO_SM)
+	editar.icon = _textura_lapis()
+	for estado: StringName in [&"icon_normal_color", &"icon_disabled_color"]:
+		editar.add_theme_color_override(estado, Color.WHITE)  # sem tingir
 	editar.disabled = true  # edição pede policy de UPDATE no perfil (M3)
 	editar.add_theme_stylebox_override("disabled",
 		ThemeDB.get_project_theme().get_stylebox(&"normal", &"Chip"))
@@ -145,6 +148,31 @@ func _perfil() -> Control:
 	linha_editar.add_child(editar)
 	pilha.add_child(linha_editar)
 	return pilha
+
+
+## Lápis desenhado (✏️ cai na armadilha do U+FE0F): corpo âmbar na diagonal,
+## ponta escura e borracha rosa, gerado como textura de ícone.
+func _textura_lapis() -> Texture2D:
+	var lado: int = T.ESP_MD
+	var imagem: Image = Image.create(lado, lado, false, Image.FORMAT_RGBA8)
+	var corpo: Color = T.COR_MOEDA
+	var ponta: Color = T.COR_APP_FUNDO_INICIO
+	var borracha: Color = T.CORES_COBRA_BASE[2]
+	for i: int in lado:
+		for j: int in lado:
+			# Diagonal (ponta embaixo-esquerda, borracha em cima-direita):
+			# distância ao eixo x=y controla a espessura.
+			var ao_longo: float = float(i + (lado - 1 - j)) / float(2 * lado - 2)
+			var afastamento: int = absi(i - (lado - 1 - j))
+			if afastamento > 3:
+				continue
+			if ao_longo < 0.22:
+				imagem.set_pixel(i, j, ponta if afastamento <= 1 else corpo.darkened(0.25))
+			elif ao_longo > 0.82:
+				imagem.set_pixel(i, j, borracha)
+			else:
+				imagem.set_pixel(i, j, corpo)
+	return ImageTexture.create_from_image(imagem)
 
 
 ## Cabeça 72px do blueprint: olhos grandes + boca aberta sorrindo (arco em U).
