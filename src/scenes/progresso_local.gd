@@ -147,13 +147,14 @@ static func definir_musica(ligada: bool) -> void:
 	_salvar()
 
 
-## Modo daltonismo (tela 10): símbolos geométricos nas cobras (regra dura #4).
-static func daltonismo() -> bool:
-	return _abrir().get_value("jogo", "daltonismo", false)
+## Lado do botão de turbo (pedido de playtest 13/08: canhotos podem
+## preferir o turbo à esquerda — o joystick flutuante já é neutro).
+static func turbo_a_esquerda() -> bool:
+	return _abrir().get_value("jogo", "turbo_a_esquerda", false)
 
 
-static func definir_daltonismo(ligado: bool) -> void:
-	_abrir().set_value("jogo", "daltonismo", ligado)
+static func definir_turbo_esquerda(esquerda: bool) -> void:
+	_abrir().set_value("jogo", "turbo_a_esquerda", esquerda)
 	_salvar()
 
 

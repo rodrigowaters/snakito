@@ -43,14 +43,14 @@ func test_desafio_concluido_persiste() -> void:
 		.is_true()
 
 
-func test_daltonismo_e_vibracao_persistem() -> void:
-	assert_bool(ProgressoLocal.daltonismo()).is_false()  # padrão desligado
-	assert_bool(ProgressoLocal.vibracao()).is_true()     # padrão ligada
-	ProgressoLocal.definir_daltonismo(true)
+func test_vibracao_e_lado_do_turbo_persistem() -> void:
+	assert_bool(ProgressoLocal.vibracao()).is_true()          # padrão ligada
+	assert_bool(ProgressoLocal.turbo_a_esquerda()).is_false() # padrão direita
 	ProgressoLocal.definir_vibracao(false)
+	ProgressoLocal.definir_turbo_esquerda(true)
 	ProgressoLocal._resetar_cache_para_testes()
-	assert_bool(ProgressoLocal.daltonismo()).is_true()
 	assert_bool(ProgressoLocal.vibracao()).is_false()
+	assert_bool(ProgressoLocal.turbo_a_esquerda()).is_true()
 
 
 func test_melhor_posicao_so_melhora() -> void:

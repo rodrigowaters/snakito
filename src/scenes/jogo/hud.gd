@@ -80,14 +80,20 @@ func flash_morte() -> void:
 		.set_ease(Tween.EASE_OUT)
 
 
-## Botão de turbo (segurar = acelerar) + barra de energia, canto inferior
-## direito — oposto ao polegar do joystick (docs §2.6/§4.2).
+## Botão de turbo (segurar = acelerar) + barra de energia, canto inferior.
+## O LADO vem de Configurações (playtest 13/08: canhoto joga com o turbo à
+## esquerda); o joystick flutuante nasce onde o dedo toca, então só o botão
+## precisa mudar de canto.
 func _montar_turbo() -> void:
+	var esquerda: bool = ProgressoLocal.turbo_a_esquerda()
 	var canto: MarginContainer = MarginContainer.new()
-	canto.set_anchors_preset(Control.PRESET_BOTTOM_RIGHT)
-	canto.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+	canto.set_anchors_preset(
+		Control.PRESET_BOTTOM_LEFT if esquerda else Control.PRESET_BOTTOM_RIGHT)
+	canto.grow_horizontal = \
+		Control.GROW_DIRECTION_END if esquerda else Control.GROW_DIRECTION_BEGIN
 	canto.grow_vertical = Control.GROW_DIRECTION_BEGIN
-	canto.add_theme_constant_override("margin_right", T.ESP_LG)
+	canto.add_theme_constant_override(
+		"margin_left" if esquerda else "margin_right", T.ESP_LG)
 	canto.add_theme_constant_override("margin_bottom", T.ESP_XL)
 	add_child(canto)
 

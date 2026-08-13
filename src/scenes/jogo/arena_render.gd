@@ -130,17 +130,6 @@ func _desenhar_cobra(cobra: SnakeModel, visivel: Rect2) -> void:
 	# Cabeça com contorno no tom escuro da skin.
 	draw_circle(cobra.posicao, raio + 1.5, escura)
 	draw_circle(cobra.posicao, raio, base)
-	# Modo daltonismo (tokens §4): símbolo da cor estampado na cabeça e a
-	# cada N segmentos — canal redundante além da cor.
-	if ProgressoLocal.daltonismo():
-		_desenhar_simbolo(cobra.posicao + Vector2(0.0, raio * 0.35),
-			raio * T.SIMBOLO_ESCALA * 0.5, _indice_cor_de(cobra))
-		var passo: int = T.SIMBOLO_INTERVALO_SEGMENTOS
-		for i: int in range(passo - 1, segmentos.size(), passo):
-			var raio_seg: float = raio * lerpf(0.55, 0.92,
-				1.0 - float(i + 1) / float(segmentos.size() + 1))
-			_desenhar_simbolo(segmentos[i], raio_seg * T.SIMBOLO_ESCALA * 0.5,
-				_indice_cor_de(cobra))
 	_desenhar_olhos(cobra, raio)
 
 
@@ -205,58 +194,6 @@ static func _indice_cor_de(cobra: SnakeModel) -> int:
 	if indice >= skin:
 		indice += 1
 	return indice
-
-
-## Símbolo geométrico do modo daltonismo (tokens SIMBOLOS_COBRA): branco com
-## traço escuro de apoio, um por cor de cobra.
-func _desenhar_simbolo(centro: Vector2, raio: float, indice_cor: int) -> void:
-	var simbolo: int = T.SIMBOLOS_COBRA[indice_cor]
-	var branco: Color = T.COR_SIMBOLO_DALTONISMO
-	var traco: Color = T.COR_SIMBOLO_DALTONISMO_TRACO
-	match simbolo:
-		T.SimboloDaltonismo.CIRCULO:
-			draw_circle(centro, raio, branco)
-			draw_arc(centro, raio, 0.0, TAU, 16, traco, 1.2)
-		T.SimboloDaltonismo.TRIANGULO:
-			_poligono_simbolo(centro, raio, 3, -PI * 0.5, branco, traco)
-		T.SimboloDaltonismo.QUADRADO:
-			_poligono_simbolo(centro, raio, 4, PI * 0.25, branco, traco)
-		T.SimboloDaltonismo.LOSANGO:
-			_poligono_simbolo(centro, raio, 4, 0.0, branco, traco)
-		T.SimboloDaltonismo.ESTRELA:
-			var pontos: PackedVector2Array = PackedVector2Array()
-			for i: int in 10:
-				var alcance: float = raio if i % 2 == 0 else raio * 0.45
-				var angulo: float = -PI * 0.5 + TAU * float(i) / 10.0
-				pontos.append(centro + Vector2(cos(angulo), sin(angulo)) * alcance)
-			draw_colored_polygon(pontos, branco)
-		T.SimboloDaltonismo.HEXAGONO:
-			_poligono_simbolo(centro, raio, 6, 0.0, branco, traco)
-		T.SimboloDaltonismo.CRUZ:
-			var braco: float = raio * 0.38
-			draw_rect(Rect2(centro - Vector2(braco, raio), Vector2(braco * 2.0, raio * 2.0)), branco)
-			draw_rect(Rect2(centro - Vector2(raio, braco), Vector2(raio * 2.0, braco * 2.0)), branco)
-		T.SimboloDaltonismo.MEIA_LUA:
-			draw_circle(centro, raio, branco)
-			draw_circle(centro + Vector2(raio * 0.5, 0.0), raio * 0.75, traco)
-
-
-func _poligono_simbolo(
-	centro: Vector2,
-	raio: float,
-	lados: int,
-	rotacao: float,
-	cor: Color,
-	traco: Color,
-) -> void:
-	var pontos: PackedVector2Array = PackedVector2Array()
-	for i: int in lados:
-		var angulo: float = rotacao + TAU * float(i) / float(lados)
-		pontos.append(centro + Vector2(cos(angulo), sin(angulo)) * raio)
-	draw_colored_polygon(pontos, cor)
-	var contorno: PackedVector2Array = pontos.duplicate()
-	contorno.append(pontos[0])
-	draw_polyline(contorno, traco, 1.2)
 
 
 func _desenhar_olhos(cobra: SnakeModel, raio: float) -> void:

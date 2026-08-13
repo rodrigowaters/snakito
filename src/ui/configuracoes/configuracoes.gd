@@ -1,7 +1,8 @@
 class_name Configuracoes
 extends Control
 ## Configurações — composição fiel ao blueprint "10" (M3). Funcionais desde
-## já: Vibração, Modo daltonismo (símbolos nas cobras — item do M3),
+## já: Vibração, Lado do turbo (canhotos — pedido de playtest 13/08; o modo
+## daltonismo foi REMOVIDO na mesma decisão),
 ## Sair e Excluir conta. Sons/Música são TOGGLES
 ## por decisão de 13/08 (o desenho tinha sliders; liga/desliga é mais
 ## simples p/ 7+) — persistem e o som consome no M3-sons. "Remover
@@ -60,10 +61,9 @@ func _montar_conteudo() -> void:
 	# prever um lugar para ela.
 	jogo.add_child(_linha_navegacao("🌐", "Idioma", "Português (BR) ›",
 		Callable(), true))
-	jogo.add_child(_linha_toggle("", "Modo daltonismo", "símbolos nas cobras",
-		ProgressoLocal.daltonismo(),
-		func(ligado: bool) -> void: ProgressoLocal.definir_daltonismo(ligado),
-		false, _desenhar_icone_daltonismo))
+	# No lugar do modo daltonismo (REMOVIDO em 13/08 por decisão do Rodrigo
+	# após playtest): lado do botão de turbo, para canhotos.
+	jogo.add_child(_linha_lado_turbo(false))
 
 	_coluna.add_child(_titulo_secao("CONTA"))
 	var conta: VBoxContainer = _card_lista()
@@ -279,19 +279,54 @@ func _linha_navegacao(
 	return partes[0]
 
 
+## Linha "Lado do turbo": seletor de dois estados (Esquerda | Direita).
+## O joystick flutuante nasce onde o dedo toca — só o botão muda de canto.
+func _linha_lado_turbo(divisoria: bool) -> Control:
+	var partes: Array = _linha_base("⚡", "Lado do turbo", "para canhotos e destros", divisoria)
+	var seletor: HBoxContainer = HBoxContainer.new()
+	seletor.add_theme_constant_override("separation", T.ESP_MICRO + 2)
+	seletor.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	var chips: Array[Control] = []
+	for opcao: Array in [["Esquerda", true], ["Direita", false]]:
+		var rotulo_opcao: String = opcao[0]
+		var valor: bool = opcao[1]
+		var chip: PanelContainer = PanelContainer.new()
+		chip.add_theme_stylebox_override("panel", StyleBoxEmpty.new())
+		chip.custom_minimum_size = Vector2(82.0, 34.0)
+		var rotulo: Label = Label.new()
+		rotulo.text = rotulo_opcao
+		rotulo.theme_type_variation = &"TextoCorpo"
+		rotulo.add_theme_font_size_override("font_size", T.TAM_CORPO_SM)
+		rotulo.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		rotulo.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		chip.add_child(rotulo)
+		chip.draw.connect(func() -> void:
+			var ativa: bool = ProgressoLocal.turbo_a_esquerda() == valor
+			if ativa:
+				DesenhoUi.gradiente_arredondado(chip, chip.size, chip.size.y * 0.5,
+					T.COR_CTA_PRIMARIO_INICIO, T.COR_CTA_PRIMARIO_FIM)
+			else:
+				chip.draw_colored_polygon(DesenhoUi.poligono_arredondado(
+					Rect2(Vector2.ZERO, chip.size), chip.size.y * 0.5),
+					T.COR_SUPERFICIE_VIDRO)
+			rotulo.add_theme_color_override("font_color",
+				T.COR_TEXTO_SOBRE_PRIMARIO if ativa else T.COR_TEXTO_SECUNDARIO))
+		var toque: Button = Button.new()
+		toque.flat = true
+		for estado: StringName in [&"normal", &"pressed", &"hover", &"focus"]:
+			toque.add_theme_stylebox_override(estado, StyleBoxEmpty.new())
+		toque.pressed.connect(func() -> void:
+			ProgressoLocal.definir_turbo_esquerda(valor)
+			for c: Control in chips:
+				c.queue_redraw())
+		chip.add_child(toque)
+		chips.append(chip)
+		seletor.add_child(chip)
+	partes[1].add_child(seletor)
+	return partes[0]
+
+
 # ------------------------------------------------------------------ ícones
-
-## ◐ do daltonismo: círculo meio preenchido (semicírculo por polígono).
-func _desenhar_icone_daltonismo(alvo: Control) -> void:
-	var centro: Vector2 = alvo.size * 0.5
-	var raio: float = 9.0
-	alvo.draw_arc(centro, raio, 0.0, TAU, 24, T.COR_TEXTO_PRIMARIO, 1.5)
-	var pontos: PackedVector2Array = PackedVector2Array()
-	for i: int in 13:
-		var angulo: float = -PI * 0.5 + PI * float(i) / 12.0
-		pontos.append(centro + Vector2(cos(angulo), sin(angulo)) * (raio - 1.0))
-	alvo.draw_colored_polygon(pontos, T.COR_TEXTO_PRIMARIO)
-
 
 ## G do Google simplificado (4 arcos coloridos + barra azul).
 func _desenhar_g_google(alvo: Control) -> void:
