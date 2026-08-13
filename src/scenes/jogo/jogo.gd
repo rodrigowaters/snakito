@@ -30,6 +30,8 @@ var hud: Hud
 var efeitos: Efeitos
 
 var _transicionando: bool = false
+## Prêmio de 1ª conclusão de desafio creditado NESTA partida (0 = nenhum).
+var _premio_desafio: int = 0
 ## A partida só ANDA depois do primeiro toque — sem isso a cobra sai andando
 ## sozinha na direção padrão e morre antes de o jogador se orientar
 ## ("não consigo jogar", playtest 10/08).
@@ -102,6 +104,11 @@ func _physics_process(delta: float) -> void:
 	if Sessao.regras_desafio != null \
 			and Sessao.regras_desafio.avaliar(motor) != ChallengeRules.Estado.EM_ANDAMENTO:
 		if Sessao.regras_desafio.estado == ChallengeRules.Estado.CONCLUIDO:
+			# Prêmio SÓ na primeira conclusão (desafios são lições fixas —
+			# prêmio re-farmável quebraria a economia). Antes do marcar!
+			if not ProgressoLocal.desafio_concluido(Sessao.regras_desafio.desafio):
+				ProgressoLocal.adicionar_moedas(Economia.PREMIO_DESAFIO)
+				_premio_desafio = Economia.PREMIO_DESAFIO
 			ProgressoLocal.marcar_desafio_concluido(Sessao.regras_desafio.desafio)
 		_transicionando = true
 		_ir_para_resultado()
@@ -166,6 +173,11 @@ func _ir_para_resultado() -> void:
 		await get_tree().create_timer(espera).timeout
 	# Estatísticas locais da conta (tela 02b): recorde e abates acumulados.
 	ProgressoLocal.registrar_partida(motor.jogador().pontos, motor.jogador().abates)
+	# Economia (docs §5): ~5% dos pontos viram moedas em TODA partida; o
+	# prêmio de desafio (se houve) já foi creditado ao resolver.
+	var moedas_partida: int = Economia.moedas_da_partida(motor.jogador().pontos)
+	ProgressoLocal.adicionar_moedas(moedas_partida)
+	Sessao.moedas_ganhas = moedas_partida + _premio_desafio
 	# Toda partida encerrada entra na fila offline — logado ou não (docs §6);
 	# a Rede despacha quando houver rede + login + perfil.
 	FilaSessoes.enfileirar(_payload_da_sessao())

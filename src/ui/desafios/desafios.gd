@@ -243,7 +243,9 @@ func _card_desafio(ficha: Dictionary) -> Control:
 		moedinha.draw_circle(centro, 4.5, T.COR_MOEDA))
 	conteudo_premio.add_child(moedinha)
 	var valor_premio: Label = Label.new()
-	valor_premio.text = "+0"  # valores de prêmio chegam com a economia (M3)
+	valor_premio.text = "+%d" % Economia.PREMIO_DESAFIO
+	if concluido:
+		premio.modulate.a = 0.55  # prêmio de 1ª conclusão já pago
 	valor_premio.theme_type_variation = &"TextoCorpoSm"
 	valor_premio.add_theme_color_override("font_color", T.COR_MOEDA)
 	valor_premio.mouse_filter = Control.MOUSE_FILTER_IGNORE

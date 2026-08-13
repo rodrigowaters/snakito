@@ -2,7 +2,7 @@ class_name Resultado
 extends Control
 ## Tela pós-partida — composição fiel ao blueprint "05 Pós-partida" (8c) do
 ## Claude Design, M2. Adaptações registradas: aba "Ranking da fase" guarda
-## lugar (fases são pós-lançamento); "Moedas ganhas" exibida zerada (economia
+## lugar (fases são pós-lançamento); "Moedas ganhas" REAL (~5% dos pontos —
 ## liga no M3); ⇪ Compartilhar guarda lugar (plugin de share é M3); emojis
 ## ⚔/⏱ trocados por 🏹/⏳ (Godot ignora U+FE0F e renderizava monocromático).
 
@@ -149,7 +149,7 @@ func _cabecalho(motor: GameEngine, jogador: SnakeModel, regras: ChallengeRules) 
 # ------------------------------------------------------------------- pontos
 
 ## Linhas do blueprint: cada parcela num card de vidro; TOTAL sem fundo em
-## verde; "Moedas ganhas" em card âmbar (zerada — economia liga no M3).
+## verde; "Moedas ganhas" em card âmbar (economia local, 13/08).
 func _linhas_de_pontos(jogador: SnakeModel) -> Control:
 	var pontos_comida: int = jogador.comidas * GameEngine.PONTOS_COMIDA
 	@warning_ignore("integer_division")
@@ -250,7 +250,7 @@ func _linha_moedas() -> PanelContainer:
 	rotulo.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	linha.add_child(rotulo)
 	var valor: Label = Label.new()
-	valor.text = "+0"  # economia liga no M3 (~5% dos pontos, regra do design)
+	valor.text = "+%d" % Sessao.moedas_ganhas
 	valor.theme_type_variation = &"TituloMd"
 	valor.add_theme_color_override("font_color", T.COR_MOEDA)
 	valor.vertical_alignment = VERTICAL_ALIGNMENT_CENTER

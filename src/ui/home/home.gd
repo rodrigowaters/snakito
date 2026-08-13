@@ -24,6 +24,13 @@ func _ready() -> void:
 	_montar_fundo()
 	_montar_conteudo()
 	_logar_plugins_android()
+	# Recompensa diária (01b): na 1ª abertura do dia (spec dos tokens).
+	# Coletar recarrega a Home — os contadores de moedas atualizam.
+	if Economia.dia_para_coletar() > 0:
+		var modal: RecompensaDiaria = RecompensaDiaria.new()
+		modal.coletada.connect(func() -> void:
+			get_tree().reload_current_scene())
+		add_child(modal)
 
 
 ## Diagnóstico de integração (spike + suporte): confirma no logcat quais

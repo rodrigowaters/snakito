@@ -187,7 +187,7 @@ func _montar_conteudo() -> void:
 	var pill_moedas: PanelContainer = PanelContainer.new()
 	pill_moedas.add_theme_stylebox_override("panel", _caixa_pill(T.COR_MOEDA))
 	var moedas: Label = Label.new()
-	moedas.text = "+0 moedas"
+	moedas.text = "+%d moedas" % Sessao.moedas_ganhas
 	moedas.theme_type_variation = &"TextoCorpoSm"
 	moedas.add_theme_color_override("font_color", T.COR_MOEDA)
 	pill_moedas.add_child(moedas)

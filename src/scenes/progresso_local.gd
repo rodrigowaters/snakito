@@ -68,6 +68,21 @@ static func adicionar_tickets(quantidade: int) -> void:
 	_salvar()
 
 
+## Recompensa diária (tela 01b): data da última coleta e dia coletado.
+static func diaria_ultima_coleta() -> String:
+	return _abrir().get_value("diaria", "ultima_coleta", "")
+
+
+static func diaria_sequencia() -> int:
+	return _abrir().get_value("diaria", "sequencia", 0)
+
+
+static func definir_diaria(data: String, dia: int) -> void:
+	_abrir().set_value("diaria", "ultima_coleta", data)
+	_abrir().set_value("diaria", "sequencia", dia)
+	_salvar()
+
+
 ## Gasta moedas SE houver saldo; devolve false sem tocar no saldo se faltar.
 static func gastar_moedas(quantidade: int) -> bool:
 	if moedas() < quantidade:

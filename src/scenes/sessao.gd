@@ -14,6 +14,9 @@ static var desafio_pendente: int = -1
 static var regras_desafio: ChallengeRules = null
 ## Motor da última partida encerrada — lido pela tela de resultado.
 static var ultimo_motor: GameEngine = null
+## Moedas creditadas pela última partida (5% dos pontos + prêmio de 1ª
+## conclusão de desafio) — resultado e celebração exibem.
+static var moedas_ganhas: int = 0
 
 
 ## Config da próxima partida. Consome `desafio_pendente`/`proxima_semente`.
