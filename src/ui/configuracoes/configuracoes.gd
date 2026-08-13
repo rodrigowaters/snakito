@@ -143,8 +143,14 @@ func _linha_base(
 	divisoria: bool,
 	desenho: Callable = Callable(),
 	cor_rotulo: Color = Color.TRANSPARENT,
-) -> Array:  # [pilha_externa, hbox_da_linha]
+) -> Array:  # [envelope, hbox_da_linha]
+	# Envelope PanelContainer transparente: overlays (botão de toque) se
+	# EMPILHAM nele em vez de entrar no layout do HBox — um filho a mais no
+	# HBox empurrava o chevron para a esquerda.
+	var envelope: PanelContainer = PanelContainer.new()
+	envelope.add_theme_stylebox_override("panel", StyleBoxEmpty.new())
 	var pilha: VBoxContainer = VBoxContainer.new()
+	envelope.add_child(pilha)
 	var linha: HBoxContainer = HBoxContainer.new()
 	linha.custom_minimum_size = Vector2(0.0, float(T.TOQUE_MIN))
 	linha.add_theme_constant_override("separation", T.ESP_SM)
@@ -182,7 +188,7 @@ func _linha_base(
 		traco.color = Color(T.COR_TEXTO_PRIMARIO, 0.07)
 		traco.custom_minimum_size = Vector2(0.0, 1.0)
 		pilha.add_child(traco)
-	return [pilha, linha]
+	return [envelope, linha]
 
 
 ## Linha com interruptor do blueprint (pill 58×34, gradiente quando ligado).
@@ -243,9 +249,8 @@ func _linha_navegacao(
 	if acao.is_valid():
 		var toque: Button = Button.new()
 		toque.flat = true
-		toque.set_anchors_preset(Control.PRESET_FULL_RECT)
 		toque.pressed.connect(acao)
-		partes[1].add_child(toque)  # por cima da linha inteira
+		partes[0].add_child(toque)  # empilha no envelope, cobrindo a linha
 	else:
 		partes[0].modulate.a = 0.55  # guardando lugar
 	return partes[0]
