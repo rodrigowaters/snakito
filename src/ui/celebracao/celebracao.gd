@@ -122,8 +122,12 @@ func _montar_conteudo() -> void:
 	meio.add_theme_constant_override("separation", T.ESP_MD)
 	coluna.add_child(meio)
 
+	# Domínio manda no título mesmo em desafio (playtest 13/08: concluir o
+	# D3 aos 117s por extermínio parecia bug com o título genérico).
+	var dominou: bool = motor.arena_dominada()
 	var titulo: Label = Label.new()
-	titulo.text = "Desafio concluído!" if regras != null else "Arena dominada!"
+	titulo.text = "Arena dominada!" if dominou \
+		else "Desafio concluído!" if regras != null else "Arena dominada!"
 	titulo.theme_type_variation = &"TituloHero"
 	titulo.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	meio.add_child(titulo)
@@ -159,14 +163,16 @@ func _montar_conteudo() -> void:
 	vs.text = "vs"
 	vs.theme_type_variation = &"TextoMuted"
 	vs.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	if regras != null:
+	if regras != null and not dominou:
 		conteudo_placar.add_child(_coluna_placar("VOCÊ",
 			str(regras.progresso_atual(motor)), T.CORES_COBRA_BASE[0], 1.0))
 		conteudo_placar.add_child(vs)
 		conteudo_placar.add_child(_coluna_placar("META 🎯",
 			str(regras.progresso_meta()), T.COR_ALERTA, 0.7))
 	else:
-		# Extermínio: seus abates contra a arena inteira ("devorei X de N").
+		# Extermínio: seus abates contra a arena inteira ("devorei X de N") —
+		# vale também para desafio vencido por domínio (placar VOCÊ 117 vs
+		# META 180 parecia derrota).
 		conteudo_placar.add_child(_coluna_placar("VOCÊ",
 			str(motor.jogador().abates), T.CORES_COBRA_BASE[0], 1.0))
 		conteudo_placar.add_child(vs)
