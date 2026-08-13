@@ -882,11 +882,12 @@ func _cta_pacote(texto: String, altura: float = 46.0) -> Control:
 
 ## Varre a subárvore trocando STOP → PASS: nenhum card/painel pode engolir
 ## o arrasto do ScrollContainer (o toque dos chips usa PASS + _ligar_toque).
-## ScrollContainers internos (carrosséis) ficam como estão.
+## O próprio ScrollContainer mantém o STOP (é ele quem consome o arrasto),
+## mas a varredura ATRAVESSA os carrosséis — os cards de dentro cobrem o
+## carrossel inteiro e também precisam passar o toque (playtest 13/08:
+## "scroll dos carrossel não funcionou").
 func _liberar_arrasto(no: Control) -> void:
-	if no is ScrollContainer:
-		return
-	if no.mouse_filter == Control.MOUSE_FILTER_STOP:
+	if not (no is ScrollContainer) and no.mouse_filter == Control.MOUSE_FILTER_STOP:
 		no.mouse_filter = Control.MOUSE_FILTER_PASS
 	for filho: Node in no.get_children():
 		if filho is Control:
