@@ -224,6 +224,13 @@ func progresso_meta() -> int:
 	return 0
 
 
+## O HUD deve mostrar a linha "META X/Y"? O D3 não: a meta é o próprio
+## cronômetro (segundos contando "para cima" ao lado do relógio contando
+## para baixo abriam a partida num confuso "META 0/180").
+func mostra_meta_no_hud() -> bool:
+	return desafio != Desafio.DEFESA
+
+
 func _concluir() -> void:
 	estado = Estado.CONCLUIDO
 	motivo = Motivo.META_ATINGIDA

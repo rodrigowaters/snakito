@@ -132,10 +132,11 @@ func atualizar(motor: GameEngine) -> void:
 	_tamanho.text = "TAM. %d" % jogador.nivel  # nível: não desce com corte (§2.7)
 	_energia.value = jogador.energia
 	_minimapa.atualizar(motor)
-	# Progresso do desafio ativo (Arcade não mostra nada).
+	# Progresso do desafio ativo (Arcade não mostra nada; o D3 também não —
+	# lá a meta é o próprio cronômetro).
 	var regras: ChallengeRules = Sessao.regras_desafio
-	_meta.visible = regras != null
-	if regras != null:
+	_meta.visible = regras != null and regras.mostra_meta_no_hud()
+	if _meta.visible:
 		_meta.text = "META %d/%d" % [regras.progresso_atual(motor), regras.progresso_meta()]
 
 
