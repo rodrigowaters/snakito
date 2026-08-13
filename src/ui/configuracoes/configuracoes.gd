@@ -282,7 +282,9 @@ func _linha_navegacao(
 ## Linha "Lado do turbo": seletor de dois estados (Esquerda | Direita).
 ## O joystick flutuante nasce onde o dedo toca — só o botão muda de canto.
 func _linha_lado_turbo(divisoria: bool) -> Control:
-	var partes: Array = _linha_base("⚡", "Lado do turbo", "para canhotos e destros", divisoria)
+	# Sem subtítulo: a largura MÍNIMA de rótulo+sub+2 chips passava da tela
+	# e o card comia o respiro lateral (mesma armadilha da Loja).
+	var partes: Array = _linha_base("⚡", "Lado do turbo", "", divisoria)
 	var seletor: HBoxContainer = HBoxContainer.new()
 	seletor.add_theme_constant_override("separation", T.ESP_MICRO + 2)
 	seletor.size_flags_vertical = Control.SIZE_SHRINK_CENTER
@@ -292,7 +294,7 @@ func _linha_lado_turbo(divisoria: bool) -> Control:
 		var valor: bool = opcao[1]
 		var chip: PanelContainer = PanelContainer.new()
 		chip.add_theme_stylebox_override("panel", StyleBoxEmpty.new())
-		chip.custom_minimum_size = Vector2(82.0, 34.0)
+		chip.custom_minimum_size = Vector2(74.0, 34.0)
 		var rotulo: Label = Label.new()
 		rotulo.text = rotulo_opcao
 		rotulo.theme_type_variation = &"TextoCorpo"
