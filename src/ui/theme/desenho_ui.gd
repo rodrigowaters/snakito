@@ -54,6 +54,37 @@ static func fantasma(alvo: CanvasItem, tamanho: Vector2) -> void:
 		deg_to_rad(35.0), deg_to_rad(145.0), 10, t.COR_APP_FUNDO_INICIO, 3.2)
 
 
+## Ícone da Evolução (emoji ⬆️ do design, desenhado — U+FE0F rende glifo
+## monocromático): seta branca em quadrado azul arredondado.
+static func icone_evolucao(alvo: CanvasItem, caixa: Rect2) -> void:
+	var t: GDScript = preload("res://src/ui/theme/tokens.gd")
+	var lado: float = caixa.size.y
+	alvo.draw_colored_polygon(
+		poligono_arredondado(caixa, lado * 0.28), t.CORES_COBRA_BASE[1])
+	var centro: Vector2 = caixa.get_center()
+	var s: float = lado * 0.5
+	var seta: PackedVector2Array = PackedVector2Array([
+		centro + Vector2(0.0, -s * 0.5),
+		centro + Vector2(s * 0.45, -s * 0.02),
+		centro + Vector2(s * 0.18, -s * 0.02),
+		centro + Vector2(s * 0.18, s * 0.5),
+		centro + Vector2(-s * 0.18, s * 0.5),
+		centro + Vector2(-s * 0.18, -s * 0.02),
+		centro + Vector2(-s * 0.45, -s * 0.02),
+	])
+	alvo.draw_colored_polygon(seta, t.COR_SIMBOLO_DALTONISMO)
+
+
+## Moedinha do design (🪙 rende monocromático): anel escuro, miolo dourado
+## e brilho no topo-esquerda.
+static func moedinha(alvo: CanvasItem, centro: Vector2, raio: float) -> void:
+	var t: GDScript = preload("res://src/ui/theme/tokens.gd")
+	alvo.draw_circle(centro, raio, t.COR_MOEDA_BORDA)
+	alvo.draw_circle(centro, raio * 0.72, t.COR_MOEDA)
+	alvo.draw_arc(centro, raio * 0.5, deg_to_rad(160.0), deg_to_rad(280.0), 10,
+		Color(t.COR_MOEDA.lightened(0.45), 0.9), maxf(1.5, raio * 0.18))
+
+
 ## Retângulo arredondado preenchido por gradiente diagonal (135° do design):
 ## polígono com cor POR VÉRTICE.
 static func gradiente_arredondado(

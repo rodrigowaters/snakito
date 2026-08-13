@@ -259,26 +259,24 @@ func _inventario() -> Control:
 	var pilha: VBoxContainer = VBoxContainer.new()
 	pilha.add_theme_constant_override("separation", 0)
 	card.add_child(pilha)
-	# Moedinha desenhada (🪙 renderiza monocromático — armadilha de emoji).
-	var linha_moedas: Control = _linha_inventario("", "Moedas",
-		Hud.formatar_milhar(ProgressoLocal.moedas()), T.COR_MOEDA, true)
-	var icone_moeda: Label = linha_moedas.get_child(0).get_child(0)
-	var moedinha: Control = Control.new()
-	moedinha.custom_minimum_size = Vector2(float(T.ESP_LG) + 2.0, 0.0)
-	moedinha.draw.connect(func() -> void:
-		var centro: Vector2 = moedinha.size * 0.5
-		moedinha.draw_circle(centro, 9.0, T.COR_MOEDA_BORDA)
-		moedinha.draw_circle(centro, 6.5, T.COR_MOEDA))
-	icone_moeda.add_sibling.call_deferred(moedinha)
-	icone_moeda.queue_free()
-	pilha.add_child(linha_moedas)
+	# Moedinha e seta da Evolução desenhadas (🪙/⬆️ caem na armadilha do
+	# emoji — render monocromático).
+	pilha.add_child(_linha_inventario("", "Moedas",
+		Hud.formatar_milhar(ProgressoLocal.moedas()), T.COR_MOEDA, true,
+		func(alvo: Control) -> void:
+			DesenhoUi.moedinha(alvo, alvo.size * 0.5, 10.0)))
 	pilha.add_child(_linha_inventario("🎟️", "Tickets de pulo",
 		str(ProgressoLocal.tickets()), T.COR_TEXTO_PRIMARIO, true))
 	pilha.add_child(_linha_inventario("🐍", "Skins na coleção",
 		"%d / %d" % [Skins.SKINS.size(), Skins.SKINS.size()],
 		T.COR_TEXTO_PRIMARIO, true))
-	var evolucao: Control = _linha_inventario("⬆", "Evolução", "em breve",
-		T.COR_TEXTO_SECUNDARIO, false)
+	var evolucao: Control = _linha_inventario("", "Evolução", "em breve",
+		T.COR_TEXTO_SECUNDARIO, false,
+		func(alvo: Control) -> void:
+			var lado: float = 20.0
+			DesenhoUi.icone_evolucao(alvo, Rect2(
+				Vector2((alvo.size.x - lado) * 0.5, (alvo.size.y - lado) * 0.5),
+				Vector2(lado, lado))))
 	evolucao.modulate.a = 0.55  # guardando lugar (pós-lançamento)
 	pilha.add_child(evolucao)
 	return card
@@ -290,18 +288,26 @@ func _linha_inventario(
 	valor: String,
 	cor_valor: Color,
 	divisoria: bool,
+	desenho: Callable = Callable(),
 ) -> Control:
 	var pilha: VBoxContainer = VBoxContainer.new()
 	var linha: HBoxContainer = HBoxContainer.new()
 	linha.custom_minimum_size = Vector2(0.0, float(T.TOQUE_MIN) + 2.0)
 	linha.add_theme_constant_override("separation", T.ESP_SM)
 	pilha.add_child(linha)
-	var icone: Label = Label.new()
-	icone.text = emoji
-	icone.theme_type_variation = &"TextoCorpo"
-	icone.custom_minimum_size = Vector2(float(T.ESP_LG) + 2.0, 0.0)
-	icone.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	linha.add_child(icone)
+	if desenho.is_valid():
+		var icone_desenhado: Control = Control.new()
+		icone_desenhado.custom_minimum_size = Vector2(float(T.ESP_LG) + 2.0, 0.0)
+		icone_desenhado.draw.connect(func() -> void:
+			desenho.call(icone_desenhado))
+		linha.add_child(icone_desenhado)
+	else:
+		var icone: Label = Label.new()
+		icone.text = emoji
+		icone.theme_type_variation = &"TextoCorpo"
+		icone.custom_minimum_size = Vector2(float(T.ESP_LG) + 2.0, 0.0)
+		icone.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		linha.add_child(icone)
 	var nome: Label = Label.new()
 	nome.text = rotulo
 	nome.theme_type_variation = &"TextoCorpo"

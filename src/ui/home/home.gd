@@ -347,26 +347,11 @@ func _celula_nav(
 
 # ---------------------------------------------------------------- desenhos
 
-## Ícone da Evolução (blueprint: emoji ⬆️ — seta branca em quadrado azul
-## arredondado), desenhado à mão para render idêntico em qualquer aparelho.
+## Ícone da Evolução — desenho compartilhado (DesenhoUi).
 func _desenhar_icone_evolucao(alvo: Control) -> void:
 	var lado: float = alvo.size.y
-	var caixa: Rect2 = Rect2(
-		Vector2((alvo.size.x - lado) * 0.5, 0.0), Vector2(lado, lado))
-	alvo.draw_colored_polygon(
-		DesenhoUi.poligono_arredondado(caixa, lado * 0.28), T.CORES_COBRA_BASE[1])
-	var centro: Vector2 = caixa.get_center()
-	var s: float = lado * 0.5  # envelope da seta
-	var seta: PackedVector2Array = PackedVector2Array([
-		centro + Vector2(0.0, -s * 0.5),          # ponta
-		centro + Vector2(s * 0.45, -s * 0.02),
-		centro + Vector2(s * 0.18, -s * 0.02),
-		centro + Vector2(s * 0.18, s * 0.5),      # haste
-		centro + Vector2(-s * 0.18, s * 0.5),
-		centro + Vector2(-s * 0.18, -s * 0.02),
-		centro + Vector2(-s * 0.45, -s * 0.02),
-	])
-	alvo.draw_colored_polygon(seta, T.COR_SIMBOLO_DALTONISMO)
+	DesenhoUi.icone_evolucao(alvo, Rect2(
+		Vector2((alvo.size.x - lado) * 0.5, 0.0), Vector2(lado, lado)))
 
 
 ## Cobra do blueprint: 4 círculos crescentes (rabo→cabeça) na cor da skin,
