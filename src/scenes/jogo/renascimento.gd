@@ -157,33 +157,9 @@ func _montar() -> void:
 	linha_vip.add_child(vip)
 
 
-## Fantasminha do desenho: cobra branca esvanecendo com auréola dourada,
-## olhos fechados (arcos) e sorriso sereno.
+## Fantasminha do desenho — desenho compartilhado com o onboarding (11c).
 func _desenhar_fantasma(alvo: Control) -> void:
-	var escala: Vector2 = alvo.size / Vector2(180.0, 110.0)  # viewBox do design
-	var branco: Color = T.COR_TEXTO_PRIMARIO
-	var corpo: Array[Vector3] = [
-		Vector3(40.0, 84.0, 12.0), Vector3(66.0, 74.0, 15.0),
-		Vector3(98.0, 64.0, 19.0), Vector3(134.0, 56.0, 24.0),
-	]
-	var alfas: Array[float] = [0.35, 0.55, 0.8, 1.0]
-	for i: int in corpo.size():
-		alvo.draw_circle(Vector2(corpo[i].x, corpo[i].y) * escala,
-			corpo[i].z * escala.x, Color(branco, alfas[i]))
-	# Auréola: elipse dourada acima da cabeça (círculo achatado por transform).
-	var halo_centro: Vector2 = Vector2(134.0, 14.0) * escala
-	alvo.draw_set_transform(halo_centro, 0.0, Vector2(1.0, 0.33))
-	alvo.draw_arc(Vector2.ZERO, 17.0 * escala.x, 0.0, TAU, 24, T.COR_MOEDA, 4.0)
-	alvo.draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
-	# Olhos fechados (arcos para baixo) e sorriso sereno.
-	var cabeca: Vector2 = Vector2(134.0, 56.0) * escala
-	var raio: float = 24.0 * escala.x
-	for lado: float in [-1.0, 1.0]:
-		alvo.draw_arc(cabeca + Vector2(lado * raio * 0.3, -raio * 0.2),
-			raio * 0.15, deg_to_rad(20.0), deg_to_rad(160.0), 8,
-			T.COR_APP_FUNDO_INICIO, 3.0)
-	alvo.draw_arc(cabeca + Vector2(0.0, raio * 0.35), raio * 0.26,
-		deg_to_rad(35.0), deg_to_rad(145.0), 10, T.COR_APP_FUNDO_INICIO, 3.2)
+	DesenhoUi.fantasma(alvo, alvo.size)
 
 
 ## Anel de contagem: trilha de vidro + arco azul proporcional ao restante.

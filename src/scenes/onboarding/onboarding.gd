@@ -51,7 +51,8 @@ var _vivas_previas: Dictionary[int, bool] = {}
 var _ui: CanvasLayer
 var _veu: ColorRect
 var _pontinhos: Control
-var _cards: CenterContainer
+var _fantasma: Control
+var _cards: Control
 
 
 func _ready() -> void:
@@ -197,14 +198,20 @@ func _entrar_predador() -> void:
 	_vivas_previas[_predador.id] = true
 
 
-## Game over acolhedor (docs §8): confete + véu suave, sem tela de derrota.
+## Game over acolhedor (docs §8/11c): véu suave + a fantasminha do design
+## subindo serena — sem tela de derrota.
 func _game_over_suave() -> void:
 	_encerrando_vinheta = true
 	var tween: Tween = create_tween()
 	tween.tween_property(_veu, "color:a", 0.65, 0.6) \
 		.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
-	tween.tween_interval(0.8)
+	tween.parallel().tween_property(_fantasma, "modulate:a", 1.0, 0.7) \
+		.set_ease(Tween.EASE_OUT)
+	tween.parallel().tween_property(_fantasma, "position:y",
+		_fantasma.position.y - 24.0, 1.2).set_ease(Tween.EASE_OUT)
+	tween.tween_interval(1.0)
 	tween.tween_callback(func() -> void:
+		_fantasma.visible = false
 		_encerrando_vinheta = false
 		_avancar_passo())
 
@@ -265,64 +272,131 @@ func _montar_ui() -> void:
 	pular.pressed.connect(_concluir.bind(ProgressoLocal.dificuldade()))
 	_ui.add_child(pular)
 
-	# Progresso: 4 pontinhos (sem números, sem texto).
+	# Progresso do blueprint 11: passo ativo é uma PÍLULA verde alongada;
+	# os demais, bolinhas apagadas (sem números, sem texto).
 	_pontinhos = Control.new()
 	_pontinhos.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
 	_pontinhos.position += Vector2(0.0, -float(T.ESP_XL))
 	_pontinhos.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_pontinhos.draw.connect(func() -> void:
+		var x: float = -46.0  # largura total ≈ 92 (3 bolinhas + pílula + vãos)
 		for i: int in 4:
-			var centro: Vector2 = Vector2((float(i) - 1.5) * 24.0, 0.0)
 			if i == int(passo):
-				_pontinhos.draw_circle(centro, 6.0, T.CORES_COBRA_BASE[ProgressoLocal.skin_equipada()])
+				_pontinhos.draw_colored_polygon(
+					DesenhoUi.poligono_arredondado(
+						Rect2(x, -3.5, 20.0, 7.0), 3.5), T.CORES_COBRA_BASE[0])
+				x += 26.0
 			else:
-				_pontinhos.draw_circle(centro, 4.0, Color(T.COR_SIMBOLO_DALTONISMO, 0.35)))
+				_pontinhos.draw_circle(Vector2(x + 3.5, 0.0), 3.5,
+					Color(T.COR_TEXTO_PRIMARIO, 0.2))
+				x += 13.0)
 	_ui.add_child(_pontinhos)
+
+	# Fantasminha do 11c — aparece no game over suave da vinheta 3.
+	_fantasma = Control.new()
+	_fantasma.set_anchors_preset(Control.PRESET_CENTER)
+	_fantasma.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	_fantasma.grow_vertical = Control.GROW_DIRECTION_BOTH
+	_fantasma.custom_minimum_size = Vector2(180.0, 110.0)
+	_fantasma.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_fantasma.draw.connect(func() -> void:
+		DesenhoUi.fantasma(_fantasma, _fantasma.size))
+	_fantasma.modulate.a = 0.0
+	_ui.add_child(_fantasma)
 
 	_montar_cards_escolha()
 
 
-## Passo 4 (docs §8): dificuldade escolhida OLHANDO, não lendo — um card
-## calmo com poucas cobras × um card cheio. O desenho é a informação.
+## Passo 4 (blueprint 11d): dificuldade escolhida OLHANDO, não lendo — dois
+## cards EMPILHADOS de mini-arena: a tranquila azulada com borda verde e
+## selo ✓ (recomendada), a cheia avermelhada de perigo. Toque escolhe.
 func _montar_cards_escolha() -> void:
-	_cards = CenterContainer.new()
-	_cards.set_anchors_preset(Control.PRESET_FULL_RECT)
-	_cards.visible = false
-	_ui.add_child(_cards)
-	var linha: HBoxContainer = HBoxContainer.new()
-	linha.add_theme_constant_override("separation", T.ESP_LG)
-	_cards.add_child(linha)
-	linha.add_child(_card_dificuldade(ProgressoLocal.Dificuldade.TRANQUILA))
-	linha.add_child(_card_dificuldade(ProgressoLocal.Dificuldade.CHEIA))
+	var margem: MarginContainer = MarginContainer.new()
+	margem.set_anchors_preset(Control.PRESET_FULL_RECT)
+	for lado: String in ["left", "right"]:
+		margem.add_theme_constant_override("margin_" + lado, T.ESP_LG)
+	margem.add_theme_constant_override("margin_top", T.ESP_2XL + T.ESP_XL)
+	margem.add_theme_constant_override("margin_bottom", T.ESP_2XL + T.ESP_MD)
+	margem.visible = false
+	_cards = margem
+	_ui.add_child(margem)
+	var pilha: VBoxContainer = VBoxContainer.new()
+	pilha.add_theme_constant_override("separation", T.ESP_SM)
+	margem.add_child(pilha)
+	pilha.add_child(_card_dificuldade(ProgressoLocal.Dificuldade.TRANQUILA))
+	pilha.add_child(_card_dificuldade(ProgressoLocal.Dificuldade.CHEIA))
+
+
+## Cobras/comidas das mini-arenas, em frações do card: (x, y, raio, cor).
+const MINI_CALMA: Array = [
+	[0.28, 0.55, 7.0, 0], [0.36, 0.50, 9.0, 0],
+	[0.72, 0.68, 7.0, 1], [0.80, 0.64, 8.0, 1],
+]
+const MINI_CALMA_COMIDA: Array = [[0.62, 0.32]]
+const MINI_CHEIA: Array = [
+	[0.18, 0.28, 7.0, 2], [0.32, 0.52, 8.0, 3], [0.48, 0.24, 9.0, 1],
+	[0.66, 0.46, 8.0, 5], [0.82, 0.28, 7.0, 6], [0.55, 0.76, 10.0, 4],
+	[0.25, 0.80, 8.0, 7], [0.85, 0.74, 9.0, 0],
+]
+const MINI_CHEIA_COMIDA: Array = [[0.40, 0.38], [0.72, 0.64]]
 
 
 func _card_dificuldade(dificuldade: ProgressoLocal.Dificuldade) -> Button:
+	var calma: bool = dificuldade == ProgressoLocal.Dificuldade.TRANQUILA
 	var card: Button = Button.new()
-	card.theme_type_variation = &"BotaoSecundario"
-	card.custom_minimum_size = Vector2(150.0, 150.0)
+	card.flat = true
+	card.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	card.pressed.connect(_concluir.bind(dificuldade))
-	# Mini-arena desenhada por cima do botão: 3 cobrinhas calmas × 9 agitadas.
 	card.draw.connect(func() -> void:
 		var tamanho: Vector2 = card.size
-		var pontos_tranquila: Array[Vector2] = [
-			Vector2(0.30, 0.35), Vector2(0.65, 0.55), Vector2(0.45, 0.75)]
-		var pontos_cheia: Array[Vector2] = [
-			Vector2(0.22, 0.28), Vector2(0.50, 0.22), Vector2(0.78, 0.32),
-			Vector2(0.30, 0.50), Vector2(0.62, 0.52), Vector2(0.82, 0.62),
-			Vector2(0.24, 0.72), Vector2(0.48, 0.80), Vector2(0.70, 0.78)]
-		var calma: bool = dificuldade == ProgressoLocal.Dificuldade.TRANQUILA
-		var pontos: Array[Vector2] = pontos_tranquila if calma else pontos_cheia
-		var skin: int = ProgressoLocal.skin_equipada()
-		for i: int in pontos.size():
-			# Bots nunca usam a cor do jogador — mesma regra da arena.
-			var indice: int = i % (T.CORES_COBRA_BASE.size() - 1)
-			if indice >= skin:
-				indice += 1
-			card.draw_circle(pontos[i] * tamanho, 9.0 if calma else 7.0,
-				T.CORES_COBRA_BASE[indice])
-		# A cobrinha do jogador aparece nos dois — "você está aqui".
-		card.draw_circle(Vector2(0.5, 0.62 if calma else 0.65) * tamanho, 10.0,
-			T.CORES_COBRA_BASE[ProgressoLocal.skin_equipada()]))
+		var raio_card: float = float(T.RAIO_BOTAO)
+		# Fundo da mini-arena (11d: azulada calma × avermelhada de perigo).
+		var fundo: Color = T.COR_VINHETA_CALMA if calma else T.COR_VINHETA_PERIGO
+		card.draw_colored_polygon(DesenhoUi.poligono_arredondado(
+			Rect2(Vector2.ZERO, tamanho), raio_card), fundo)
+		# Grade interna na cor do clima.
+		var grade: Color = Color(T.CORES_COBRA_BASE[1], 0.06) if calma \
+			else Color(T.COR_COMIDA_COMUM, 0.07)
+		var passo_grade: float = 22.0
+		var gx: float = passo_grade
+		while gx < tamanho.x:
+			card.draw_line(Vector2(gx, 4.0), Vector2(gx, tamanho.y - 4.0), grade)
+			gx += passo_grade
+		var gy: float = passo_grade
+		while gy < tamanho.y:
+			card.draw_line(Vector2(4.0, gy), Vector2(tamanho.x - 4.0, gy), grade)
+			gy += passo_grade
+		# Borda: verde de recomendada na calma; vidro na cheia.
+		var pontos_borda: PackedVector2Array = DesenhoUi.poligono_arredondado(
+			Rect2(Vector2.ONE, tamanho - Vector2.ONE * 2.0), raio_card)
+		pontos_borda.append(pontos_borda[0])
+		card.draw_polyline(pontos_borda,
+			T.CORES_COBRA_BASE[0] if calma else T.COR_SUPERFICIE_VIDRO_BORDA,
+			2.5 if calma else 1.0, true)
+		# Cobrinhas (corpo + cabeça com olhos) e comidas.
+		var cobras: Array = MINI_CALMA if calma else MINI_CHEIA
+		for c: Array in cobras:
+			var pos: Vector2 = Vector2(c[0], c[1]) * tamanho
+			var r: float = c[2]
+			var cor: Color = T.CORES_COBRA_BASE[c[3]]
+			card.draw_circle(pos + Vector2(-r * 1.4, r * 0.5), r * 0.75, Color(cor, 0.7))
+			card.draw_circle(pos, r, cor)
+			for lado: float in [-1.0, 1.0]:
+				card.draw_circle(pos + Vector2(lado * r * 0.35, -r * 0.25),
+					r * 0.22, T.COR_SIMBOLO_DALTONISMO)
+		var comidas: Array = MINI_CALMA_COMIDA if calma else MINI_CHEIA_COMIDA
+		for ponto: Array in comidas:
+			card.draw_circle(Vector2(ponto[0], ponto[1]) * tamanho, 4.0,
+				T.COR_COMIDA_COMUM)
+		# Selo ✓ da recomendada (11d) no canto superior direito.
+		if calma:
+			var selo_centro: Vector2 = Vector2(tamanho.x - 25.0, 25.0)
+			card.draw_circle(selo_centro, 15.0, T.CORES_COBRA_BASE[0])
+			var v: Color = T.COR_TEXTO_SOBRE_PRIMARIO
+			card.draw_line(selo_centro + Vector2(-6.0, 0.0),
+				selo_centro + Vector2(-2.0, 5.0), v, 3.0)
+			card.draw_line(selo_centro + Vector2(-2.0, 5.0),
+				selo_centro + Vector2(6.0, -5.0), v, 3.0))
 	return card
 
 

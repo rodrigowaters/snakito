@@ -175,6 +175,11 @@ const COR_COMIDA_PREMIUM: Color = Color("#FFD43B")
 const COR_MOEDA: Color = Color("#FFD43B")
 const COR_MOEDA_BORDA: Color = Color("#C9A11C")
 
+## Fundos das mini-arenas da escolha de dificuldade (tela 11d): a calma é
+## azulada (oceano) e a cheia é avermelhada (perigo) — a COR é a informação.
+const COR_VINHETA_CALMA: Color = Color("#0F2233")
+const COR_VINHETA_PERIGO: Color = Color("#200D0D")
+
 
 # ==============================================================================
 # 6 · CORES — SEMÂNTICAS
