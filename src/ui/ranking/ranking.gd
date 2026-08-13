@@ -88,6 +88,7 @@ func _tabs() -> Control:
 	rotulo_semana.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	semana.add_child(rotulo_semana)
 	linha.add_child(semana)
+	var tema: Theme = ThemeDB.get_project_theme()
 	for nome: String in ["Mês", "Geral"]:
 		var tab: Button = Button.new()
 		tab.text = nome
@@ -95,6 +96,11 @@ func _tabs() -> Control:
 		tab.custom_minimum_size = Vector2(80.0, 40.0)
 		tab.add_theme_font_size_override("font_size", T.TAM_CORPO_SM)
 		tab.disabled = true  # períodos extras: decisão de produto futura
+		# Desabilitada mas FIEL: mantém o vidro em pílula e o texto cinza do
+		# desenho (o estado disabled padrão troca raio e fundo).
+		tab.add_theme_stylebox_override("disabled",
+			tema.get_stylebox(&"normal", &"Chip"))
+		tab.add_theme_color_override("font_disabled_color", T.COR_TEXTO_SECUNDARIO)
 		linha.add_child(tab)
 	return linha
 
