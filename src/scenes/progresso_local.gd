@@ -104,6 +104,16 @@ static func registrar_posicao(posicao: int) -> bool:
 	return false
 
 
+## Modo daltonismo (tela 10): símbolos geométricos nas cobras (regra dura #4).
+static func daltonismo() -> bool:
+	return _abrir().get_value("jogo", "daltonismo", false)
+
+
+static func definir_daltonismo(ligado: bool) -> void:
+	_abrir().set_value("jogo", "daltonismo", ligado)
+	_salvar()
+
+
 ## Háptica ligada? (toggle da Pausa, blueprint 04c — padrão ligada)
 static func vibracao() -> bool:
 	return _abrir().get_value("jogo", "vibracao", true)

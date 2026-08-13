@@ -43,6 +43,16 @@ func test_desafio_concluido_persiste() -> void:
 		.is_true()
 
 
+func test_daltonismo_e_vibracao_persistem() -> void:
+	assert_bool(ProgressoLocal.daltonismo()).is_false()  # padrão desligado
+	assert_bool(ProgressoLocal.vibracao()).is_true()     # padrão ligada
+	ProgressoLocal.definir_daltonismo(true)
+	ProgressoLocal.definir_vibracao(false)
+	ProgressoLocal._resetar_cache_para_testes()
+	assert_bool(ProgressoLocal.daltonismo()).is_true()
+	assert_bool(ProgressoLocal.vibracao()).is_false()
+
+
 func test_melhor_posicao_so_melhora() -> void:
 	# Blueprint 05: "sua melhor posição até hoje!" — 0 = nunca terminou.
 	assert_int(ProgressoLocal.melhor_posicao()).is_equal(0)

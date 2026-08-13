@@ -102,13 +102,8 @@ func _barra_topo() -> Control:
 	config.theme_type_variation = &"ChipQuadrado"
 	config.text = "⚙"
 	config.custom_minimum_size = Vector2(float(T.TOQUE_MIN), float(T.TOQUE_MIN))
-	config.disabled = true  # Configurações chega no M3 — o lugar já é dela
-	# Desabilitado mas FIEL: mesmo vidro e mesmo glifo branco do desenho
-	# (o estado desabilitado padrão apagava o chip e fugia do blueprint).
-	var tema: Theme = ThemeDB.get_project_theme()
-	config.add_theme_stylebox_override("disabled",
-		tema.get_stylebox(&"normal", &"ChipQuadrado"))
-	config.add_theme_color_override("font_disabled_color", T.COR_TEXTO_PRIMARIO)
+	config.pressed.connect(func() -> void:
+		get_tree().change_scene_to_file("res://src/ui/configuracoes/configuracoes.tscn"))
 	barra.add_child(config)
 	return barra
 
