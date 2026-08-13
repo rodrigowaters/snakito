@@ -32,10 +32,20 @@ func _ready() -> void:
 	var rolagem: ScrollContainer = ScrollContainer.new()
 	rolagem.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	rolagem.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	# Sem barra visível (padrão mobile) e com deadzone: sem ela, os botões
-	# que cobrem as linhas engolem o arrasto e o scroll engasga.
-	rolagem.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
+	# Deadzone: sem ela, os botões que cobrem as linhas engolem o arrasto e
+	# o scroll engasga. (SHOW_NEVER desligava a rolagem no aparelho — a
+	# barra fica em AUTO, estilizada como fiapo discreto.)
 	rolagem.scroll_deadzone = 24
+	var barra: VScrollBar = rolagem.get_v_scroll_bar()
+	barra.custom_minimum_size = Vector2(4.0, 0.0)
+	var trilho_vazio: StyleBoxEmpty = StyleBoxEmpty.new()
+	for parte: StringName in [&"scroll", &"scroll_focus"]:
+		barra.add_theme_stylebox_override(parte, trilho_vazio)
+	var fiapo: StyleBoxFlat = StyleBoxFlat.new()
+	fiapo.bg_color = Color(T.COR_TEXTO_PRIMARIO, 0.18)
+	fiapo.set_corner_radius_all(2)
+	for parte: StringName in [&"grabber", &"grabber_highlight", &"grabber_pressed"]:
+		barra.add_theme_stylebox_override(parte, fiapo)
 	externa.add_child(rolagem)
 	_coluna = VBoxContainer.new()
 	_coluna.size_flags_horizontal = Control.SIZE_EXPAND_FILL
