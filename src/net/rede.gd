@@ -129,6 +129,24 @@ func criar_perfil(nome: String, com_consentimento_parental: bool = false) -> Str
 	return "não deu para criar o perfil agora — tente de novo"
 
 
+## Renomeia o apelido (tela 02b — policy de UPDATE só na coluna username).
+## Devolve "" em sucesso ou o motivo do erro.
+func renomear(nome: String) -> String:
+	if nome.length() < 3 or nome.length() > 20:
+		return "o apelido precisa ter de 3 a 20 caracteres"
+	var resposta: Dictionary = await _com_renovacao(
+		HTTPClient.METHOD_PATCH,
+		"/rest/v1/profiles?id=eq." + _user_id,
+		{"username": nome})
+	if resposta.status == 200 or resposta.status == 204:
+		_username = nome
+		sessao_mudou.emit()
+		return ""
+	if resposta.status == 409:
+		return "este apelido já está em uso"
+	return "não deu para renomear agora — tente de novo"
+
+
 ## Exclusão de conta dentro do app (docs §9): a Edge Function apaga o
 ## usuário e o cascade elimina perfil, sessões e leaderboard.
 func excluir_conta() -> bool:

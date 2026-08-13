@@ -133,15 +133,71 @@ func _perfil() -> Control:
 	editar.theme_type_variation = &"Chip"
 	editar.add_theme_font_size_override("font_size", T.TAM_CORPO_SM)
 	editar.icon = _textura_lapis()
-	for estado: StringName in [&"icon_normal_color", &"icon_disabled_color"]:
-		editar.add_theme_color_override(estado, Color.WHITE)  # sem tingir
-	editar.disabled = true  # edição pede policy de UPDATE no perfil (M3)
-	editar.add_theme_stylebox_override("disabled",
-		ThemeDB.get_project_theme().get_stylebox(&"normal", &"Chip"))
-	editar.add_theme_color_override("font_disabled_color", T.COR_TEXTO_SECUNDARIO)
+	editar.add_theme_color_override("icon_normal_color", Color.WHITE)  # sem tingir
+	editar.pressed.connect(_abrir_edicao_apelido.bind(nome))
 	linha_editar.add_child(editar)
 	pilha.add_child(linha_editar)
 	return pilha
+
+
+## Modal de edição do apelido (policy 0006: dono atualiza só o username).
+func _abrir_edicao_apelido(rotulo_nome: Label) -> void:
+	var veu: ColorRect = ColorRect.new()
+	veu.color = T.COR_SUPERFICIE_HUD
+	veu.set_anchors_preset(Control.PRESET_FULL_RECT)
+	add_child(veu)
+	var centro: CenterContainer = CenterContainer.new()
+	centro.set_anchors_preset(Control.PRESET_FULL_RECT)
+	add_child(centro)
+	var painel: PanelContainer = PanelContainer.new()
+	painel.theme_type_variation = &"ModalPainel"
+	centro.add_child(painel)
+	var pilha: VBoxContainer = VBoxContainer.new()
+	pilha.add_theme_constant_override("separation", T.ESP_MD)
+	painel.add_child(pilha)
+
+	var titulo: Label = Label.new()
+	titulo.text = "Novo apelido"
+	titulo.theme_type_variation = &"TituloMd"
+	titulo.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	pilha.add_child(titulo)
+	var aviso: Label = Label.new()
+	aviso.text = "Sem nome real — é público no ranking!"
+	aviso.theme_type_variation = &"TextoCorpoSm"
+	aviso.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	pilha.add_child(aviso)
+	var campo: LineEdit = LineEdit.new()
+	campo.text = Rede.username()
+	campo.max_length = 20
+	campo.custom_minimum_size = Vector2(240.0, 0.0)
+	pilha.add_child(campo)
+	var erro: Label = Label.new()
+	erro.theme_type_variation = &"TextoPerigo"
+	erro.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	pilha.add_child(erro)
+
+	var salvar: Button = Button.new()
+	salvar.text = "Salvar"
+	salvar.theme_type_variation = &"BotaoPrimario"
+	salvar.pressed.connect(func() -> void:
+		salvar.disabled = true
+		var motivo: String = await Rede.renomear(campo.text.strip_edges())
+		if motivo == "":
+			rotulo_nome.text = Rede.username()
+			veu.queue_free()
+			centro.queue_free()
+		else:
+			erro.text = motivo
+			salvar.disabled = false)
+	pilha.add_child(salvar)
+	var cancelar: Button = Button.new()
+	cancelar.text = "Cancelar"
+	cancelar.theme_type_variation = &"BotaoSecundario"
+	cancelar.pressed.connect(func() -> void:
+		veu.queue_free()
+		centro.queue_free())
+	pilha.add_child(cancelar)
+	campo.grab_focus()
 
 
 ## Lápis desenhado (✏️ cai na armadilha do U+FE0F): corpo âmbar na diagonal,
