@@ -288,6 +288,7 @@ func _aba_skins() -> Control:
 		grade.add_child(_card_skin(skin))
 	envelope.add_child(grade)
 	coluna.add_child(rolagem)
+	_liberar_arrasto(envelope)
 	return coluna
 
 
@@ -616,6 +617,7 @@ func _aba_pacotes() -> Control:
 	aviso.theme_type_variation = &"TextoLegenda"
 	aviso.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	coluna.add_child(aviso)
+	_liberar_arrasto(coluna)
 	return rolagem
 
 
@@ -878,6 +880,19 @@ func _cta_pacote(texto: String, altura: float = 46.0) -> Control:
 	return cta
 
 
+## Varre a subárvore trocando STOP → PASS: nenhum card/painel pode engolir
+## o arrasto do ScrollContainer (o toque dos chips usa PASS + _ligar_toque).
+## ScrollContainers internos (carrosséis) ficam como estão.
+func _liberar_arrasto(no: Control) -> void:
+	if no is ScrollContainer:
+		return
+	if no.mouse_filter == Control.MOUSE_FILTER_STOP:
+		no.mouse_filter = Control.MOUSE_FILTER_PASS
+	for filho: Node in no.get_children():
+		if filho is Control:
+			_liberar_arrasto(filho)
+
+
 # ------------------------------------------------------------- componentes
 
 func _card_vidro(cor_borda: Color, largura_borda: float) -> PanelContainer:
@@ -926,16 +941,31 @@ func _chip_gradiente(texto: String, cor_inicio: Color, cor_fim: Color, cor_texto
 	folga_dir.custom_minimum_size = Vector2(float(T.ESP_XS) + 2.0, 0.0)
 	linha.add_child(folga_dir)
 	if acao.is_valid():
-		var toque: Button = Button.new()
-		toque.flat = true
-		for estado: StringName in [&"normal", &"pressed", &"hover", &"focus"]:
-			toque.add_theme_stylebox_override(estado, StyleBoxEmpty.new())
-		toque.pressed.connect(func() -> void:
-			acao.call())
-		chip.add_child(toque)
+		_ligar_toque(chip, acao)
 	else:
 		chip.modulate.a = ALFA_GUARDA_LUGAR
 	return chip
+
+
+## Toque que CONVIVE com o scroll: mouse_filter PASS deixa o arrasto chegar
+## ao ScrollContainer; a ação só dispara se o dedo soltou perto de onde
+## tocou (rolou = a posição local muda porque o conteúdo andou por baixo).
+## Eventos de MOUSE de propósito: no aparelho a rota é touch→mouse (a
+## armadilha do joystick — ScreenTouch pode nunca chegar ao _gui_input).
+const TOLERANCIA_TOQUE: float = 14.0
+
+func _ligar_toque(alvo: Control, acao: Callable) -> void:
+	alvo.mouse_filter = Control.MOUSE_FILTER_PASS
+	var origem: Array[Vector2] = [Vector2.INF]
+	alvo.gui_input.connect(func(evento: InputEvent) -> void:
+		if evento is InputEventMouseButton and evento.button_index == MOUSE_BUTTON_LEFT:
+			if evento.pressed:
+				origem[0] = evento.position
+			elif origem[0] != Vector2.INF:
+				var perto: bool = evento.position.distance_to(origem[0]) < TOLERANCIA_TOQUE
+				origem[0] = Vector2.INF
+				if perto:
+					acao.call())
 
 
 ## Chip-pílula de vidro com texto colorido (estado "✓ Equipada", "MÁX").
