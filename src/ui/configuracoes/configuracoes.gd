@@ -23,39 +23,19 @@ func _ready() -> void:
 	margem.add_theme_constant_override("margin_top", T.ESP_2XL + T.ESP_MICRO)
 	margem.add_theme_constant_override("margin_bottom", T.ESP_LG + T.ESP_MICRO)
 	add_child(margem)
-	var externa: VBoxContainer = VBoxContainer.new()
-	externa.add_theme_constant_override("separation", T.ESP_XS + 2)
-	margem.add_child(externa)
-	externa.add_child(_cabecalho())
-	# Header fixo; seções roláveis — hoje o conteúdo cabe nos 412×915, mas
-	# proporções mais curtas / i18n / linhas futuras não podem cortar mudo.
-	var rolagem: ScrollContainer = ScrollContainer.new()
-	rolagem.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	rolagem.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	# Deadzone: sem ela, os botões que cobrem as linhas engolem o arrasto e
-	# o scroll engasga. (SHOW_NEVER desligava a rolagem no aparelho — a
-	# barra fica em AUTO, estilizada como fiapo discreto.)
-	rolagem.scroll_deadzone = 24
-	var barra: VScrollBar = rolagem.get_v_scroll_bar()
-	barra.custom_minimum_size = Vector2(4.0, 0.0)
-	var trilho_vazio: StyleBoxEmpty = StyleBoxEmpty.new()
-	for parte: StringName in [&"scroll", &"scroll_focus"]:
-		barra.add_theme_stylebox_override(parte, trilho_vazio)
-	var fiapo: StyleBoxFlat = StyleBoxFlat.new()
-	fiapo.bg_color = Color(T.COR_TEXTO_PRIMARIO, 0.18)
-	fiapo.set_corner_radius_all(2)
-	for parte: StringName in [&"grabber", &"grabber_highlight", &"grabber_pressed"]:
-		barra.add_theme_stylebox_override(parte, fiapo)
-	externa.add_child(rolagem)
+	# Layout FIXO como o blueprint (decisão 13/08 após 2 rodadas): o conteúdo
+	# cabe garantido no stretch de celular (412×915+); scroll em tela com
+	# botões de linha briga com o touch do aparelho (rota touch→mouse — a
+	# armadilha do joystick). Se uma tela transbordar de verdade (Loja),
+	# resolve-se lá com validação no aparelho.
 	_coluna = VBoxContainer.new()
-	_coluna.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_coluna.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_coluna.add_theme_constant_override("separation", T.ESP_XS + 2)
-	rolagem.add_child(_coluna)
+	margem.add_child(_coluna)
 	_montar_conteudo()
 
 
 func _montar_conteudo() -> void:
+	_coluna.add_child(_cabecalho())
 
 	_coluna.add_child(_titulo_secao("ÁUDIO"))
 	var audio: VBoxContainer = _card_lista()
