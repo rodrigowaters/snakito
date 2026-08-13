@@ -98,11 +98,20 @@ func _cabecalho() -> Control:
 	linha.add_theme_constant_override("separation", T.ESP_SM)
 
 	var voltar: Button = Button.new()
-	voltar.text = "←"
 	voltar.theme_type_variation = &"ChipQuadrado"
 	voltar.custom_minimum_size = Vector2(float(T.TOQUE_MIN) - 4.0, float(T.TOQUE_MIN) - 4.0)
+	voltar.size_flags_vertical = Control.SIZE_SHRINK_CENTER  # quadrado de fato
 	voltar.pressed.connect(func() -> void:
 		get_tree().change_scene_to_file(CENA_HOME))
+	# Seta desenhada (o glifo "←" renderiza descentralizado — métrica de
+	# fonte; desenho é centrado por construção).
+	voltar.draw.connect(func() -> void:
+		var centro: Vector2 = voltar.size * 0.5
+		var braco: float = voltar.size.x * 0.18
+		var cor: Color = T.COR_TEXTO_PRIMARIO
+		voltar.draw_line(centro + Vector2(-braco, 0.0), centro + Vector2(braco, 0.0), cor, 2.0)
+		voltar.draw_line(centro + Vector2(-braco, 0.0), centro + Vector2(-braco * 0.15, -braco * 0.85), cor, 2.0)
+		voltar.draw_line(centro + Vector2(-braco, 0.0), centro + Vector2(-braco * 0.15, braco * 0.85), cor, 2.0))
 	linha.add_child(voltar)
 
 	var pilha: VBoxContainer = VBoxContainer.new()
