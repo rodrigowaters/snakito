@@ -36,6 +36,16 @@ static func equipar_skin(indice: int) -> void:
 	_salvar()
 
 
+## A skin foi comprada? (`id` do `CatalogoSkins`; grátis não passa por aqui)
+static func skin_comprada(id: String) -> bool:
+	return _abrir().get_value("skins_compradas", id, false)
+
+
+static func marcar_skin_comprada(id: String) -> void:
+	_abrir().set_value("skins_compradas", id, true)
+	_salvar()
+
+
 # ----------------------------------------------------------------- economia
 # Moedas e tickets (docs §5 — economia é M3): a Home já EXIBE os contadores
 # (blueprint 1d) e a persistência está pronta; ganhar/gastar liga no M3.

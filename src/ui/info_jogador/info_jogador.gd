@@ -318,7 +318,7 @@ func _inventario() -> Control:
 	pilha.add_child(_linha_inventario("🎟️", "Tickets de pulo",
 		str(ProgressoLocal.tickets()), T.COR_TEXTO_PRIMARIO, true))
 	pilha.add_child(_linha_inventario("🐍", "Skins na coleção",
-		"%d / %d" % [CatalogoSkins.SKINS.size(), CatalogoSkins.SKINS.size()],
+		"%d / %d" % [CatalogoSkins.total_desbloqueadas(), CatalogoSkins.SKINS.size()],
 		T.COR_TEXTO_PRIMARIO, true))
 	var evolucao: Control = _linha_inventario("", "Evolução", "em breve",
 		T.COR_TEXTO_SECUNDARIO, false,

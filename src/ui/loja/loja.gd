@@ -2,9 +2,10 @@ class_name Loja
 extends Control
 ## Loja — composição fiel aos blueprints 09 (Skins, tabs por raridade),
 ## 09b (Buffs) e 09c (Pacotes). Adaptações registradas:
-## - Skins: catálogo atual são as 4 COMUNS grátis do M1 — CTA "Equipar"/
-##   "✓ Equipada" no lugar do preço; raridades sem conteúdo mostram "em
-##   breve"; o preview 09a entra junto com as skins premium (Billing).
+## - Skins: catálogo COMPLETO do design (17) — comuns grátis do M1,
+##   raras sólidas compráveis com moedas DESDE JÁ, épicas/lendárias com
+##   padrão guardam lugar (render de padrão em jogo + Billing são M3);
+##   grid rola na vertical; o preview 09a entra com as premium.
 ## - Buffs: compra com moedas FUNCIONAL desde já (spec §2.6.2: 200×growth^N,
 ##   teto Nv 10 do motor) — a economia nasce zerada, ganhar moedas liga no
 ##   M3; "▶ ANÚNCIO"/"🎟️ Pular" guardam lugar (AdMob M3).
@@ -268,13 +269,25 @@ func _aba_skins() -> Control:
 		coluna.add_child(vazio)
 		return coluna
 
+	# Grid rola na vertical (o catálogo completo passa da tela — épicas têm
+	# 9 cards); folga de topo dentro do scroll para a etiqueta flutuante.
+	var rolagem: ScrollContainer = ScrollContainer.new()
+	rolagem.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	rolagem.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_ocultar_barras(rolagem)
+	var envelope: MarginContainer = MarginContainer.new()
+	envelope.add_theme_constant_override("margin_top", T.ESP_SM)
+	envelope.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	rolagem.add_child(envelope)
 	var grade: GridContainer = GridContainer.new()
 	grade.columns = 2
+	grade.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	grade.add_theme_constant_override("h_separation", T.ESP_SM)
-	grade.add_theme_constant_override("v_separation", T.ESP_SM)
+	grade.add_theme_constant_override("v_separation", T.ESP_SM + 4)
 	for skin: Dictionary in skins:
 		grade.add_child(_card_skin(skin))
-	coluna.add_child(grade)
+	envelope.add_child(grade)
+	coluna.add_child(rolagem)
 	return coluna
 
 
@@ -313,25 +326,45 @@ func _barra_raridades() -> Control:
 
 
 func _card_skin(skin: Dictionary) -> Control:
-	var equipada: bool = ProgressoLocal.skin_equipada() == skin.indice
+	var desbloqueada: bool = CatalogoSkins.desbloqueada(skin)
+	var equipada: bool = desbloqueada and skin.indice >= 0 \
+		and ProgressoLocal.skin_equipada() == skin.indice
+	var cor_raridade: Color = T.CORES_RARIDADE[skin.raridade]
 	var card: PanelContainer = PanelContainer.new()
 	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	var estilo: StyleBoxFlat = StyleBoxFlat.new()
 	estilo.bg_color = T.COR_CARD_FUNDO
-	estilo.border_color = T.COR_SUCESSO if equipada else T.COR_SUPERFICIE_VIDRO_BORDA
+	estilo.border_color = T.COR_SUCESSO if equipada else (
+		cor_raridade if skin.raridade != SnakitoTokens.Raridade.COMUM
+		else T.COR_SUPERFICIE_VIDRO_BORDA)
 	estilo.set_border_width_all(2 if equipada else 1)
 	estilo.set_corner_radius_all(T.RAIO_CARD - 2)
 	estilo.set_content_margin_all(float(T.ESP_SM) + 2.0)
 	card.add_theme_stylebox_override("panel", estilo)
+
+	# Etiqueta flutuante ("NOVA", "PACOTE") sobre a borda, como no design.
+	if skin.tag != "":
+		var fonte: Font = get_theme_default_font()
+		card.draw.connect(func() -> void:
+			var texto: String = skin.tag
+			var largura: float = fonte.get_string_size(
+				texto, HORIZONTAL_ALIGNMENT_LEFT, -1, 10).x
+			var caixa: Rect2 = Rect2(
+				(card.size.x - largura - 20.0) * 0.5, -9.0, largura + 20.0, 17.0)
+			card.draw_colored_polygon(
+				DesenhoUi.poligono_arredondado(caixa, 8.5), cor_raridade)
+			card.draw_string(fonte, Vector2(caixa.position.x + 10.0, 3.5), texto,
+				HORIZONTAL_ALIGNMENT_LEFT, -1, 10, T.COR_APP_FUNDO_INICIO))
+
 	var pilha: VBoxContainer = VBoxContainer.new()
 	pilha.add_theme_constant_override("separation", T.ESP_XS + 1)
 	pilha.alignment = BoxContainer.ALIGNMENT_CENTER
 	card.add_child(pilha)
 
-	# Cobrinha do card: 3 segmentos crescendo + cabeça com olhos (blueprint).
+	# Cobrinha do card: 3 segmentos crescendo + cabeça com olhos (blueprint);
+	# skins premium desenham o padrão (metades/listras) nas bolinhas.
 	var cobra: Control = Control.new()
 	cobra.custom_minimum_size = Vector2(0.0, 30.0)
-	var cor_skin: Color = T.CORES_COBRA_BASE[skin.indice]
 	cobra.draw.connect(func() -> void:
 		var centro_x: float = cobra.size.x * 0.5
 		var y: float = cobra.size.y * 0.5
@@ -340,7 +373,7 @@ func _card_skin(skin: Dictionary) -> Control:
 		var x: float = centro_x - 34.0
 		for i: int in raios.size():
 			x += raios[i]
-			cobra.draw_circle(Vector2(x, y), raios[i], Color(cor_skin, alfas[i]))
+			_desenhar_bolinha_skin(cobra, Vector2(x, y), raios[i], skin, alfas[i])
 			if i == raios.size() - 1:
 				cobra.draw_circle(Vector2(x - 3.5, y - 2.5), 2.5, Color.WHITE)
 				cobra.draw_circle(Vector2(x + 3.5, y - 2.5), 2.5, Color.WHITE)
@@ -356,16 +389,78 @@ func _card_skin(skin: Dictionary) -> Control:
 
 	var centro: HBoxContainer = HBoxContainer.new()
 	centro.alignment = BoxContainer.ALIGNMENT_CENTER
+	centro.add_child(_cta_da_skin(skin, desbloqueada, equipada))
+	pilha.add_child(centro)
+	return card
+
+
+## CTA do card conforme o estado: equipada / equipar / comprar com moedas
+## (raras sólidas — FUNCIONAL) / premium guardando lugar (padrão em jogo e
+## Billing são M3).
+func _cta_da_skin(skin: Dictionary, desbloqueada: bool, equipada: bool) -> Control:
 	if equipada:
-		centro.add_child(_chip_vidro("✓ Equipada", T.COR_SUCESSO))
-	else:
-		centro.add_child(_chip_gradiente("Equipar",
+		return _chip_vidro("✓ Equipada", T.COR_SUCESSO)
+	if desbloqueada and skin.indice >= 0:
+		return _chip_gradiente("Equipar",
 			T.COR_CTA_PRIMARIO_INICIO, T.COR_CTA_PRIMARIO_FIM, T.COR_TEXTO_SOBRE_PRIMARIO,
 			func() -> void:
 				ProgressoLocal.equipar_skin(skin.indice)
-				_remontar_corpo()))
-	pilha.add_child(centro)
-	return card
+				_remontar_corpo())
+	if skin.preco < 0:
+		var chip: Control = _chip_vidro("no pacote", T.COR_TEXTO_SECUNDARIO)
+		chip.modulate.a = ALFA_GUARDA_LUGAR
+		return chip
+	var pode_comprar: bool = skin.indice >= 0 \
+		and ProgressoLocal.moedas() >= int(skin.preco)
+	if pode_comprar:
+		return _chip_gradiente(str(skin.preco),
+			T.COR_CTA_PRIMARIO_INICIO, T.COR_CTA_PRIMARIO_FIM, T.COR_TEXTO_SOBRE_PRIMARIO,
+			func() -> void:
+				if ProgressoLocal.gastar_moedas(int(skin.preco)):
+					ProgressoLocal.marcar_skin_comprada(skin.id)
+					ProgressoLocal.equipar_skin(skin.indice)
+				_remontar_tudo(),
+			true)
+	# Sem saldo (raras) ou padrão premium (épicas/lendárias): preço visível,
+	# esmaecido — compra liga com a economia/Billing.
+	var preco: Control = _chip_gradiente(str(skin.preco),
+		T.COR_CTA_PRIMARIO_INICIO, T.COR_CTA_PRIMARIO_FIM, T.COR_TEXTO_SOBRE_PRIMARIO,
+		Callable(), true)
+	return preco
+
+
+## Bolinha de segmento com o visual da skin: sólida, metades (horizontal)
+## ou listras (verticais recortadas no círculo).
+func _desenhar_bolinha_skin(alvo: CanvasItem, centro: Vector2, raio: float,
+		skin: Dictionary, alfa: float) -> void:
+	var visual: Dictionary = skin.visual
+	var cores: Array = visual.cores
+	match visual.tipo:
+		"metades":
+			for metade: int in 2:
+				var pontos: PackedVector2Array = PackedVector2Array()
+				var base_angulo: float = PI if metade == 0 else 0.0
+				for i: int in 17:
+					var angulo: float = base_angulo + PI * float(i) / 16.0
+					pontos.append(centro + Vector2(cos(angulo), sin(angulo)) * raio)
+				alvo.draw_colored_polygon(pontos, Color(cores[metade], alfa))
+		"listras":
+			var faixas: int = 4
+			for f: int in faixas:
+				var x0: float = -raio + 2.0 * raio * float(f) / float(faixas)
+				var x1: float = -raio + 2.0 * raio * float(f + 1) / float(faixas)
+				var pontos: PackedVector2Array = PackedVector2Array()
+				for i: int in 7:  # arco de cima, x0 → x1
+					var x: float = lerpf(x0, x1, float(i) / 6.0)
+					pontos.append(centro + Vector2(x, -sqrt(maxf(0.0, raio * raio - x * x))))
+				for i: int in 7:  # arco de baixo, x1 → x0
+					var x: float = lerpf(x1, x0, float(i) / 6.0)
+					pontos.append(centro + Vector2(x, sqrt(maxf(0.0, raio * raio - x * x))))
+				alvo.draw_colored_polygon(pontos, Color(cores[f % cores.size()], alfa))
+		_:
+			var cor: Color = T.CORES_COBRA_BASE[skin.indice] if skin.indice >= 0 \
+				else cores[0]
+			alvo.draw_circle(centro, raio, Color(cor, alfa))
 
 
 # -------------------------------------------------------------- aba BUFFS

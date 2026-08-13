@@ -137,3 +137,10 @@ func test_desafio_continua_sem_buffs() -> void:
 	var config: GameEngine.ConfigPartida = Sessao.config_para_jogar()
 	assert_bool(config.aplicar_buffs).is_false()
 	Sessao.regras_desafio = null
+
+
+func test_skin_comprada_persiste() -> void:
+	assert_bool(ProgressoLocal.skin_comprada("laranjinha")).is_false()
+	ProgressoLocal.marcar_skin_comprada("laranjinha")
+	ProgressoLocal._resetar_cache_para_testes()
+	assert_bool(ProgressoLocal.skin_comprada("laranjinha")).is_true()

@@ -280,6 +280,23 @@ const CORES_RARIDADE: Array[Color] = [
 	Color("#FFD43B"),  # lendária
 ]
 
+## Paletas das skins premium (padrões do blueprint 09/09a). O RENDER de
+## padrão em jogo chega com o Billing (M3) — até lá alimentam os cards da
+## Loja. Duas cores = metades; três = listras (aprox. dos CSS do design).
+const SKIN_MINHOCA: Array[Color] = [Color("#F5A9C0"), Color("#D97B98")]
+const SKIN_ABELHA: Array[Color] = [Color("#FFD43B"), Color("#1A1A1A")]
+const SKIN_MELANCIA: Array[Color] = [Color("#4ADE80"), Color("#FF6B6B")]
+const SKIN_TREM: Array[Color] = [Color("#FF6B6B"), Color("#FFD43B"), Color("#38BDF8")]
+const SKIN_TIGRE: Array[Color] = [Color("#FF9F45"), Color("#1A1A1A")]
+const SKIN_FOGUETE: Array[Color] = [Color("#E2E8F0"), Color("#FF6B6B")]
+const SKIN_FENIX: Array[Color] = [Color("#FFD43B"), Color("#FF6B6B")]
+const SKIN_NEBULOSA: Array[Color] = [Color("#A78BFA"), Color("#38BDF8")]
+## Skins do Pacote Neon (versões saturadas do trio base; placeholder até
+## o pacote existir no Billing).
+const SKIN_NEON_VERDE: Array[Color] = [Color("#7CFFB2")]
+const SKIN_NEON_AZUL: Array[Color] = [Color("#7DDCFF")]
+const SKIN_NEON_ROSA: Array[Color] = [Color("#FF9DD6")]
+
 
 # ==============================================================================
 # 10 · TIPOGRAFIA
