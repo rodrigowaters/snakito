@@ -17,7 +17,7 @@ Este app é da **Trilha B** da linha: **Godot 4 (estável atual: 4.7.1; a doc ci
 
 | Camada | Ferramenta |
 |---|---|
-| Engine | Godot 4.8, GDScript tipado |
+| Engine | Godot 4.7.1, GDScript tipado |
 | Testes | gdUnit4 (`tests/`) |
 | Backend | Supabase via REST (`HTTPRequest`) + Edge Function `submit_session` |
 | Compras | Plugin oficial godot-google-play-billing (godot-sdk-integrations) |
@@ -26,12 +26,47 @@ Este app é da **Trilha B** da linha: **Godot 4 (estável atual: 4.7.1; a doc ci
 | Analytics | Firebase Analytics via plugin comunitário (modo restrito p/ famílias) |
 | i18n | Sistema nativo do Godot (CSV/PO), pt-BR padrão; nada hardcoded |
 
+## Comandos
+
+```bash
+# Suíte gdUnit4 completa (143 testes hoje)
+GODOT_BIN=/opt/homebrew/bin/godot sh addons/gdUnit4/runtest.sh --headless --ignoreHeadlessMode -a res://tests
+
+# Importar antes de rodar script `-s`: class_name novo não está no cache
+godot --headless --path . --import
+
+# Screenshot de uma cena (precisa de janela — headless não renderiza)
+godot --path . -s tools/capturar_tela.gd -- res://src/ui/home/home.tscn /tmp/home.png 40
+
+# Fundação visual (regenera o tema e valida tokens/contraste/eixo de fonte)
+godot --headless --quit-after 30 -s tools/validar_fundacao.gd
+
+# Bench do domínio · calibragem de desafios por lote sintético
+godot --headless --quit-after 60 -s tools/bench_dominio.gd
+godot --headless --quit-after 120 -s tools/simular_desafios.gd
+
+# APK de teste no aparelho / AAB de publicação (Godot segfaulta AO SAIR: inofensivo)
+JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home \
+  godot --headless --path . --export-debug "Android APK (aparelho)" build/snakito.apk
+JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home \
+  godot --headless --export-debug "Android AAB" export/snakito.aab
+
+# Instalar e abrir no moto g35 (adb wireless cai sempre: kill-server/start-server/mdns
+# em loop; a porta MUDA ao religar a depuração; tela acesa durante o install de 115MB)
+adb install -r build/snakito.apk
+adb shell am start -n com.rodrigowaters.snakito/com.godot.game.GodotAppLauncher  # NUNCA monkey
+
+# Editar progresso local sem perder o login
+adb shell am force-stop com.rodrigowaters.snakito
+adb push progresso.cfg /data/local/tmp/ && adb shell 'run-as com.rodrigowaters.snakito sh -c "cp /data/local/tmp/progresso.cfg files/progresso.cfg"'
+```
+
 ## Arquitetura (regras duras)
 
 1. **Domínio puro em `src/domain/`:** classes `RefCounted` GDScript, **nunca** herdam `Node`, zero dependência de cena/render/input. Arquivos: `game_engine.gd`, `snake_model.gd`, `arena_model.gd`, `bot_engine.gd`, `strategy_analyzer.gd`, `challenge_rules.gd`, `rng_service.gd`. Cenas apenas renderizam o estado calculado pelo domínio.
 2. **Determinismo:** todo RNG passa pelo `rng_service.gd` seedável. Mesma seed = mesma partida (desafios reproduzíveis, botão "Repetir esta arena").
 3. **Bots honestos:** 3 personalidades (Fazendeiro, Caçador, Oportunista); dificuldade = composição da arena, nunca trapaça (sem visão através da névoa, sem reação sobre-humana).
-4. **Design tokens centralizados:** um único `Theme` resource + script de constantes. Nenhuma cor/fonte/espaçamento hardcoded em cena. Contraste WCAG AA; modo daltonismo com símbolo geométrico por cor de cobra.
+4. **Design tokens centralizados:** um único `Theme` resource + script de constantes. Nenhuma cor/fonte/espaçamento hardcoded em cena. Contraste WCAG AA (o modo daltonismo foi REMOVIDO em 13/08 — tokens e SVGs ficam como artefato do design system).
 5. **Offline-first:** gameplay sem nenhuma chamada de rede. Sessões terminadas entram em fila local (`ConfigFile`/`FileAccess`) e sobem via Edge Function `submit_session` quando houver conexão. Insert direto em `game_sessions`/`leaderboard` é bloqueado por RLS.
 6. **Entitlements por conta** (`ads_removed`, skins) no Supabase; todo componente de anúncio consulta o entitlement antes de renderizar, desde já.
 7. **Skins nunca dão vantagem de gameplay.**
@@ -46,13 +81,13 @@ Design system importado do Claude Design (projeto `Design System Snakito`, v1.0,
 | `docs/design/` | Fonte de verdade visual, versionada — export bruto do Claude Design |
 | `docs/design/snakito-tokens.json` | Tokens originais (inclui economia/IAP, ainda não portados) |
 | `docs/design/wcag-report.md` | Relatório de contraste WCAG 2.1 AA |
-| `src/ui/theme/tokens.gd` | `SnakitoTokens` — constantes tipadas (cores, tipografia, espaçamento, raios, toque, daltonismo) |
+| `src/ui/theme/tokens.gd` | `SnakitoTokens` — constantes tipadas (cores, incl. paletas de skin premium, tipografia, espaçamento, raios, toque) |
 | `src/ui/theme/snakito_theme.tres` | `Theme`: 6 tipos base + 25 variações, fontes ligadas via `FontVariation` |
 | `tools/tema_builder.gd` | Construção do `Theme` (RefCounted estático — roda headless; `EditorScript` não instancia fora do editor) |
 | `tools/gerar_tema.gd` | Casca EditorScript sobre o builder (Arquivo > Executar no editor) |
 | `tools/validar_fundacao.gd` | Smoke test headless: tokens + tema + round-trip de regeneração. `godot --headless --quit-after 30 -s tools/validar_fundacao.gd` |
 | `assets/fonts/` | Fredoka + Nunito variáveis (OFL, licenças incluídas) |
-| `assets/daltonismo/` | 8 símbolos SVG do modo daltonismo (1 por cor de cobra) |
+| `assets/daltonismo/` | 8 símbolos SVG do modo daltonismo — artefato do design system (modo removido em 13/08) |
 | `tests/ui/theme/test_tokens_contraste.gd` | Regressão WCAG dos tokens (gdUnit4 — addon vendorado em `addons/gdUnit4`) |
 | `project.godot` | Projeto mínimo (nome, portrait 412×915, renderer mobile, tema global, plugin gdUnit4); presets Android entram no spike |
 
@@ -101,14 +136,14 @@ Fluxo Home → Jogo → Resultado completo e verificado por screenshot (`tools/c
 - `src/scenes/jogo/`: `jogo.gd` (dono do `GameEngine`, tick em `_physics_process`), `arena_render.gd` (um `_draw()` com culling; corpo da cobra é trilha **visual** — a colisão do domínio é por cabeça), `hud.gd` (barra + pausa), `joystick_virtual.gd` (flutuante, com fallback de teclado)
 - `src/scenes/sessao.gd`: navegação via `static var` (sem autoload) — seed pedida + motor da última partida
 - "Maior visão" do jogador = zoom da câmera (leitura de render do docs §2.2)
-- Performance do domínio: **0.66ms/tick** com 30 bots neste Mac (`tools/bench_dominio.gd`); orçamento de frame é 16.6ms — o teste de 60fps no aparelho é sobre o render
+- Performance do domínio: **1.64ms/tick** com 30 bots neste Mac (`tools/bench_dominio.gd`; era 0.66 antes de corpo+corte); orçamento de frame é 16.6ms — o teste de 60fps no aparelho é sobre o render
 
 ## Pendência: fidelidade às telas do Claude Design (decisão de 10/08)
 
 As telas atuais usam os tokens/componentes fielmente (regra dura #4), mas **não seguem as composições hi-fi** de `docs/design/Snakito Telas.dc.html` (26 telas com decisões registradas: "Home 1d+1e · HUD 1h · pós 8c ..."). O Rodrigo decidiu registrar como pendência e priorizar o backend-cliente. Ao pagar a dívida, usar o HTML das telas como blueprint e entregar lado-a-lado (screenshot × design) para validação:
 
 - **Refazer composição** (feature já existe): Home (sem moedas/fase por ora — preview da skin equipada, "▶ Jogar Arcade", nav em grade), HUD ("1h"), Pausa ("04c"), Pós-partida ("8c"), Desafios ("07")
-- **Construir quando a feature chegar**: Mapa/fases (02), Evolução (03), Loja (09*), Configurações (10), Chefe/Duelo/Prorrogação (12*), Recompensa diária (01b), Ranking da fase (06). **Já construídas**: Renascimento (04b), Ranking (08), Fase concluída (12c → celebração de desafio/arena dominada), Info do jogador (02b — avatar da Home abre; SEM porta p/ Conta até Configurações). Onboarding (11a-d) removido por decisão.
+- **Construir quando a feature chegar**: Mapa/fases (02), Evolução (03), Chefe/Duelo/Prorrogação (12*), Ranking da fase (06), Preview de skin (09a — com as skins premium/Billing). **Já construídas**: Renascimento (04b), Ranking (08), Fase concluída (12c → celebração de desafio/arena dominada), Info do jogador (02b — avatar da Home abre; SEM porta p/ Conta até Configurações), Loja (09/09b/09c), Configurações (10), Recompensa diária (01b). Onboarding (11a-d) removido por decisão.
 
 ## Backend Supabase (provisionado)
 
@@ -140,9 +175,18 @@ Política de Famílias do Google Play; coleta mínima (username, e-mail, stats d
   - Infra local: templates 4.7.1 instalados, keystore debug gerado, editor_settings apontando SDK/Java; presets `Android AAB` + `Android APK (aparelho)`; plugins vendorados em `addons/` (Billing 3.3.0; AdMob poing v5 nightly + template nativo 4.7.1 — os AARs nativos em `addons/admob/android/bin` são gitignorados pelo próprio addon: re-baixar `android-template-v4.7.1.zip` em clone novo); `android/` (template gradle) é gerado, gitignorado
   - Export headless: `JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home godot --headless --export-debug "Android AAB" export/snakito.aab` (Godot segfaulta AO SAIR depois de gravar o artefato — quirk macOS, inofensivo)
   - Pendências menores: ícone do projeto (warning no export; assets do ícone adaptativo existem só como SVG no design), `tagForChildDirectedTreatment` quando anúncios ativarem
-- [x] M1 (sem 3–4) — **FECHADO em 10/08**: desafios 1–2 ✅; análise pós-partida v1 ✅; auth Google (única forma de login) ✅; fila offline + `submit_session` + ranking ✅; consentimento parental <13 ✅; exclusão de conta no app ✅; **onboarding sem texto ✅** (`src/scenes/onboarding/` — 3 vinhetas com o motor real em piloto automático: comer → devorar menor → ser devorado suave; 4º passo escolhe a dificuldade OLHANDO dois cards desenhados; sempre pulável; gate na Home via `ProgressoLocal.onboarding_visto()`); **+3 skins ✅** (`src/ui/skins/` — verde/azul/rosa/amarela, grátis, só cor; turquesa descartada por confundir com o verde; `ArenaRender` dá a cor da skin ao jogador e os bots pulam esse índice; escolha do onboarding vira composição do Arcade em `Sessao.config_para_jogar()` — "tranquila": 3 caçadores, ag 0.35, turbo_bots 1.3; nunca toca desafios). Minimapa ✅. Pendências que ficaram para M2: sons, modo daltonismo em jogo, i18n
+- [x] M1 (sem 3–4) — **FECHADO em 10/08**: desafios 1–2 ✅; análise pós-partida v1 ✅; auth Google (única forma de login) ✅; fila offline + `submit_session` + ranking ✅; consentimento parental <13 ✅; exclusão de conta no app ✅; **onboarding sem texto ✅** (`src/scenes/onboarding/` — **cenas REMOVIDAS em 13/08**, o texto abaixo é história: 3 vinhetas com o motor real em piloto automático: comer → devorar menor → ser devorado suave; 4º passo escolhe a dificuldade OLHANDO dois cards desenhados; sempre pulável; gate na Home via `ProgressoLocal.onboarding_visto()`); **+3 skins ✅** (`src/ui/skins/` — **removida em 13/08, virou a Loja** — verde/azul/rosa/amarela, grátis, só cor; turquesa descartada por confundir com o verde; `ArenaRender` dá a cor da skin ao jogador e os bots pulam esse índice; escolha do onboarding vira composição do Arcade em `Sessao.config_para_jogar()` — "tranquila": 3 caçadores, ag 0.35, turbo_bots 1.3; nunca toca desafios). Minimapa ✅. Pendências que ficaram para M2: sons, modo daltonismo em jogo, i18n
 - [x] **M2 — Fidelidade ao Claude Design** — **FECHADO em 13/08**: refazer Home (1d+1e), HUD (1h), Pausa (04c), Pós-partida (8c), Desafios (07), Ranking (08) pelos blueprints de `docs/design/Snakito Telas.dc.html`; entrega lado-a-lado (screenshot × design) por tela. **Onboarding REMOVIDO em 13/08 por decisão do Rodrigo** (era do M1/docs §8; cenas excluídas, gate retirado da Home; dificuldade do Arcade migra para Configurações no M3 — padrão CHEIA até lá)
-- [~] M3 (antigo M2) — em andamento: **Configurações (10) ✅ (13/08)** — layout fixo sem scroll (2 rodadas: gesto briga com botões de linha na rota touch→mouse; scroll volta na Loja com validação em aparelho); funcionais: Vibração, **Sons/Música = TOGGLES liga/desliga** (decisão 13/08 — o desenho tinha sliders, mas liga/desliga é mais simples p/ 7+; persistem em `ProgressoLocal.sons_ligados()/musica_ligada()`, o som consome no M3-sons), **Lado do turbo (Esquerda|Direita) ✅** (playtest 13/08: canhotos — só o botão+barra trocam de canto, o joystick flutuante já é neutro; validado no aparelho), Sair/Excluir conta (confirmação inline); **modo daltonismo REMOVIDO em 13/08 por decisão do Rodrigo pós-playtest** (saíram toggle, símbolos do render e ícone; tokens/SVGs ficam como artefato do design system); "Remover anúncios" navega p/ Loja→Pacotes; guardam lugar: Idioma, Privacidade, Restaurar compras; dificuldade do Arcade SEM linha (não está no desenho — interna, padrão CHEIA). Tela 02b Info do jogador ✅ (avatar da Home; stats locais acumuladas; SEM porta p/ Conta — Configurações é a porta). **Desafios 3–4 ✅ (13/08)**: D3 Defesa (seed 303 — gigantes nível 100+ nascem a 2000 em arena 3000², turbo_bots 1.1: o turbo do jogador SEMPRE escapa, lição = gestão de energia; vitória emergente por extermínio é legítima e a celebração mostra "Arena dominada!"; HUD sem linha META — o cronômetro é a meta; banda 18/24, morre 6) e D4 Integração total (seed 404 — Top 3 com 20 bots exatos; "TERMINE" = vivo no encerramento; banda 20/24). Migração 0005 (CHECK challenge 0–3 — o da tabela derrubava INSERT com 500) + submit_session v3. Celebração encadeia D1→D2→D3→D4→Arcade. **Loja (09/09b/09c) ✅ (13/08)** — `src/ui/loja/` com 3 abas: Skins (4 comuns grátis do M1 com Equipar/Equipada + tabs de raridade; substituiu a tela de Skins do M1, removida — pílula da Home e grade abrem a Loja; preview 09a fica p/ skins premium), Buffs (compra com moedas FUNCIONAL pela spec §2.6.2 `200×growth^N` em `PrecosLoja`, níveis em `ProgressoLocal.nivel_buff()`, Sessao injeta SÓ no Arcade; ANÚNCIO/Pular guardam lugar até AdMob), Pacotes (guarda lugar até Billing, preços de exemplo; scroll vertical + carrosséis — barras invisíveis via `self_modulate`, NUNCA SHOW_NEVER). Catálogo completo de **17 skins** do design (4 comuns grátis + 2 raras sólidas compráveis com moedas — laranja/roxa; turquesa/lima ficam p/ bots + 6 épicas com padrão + 3 Neon de pacote + Fênix/Nebulosa lendárias; paletas premium em tokens; render de padrão em jogo é Billing/M3). **Scroll VALIDADO no moto g35 (13/08)** — o padrão que funciona: subárvore rolável inteira com `mouse_filter PASS` (atravessando carrosséis; só o próprio ScrollContainer mantém STOP) + toque dos CTAs por detecção própria via eventos de MOUSE (rota touch→mouse!), disparando só se soltar a <14px de onde tocou (`Loja._ligar_toque`/`_liberar_arrasto`). **Economia local ATIVA ✅ (13/08, validada no aparelho)** — `src/scenes/economia.gd`: ~5% dos pontos viram moedas em toda partida (âncora do design: 2.480→124; exibido no 05 e na pill da 12c via `Sessao.moedas_ganhas`); prêmio de 350 na PRIMEIRA conclusão de cada desafio (pill "+350" na 07, esmaece quando paga); **Recompensa diária (01b) ✅** — modal na 1ª abertura do dia (gatilho na Home), sequência de 7 [50,75,100,150,200,300,600], perder um dia reinicia, dia 7 em dobro; datas injetáveis p/ teste. Economia é 100% local (servidor/ranking não participam). Modal é `CanvasLayer` como o Renascimento — **armadilha**: Control programático com anchors só em `_ready` fica 0×0. Com saldo, buffs e skins raras da Loja compram de verdade. Faltam: AdMob, Billing (produtos reais da Loja), sons, analyzer completo, EN/ES, publicação
+- [~] M3 (antigo M2) — em andamento. Entregas fechadas:
+  - **Configurações (10) ✅ (13/08)** — layout FIXO sem scroll (2 rodadas: gesto briga com botões de linha na rota touch→mouse). Funcionais: Vibração; **Sons/Música = TOGGLES liga/desliga** (o desenho tinha sliders, mas liga/desliga é mais simples p/ 7+; `ProgressoLocal.sons_ligados()/musica_ligada()`, o som consome no M3-sons); **Lado do turbo (Esquerda|Direita)** (playtest: canhotos — só o botão+barra trocam de canto, o joystick flutuante já é neutro); Sair/Excluir conta. **Modo daltonismo REMOVIDO** (toggle, símbolos do render e ícone). "Remover anúncios" navega p/ Loja→Pacotes. Guardam lugar: Idioma, Privacidade, Restaurar compras. Dificuldade do Arcade SEM linha (não está no desenho — interna, padrão CHEIA)
+  - **Tela 02b Info do jogador ✅** — avatar da Home; stats locais acumuladas; edição de apelido (migração 0006); SEM porta p/ Conta (Configurações é a porta). **Apelido é ÚNICO por decisão** (ver seção do backend)
+  - **Desafios 3–4 ✅ (13/08)** — D3 Defesa (seed 303: gigantes nível 100+ nascem a 2000 em arena 3000², turbo_bots 1.1 → o turbo do jogador SEMPRE escapa, lição = gestão de energia; vitória emergente por extermínio é legítima e mostra "Arena dominada!"; HUD sem linha META — o cronômetro é a meta; banda 18/24, morre 6) e D4 Integração total (seed 404: Top 3 com 20 bots exatos, "TERMINE" = vivo no encerramento; banda 20/24). Migração 0005 (CHECK challenge 0–3 — o da tabela derrubava INSERT com 500) + `submit_session` v3. Celebração encadeia D1→D2→D3→D4→Arcade
+  - **Loja (09/09b/09c) ✅ (13/08)** — `src/ui/loja/`, 3 abas: **Skins** (catálogo completo de **17** do design: 4 comuns grátis + 2 raras sólidas compráveis com moedas — laranja/roxa, turquesa/lima ficam p/ bots + 6 épicas com padrão + 3 Neon de pacote + Fênix/Nebulosa lendárias; paletas premium em `tokens.gd`; render de padrão em jogo é Billing; substituiu a tela de Skins do M1); **Buffs** (compra com moedas pela spec §2.6.2 `200×growth^N` em `PrecosLoja`, níveis em `ProgressoLocal.nivel_buff()`, `Sessao` injeta SÓ no Arcade); **Pacotes** (guarda lugar até Billing, preços de exemplo)
+  - **Scroll VALIDADO no moto g35 (13/08)** — o padrão que funciona: subárvore rolável inteira com `mouse_filter PASS` (atravessando carrosséis; só o próprio ScrollContainer mantém STOP) + toque dos CTAs por detecção própria via eventos de MOUSE (rota touch→mouse!), disparando só se soltar a <14px de onde tocou (`Loja._ligar_toque`/`_liberar_arrasto`). Barras invisíveis via `self_modulate`, NUNCA SHOW_NEVER
+  - **Economia local ATIVA ✅ (13/08, validada no aparelho)** — `src/scenes/economia.gd`: ~5% dos pontos viram moedas em toda partida (âncora do design: 2.480→124; exibido no 05 e na pill da 12c via `Sessao.moedas_ganhas`); prêmio de 350 na PRIMEIRA conclusão de cada desafio (pill "+350" na 07, esmaece quando paga); **Recompensa diária (01b) ✅** — modal na 1ª abertura do dia (gatilho na Home), sequência de 7 [50,75,100,150,200,300,600], perder um dia reinicia, dia 7 em dobro, datas injetáveis p/ teste. Economia é 100% LOCAL (servidor/ranking não participam). Modal é `CanvasLayer` como o Renascimento — **armadilha**: Control programático com anchors só em `_ready` fica 0×0
+  - **AdMob recompensado ✅ (17/08)** — autoload `Anuncios` (`src/scenes/anuncios.gd`), única porta do AdMob e **só o formato recompensado** (é o que os blueprints usam; banner/interstitial ficam fora até o design prever lugar). Política de Famílias ANTES do `initialize`: `tagForChildDirectedTreatment` + TFUA + classificação G, com fluxo UMP; IDs de TESTE do Google até o app existir no console. Fora do Android o serviço fica inerte e a UI degrada para os placeholders. Consumidores: Loja/Buffs ("▶ ANÚNCIO" sobe 1 nível sem moedas; "🎟️ Pular" entrega a mesma recompensa sem vídeo — saída offline dos tickets) e Renascimento 04b
+  - **Renascer no domínio ✅ (17/08)** — `GameEngine.renascer_jogador()`: mantém os PONTOS (spec dos tokens) e cobra no NÍVEL (cai à metade, mínimo 1); spawn longe de todos, 1s de carência, energia cheia. Interpretações NOSSAS a validar em playtest: **uma chance por partida** (`RENASCIMENTOS_MAX`) e o corte de nível. Fim por tempo/domínio não dá segunda chance; a tela 04b aparece sempre (sem chance, as saídas ficam desligadas via `permitir_renascer`)
+  - **Faltam**: Billing (produtos reais da Loja + "Remover anúncios" com entitlement), sons, analyzer completo, EN/ES, publicação
 - [x] Design system e telas em alta fidelidade geradas via Claude Design; tokens portados para `src/ui/theme/` (ver *Fundação visual*)
 
 ## Convenções de resposta
