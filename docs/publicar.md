@@ -116,6 +116,14 @@ nunca conceder sem validar.
   (gerar: `godot --path . --quit-after 90 -s tools/gerar_destaque.gd` —
   precisa de janela). Composto com os tokens do jogo, e a arte fica longe
   das bordas porque o Play recorta em algumas vitrines
-- Screenshots (mínimo 2): `tools/capturar_tela.gd` por tela, ou
-  `adb exec-out screencap -p > tela.png` com o jogo rodando no aparelho —
-  screenshot de gameplay real vende melhor que tela de menu
+- Screenshots (mínimo 2, temos 5): `assets/loja/screenshots/`
+  — gerar: `godot --path . --quit-after 12000 -s tools/gerar_screenshots.gd`
+  (precisa de janela). O 1º é **gameplay real**: a cena roda e um piloto
+  persegue comida até a cobra crescer, porque cobra tamanho 1 em "30º de
+  31" não vende. Para escolher o melhor instante:
+  `... -s tools/gerar_screenshots.gd -- --candidatos` gera uma série e
+  você promove a que preferir
+- Cuidados que o script já resolve: esconde o botão "Crash de teste"
+  (existe só em debug e pareceria bug), coleta a recompensa diária antes
+  de fotografar a Home (senão a modal cobre a tela) e preenche
+  `Sessao.moedas_ganhas` para a pós-partida não mostrar "+0" falso
