@@ -2,7 +2,12 @@
 
 **Última atualização:** 21 de agosto de 2026
 **Aplicativo:** Snakito (`com.rodrigowaters.snakito`)
-**Responsável:** Rodrigo Silva — contato: `<PREENCHER: e-mail de contato público>`
+**Responsável:** Rodrigo Silva — contato: **rdrgwtrs@gmail.com**
+
+> Fonte deste documento. A página publicada
+> (`docs/politica-privacidade.html`) é **gerada** daqui por
+> `tools/gerar_politica.py` — editar o Markdown e regerar, nunca o HTML à
+> mão: documento legal em duas cópias divergentes é problema jurídico.
 
 O Snakito é um jogo educacional para crianças a partir de 7 anos. Esta
 política explica, em linguagem direta, **exatamente** quais dados o jogo
@@ -132,7 +137,7 @@ Google Play**.
 - **Mudar o apelido:** em **Informações do jogador**, pelo ícone de lápis
 - **Jogar sem conta:** basta não entrar; todo o jogo, exceto o ranking
   global, funciona offline
-- **Pedidos e dúvidas:** escreva para o contato no topo desta página
+- **Pedidos e dúvidas:** escreva para **rdrgwtrs@gmail.com**
 
 Os dados ficam armazenados enquanto a conta existir. Ao excluí-la, são
 removidos dos nossos bancos.
