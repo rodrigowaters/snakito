@@ -144,3 +144,17 @@ func test_skin_comprada_persiste() -> void:
 	ProgressoLocal.marcar_skin_comprada("laranjinha")
 	ProgressoLocal._resetar_cache_para_testes()
 	assert_bool(ProgressoLocal.skin_comprada("laranjinha")).is_true()
+
+
+func test_entitlements_espelham_e_revogam() -> void:
+	# Regra dura #6: o app consulta o entitlement antes de renderizar
+	# anúncio; o espelho local faz isso valer OFFLINE (regra dura #5).
+	assert_bool(ProgressoLocal.entitlement_ativo("ads_removed")).is_false()
+	ProgressoLocal.definir_entitlements(PackedStringArray(["ads_removed", "skin_neon_1"]))
+	ProgressoLocal._resetar_cache_para_testes()
+	assert_bool(ProgressoLocal.entitlement_ativo("ads_removed")).is_true()
+	assert_bool(ProgressoLocal.entitlement_ativo("skin_neon_1")).is_true()
+	# Reembolso no servidor: a lista nova manda, a seção antiga não sobra.
+	ProgressoLocal.definir_entitlements(PackedStringArray(["skin_neon_1"]))
+	assert_bool(ProgressoLocal.entitlement_ativo("ads_removed")).is_false()
+	assert_bool(ProgressoLocal.entitlement_ativo("skin_neon_1")).is_true()

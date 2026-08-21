@@ -9,6 +9,13 @@ extends Node
 ## Fora do Android o serviço fica inerte (`recompensado_disponivel()` =
 ## false) — a UI degrada para os placeholders esmaecidos de sempre.
 ##
+## Entitlement `ads_removed` (regra dura #6): quem comprou não vê anúncio
+## NENHUM — nem carregamos. Leitura importante: "Remover anúncios" remove
+## ANÚNCIOS, não CUSTOS. Onde o anúncio era o preço (subir buff, renascer),
+## os outros caminhos seguem valendo (moedas, ticket) — dar de graça
+## quebraria a economia e o renascer grátis é perk de VIP (tokens), não de
+## ads_removed.
+##
 ## IDs: build de DEBUG sempre usa o bloco de TESTE do Google — usar ID de
 ## produção em playtest é o caminho conhecido para suspensão por tráfego
 ## inválido. Release usa `ID_RECOMPENSADO_PRODUCAO` (vazio = sem anúncio,
@@ -44,6 +51,9 @@ func _ready() -> void:
 	if OS.get_name() != "Android":
 		_log("fora do Android — serviço inerte")
 		return
+	if sem_anuncios():
+		_log("entitlement ads_removed ativo — nenhum anúncio será carregado")
+		return
 	_log("iniciando (bloco %s)" % _id_recompensado())
 	_configurar_familias()
 	_atualizar_consentimento()
@@ -56,8 +66,34 @@ func _id_recompensado() -> String:
 	return ID_RECOMPENSADO_PRODUCAO
 
 
+## A conta comprou a remoção de anúncios? (regra dura #6 — consultado
+## ANTES de qualquer componente de anúncio renderizar)
+func sem_anuncios() -> bool:
+	return ProgressoLocal.entitlement_ativo("ads_removed")
+
+
 func recompensado_disponivel() -> bool:
 	return _recompensado != null
+
+
+## O UMP exige mostrar as opções de privacidade a este usuário? (a linha
+## "Privacidade e responsáveis" da tela 10 só existe quando exigida)
+func privacidade_disponivel() -> bool:
+	if OS.get_name() != "Android":
+		return false
+	var info: ConsentInformation = UserMessagingPlatform.consent_information
+	return info.get_privacy_options_requirement_status() \
+		== info.PrivacyOptionsRequirementStatus.REQUIRED
+
+
+## Abre o formulário de opções de privacidade do UMP (revisar/retirar
+## consentimento) — exigência do GDPR para quem já consentiu.
+func abrir_privacidade() -> void:
+	_log("abrindo opções de privacidade")
+	UserMessagingPlatform.show_privacy_options_form(
+		func(erro: FormError) -> void:
+			if erro != null:
+				_log("privacidade: %s" % erro.message))
 
 
 ## Mostra o anúncio carregado; `ao_premiar` roda SÓ se a recompensa for
@@ -136,6 +172,8 @@ func _inicializar() -> void:
 
 func _carregar_recompensado() -> void:
 	if _carregando or _recompensado != null:
+		return
+	if sem_anuncios():
 		return
 	var bloco: String = _id_recompensado()
 	if bloco == "":

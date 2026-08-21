@@ -571,23 +571,26 @@ func _card_buff(buff: Dictionary) -> Control:
 		var subir: Callable = func() -> void:
 			ProgressoLocal.subir_buff(buff.chave)
 			_remontar_tudo()
-		var anuncio: Control = _chip_gradiente("▶ ANÚNCIO",
-			T.COR_CTA_ANUNCIO_INICIO, T.COR_CTA_ANUNCIO_FIM, T.COR_TEXTO_SOBRE_OFERTA_ANUNCIO,
-			(func() -> void: Anuncios.mostrar_recompensado(subir)) \
-				if Anuncios.recompensado_disponivel() else Callable())
-		anuncio.size_flags_horizontal = Control.SIZE_SHRINK_END
-		direita.add_child(anuncio)
+		# Regra dura #6: entitlement ANTES de renderizar componente de
+		# anúncio. Quem comprou "sem anúncios" não vê o botão — e continua
+		# com os caminhos de moeda e ticket ("Remover anúncios" remove
+		# anúncios, não custos).
+		if Anuncios.recompensado_disponivel() and not Anuncios.sem_anuncios():
+			var anuncio: Control = _chip_gradiente("▶ ANÚNCIO",
+				T.COR_CTA_ANUNCIO_INICIO, T.COR_CTA_ANUNCIO_FIM,
+				T.COR_TEXTO_SOBRE_OFERTA_ANUNCIO,
+				func() -> void: Anuncios.mostrar_recompensado(subir))
+			anuncio.size_flags_horizontal = Control.SIZE_SHRINK_END
+			direita.add_child(anuncio)
 		var tickets: int = ProgressoLocal.tickets()
-		var pular: Control = _chip_vidro("🎟️ Pular (%d)" % tickets,
-			T.COR_TEXTO_SECUNDARIO)
 		if tickets > 0:
+			var pular: Control = _chip_vidro("🎟️ Pular (%d)" % tickets,
+				T.COR_TEXTO_SECUNDARIO)
 			_ligar_toque(pular, func() -> void:
 				ProgressoLocal.adicionar_tickets(-1)
 				subir.call())
-		else:
-			pular.modulate.a = ALFA_GUARDA_LUGAR
-		pular.size_flags_horizontal = Control.SIZE_SHRINK_END
-		direita.add_child(pular)
+			pular.size_flags_horizontal = Control.SIZE_SHRINK_END
+			direita.add_child(pular)
 	linha.add_child(direita)
 	return card
 

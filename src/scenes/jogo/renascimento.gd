@@ -35,6 +35,18 @@ var _rotulo_contagem: Label
 func _ready() -> void:
 	layer = 10
 	_montar()
+	# Anúncio que chega DEPOIS da modal abrir precisa aparecer: sem isso a
+	# decisão ficava congelada no instante da morte (carga leva ~2s).
+	Anuncios.disponibilidade_mudou.connect(_remontar)
+
+
+## Reconstrói as saídas quando a disponibilidade de anúncio muda.
+func _remontar() -> void:
+	if renascer:
+		return  # já resolvido; não mexer na tela que está saindo
+	for filho: Node in get_children():
+		filho.queue_free()
+	_montar()
 
 
 func _process(delta: float) -> void:

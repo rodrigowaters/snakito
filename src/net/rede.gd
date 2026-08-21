@@ -98,9 +98,29 @@ func atualizar_perfil() -> void:
 	if resposta.status == 200 and resposta.dados is Array and not (resposta.dados as Array).is_empty():
 		_username = resposta.dados[0].get("username", "")
 		_criado_em = str(resposta.dados[0].get("created_at", ""))
+		await atualizar_entitlements()
 	else:
 		_username = ""
 		_criado_em = ""
+
+
+## Entitlements da conta (docs §6): RLS deixa o dono ler os seus. O
+## resultado espelha em `ProgressoLocal` para valer OFFLINE — o gameplay
+## não pode depender de rede (regra dura #5). `expires_at` no passado não
+## conta; nulo = perpétuo.
+func atualizar_entitlements() -> void:
+	var resposta: Dictionary = await _com_renovacao(
+		HTTPClient.METHOD_GET,
+		"/rest/v1/entitlements?select=entitlement_key,expires_at", {})
+	if resposta.status != 200 or not (resposta.dados is Array):
+		return  # sem rede: mantém o que já está espelhado
+	var agora: String = Time.get_datetime_string_from_system(true)
+	var ativos: PackedStringArray = PackedStringArray()
+	for linha: Dictionary in resposta.dados as Array:
+		var expira: Variant = linha.get("expires_at")
+		if expira == null or str(expira) > agora:
+			ativos.append(str(linha.get("entitlement_key", "")))
+	ProgressoLocal.definir_entitlements(ativos)
 
 
 ## created_at do perfil em ISO ("" = desconhecido) — tela 02b.

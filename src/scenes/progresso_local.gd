@@ -91,6 +91,26 @@ static func gastar_moedas(quantidade: int) -> bool:
 	return true
 
 
+# ----------------------------------------------------------- entitlements
+# Espelho LOCAL dos entitlements da conta (docs §6 — "ads_removed", skins
+# de pacote). O servidor é a autoridade; isto existe para o app respeitar
+# a compra OFFLINE, que é a regra dura #5. Escrito pela `Rede` a cada
+# atualização de perfil.
+
+static func entitlement_ativo(chave: String) -> bool:
+	return _abrir().get_value("entitlements", chave, false)
+
+
+static func definir_entitlements(chaves: PackedStringArray) -> void:
+	# Sobrescreve a seção inteira: entitlement revogado no servidor
+	# (reembolso) tem que sumir daqui também.
+	if _abrir().has_section("entitlements"):
+		_abrir().erase_section("entitlements")
+	for chave: String in chaves:
+		_abrir().set_value("entitlements", chave, true)
+	_salvar()
+
+
 # ------------------------------------------------------------------- buffs
 # Níveis dos buffs permanentes (docs §2.6.2), comprados na Loja 09b.
 # `chave` = "velocidade" | "ima" | "pontos" (ver `PrecosLoja.BUFFS`).

@@ -7,7 +7,8 @@ extends Control
 ## por decisão de 13/08 (o desenho tinha sliders; liga/desliga é mais
 ## simples p/ 7+) — persistem e o som consome no M3-sons. "Remover
 ## anúncios" navega para a Loja (aba Pacotes). Guardam lugar: Idioma
-## (i18n M3), Privacidade e responsáveis, Restaurar compras (Billing M3).
+## (i18n M3) e Restaurar compras (Billing M3); Privacidade abre o
+## formulário do UMP quando o consentimento exigir revisão.
 
 const T := preload("res://src/ui/theme/tokens.gd")
 
@@ -75,8 +76,12 @@ func _montar_conteudo() -> void:
 		conta.add_child(_linha_navegacao("", "Entrar com Google", "›",
 			func() -> void: get_tree().change_scene_to_file(CENA_CONTA),
 			true, _desenhar_g_google))
+	# Opções de privacidade do UMP: existem só quando o consentimento foi
+	# dado e o GDPR exige poder revisá-lo (regra do próprio UMP).
 	conta.add_child(_linha_navegacao("🔒", "Privacidade e responsáveis", "›",
-		Callable(), true))
+		(Anuncios.abrir_privacidade) if Anuncios.privacidade_disponivel() \
+			else Callable(),
+		true))
 	conta.add_child(_linha_navegacao("🚫", "Remover anúncios", "›",
 		func() -> void:
 			Loja.proxima_aba = Loja.Aba.PACOTES
