@@ -32,9 +32,19 @@ var _carregando: bool = false
 var _ao_premiar: Callable = Callable()
 
 
+## Log só em debug, prefixo `Anuncios:` (mesma convenção do `Rede:`). Sem
+## isso não há como saber de que lado o fluxo parou — o logcat do SDK é
+## verboso e não diz nada sobre as NOSSAS decisões.
+func _log(mensagem: String) -> void:
+	if OS.is_debug_build():
+		print("Anuncios: ", mensagem)
+
+
 func _ready() -> void:
 	if OS.get_name() != "Android":
+		_log("fora do Android — serviço inerte")
 		return
+	_log("iniciando (bloco %s)" % _id_recompensado())
 	_configurar_familias()
 	_atualizar_consentimento()
 
@@ -56,8 +66,10 @@ func mostrar_recompensado(ao_premiar: Callable) -> void:
 	if _recompensado == null:
 		return
 	_ao_premiar = ao_premiar
+	_log("exibindo recompensado")
 	var ouvinte: OnUserEarnedRewardListener = OnUserEarnedRewardListener.new()
 	ouvinte.on_user_earned_reward = func(_item: RewardedItem) -> void:
+		_log("recompensa CONCEDIDA")
 		if _ao_premiar.is_valid():
 			_ao_premiar.call()
 		_ao_premiar = Callable()
@@ -75,6 +87,7 @@ func _configurar_familias() -> void:
 		RequestConfiguration.TagForUnderAgeOfConsent.TRUE
 	config.max_ad_content_rating = RequestConfiguration.MAX_AD_CONTENT_RATING_G
 	MobileAds.set_request_configuration(config)
+	_log("config de Famílias aplicada (tfcd=1, tfua=1, rating=G)")
 
 
 ## Fluxo UMP: atualiza o estado de consentimento e mostra o formulário se
@@ -86,13 +99,16 @@ func _atualizar_consentimento() -> void:
 	UserMessagingPlatform.consent_information.update(
 		parametros,
 		func() -> void:
+			_log("consentimento atualizado (status %d)"
+				% UserMessagingPlatform.consent_information.get_consent_status())
 			if UserMessagingPlatform.consent_information.get_is_consent_form_available():
 				UserMessagingPlatform.load_consent_form(
 					_ao_carregar_formulario,
 					func(_erro: FormError) -> void: _inicializar())
 			else:
 				_inicializar(),
-		func(_erro: FormError) -> void:
+		func(erro: FormError) -> void:
+			_log("consentimento falhou (%s) — inicializando de todo jeito" % erro.message)
 			_inicializar())
 
 
@@ -107,6 +123,13 @@ func _ao_carregar_formulario(formulario: ConsentForm) -> void:
 func _inicializar() -> void:
 	var ouvinte: OnInitializationCompleteListener = OnInitializationCompleteListener.new()
 	ouvinte.on_initialization_complete = func(_status: InitializationStatus) -> void:
+		_log("SDK inicializado")
+		# Reaplica a config de Famílias APÓS o initialize: o SDK do Google
+		# auto-inicializa pelo App ID do manifest, então a config feita no
+		# nosso `_ready` pode chegar tarde — o request de 20/08 saiu com
+		# `tfcd=0&tfua=0` (visto no logcat) apesar de configurada antes.
+		# Barato e idempotente; a verificação é o logcat mostrar tfcd=1.
+		_configurar_familias()
 		_carregar_recompensado()
 	MobileAds.initialize(ouvinte)
 
@@ -119,13 +142,16 @@ func _carregar_recompensado() -> void:
 		push_warning("Anuncios: sem bloco de produção configurado — release sem anúncio")
 		return
 	_carregando = true
+	_log("carregando bloco %s" % bloco)
 	var retorno: RewardedAdLoadCallback = RewardedAdLoadCallback.new()
 	retorno.on_ad_loaded = func(anuncio: RewardedAd) -> void:
+		_log("anúncio CARREGADO")
 		_carregando = false
 		anuncio.full_screen_content_callback = _retorno_de_exibicao()
 		_recompensado = anuncio
 		disponibilidade_mudou.emit()
-	retorno.on_ad_failed_to_load = func(_erro: LoadAdError) -> void:
+	retorno.on_ad_failed_to_load = func(erro: LoadAdError) -> void:
+		_log("falha ao carregar: %s (código %d)" % [erro.message, erro.code])
 		_carregando = false
 		# Sem rede/estoque: tenta de novo mais tarde, sem martelar.
 		get_tree().create_timer(30.0).timeout.connect(_carregar_recompensado)
