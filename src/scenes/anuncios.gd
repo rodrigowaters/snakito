@@ -9,12 +9,21 @@ extends Node
 ## Fora do Android o serviço fica inerte (`recompensado_disponivel()` =
 ## false) — a UI degrada para os placeholders esmaecidos de sempre.
 ##
-## IDs: bloco de TESTE do Google até o app existir no console do AdMob
-## (o App ID de teste vai no manifest via ProjectSettings do plugin poing).
+## IDs: build de DEBUG sempre usa o bloco de TESTE do Google — usar ID de
+## produção em playtest é o caminho conhecido para suspensão por tráfego
+## inválido. Release usa `ID_RECOMPENSADO_PRODUCAO` (vazio = sem anúncio,
+## nunca cai no de teste em release). O App ID vive em `project.godot`
+## (`admob/general/android/app_id`), de onde o export do plugin o injeta
+## no manifest; não é segredo — ele ship em todo APK publicado.
 
 signal disponibilidade_mudou
 
+## Bloco de demonstração público do Google (sempre devolve "Test Ad").
 const ID_RECOMPENSADO_TESTE: String = "ca-app-pub-3940256099942544/5224354917"
+## PREENCHER com o bloco Recompensado da conta do Snakito (formato
+## `ca-app-pub-XXXXXXXXXXXXXXXX/YYYYYYYYYY`). Enquanto vazio, release não
+## serve anúncio — a UI degrada para os placeholders esmaecidos.
+const ID_RECOMPENSADO_PRODUCAO: String = ""
 
 var _recompensado: RewardedAd = null
 var _carregando: bool = false
@@ -28,6 +37,13 @@ func _ready() -> void:
 		return
 	_configurar_familias()
 	_atualizar_consentimento()
+
+
+## Bloco a carregar: teste em debug, produção em release.
+func _id_recompensado() -> String:
+	if OS.is_debug_build():
+		return ID_RECOMPENSADO_TESTE
+	return ID_RECOMPENSADO_PRODUCAO
 
 
 func recompensado_disponivel() -> bool:
@@ -98,6 +114,10 @@ func _inicializar() -> void:
 func _carregar_recompensado() -> void:
 	if _carregando or _recompensado != null:
 		return
+	var bloco: String = _id_recompensado()
+	if bloco == "":
+		push_warning("Anuncios: sem bloco de produção configurado — release sem anúncio")
+		return
 	_carregando = true
 	var retorno: RewardedAdLoadCallback = RewardedAdLoadCallback.new()
 	retorno.on_ad_loaded = func(anuncio: RewardedAd) -> void:
@@ -109,7 +129,7 @@ func _carregar_recompensado() -> void:
 		_carregando = false
 		# Sem rede/estoque: tenta de novo mais tarde, sem martelar.
 		get_tree().create_timer(30.0).timeout.connect(_carregar_recompensado)
-	RewardedAdLoader.new().load(ID_RECOMPENSADO_TESTE, AdRequest.new(), retorno)
+	RewardedAdLoader.new().load(bloco, AdRequest.new(), retorno)
 
 
 func _retorno_de_exibicao() -> FullScreenContentCallback:

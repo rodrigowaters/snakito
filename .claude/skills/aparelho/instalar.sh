@@ -24,6 +24,18 @@ echo "→ APK: $(du -h "$APK" | cut -f1)"
 
 conectado() { adb devices | grep -q "device$"; }
 echo "→ reconectando adb (a porta muda ao religar a depuração)"
+# Endereço explícito: `./instalar.sh --sem-build --endereco 192.168.68.100:45881`
+# Serve quando o mdns anuncia porta velha (já aconteceu) — a porta de
+# CONEXÃO aparece em Depuração por Wi-Fi; se pedir pareamento, é outra
+# porta + código: `adb pair IP:PORTA_PAREAMENTO CODIGO`.
+for arg in "$@"; do
+  case "$arg" in
+    --endereco=*) adb connect "${arg#*=}" 2>&1 | grep -v refused || true ;;
+  esac
+done
+if [ "${1:-}" = "--endereco" ] && [ -n "${2:-}" ]; then
+  adb connect "$2" 2>&1 | grep -v refused || true
+fi
 for tentativa in 1 2 3 4; do
   conectado && break
   adb kill-server >/dev/null 2>&1; sleep 2
@@ -37,7 +49,13 @@ for tentativa in 1 2 3 4; do
 done
 conectado || { echo "✗ aparelho fora. Pedir ao Rodrigo: religar Depuração por Wi-Fi + TELA ACESA"; exit 2; }
 
+# O mesmo aparelho costuma aparecer em DOIS transportes (entrada IP:porta
+# + entrada mdns) e o adb fica ambíguo ("more than one device"): fixar o
+# serial resolve — é o mesmo celular nas duas linhas.
+SERIAL="$(adb devices | awk '/device$/ {print $1; exit}')"
+echo "→ serial: $SERIAL"
+
 echo "→ instalando (115MB por Wi-Fi: 1–3 min; tela apagada DERRUBA a conexão)"
-adb install -r "$APK" 2>&1 | tail -1
+adb -s "$SERIAL" install -r "$APK" 2>&1 | tail -1
 echo "→ abrindo (am start, NUNCA monkey: injeta evento aleatório)"
-adb shell am start -n "$LAUNCHER" 2>&1 | tail -1
+adb -s "$SERIAL" shell am start -n "$LAUNCHER" 2>&1 | tail -1
