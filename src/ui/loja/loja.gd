@@ -8,7 +8,8 @@ extends Control
 ##   grid rola na vertical; o preview 09a entra com as premium.
 ## - Buffs: compra com moedas FUNCIONAL desde já (spec §2.6.2: 200×growth^N,
 ##   teto Nv 10 do motor) — a economia nasce zerada, ganhar moedas liga no
-##   M3; "▶ ANÚNCIO"/"🎟️ Pular" guardam lugar (AdMob M3).
+##   17/08 o "▶ ANÚNCIO" (recompensado real) e o "🎟️ Pular" (ticket,
+##   offline) sobem 1 nível sem moedas.
 ## - Pacotes: tudo guarda lugar até o Billing (M3) — preços de exemplo,
 ##   CTAs desabilitados. É a tela que valida o SCROLL no aparelho
 ##   (decisão de 13/08 na tela de Configurações).
@@ -561,18 +562,30 @@ func _card_buff(buff: Dictionary) -> Control:
 		comprar.size_flags_horizontal = Control.SIZE_SHRINK_END
 		direita.add_child(comprar)
 	else:
-		# Sem saldo: o caminho do blueprint é o anúncio recompensado —
-		# guarda lugar até o AdMob (M3). O preço fica visível na legenda.
+		# Sem saldo: o caminho do blueprint é o anúncio recompensado, que
+		# SOBE O NÍVEL (09b: "Sem saldo? Assista um anúncio"); o ticket
+		# entrega a mesma recompensa sem vídeo (regra dos tokens) e por
+		# isso funciona offline. O preço em moedas fica visível na legenda.
 		desc.text = "Nv %d → %d\n%d moedas" % [nivel, nivel + 1, preco]
 		direita.add_child(desc)
+		var subir: Callable = func() -> void:
+			ProgressoLocal.subir_buff(buff.chave)
+			_remontar_tudo()
 		var anuncio: Control = _chip_gradiente("▶ ANÚNCIO",
 			T.COR_CTA_ANUNCIO_INICIO, T.COR_CTA_ANUNCIO_FIM, T.COR_TEXTO_SOBRE_OFERTA_ANUNCIO,
-			Callable())
+			(func() -> void: Anuncios.mostrar_recompensado(subir)) \
+				if Anuncios.recompensado_disponivel() else Callable())
 		anuncio.size_flags_horizontal = Control.SIZE_SHRINK_END
 		direita.add_child(anuncio)
-		var pular: Control = _chip_vidro("🎟️ Pular (%d)" % ProgressoLocal.tickets(),
+		var tickets: int = ProgressoLocal.tickets()
+		var pular: Control = _chip_vidro("🎟️ Pular (%d)" % tickets,
 			T.COR_TEXTO_SECUNDARIO)
-		pular.modulate.a = ALFA_GUARDA_LUGAR
+		if tickets > 0:
+			_ligar_toque(pular, func() -> void:
+				ProgressoLocal.adicionar_tickets(-1)
+				subir.call())
+		else:
+			pular.modulate.a = ALFA_GUARDA_LUGAR
 		pular.size_flags_horizontal = Control.SIZE_SHRINK_END
 		direita.add_child(pular)
 	linha.add_child(direita)

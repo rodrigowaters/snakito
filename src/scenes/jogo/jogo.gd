@@ -165,8 +165,19 @@ func _ir_para_resultado() -> void:
 	if not motor.jogador().viva and Sessao.regras_desafio == null:
 		await get_tree().create_timer(DELAY_RESULTADO_MORTE).timeout
 		var renascimento: Renascimento = Renascimento.new()
+		# A tela 04b é a tela de morte do design: aparece sempre. Sem
+		# chance restante (já renasceu), as saídas de renascer ficam
+		# desligadas — o interlúdio continua o mesmo.
+		renascimento.permitir_renascer = motor.pode_renascer()
 		add_child(renascimento)
 		await renascimento.resolvido
+		if renascimento.renascer and motor.renascer_jogador():
+			renascimento.queue_free()
+			# A morte já foi consumida: memorizar antes de voltar a rodar
+			# evita redisparar os efeitos de morte no próximo tick.
+			_memorizar_estado()
+			_transicionando = false
+			return
 	else:
 		var espera: float = DELAY_RESULTADO_TEMPO if motor.jogador().viva \
 			else DELAY_RESULTADO_MORTE

@@ -2,10 +2,11 @@ class_name Renascimento
 extends CanvasLayer
 ## Interlúdio de morte suave — blueprint "04b Renascimento" (M2). A morte no
 ## Arcade cai AQUI antes da pós-partida: fantasminha, contagem regressiva e
-## as saídas. Renascer com anúncio (AdMob) e por ticket são M3 — os botões
-## guardam o lugar desabilitados; "Não, ver resultado" e o timeout seguem
-## para o resultado. Desafio NÃO passa por aqui (morte resolve o desafio;
-## renascer quebraria a comparabilidade da seed).
+## as saídas. Renascer por ANÚNCIO (recompensado, 17/08) ou por TICKET
+## (mesma recompensa sem vídeo — funciona offline) emite `renasceu`;
+## "Não, ver resultado" e o timeout seguem para o resultado. Desafio NÃO
+## passa por aqui (morte resolve o desafio; renascer quebraria a
+## comparabilidade da seed).
 
 const T := preload("res://src/ui/theme/tokens.gd")
 
@@ -14,6 +15,13 @@ const T := preload("res://src/ui/theme/tokens.gd")
 const CONTAGEM_SEG: float = 10.0
 
 signal resolvido
+
+## O jogador escolheu renascer? (lido por quem esperou `resolvido` — um
+## sinal só evita `await` órfão nos dois desfechos.)
+var renascer: bool = false
+## O motor ainda concede renascimento nesta partida? Definido ANTES do
+## add_child (uma chance por partida — `GameEngine.RENASCIMENTOS_MAX`).
+var permitir_renascer: bool = true
 
 var _restante: float = CONTAGEM_SEG
 var _anel: Control
@@ -33,6 +41,13 @@ func _process(delta: float) -> void:
 		return
 	_rotulo_contagem.text = str(ceili(_restante))
 	_anel.queue_redraw()
+
+
+## Recompensa concedida (vídeo assistido até o fim ou ticket gasto).
+func _confirmar_renascimento() -> void:
+	set_process(false)
+	renascer = true
+	resolvido.emit()
 
 
 func _montar() -> void:
@@ -95,10 +110,11 @@ func _montar() -> void:
 	sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	coluna.add_child(sub)
 
-	# ▶ Renascer com anúncio — AdMob é M3; guarda o lugar (gradiente laranja).
+	# ▶ Renascer com anúncio (recompensado real; sem estoque = apagado).
+	var tem_anuncio: bool = permitir_renascer and Anuncios.recompensado_disponivel()
 	var anuncio: Button = Button.new()
 	anuncio.flat = true
-	anuncio.disabled = true
+	anuncio.disabled = not tem_anuncio
 	anuncio.custom_minimum_size = Vector2(0.0, float(T.TOQUE_PADRAO) + 2.0)
 	anuncio.draw.connect(func() -> void:
 		DesenhoUi.gradiente_arredondado(anuncio, anuncio.size,
@@ -112,17 +128,31 @@ func _montar() -> void:
 	rotulo_anuncio.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	rotulo_anuncio.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	anuncio.add_child(rotulo_anuncio)
-	anuncio.modulate.a = 0.55  # apagado até o AdMob (M3)
+	if tem_anuncio:
+		anuncio.pressed.connect(func() -> void:
+			# Pausa a contagem: o vídeo não pode empurrar o jogador para
+			# o resultado enquanto ele assiste.
+			set_process(false)
+			Anuncios.mostrar_recompensado(_confirmar_renascimento))
+	else:
+		anuncio.modulate.a = 0.55  # sem anúncio carregado (offline, estoque)
 	coluna.add_child(anuncio)
 
-	# 🎟️ Pular anúncio com ticket — economia é M3; saldo atual no rótulo.
+	# 🎟️ Pular anúncio com ticket: mesma recompensa sem vídeo (regra dos
+	# tokens) — é a saída offline. Sem saldo, guarda o lugar desabilitado.
+	var tickets: int = ProgressoLocal.tickets() if permitir_renascer else 0
 	var ticket: Button = Button.new()
-	ticket.text = "🎟️ Pular anúncio · usar 1 de %d" % ProgressoLocal.tickets()
+	ticket.text = "🎟️ Pular anúncio · usar 1 de %d" % tickets
 	ticket.theme_type_variation = &"BotaoSecundario"
-	ticket.disabled = true
-	ticket.add_theme_stylebox_override("disabled",
-		ThemeDB.get_project_theme().get_stylebox(&"normal", &"BotaoSecundario"))
-	ticket.add_theme_color_override("font_disabled_color", T.COR_TEXTO_SECUNDARIO)
+	ticket.disabled = tickets <= 0
+	if tickets > 0:
+		ticket.pressed.connect(func() -> void:
+			ProgressoLocal.adicionar_tickets(-1)
+			_confirmar_renascimento())
+	else:
+		ticket.add_theme_stylebox_override("disabled",
+			ThemeDB.get_project_theme().get_stylebox(&"normal", &"BotaoSecundario"))
+		ticket.add_theme_color_override("font_disabled_color", T.COR_TEXTO_SECUNDARIO)
 	coluna.add_child(ticket)
 
 	var ver_resultado: Button = Button.new()

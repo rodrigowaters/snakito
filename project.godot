@@ -20,6 +20,7 @@ config/icon="res://assets/icone/icon.svg"
 [autoload]
 
 Rede="*res://src/net/rede.gd"
+Anuncios="*res://src/scenes/anuncios.gd"
 
 [debug]
 

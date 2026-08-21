@@ -45,6 +45,18 @@ const BUFF_PONTOS_POR_NIVEL: int = 5
 ## Proteção após sofrer um corte: 1s incortável (devorar a cabeça NÃO respeita
 ## esta proteção — ela existe só para a cabeça não retalhar o corpo em série).
 const PROTECAO_CORTE_TICKS: int = 60
+
+## Renascimento (docs §5 / tokens `revive`): segunda chance por anúncio ou
+## ticket. Interpretações NOSSAS (o design só fixa "mantém os pontos"):
+## uma única chance por partida (a criança entende "mais uma vida", e
+## encadear anúncios viraria partida infinita) e o NÍVEL cai à metade —
+## os pontos ficam, o poder não: renascer gigante apagaria a lição de
+## risco/recompensa que a morte acabou de dar.
+const RENASCIMENTOS_MAX: int = 1
+const FRACAO_NIVEL_AO_RENASCER: float = 0.5
+## Carência de corte/contato ao renascer (1s) — nascer colado numa gigante
+## e morrer no mesmo tick não é segunda chance.
+const PROTECAO_RENASCER_TICKS: int = 60
 ## "Espessura" de colisão do corpo, em fração do raio da vítima (o corpo
 ## desenhado afina em direção ao rabo; 0.7 é o meio-termo do render).
 const ESPESSURA_CORPO: float = 0.7
@@ -130,6 +142,8 @@ var rng: RngService
 var bots: BotEngine
 var tick_atual: int = 0
 var estado: Estado = Estado.EM_ANDAMENTO
+## Quantas vezes o jogador já renasceu nesta partida.
+var renascimentos: int = 0
 
 
 func _init(config_: ConfigPartida) -> void:
@@ -198,6 +212,54 @@ func arena_dominada() -> bool:
 
 func jogador() -> SnakeModel:
 	return arena.cobra_por_id(ID_JOGADOR)
+
+
+## O jogador pode renascer AGORA? Só morte encerra com direito a segunda
+## chance: tempo esgotado e arena dominada são fins legítimos de partida.
+func pode_renascer() -> bool:
+	return not jogador().viva and renascimentos < RENASCIMENTOS_MAX \
+		and tick_atual < config.duracao_seg * TICKS_POR_SEGUNDO
+
+
+## Ressuscita o jogador e retoma a partida (docs §5 — mantém os pontos).
+## Nível/massa caem à metade e a posição é um spawn longe de todos.
+func renascer_jogador() -> bool:
+	if not pode_renascer():
+		return false
+	var jogador_: SnakeModel = jogador()
+	renascimentos += 1
+	jogador_.viva = true
+	jogador_.nivel = maxi(1, floori(jogador_.nivel * FRACAO_NIVEL_AO_RENASCER))
+	jogador_.tamanho = maxi(1, floori(jogador_.tamanho * FRACAO_NIVEL_AO_RENASCER))
+	jogador_.corpo = PackedVector2Array()  # o corpo antigo já virou comida
+	jogador_.energia = SnakeModel.ENERGIA_MAX
+	jogador_.turbo_ativo = false
+	jogador_.quer_turbo = false
+	jogador_.protegida_de_corte_ate = tick_atual + PROTECAO_RENASCER_TICKS
+	jogador_.posicao = _spawn_longe_de_todos()
+	estado = Estado.EM_ANDAMENTO
+	return true
+
+
+## Ponto de spawn com a maior folga possível das cobras vivas (mesma régua
+## de tentativas do spawn de bots; determinístico pela seed).
+func _spawn_longe_de_todos() -> Vector2:
+	var area: Rect2 = arena.limites().grow(-SnakeModel.RAIO_BASE * 4.0)
+	var melhor: Vector2 = rng.ponto_no_retangulo(area)
+	var melhor_folga: float = -1.0
+	for tentativa: int in TENTATIVAS_SPAWN:
+		var candidato: Vector2 = rng.ponto_no_retangulo(area)
+		var folga: float = INF
+		for cobra: SnakeModel in arena.cobras_vivas():
+			if cobra.eh_jogador():
+				continue
+			folga = minf(folga, candidato.distance_to(cobra.posicao))
+		if folga >= DISTANCIA_SPAWN_MIN:
+			return candidato
+		if folga > melhor_folga:
+			melhor_folga = folga
+			melhor = candidato
+	return melhor
 
 
 func segundos_decorridos() -> float:
