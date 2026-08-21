@@ -2,8 +2,12 @@ class_name Renascimento
 extends CanvasLayer
 ## Interlúdio de morte suave — blueprint "04b Renascimento" (M2). A morte no
 ## Arcade cai AQUI antes da pós-partida: fantasminha, contagem regressiva e
-## as saídas. Renascer por ANÚNCIO (recompensado, 17/08) ou por TICKET
-## (mesma recompensa sem vídeo — funciona offline) emite `renasceu`;
+## as saídas. Renascer por ANÚNCIO (recompensado) ou por TICKET (mesma
+## recompensa sem vídeo — funciona offline) marca `renascer`;
+## **botão que não pode agir NÃO É EXIBIDO** (playtest 20/08: "prefiro não
+## exibir o botão do que mostrar ele desabilitado") — sem chance restante,
+## sem anúncio em estoque ou sem ticket, a saída simplesmente não aparece
+## e o texto muda para não prometer o que não há;
 ## "Não, ver resultado" e o timeout seguem para o resultado. Desafio NÃO
 ## passa por aqui (morte resolve o desafio; renascer quebraria a
 ## comparabilidade da seed).
@@ -102,19 +106,57 @@ func _montar() -> void:
 	titulo.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	coluna.add_child(titulo)
 
+	# Que saídas existem DE FATO? Nada é desenhado sem poder agir.
+	var tem_anuncio: bool = permitir_renascer and Anuncios.recompensado_disponivel()
+	var tickets: int = ProgressoLocal.tickets() if permitir_renascer else 0
+	var pode_voltar: bool = tem_anuncio or tickets > 0
+
+	var pontos: int = Sessao.ultimo_motor.jogador().pontos \
+		if Sessao.ultimo_motor != null else 0
 	var sub: Label = Label.new()
-	sub.text = "Renasça e continue de onde parou\ncom seus %s pts" \
-		% Hud.formatar_milhar(Sessao.ultimo_motor.jogador().pontos
-			if Sessao.ultimo_motor != null else 0)
+	if pode_voltar:
+		sub.text = "Renasça e continue de onde parou\ncom seus %s pts" \
+			% Hud.formatar_milhar(pontos)
+	else:
+		# Sem saída: não prometer renascimento. Fecha com o placar, que é
+		# o que a criança leva desta partida.
+		sub.text = "Você fez %s pts nesta partida" % Hud.formatar_milhar(pontos)
 	sub.theme_type_variation = &"TextoSecundario"
 	sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	coluna.add_child(sub)
 
-	# ▶ Renascer com anúncio (recompensado real; sem estoque = apagado).
-	var tem_anuncio: bool = permitir_renascer and Anuncios.recompensado_disponivel()
+	# ▶ Renascer com anúncio — existe só se houver anúncio carregado.
+	if tem_anuncio:
+		coluna.add_child(_botao_anuncio())
+
+	# 🎟️ Pular anúncio com ticket: mesma recompensa sem vídeo (regra dos
+	# tokens) — a saída offline. Existe só com saldo.
+	if tickets > 0:
+		var ticket: Button = Button.new()
+		ticket.text = "🎟️ Pular anúncio · usar 1 de %d" % tickets
+		ticket.theme_type_variation = &"BotaoSecundario"
+		ticket.pressed.connect(func() -> void:
+			ProgressoLocal.adicionar_tickets(-1)
+			_confirmar_renascimento())
+		coluna.add_child(ticket)
+
+	var ver_resultado: Button = Button.new()
+	ver_resultado.text = "Não, ver resultado" if pode_voltar else "Ver resultado"
+	ver_resultado.flat = true
+	ver_resultado.pressed.connect(func() -> void:
+		set_process(false)
+		resolvido.emit())
+	coluna.add_child(ver_resultado)
+
+	if pode_voltar:
+		coluna.add_child(_pilula_vip())
+
+
+## CTA laranja do anúncio (gradiente desenhado; o rótulo é filho porque
+## Button não dimensiona por filhos).
+func _botao_anuncio() -> Button:
 	var anuncio: Button = Button.new()
 	anuncio.flat = true
-	anuncio.disabled = not tem_anuncio
 	anuncio.custom_minimum_size = Vector2(0.0, float(T.TOQUE_PADRAO) + 2.0)
 	anuncio.draw.connect(func() -> void:
 		DesenhoUi.gradiente_arredondado(anuncio, anuncio.size,
@@ -128,45 +170,20 @@ func _montar() -> void:
 	rotulo_anuncio.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	rotulo_anuncio.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	anuncio.add_child(rotulo_anuncio)
-	if tem_anuncio:
-		anuncio.pressed.connect(func() -> void:
-			# Pausa a contagem: o vídeo não pode empurrar o jogador para
-			# o resultado enquanto ele assiste.
-			set_process(false)
-			Anuncios.mostrar_recompensado(_confirmar_renascimento))
-	else:
-		anuncio.modulate.a = 0.55  # sem anúncio carregado (offline, estoque)
-	coluna.add_child(anuncio)
-
-	# 🎟️ Pular anúncio com ticket: mesma recompensa sem vídeo (regra dos
-	# tokens) — é a saída offline. Sem saldo, guarda o lugar desabilitado.
-	var tickets: int = ProgressoLocal.tickets() if permitir_renascer else 0
-	var ticket: Button = Button.new()
-	ticket.text = "🎟️ Pular anúncio · usar 1 de %d" % tickets
-	ticket.theme_type_variation = &"BotaoSecundario"
-	ticket.disabled = tickets <= 0
-	if tickets > 0:
-		ticket.pressed.connect(func() -> void:
-			ProgressoLocal.adicionar_tickets(-1)
-			_confirmar_renascimento())
-	else:
-		ticket.add_theme_stylebox_override("disabled",
-			ThemeDB.get_project_theme().get_stylebox(&"normal", &"BotaoSecundario"))
-		ticket.add_theme_color_override("font_disabled_color", T.COR_TEXTO_SECUNDARIO)
-	coluna.add_child(ticket)
-
-	var ver_resultado: Button = Button.new()
-	ver_resultado.text = "Não, ver resultado"
-	ver_resultado.flat = true
-	ver_resultado.pressed.connect(func() -> void:
+	anuncio.pressed.connect(func() -> void:
+		# Pausa a contagem: o vídeo não pode empurrar o jogador para o
+		# resultado enquanto ele assiste.
 		set_process(false)
-		resolvido.emit())
-	coluna.add_child(ver_resultado)
+		Anuncios.mostrar_recompensado(_confirmar_renascimento))
+	return anuncio
 
-	# Pill do VIP (assinatura é futuro) — informativa, apagada.
+
+## Pílula do VIP (assinatura é futuro) — informativa, apagada. Só aparece
+## quando HÁ como renascer: anunciar "VIP renasce grátis" para quem não
+## tem mais chance seria promessa vazia.
+func _pilula_vip() -> Control:
 	var linha_vip: HBoxContainer = HBoxContainer.new()
 	linha_vip.alignment = BoxContainer.ALIGNMENT_CENTER
-	coluna.add_child(linha_vip)
 	var vip: PanelContainer = PanelContainer.new()
 	var caixa: StyleBoxFlat = StyleBoxFlat.new()
 	caixa.bg_color = Color(T.COR_MOEDA, 0.08)
@@ -185,6 +202,7 @@ func _montar() -> void:
 	vip.add_child(rotulo_vip)
 	vip.modulate.a = 0.55
 	linha_vip.add_child(vip)
+	return linha_vip
 
 
 ## Fantasminha do desenho (04b).
