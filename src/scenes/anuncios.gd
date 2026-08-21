@@ -20,10 +20,10 @@ signal disponibilidade_mudou
 
 ## Bloco de demonstração público do Google (sempre devolve "Test Ad").
 const ID_RECOMPENSADO_TESTE: String = "ca-app-pub-3940256099942544/5224354917"
-## PREENCHER com o bloco Recompensado da conta do Snakito (formato
-## `ca-app-pub-XXXXXXXXXXXXXXXX/YYYYYYYYYY`). Enquanto vazio, release não
-## serve anúncio — a UI degrada para os placeholders esmaecidos.
-const ID_RECOMPENSADO_PRODUCAO: String = ""
+## Bloco "Recompensado" do Snakito (formato Premiado — opt-in explícito, o
+## único que casa com as nossas telas). Criado em 20/08; só é usado em
+## RELEASE. Vazio faria release rodar sem anúncio, nunca cair no de teste.
+const ID_RECOMPENSADO_PRODUCAO: String = "ca-app-pub-4383856231212698/1017525581"
 
 var _recompensado: RewardedAd = null
 var _carregando: bool = false
