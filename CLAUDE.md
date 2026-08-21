@@ -61,6 +61,20 @@ adb shell am force-stop com.rodrigowaters.snakito
 adb push progresso.cfg /data/local/tmp/ && adb shell 'run-as com.rodrigowaters.snakito sh -c "cp /data/local/tmp/progresso.cfg files/progresso.cfg"'
 ```
 
+## Automação do Claude Code (`.claude/`)
+
+| Caminho | Papel |
+|---|---|
+| `.claude/settings.json` | Dois hooks `PostToolUse` em Edit/Write de `.gd` |
+| `.claude/hooks/checar_gdscript.py` | Compila o arquivo editado (`--check-only`, ~0.9s) e devolve os erros de parse no mesmo turno |
+| `.claude/hooks/checar_regras_duras.py` | Guarda das invariantes: domínio sem `Node` (#1), cor literal fora de `tokens.gd` (#4), var sem tipo (Trilha B). Isenções: `tokens.gd`, o G do Google em `configuracoes.gd`, e `tools/`/`tests/` (validador precisa citar o literal) |
+| `.claude/skills/aparelho/` | `/aparelho` — build + reconexão adb com retry + install + launch no moto g35 |
+| `.claude/skills/tela/` | `/tela <nome>` — extrai o blueprint de `docs/design/` e guia a comparação screenshot × desenho |
+| `.claude/agents/calibrador.md` | Subagente de balanceamento: roda `simular_desafios.gd`, lê a banda, propõe UM eixo (com as travas de bot honesto) |
+| `.claude/agents/revisor-armadilhas.md` | Subagente que revisa o diff contra as 17 armadilhas já registradas — as falhas silenciosas que teste não pega |
+
+Ambos os hooks saem com código 2 quando falham (o erro volta ao Claude na hora) e foram validados contra os 57 `.gd` do projeto: zero falso positivo.
+
 ## Arquitetura (regras duras)
 
 1. **Domínio puro em `src/domain/`:** classes `RefCounted` GDScript, **nunca** herdam `Node`, zero dependência de cena/render/input. Arquivos: `game_engine.gd`, `snake_model.gd`, `arena_model.gd`, `bot_engine.gd`, `strategy_analyzer.gd`, `challenge_rules.gd`, `rng_service.gd`. Cenas apenas renderizam o estado calculado pelo domínio.
