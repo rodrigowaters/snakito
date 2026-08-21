@@ -178,6 +178,23 @@ func excluir_conta() -> bool:
 	return false
 
 
+# ------------------------------------------------------------------ compras
+
+## Valida um recibo do Play na Edge Function (docs §5): é ELA que concede.
+## Devolve {"status": int, "conceder": Dictionary, "repetido": bool} —
+## status 0 = sem rede (o recibo continua na fila).
+func validar_compra(product_id: String, purchase_token: String) -> Dictionary:
+	var resposta: Dictionary = await _com_renovacao(
+		HTTPClient.METHOD_POST, "/functions/v1/validate_purchase",
+		{"product_id": product_id, "purchase_token": purchase_token})
+	var dados: Variant = resposta.dados
+	return {
+		"status": resposta.status,
+		"conceder": dados.get("conceder", {}) if dados is Dictionary else {},
+		"repetido": bool(dados.get("repetido", false)) if dados is Dictionary else false,
+	}
+
+
 # ------------------------------------------------------------------ sessões
 
 ## Envia UMA sessão para a Edge Function. Devolve o status HTTP (0 = sem rede).

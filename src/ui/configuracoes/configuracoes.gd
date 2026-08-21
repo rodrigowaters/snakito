@@ -6,8 +6,8 @@ extends Control
 ## Sair e Excluir conta. Sons/Música são TOGGLES
 ## por decisão de 13/08 (o desenho tinha sliders; liga/desliga é mais
 ## simples p/ 7+) — persistem e o som consome no M3-sons. "Remover
-## anúncios" navega para a Loja (aba Pacotes). Guardam lugar: Idioma
-## (i18n M3) e Restaurar compras (Billing M3); Privacidade abre o
+## anúncios" navega para a Loja (aba Pacotes). Guarda lugar: Idioma
+## (i18n M3). Restaurar compras chama o Play; Privacidade abre o
 ## formulário do UMP quando o consentimento exigir revisão.
 
 const T := preload("res://src/ui/theme/tokens.gd")
@@ -87,8 +87,10 @@ func _montar_conteudo() -> void:
 			Loja.proxima_aba = Loja.Aba.PACOTES
 			get_tree().change_scene_to_file("res://src/ui/loja/loja.tscn"),
 		true))
+	# Restaurar compras: pergunta ao Play o que a conta possui e revalida
+	# (rede de segurança de quem trocou de aparelho). Exige loja pronta.
 	conta.add_child(_linha_navegacao("🔄", "Restaurar compras", "›",
-		Callable(), true))
+		(Compras.restaurar) if Compras.disponivel() else Callable(), true))
 	var pode_sair: bool = Rede.logado()
 	conta.add_child(_linha_navegacao("🚪", "Sair da conta", "›",
 		(func() -> void:

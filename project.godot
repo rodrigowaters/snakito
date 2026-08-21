@@ -25,6 +25,7 @@ config/icon="res://assets/icone/icon.svg"
 
 Rede="*res://src/net/rede.gd"
 Anuncios="*res://src/scenes/anuncios.gd"
+Compras="*res://src/scenes/compras.gd"
 
 [debug]
 

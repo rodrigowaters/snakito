@@ -29,25 +29,39 @@ const ALFA_GUARDA_LUGAR: float = 0.55
 
 ## Pacotes de exemplo (Billing M3 — docs §5 Fase 3). Valores ilustrativos
 ## até os produtos existirem no Play Console.
+## Cards da aba Pacotes. **Sem preço**: ele vem do Play em
+## `Compras.preco(produto)` — na moeda do país do jogador (preço fixo em
+## reais seria mentira em qualquer outro país e mudaria sem o app saber).
+## `vendavel = false` = o produto existe mas ainda não pode ser entregue
+## (pacote de skin espera o render de padrão em jogo); o card mostra
+## "em breve" em vez de um CTA que cobraria por nada.
 const PACOTES_SKINS: Array[Dictionary] = [
-	{"icone": "🌈", "nome": "Pacote Neon", "tipo": "3 SKINS ÉPICAS",
+	{"produto": "pacote_neon", "vendavel": false,
+		"icone": "🌈", "nome": "Pacote Neon", "tipo": "3 SKINS ÉPICAS",
 		"raridade": SnakitoTokens.Raridade.EPICA, "tag": "MAIS POPULAR",
-		"preco": "9,90", "itens": ["3 skins neon exclusivas",
+		"itens": ["3 skins neon exclusivas",
 			"Rastro brilhante na arena", "Nunca dão vantagem — só estilo"]},
-	{"icone": "👑", "nome": "Pacote Cósmico", "tipo": "2 SKINS LENDÁRIAS",
+	{"produto": "pacote_cosmico", "vendavel": false,
+		"icone": "👑", "nome": "Pacote Cósmico", "tipo": "2 SKINS LENDÁRIAS",
 		"raridade": SnakitoTokens.Raridade.LENDARIA, "tag": "👑 LENDÁRIO",
-		"preco": "19,90", "itens": ["Fênix e Nebulosa",
+		"itens": ["Fênix e Nebulosa",
 			"Brilho especial na cabeça", "Nunca dão vantagem — só estilo"]},
 ]
 const PACOTES_ANUNCIOS: Array[Dictionary] = [
-	{"icone": "🚀", "nome": "Começo turbinado", "bonus": "500 moedas", "preco": "22,90"},
-	{"icone": "🎟️", "nome": "Sem interrupção", "bonus": "10 pulos", "preco": "19,90"},
+	{"produto": "combo_turbinado", "vendavel": true,
+		"icone": "🚀", "nome": "Começo turbinado", "bonus": "500 moedas"},
+	{"produto": "combo_sem_interrupcao", "vendavel": true,
+		"icone": "🎟️", "nome": "Sem interrupção", "bonus": "10 pulos"},
 ]
 const PACOTES_TICKETS: Array[Dictionary] = [
-	{"qtd": 5, "preco": "2,90"}, {"qtd": 15, "preco": "6,90"}, {"qtd": 40, "preco": "14,90"},
+	{"produto": "tickets_5", "vendavel": true, "qtd": 5},
+	{"produto": "tickets_15", "vendavel": true, "qtd": 15},
+	{"produto": "tickets_40", "vendavel": true, "qtd": 40},
 ]
 const PACOTES_MOEDAS: Array[Dictionary] = [
-	{"qtd": "500", "preco": "4,90"}, {"qtd": "1.200", "preco": "9,90"}, {"qtd": "3.000", "preco": "19,90"},
+	{"produto": "moedas_500", "vendavel": true, "qtd": "500"},
+	{"produto": "moedas_1200", "vendavel": true, "qtd": "1.200"},
+	{"produto": "moedas_3000", "vendavel": true, "qtd": "3.000"},
 ]
 
 var _aba: Aba = Aba.SKINS
@@ -59,6 +73,10 @@ var _corpo: PanelContainer
 func _ready() -> void:
 	_aba = proxima_aba
 	proxima_aba = Aba.SKINS
+	# Preço vem do Play em milissegundos-a-segundos depois do boot, e uma
+	# compra concedida muda saldo/entitlement: os dois remontam a tela.
+	Compras.precos_prontos.connect(_remontar_tudo)
+	Compras.compra_concedida.connect(func(_id: String) -> void: _remontar_tudo())
 	_montar_fundo()
 	var margem: MarginContainer = MarginContainer.new()
 	margem.set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -628,11 +646,13 @@ func _aba_pacotes() -> Control:
 	coluna.add_child(_secao_grade("TICKETS DE PULO DE ANÚNCIO", PACOTES_TICKETS, _card_ticket))
 	coluna.add_child(_secao_grade("MOEDAS", PACOTES_MOEDAS, _card_moedas))
 
-	var aviso: Label = Label.new()
-	aviso.text = "Compras chegam em breve — preços de exemplo"
-	aviso.theme_type_variation = &"TextoLegenda"
-	aviso.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	coluna.add_child(aviso)
+	if Compras.preco("remover_anuncios") == "":
+		var aviso: Label = Label.new()
+		aviso.text = "A loja do Google não respondeu — tente de novo mais tarde"
+		aviso.theme_type_variation = &"TextoLegenda"
+		aviso.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		aviso.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		coluna.add_child(aviso)
 	_liberar_arrasto(coluna)
 	return rolagem
 
@@ -750,8 +770,9 @@ func _card_pacote_skin(pacote: Dictionary) -> Control:
 	topo.add_child(nomes)
 	pilha.add_child(topo)
 
+	var texto_preco: String = Compras.preco(str(pacote.get("produto", "")))
 	var preco: Label = Label.new()
-	preco.text = "R$ %s" % pacote.preco
+	preco.text = texto_preco if texto_preco != "" else "—"
 	preco.theme_type_variation = &"TituloLg"
 	preco.add_theme_color_override("font_color", cor_raridade)
 	pilha.add_child(preco)
@@ -772,7 +793,7 @@ func _card_pacote_skin(pacote: Dictionary) -> Control:
 		linha.add_child(texto)
 		pilha.add_child(linha)
 
-	pilha.add_child(_cta_pacote("Comprar"))
+	pilha.add_child(_cta_pacote(pacote))
 	return card
 
 
@@ -800,11 +821,12 @@ func _card_pacote_anuncio(pacote: Dictionary) -> Control:
 	bonus.theme_type_variation = &"TextoLegenda"
 	bonus.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	pilha.add_child(bonus)
+	var texto_preco: String = Compras.preco(str(pacote.get("produto", "")))
 	var preco: Label = Label.new()
-	preco.text = "R$ %s" % pacote.preco
+	preco.text = texto_preco if texto_preco != "" else "—"
 	preco.theme_type_variation = &"TituloMd"
 	pilha.add_child(preco)
-	pilha.add_child(_cta_pacote("Comprar"))
+	pilha.add_child(_cta_pacote(pacote))
 	return card
 
 
@@ -839,24 +861,34 @@ func _banner_remover_anuncios() -> Control:
 	sub.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	textos.add_child(sub)
 	linha.add_child(textos)
-	var cta: Control = _chip_gradiente("R$ 14,90",
-		T.COR_CTA_VIP_INICIO, T.COR_CTA_VIP_INICIO, T.COR_TEXTO_SOBRE_ALERTA, Callable())
+	var preco_remover: String = Compras.preco("remover_anuncios")
+	var cta: Control
+	if ProgressoLocal.entitlement_ativo("ads_removed"):
+		cta = _chip_vidro("✓ Ativo", T.COR_SUCESSO)
+	elif preco_remover == "":
+		cta = _chip_vidro("em breve", T.COR_TEXTO_SECUNDARIO)
+		cta.modulate.a = ALFA_GUARDA_LUGAR
+	else:
+		cta = _chip_gradiente(preco_remover,
+			T.COR_CTA_VIP_INICIO, T.COR_CTA_VIP_INICIO, T.COR_TEXTO_SOBRE_ALERTA,
+			func() -> void: Compras.comprar("remover_anuncios"))
 	cta.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	linha.add_child(cta)
 	return card
 
 
 func _card_ticket(pacote: Dictionary) -> Control:
-	return _card_miudo("🎟️", Callable(), "%d pulos" % pacote.qtd, str(pacote.preco))
+	return _card_miudo("🎟️", Callable(), "%d pulos" % pacote.qtd, pacote)
 
 
 func _card_moedas(pacote: Dictionary) -> Control:
 	return _card_miudo("", func(alvo: Control) -> void:
-		DesenhoUi.moedinha(alvo, alvo.size * 0.5, 12.0), str(pacote.qtd), str(pacote.preco))
+		DesenhoUi.moedinha(alvo, alvo.size * 0.5, 12.0), str(pacote.qtd), pacote)
 
 
 ## Card compacto das grades de 3 colunas (tickets/moedas).
-func _card_miudo(emoji: String, desenho: Callable, titulo: String, preco: String) -> Control:
+func _card_miudo(emoji: String, desenho: Callable, titulo: String,
+		pacote: Dictionary) -> Control:
 	var card: PanelContainer = _card_vidro(T.COR_SUPERFICIE_VIDRO_BORDA, 1.0)
 	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	var pilha: VBoxContainer = VBoxContainer.new()
@@ -883,17 +915,29 @@ func _card_miudo(emoji: String, desenho: Callable, titulo: String, preco: String
 	pilha.add_child(nome)
 	var centro: HBoxContainer = HBoxContainer.new()
 	centro.alignment = BoxContainer.ALIGNMENT_CENTER
-	centro.add_child(_cta_pacote("R$ %s" % preco, 38.0))
+	centro.add_child(_cta_pacote(pacote, 38.0))
 	pilha.add_child(centro)
 	return card
 
 
-## CTA de pacote: verde do blueprint, GUARDANDO LUGAR até o Billing.
-func _cta_pacote(texto: String, altura: float = 46.0) -> Control:
-	var cta: Control = _chip_gradiente(texto,
+## CTA de um produto do Play. Mostra o PREÇO REAL do Play e compra de
+## verdade; sem preço (loja indisponível, produto não publicado) ou não
+## vendável ainda, vira "em breve" apagado — nunca um botão que cobra
+## sem entregar.
+func _cta_pacote(pacote: Dictionary, altura: float = 46.0) -> Control:
+	var produto: String = str(pacote.get("produto", ""))
+	var preco: String = Compras.preco(produto)
+	if not bool(pacote.get("vendavel", false)) or preco == "":
+		var espera: Control = _chip_vidro("em breve", T.COR_TEXTO_SECUNDARIO)
+		espera.modulate.a = ALFA_GUARDA_LUGAR
+		return espera
+	if ProgressoLocal.entitlement_ativo("ads_removed") \
+			and produto.begins_with("combo_"):
+		# Combo inclui remoção de anúncios que a conta já tem.
+		return _chip_vidro("✓ já é seu", T.COR_SUCESSO)
+	return _chip_gradiente(preco,
 		T.COR_CTA_PRIMARIO_INICIO, T.COR_CTA_PRIMARIO_FIM, T.COR_TEXTO_SOBRE_PRIMARIO,
-		Callable(), false, altura)
-	return cta
+		func() -> void: Compras.comprar(produto), false, altura)
 
 
 ## Varre a subárvore trocando STOP → PASS: nenhum card/painel pode engolir
