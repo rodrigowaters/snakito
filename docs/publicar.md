@@ -41,6 +41,17 @@ recusa código repetido). Hoje: 1.
 
 ## 3. Criar o app no Play Console
 
+**Já criado (21/08).** Referências (não são segredo — só quem está na
+conta abre):
+
+- Conta de desenvolvedor: `5983884273304023551`
+- App: `4975216188373581147`
+- Painel: <https://play.google.com/console/u/0/developers/5983884273304023551/app/4975216188373581147/app-dashboard>
+- Política de privacidade publicada:
+  <https://rodrigowaters.github.io/snakito/politica-privacidade.html>
+
+Valores usados na criação:
+
 - Nome **Snakito** · idioma padrão **português (Brasil)** · **Jogo** · **Gratuito**
 - Declarações: leis de exportação dos EUA + diretrizes do programa
 - **Público-alvo e conteúdo**: faixa **6–8 anos** (o app é 7+). É isso que
@@ -101,5 +112,10 @@ nunca conceder sem validar.
 
 - Ícone 512×512: `assets/icone/png/loja_512.png`
 - Gerar/atualizar todos os ícones: `godot --headless --quit-after 60 -s tools/gerar_icones.gd`
-- Gráfico de destaque 1024×500 e screenshots: capturar com
-  `tools/capturar_tela.gd` ou direto do aparelho
+- Gráfico de destaque 1024×500: `assets/loja/destaque_1024x500.png`
+  (gerar: `godot --path . --quit-after 90 -s tools/gerar_destaque.gd` —
+  precisa de janela). Composto com os tokens do jogo, e a arte fica longe
+  das bordas porque o Play recorta em algumas vitrines
+- Screenshots (mínimo 2): `tools/capturar_tela.gd` por tela, ou
+  `adb exec-out screencap -p > tela.png` com o jogo rodando no aparelho —
+  screenshot de gameplay real vende melhor que tela de menu
