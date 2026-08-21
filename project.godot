@@ -8,6 +8,10 @@
 
 config_version=5
 
+[admob]
+
+general/android/app_id="ca-app-pub-4383856231212698~1663714220"
+
 [application]
 
 config/name="Snakito"
